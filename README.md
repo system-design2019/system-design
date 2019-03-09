@@ -3,16 +3,16 @@
 ## 环境依赖
 
 ## 目录结构
-|-- frontend 
-|-- backend 
-|-- management 
-|-- UIandProto
+|-- frontend  
+|-- backend  
+|-- management  
+|-- UIandProto 
 
 ## 看板使用
 ### project简介
 1. 目前有四个看板pro(ui/front/back/product)，大家平时各自管理各自的看板pro，便于查看新需求和自己的任务管理
 2. UI/frontend/backend都有need triage、high、progess、close四列，第一列表示待办，high表示高优先级待办，这两列都是to do类型，表示未完成的任务，progress为进行中，close表示已经完成任务
-3. management有todo、processing、needs review、close四列，processing和review都是待查类型，表示进行中和待查，其他相同
+3. management有todo、in progress、needs review、close四列，processing和review都是待查类型，表示进行中和待查，其他相同
 2. 添加issue后kanban上会在todo column上自动添加
 3. 添加issue必选project，前端方向就选frontend，其他同理
 4. 如果是跨方向提issue，project不仅选择被选的方向，还要选management，方便PM查看
