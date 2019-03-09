@@ -3,9 +3,9 @@
 ## 环境依赖
 
 ## 目录结构
-|-- frontend
-|-- backend
-|-- management
+|-- frontend 
+|-- backend 
+|-- management 
 |-- UIandProto
 
 ## 看板使用
