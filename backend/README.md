@@ -1,10 +1,17 @@
 ## 开发环境
 
-**IntelliJ Idea + Java 1.8.0 + Spring Boot + Tomcat(9.0)(可选)** 
+**IntelliJ Idea + Java 1.8.0 + Spring Boot + MySQL5.5(服务器上) + Tomcat(9.0)(可选)** 
 
 
 
 - 直接将项目导入为`IntelliJ`项目，点击运行
+
+- 服务器数据库地址为 jdbc:mysql://52.68.227.152:3306/earn_money
+
+  用户名:swsad
+
+  密码:1234abcd
+
 - 测试`url`为 http://localhost:8080
 
 ## 部署环境
@@ -31,8 +38,12 @@
 
 | 路径 | 方法 | 参数 | 返回 | 备注   |
 | ---- | ---- | ---- | ---- | ------ |
-| /    | GET  | 无   |   字符串   | 测试 |
-| /hello | GET | 无 | 字符串 | 测试 |
+| /hello | GET | 无 | "helloworld" | 测试 |
+| /users | GET | 无 | 用户列表(json) | 所有用户数据 |
+| /user/{userId} | GET | 无 | 用户(json) | 返回指定id的用户 |
+| /user | PUT | 用户(json) | boolean | 添加用户 |
+| /user | POST | 用户(json) | boolean | 修改用户 |
+| /user/{userId} | DELETE | 无 | boolean | 删除用户 |
 
 ## 资料
 
@@ -51,6 +62,18 @@
 - Spring项目绑定域名
 
   <https://cloud.tencent.com/developer/article/1332603>
+
+- 安装MySQL
+
+  <https://blog.csdn.net/qq_38683692/article/details/82859141>
+
+- MySQL语法
+
+  <http://www.runoob.com/mysql/mysql-create-tables.html>
+
+- MySQL8使用JDBC连接的问题(但是服务器用不了版本8)
+
+  <https://blog.csdn.net/qq_22076345/article/details/81952035>
 
 ## 笔记
 

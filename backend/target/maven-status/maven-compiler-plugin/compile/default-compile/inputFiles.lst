@@ -1,2 +1,5 @@
-C:\Users\Janking\IdeaProjects\system-design\backend\src\main\java\cn\janking\swsad\controller\HelloController.java
+C:\Users\Janking\IdeaProjects\system-design\backend\src\main\java\cn\janking\swsad\controller\Controller.java
+C:\Users\Janking\IdeaProjects\system-design\backend\src\main\java\cn\janking\swsad\bean\User.java
+C:\Users\Janking\IdeaProjects\system-design\backend\src\main\java\cn\janking\swsad\mapper\UserMapper.java
+C:\Users\Janking\IdeaProjects\system-design\backend\src\main\java\cn\janking\swsad\singleton\SingletonMybatis.java
 C:\Users\Janking\IdeaProjects\system-design\backend\src\main\java\cn\janking\swsad\SwsadApplication.java
