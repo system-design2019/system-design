@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     @RequestMapping("/")
     private String index(){
-        return "老哥，这是API接口，我又不会写前端，访问我干啥";
+        return "老哥，这是API接口，没有前端的哦";
     }
     @RequestMapping("/hello")
     private String hello(){
