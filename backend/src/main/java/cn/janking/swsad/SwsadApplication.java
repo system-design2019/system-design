@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SwsadApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(SwsadApplication.class, args);
     }
 
