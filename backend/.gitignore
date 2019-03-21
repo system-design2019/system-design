@@ -7,4 +7,10 @@ projectName.iml
 *.iml
 /build
 /local.properties
-target/
+target/classes
+target/generated-sources
+target/generated-test-sources
+target/maven-archiver
+target/maven-archiver
+target/maven-archiver
+target/test-classes
