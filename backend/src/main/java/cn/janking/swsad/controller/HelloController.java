@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @EnableAutoConfiguration
 public class HelloController {
-
-    @RequestMapping("/hello")
+    @RequestMapping("/")
     private String index(){
+        return "老哥，这是API接口，我又不会写前端，访问我干啥";
+    }
+    @RequestMapping("/hello")
+    private String hello(){
         return "Hello World!";
     }
 }
