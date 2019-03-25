@@ -36,7 +36,7 @@
 
 ## API接口
 
-请求`URL` ：http://api.janking.cn
+请求`URL` ：http://52.76.250.96:8080
 
 > 此URL还没有与GitHub同步
 
