@@ -6,11 +6,11 @@
 
 - 直接将项目导入为`IntelliJ`项目，点击运行
 
-- 服务器数据库地址为 jdbc:mysql://52.76.250.96:3306/earn_money
+- 服务器数据库地址为 jdbc:mysql://52.76.250.96:3306/swsad
 
   用户名:swsad
 
-  密码:1234abcd
+  密码:swsad
 
 - 测试`url`为 http://localhost:8080
 
