@@ -69,7 +69,7 @@ public class Controller {
         return user;
     }
     //RequestBody这个注解可以接收json数据
-    @RequestMapping(method = RequestMethod.POST,value = "/user")
+    @RequestMapping(method = RequestMethod.PUT,value = "/user")
     public boolean updateUser(@RequestBody User user){
         SqlSession sqlSession = sqlSessionFactory.openSession();
         boolean result;
@@ -82,7 +82,7 @@ public class Controller {
         }
         return result;
     }
-    @RequestMapping(method = RequestMethod.PUT,value = "/user")
+    @RequestMapping(method = RequestMethod.POST,value = "/user")
     public boolean addUser(@RequestBody User user){
         SqlSession sqlSession = sqlSessionFactory.openSession();
         try {

@@ -6,7 +6,7 @@
 
 - 直接将项目导入为`IntelliJ`项目，点击运行
 
-- 服务器数据库地址为 jdbc:mysql://52.68.227.152:3306/earn_money
+- 服务器数据库地址为 jdbc:mysql://52.76.250.96:3306/earn_money
 
   用户名:swsad
 
@@ -25,7 +25,11 @@
 - 运行`system-design\backend\target`目录下的`jar`包
 
   ```bash
+  //windows
   $ java -jar .\swsad-0.0.1-SNAPSHOT.jar 
+  //linux continue
+  $ nohup java -jar swsad-0.0.1-SNAPSHOT.jar &
+
   ```
 
 - 测试`url`为 http://localhost:8080
@@ -41,8 +45,8 @@
 | /hello | GET | 无 | "helloworld" | 测试 |
 | /users | GET | 无 | 用户列表(json) | 所有用户数据 |
 | /user/{userId} | GET | 无 | 用户(json) | 返回指定id的用户 |
-| /user | PUT | 用户(json) | boolean | 添加用户 |
-| /user | POST | 用户(json) | boolean | 修改用户 |
+| /user | POST | 用户(json) | boolean | 添加用户 |
+| /user | PUT | 用户(json) | boolean | 修改用户 |
 | /user/{userId} | DELETE | 无 | boolean | 删除用户 |
 
 ## 资料
