@@ -21,9 +21,9 @@
             <!--连接数据库-->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://52.68.227.152:3306/earn_money"/>
+                <property name="url" value="jdbc:mysql://52.76.250.96:3306/swsad"/>
                 <property name="username" value="swsad"/>
-                <property name="password" value="1234abcd"/>
+                <property name="password" value="swsad"/>
             </dataSource>
         </environment>
     </environments>
