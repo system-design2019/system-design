@@ -33,17 +33,38 @@
   font-size:20px;
 }
 
+#headBox2{
+}
+
 #headBox{
    width:120px; 
    height:120px; 
    border-radius:50%; 
    overflow:hidden;
-   margin:10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center
+   text-align: center;
+   margin: auto;
+   margin-top: 10px;
+   margin-bottom: 10px;
+ }
+
+
+#head{
+  max-width:100%;
+  max-height:100%;
+  text-align: center;
+  clear:both;
+  display: block;
+  margin:auto;
 }
+
+.allButton{
+  float:right;
+  margin:5px;
+}
+
+
+
+
 
 
 
@@ -58,11 +79,11 @@
                     </div>
                     <div class="layout-nav">
                         <div id="signB">
-                            <MenuItem name="signIn" @click.native="modal2 = true">
+                            <MenuItem name="signIn" @click.native="signIn = true">
                             <Icon type="ios-navigate"></Icon>
                             登陆
                             </MenuItem>
-                            <MenuItem name="signUp" @click.native="alertsome">
+                            <MenuItem name="signUp" @click.native="signUp = true">
                             <Icon type="ios-keypad"></Icon>
                             注册
                             </MenuItem>
@@ -118,7 +139,7 @@
                     <Content :style="{padding: '24px', minHeight: '500px', background: '#fff'}">
                         Content
                     </Content>
-                    <Modal v-model="modal2" width="360">
+                    <Modal v-model="signIn" width="360">
                         <p slot="header" style="color:#f60;text-align:center">
                             <Icon type="ios-information-circle"></Icon>
                             <span>登陆页面</span>
@@ -126,12 +147,44 @@
                         <div style="text-align:center">
                             <p>如您已经注册了账号，请输入并登陆.</p>
                         </div>
-                        <div id="headBox">
-                            <img src="../images/hellobg.jpg" alt="正方形的原始图片" width="150px" height="150px" />
+                        <div id="headBox2">
+                            <div id="headBox">
+                                <img id="head" src="../images/hellobg.jpg" alt="正方形的原始图片" width="150px" height="150px" />
+                            </div>
                         </div>
-                        <input placeholder="用户名" style="width: 300px" />
+                        <div class="allInput">
+                            <Input v-model="username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
+                            <Input v-model="password" prefix="ios-contact" placeholder="请输入密码" type="password" />
+                            <Input prefix="ios-contact" placeholder="请输入验证码" />
+                        </div>
+                        <div class="allButton">
+                            <Button id="findPass" size="small">找回密码</Button>
+                            <Button id="signNow" size="small">立即注册</Button>
+                        </div>
                         <div slot="footer">
-                            <Button type="error" size="large" long @click="del">Delete</Button>
+                            <Button size="large" long @click="Confirm">确定</Button>
+                        </div>
+                    </Modal>
+                    <Modal v-model="signUp" width="360">
+                        <p slot="header" style="color:#f60;text-align:center">
+                            <Icon type="ios-information-circle"></Icon>
+                            <span>注册页面</span>
+                        </p>
+                        <div style="text-align:center">
+                            <p>清输入相关信息进行注册</p>
+                        </div>
+                        <div id="headBox2">
+                            <div id="headBox">
+                                <img id="head" src="../images/hellobg.jpg" alt="正方形的原始图片" width="150px" height="150px" />
+                            </div>
+                        </div>
+                        <div class="allInput">
+                            <Input v-model="username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
+                            <Input v-model="password" prefix="ios-contact" placeholder="请输入密码" type="password" />
+                            <Input prefix="ios-contact" placeholder="请输入验证码" />
+                        </div>
+                        <div slot="footer">
+                            <Button size="large" long @click="Confirm">确定</Button>
                         </div>
                     </Modal>
                 </Layout>
@@ -143,15 +196,18 @@
 export default {
     data() {
         return {
-            modal2: false
+            signIn: false,
+            signUp: false,
+            username: "",
+            password: ""
         }
     },
     methods: {
         alertsome() {
             alert("yes");
         },
-        del() {
-            modal2 = false;
+        Confirm() {
+            alert(this.username + this.password); //username
         }
     }
 

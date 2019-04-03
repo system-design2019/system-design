@@ -4,7 +4,11 @@ This project is build for Vue.js 2 + vue-router + webpack2 + iView 3, just insta
 
 ## Install
 ```bush
+
+进入到timeIsMoney的文件夹目录下
+
 // install dependencies
+
 npm install
 ```
 ## Run
