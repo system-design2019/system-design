@@ -100,9 +100,8 @@
                                 问卷服务
                             </template>
                             <MenuItem name="1-1">查看所有问卷</MenuItem>
-                            <MenuItem name="1-2">发布问卷</MenuItem>
-                            <MenuItem name="1-3">我的问卷</MenuItem>
-                            <MenuItem name="1-4">问卷详情</MenuItem>
+                            <MenuItem name="1-2">我发布的</MenuItem>
+                            <MenuItem name="1-3">我参与的</MenuItem>
                         </Submenu>
                         <Submenu name="2">
                             <template slot="title">
@@ -125,17 +124,12 @@
                                 <Icon type="ios-analytics"></Icon>
                                 关于我们
                             </template>
-                            <MenuItem name="4-1">产品概念</MenuItem>
+                            <MenuItem name="4-1" @click.native="goToJump">产品概念</MenuItem>
                             <MenuItem name="4-2">我要加盟</MenuItem>
                         </Submenu>
                     </Menu>
                 </Sider>
                 <Layout :style="{padding: '0 24px 24px'}">
-                    <Breadcrumb :style="{margin: '24px 0'}">
-                        <BreadcrumbItem>Home</BreadcrumbItem>
-                        <BreadcrumbItem>Components</BreadcrumbItem>
-                        <BreadcrumbItem>Layout</BreadcrumbItem>
-                    </Breadcrumb>
                     <Content :style="{padding: '24px', minHeight: '500px', background: '#fff'}">
                         Content
                     </Content>
@@ -159,7 +153,7 @@
                         </div>
                         <div class="allButton">
                             <Button id="findPass" size="small">找回密码</Button>
-                            <Button id="signNow" size="small">立即注册</Button>
+                            <Button id="signNow" size="small" @click="changeToSignUp">立即注册</Button>
                         </div>
                         <div slot="footer">
                             <Button size="large" long @click="Confirm">确定</Button>
@@ -182,6 +176,9 @@
                             <Input v-model="username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
                             <Input v-model="password" prefix="ios-contact" placeholder="请输入密码" type="password" />
                             <Input prefix="ios-contact" placeholder="请输入验证码" />
+                        </div>
+                        <div class="allButton">
+                            <Button id="signNow" size="small" @click="changeToSignIn">已有账号？</Button>
                         </div>
                         <div slot="footer">
                             <Button size="large" long @click="Confirm">确定</Button>
@@ -208,6 +205,19 @@ export default {
         },
         Confirm() {
             alert(this.username + this.password); //username
+        },
+        changeToSignUp() {
+            this.signIn = false;
+            this.signUp = true;
+        },
+        changeToSignIn() {
+            this.signUp = false;
+            this.signIn = true;
+        },
+        goToJump() {
+            this.$router.push({ //跳转到不同后缀的页面，同理可以有多个子后缀，从而实现页面跳转
+                path: '/'
+            })
         }
     }
 
