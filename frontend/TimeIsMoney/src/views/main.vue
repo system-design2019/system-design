@@ -33,6 +33,17 @@
   font-size:20px;
 }
 
+#headBox{
+   width:120px; 
+   height:120px; 
+   border-radius:50%; 
+   overflow:hidden;
+   margin:10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center
+}
 
 
 
@@ -47,7 +58,7 @@
                     </div>
                     <div class="layout-nav">
                         <div id="signB">
-                            <MenuItem name="signIn" @click.native="alertsome">
+                            <MenuItem name="signIn" @click.native="modal2 = true">
                             <Icon type="ios-navigate"></Icon>
                             登陆
                             </MenuItem>
@@ -88,6 +99,14 @@
                             <MenuItem name="3-1">我要约馆</MenuItem>
                             <MenuItem name="3-2">我要约球</MenuItem>
                         </Submenu>
+                        <Submenu name="4">
+                            <template slot="title">
+                                <Icon type="ios-analytics"></Icon>
+                                关于我们
+                            </template>
+                            <MenuItem name="4-1">产品概念</MenuItem>
+                            <MenuItem name="4-2">我要加盟</MenuItem>
+                        </Submenu>
                     </Menu>
                 </Sider>
                 <Layout :style="{padding: '0 24px 24px'}">
@@ -99,6 +118,22 @@
                     <Content :style="{padding: '24px', minHeight: '500px', background: '#fff'}">
                         Content
                     </Content>
+                    <Modal v-model="modal2" width="360">
+                        <p slot="header" style="color:#f60;text-align:center">
+                            <Icon type="ios-information-circle"></Icon>
+                            <span>登陆页面</span>
+                        </p>
+                        <div style="text-align:center">
+                            <p>如您已经注册了账号，请输入并登陆.</p>
+                        </div>
+                        <div id="headBox">
+                            <img src="../images/hellobg.jpg" alt="正方形的原始图片" width="150px" height="150px" />
+                        </div>
+                        <input placeholder="用户名" style="width: 300px" />
+                        <div slot="footer">
+                            <Button type="error" size="large" long @click="del">Delete</Button>
+                        </div>
+                    </Modal>
                 </Layout>
             </Layout>
         </Layout>
@@ -106,9 +141,17 @@
 </template>
 <script>
 export default {
+    data() {
+        return {
+            modal2: false
+        }
+    },
     methods: {
         alertsome() {
             alert("yes");
+        },
+        del() {
+            modal2 = false;
         }
     }
 
