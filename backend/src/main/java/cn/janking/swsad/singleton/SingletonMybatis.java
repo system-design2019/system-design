@@ -5,11 +5,14 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import javax.jws.soap.SOAPBinding;
+
 public class SingletonMybatis {
     private static SqlSessionFactory sqlSessionFactory;
     static {
         String resource = "spring-mybatis.xml";
         Reader reader = null;
+
         try {
             reader = Resources.getResourceAsReader(resource);
         } catch (IOException e) {

@@ -36,18 +36,11 @@
 
 ## API接口
 
+[API详细文档](api.md)
+
 请求`URL` ：http://52.76.250.96:8080
 
 > 此URL还没有与GitHub同步
-
-| 路径 | 方法 | 参数 | 返回 | 备注   |
-| ---- | ---- | ---- | ---- | ------ |
-| /hello | GET | 无 | "helloworld" | 测试 |
-| /users | GET | 无 | 用户列表(json) | 所有用户数据 |
-| /user/{userId} | GET | 无 | 用户(json) | 返回指定id的用户 |
-| /user | POST | 用户(json) | boolean | 添加用户 |
-| /user | PUT | 用户(json) | boolean | 修改用户 |
-| /user/{userId} | DELETE | 无 | boolean | 删除用户 |
 
 ## 资料
 
