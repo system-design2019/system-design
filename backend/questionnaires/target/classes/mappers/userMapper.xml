@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.janking.swsad.mapper.UserMapper">
+
+    <!--id对应接口中的方法，名字要一样，parameterType是方法的参数类型，
+    resultType是查询返回的类型，需要注意的是，这里的SQL语句后面不能加分号，变量不能加引号-->
+    <!--初始化表-->
+    <update id="userTableInit" >
+        CREATE TABLE IF NOT EXISTS `user_table`(
+        `id` INT(32) UNSIGNED AUTO_INCREMENT,
+        `password` VARCHAR(100) NOT NULL,
+        `email` VARCHAR(40) ,
+        `phone` VARCHAR(40) ,
+        PRIMARY KEY ( `id` )
+        )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    </update>
+    <!--获取用户数量-->
+    <select id="getCount" resultType="int">
+      select COUNT(*) from user_table;
+    </select>
+    <!--插入用户-->
+    <insert id="insert" parameterType="User">
+        insert into user_table(id, phone,email, password) values(${id}, "${phone}", "${email}", "${password}")
+    </insert>
+    <!--获取所有用户-->
+    <select id="getUsers"  resultType="User">
+        select * from user_table
+    </select>
+    <!--获取指定ID用户-->
+    <select id="getById" parameterType="int" resultType="User">
+        select * from user_table where id = #{id}
+    </select>
+    <!--获取指定手机号用户-->
+    <select id="getByPhone" parameterType="String" resultType="User">
+        select * from user_table where phone = #{phone}
+    </select>
+    <!--获取指定邮箱用户-->
+    <select id="getByEmail" parameterType="String" resultType="User">
+        select * from user_table where email = #{email}
+    </select>
+    <!--更新用户资料-->
+    <update id="updateUser" parameterType="User">
+        update user_table set password="${password}" where id = ${id}
+    </update>
+
+    <!--危险操作-->
+    <delete id="deleteAllUsers">
+        delete from user_table
+    </delete>
+    <delete id="deleteUser" parameterType="int" >
+        delete from user_table where id = #{id}
+    </delete>
+
+</mapper>

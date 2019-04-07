@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.janking.swsad.mapper.QuestionnaireMapper">
+
+    <!--id对应接口中的方法，名字要一样，parameterType是方法的参数类型，
+    resultType是查询返回的类型，需要注意的是，这里的SQL语句后面不能加分号，变量不能加引号-->
+    <!--初始化表-->
+    <update id="quesTableInit" >
+        CREATE TABLE IF NOT EXISTS `ques_table`(
+        `ques_id` INT(32) UNSIGNED AUTO_INCREMENT,
+        `publish_id` INT(32) NOT NULL,
+        `respondent_id` INT(32) NOT NULL ,
+        `questions` VARCHAR(100) ,
+        `results` VARCHAR (200) ,
+        PRIMARY KEY ( `ques_id` , `publish_id`, `repondent_id`)
+        )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    </update>
+    <!--获取问卷数量-->
+    <select id="getCount" resultType="int">
+      select COUNT(*) from ques_table;
+    </select>
+    <!--添加问卷-->
+    <insert id="insert" parameterType="Questionnaire">
+        insert into ques_table(ques_id, publish_id, respondet_id,questions) values(${ques_id}, ${publish_id}, ${respondent_id}, "${question}")
+    </insert>
+    <!--获取所有问卷-->
+    <select id="getQuestionnaires"  resultType="Questionnaire">
+        select * from ques_table
+    </select>
+    <!--获取指定ID问卷-->
+    <select id="getByIds" parameterType="int" resultType="Questionnaire">
+        select * from ques_table where ques_id = #{0} and publish_id = #{1} and repondent_id = #{2}
+    </select>
+
+    <!--填写答案-->
+    <update id="FillIn" parameterType="Questionnaire">
+        update ques_table set results="${results}" where id = ${id}
+    </update>
+
+    <!--危险操作-->
+    <delete id="deleteAllQuestionnaires">
+        delete from ques_table
+    </delete>
+    <delete id="deleteQuestionnaire" parameterType="int" >
+        delete from ques_table where ques_id = #{0} and publish_id = #{1} and repondent_id = #{2}
+    </delete>
+
+</mapper>
