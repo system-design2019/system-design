@@ -5,22 +5,31 @@ This project is build for Vue.js 2 + vue-router + webpack2 + iView 3, just insta
 ## Install
 ```bush
 
+iview环境安装
+
+	npm install iview --save
+
+
 进入到timeIsMoney的文件夹目录下
 
 // install dependencies
 
-npm install
+	npm install
 ```
 ## Run
 ### Development
 ```bush
 // For the first time, run init to create index.html
-npm run init
-npm run dev
+
+	npm run init
+
+	npm run dev
 ```
 ### Production(Build)
 ```bush
-npm run build
+
+	npm run build
+
 ```
 ### 2019年4月1日更新
 1. 搭建了简单的路由框架（未完成）
