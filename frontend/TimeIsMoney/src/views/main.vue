@@ -99,9 +99,9 @@
                                 <Icon type="ios-navigate"></Icon>
                                 问卷服务
                             </template>
-                            <MenuItem name="1-1">查看所有问卷</MenuItem>
-                            <MenuItem name="1-2">我发布的</MenuItem>
-                            <MenuItem name="1-3">我参与的</MenuItem>
+                            <MenuItem name="1-1" to="test1">查看所有问卷</MenuItem>
+                            <MenuItem name="1-2" to="test2">我发布的</MenuItem>
+                            <MenuItem name="1-3" to="/main">我参与的</MenuItem>
                         </Submenu>
                         <Submenu name="2">
                             <template slot="title">
@@ -131,7 +131,16 @@
                 </Sider>
                 <Layout :style="{padding: '0 24px 24px'}">
                     <Content :style="{padding: '24px', minHeight: '500px', background: '#fff'}">
-                        Content
+                        <div id="changeBox">
+                            Content
+                            <!--
+                            这里使用切换componet实现局部的刷新
+                            <keep-alive>
+                                <component :is="tabView"></component>
+                            </keep-alive>
+                             -->
+                            <router-view></router-view>
+                        </div>
                     </Content>
                     <Modal v-model="signIn" width="360">
                         <p slot="header" style="color:#f60;text-align:center">
@@ -190,13 +199,17 @@
     </div>
 </template>
 <script>
+import simple1 from "./test1.vue";
+import simple2 from "./test2.vue";
+
 export default {
     data() {
         return {
             signIn: false,
             signUp: false,
             username: "",
-            password: ""
+            password: "",
+            tabView: "simple1"
         }
     },
     methods: {
@@ -218,7 +231,16 @@ export default {
             this.$router.push({ //跳转到不同后缀的页面，同理可以有多个子后缀，从而实现页面跳转
                 path: '/'
             })
+        },
+        /*
+        tosim(index) {
+            this.tabView = `simple${index}`;
         }
+        */
+    },
+    components: {
+        simple1,
+        simple2
     }
 
 }
