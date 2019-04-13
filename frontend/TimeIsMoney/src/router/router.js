@@ -30,13 +30,17 @@ const routers = [{
         children: [{
                 name: 'test1',
                 path: '/test1',
-                title: 'test1',
+                meta: {
+                    title: 'test1'
+                },
                 component: (resolve) => require(['../views/test1.vue'], resolve)
             },
             {
                 name: 'test2',
                 path: '/test2',
-                title: 'test2',
+                meta: {
+                    title: 'test2'
+                },
                 component: (resolve) => require(['../views/test2.vue'], resolve)
             },
         ]

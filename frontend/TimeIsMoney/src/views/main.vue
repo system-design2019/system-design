@@ -132,7 +132,6 @@
                 <Layout :style="{padding: '0 24px 24px'}">
                     <Content :style="{padding: '24px', minHeight: '500px', background: '#fff'}">
                         <div id="changeBox">
-                            Content
                             <!--
                             这里使用切换componet实现局部的刷新
                             <keep-alive>
