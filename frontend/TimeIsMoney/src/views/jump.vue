@@ -49,13 +49,16 @@
             <Button id="mainButton" type="success" @click="handleStart" size="large">Know More</Button>
             </Col>
         </Row>
+        <signCom :signInFromJump="signInFromJump"></signCom>
     </div>
 </template>
 <script>
+import signCom from './sign.vue'
 export default {
     name: 'helloPage',
     data() {
         return {
+            signInFromJump: false,
             note: {
                 backgroundImage: "url(" + require("../images/hellobg.jpg") + ")",
                 backgroundRepeat: "no-repeat",
@@ -70,10 +73,10 @@ export default {
             })
         },
         handleSign() {
-            this.$router.push({
-                path: '/sign'
-            })
+            this.signInFromJump = !this.signInFromJump;
+            //需要切换属性才能实现更新，不然会导致只有第一次点击会弹出注册框
         }
-    }
+    },
+    components: { signCom }
 }
 </script>

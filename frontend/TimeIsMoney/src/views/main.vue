@@ -75,15 +75,15 @@
             <Header>
                 <Menu mode="horizontal" theme="dark" active-name="1">
                     <div class="layout-logo">
-                        <p id="logoN">M.I.T </p>
+                        <p id="logoN">T.I.M </p>
                     </div>
                     <div class="layout-nav">
                         <div id="signB">
-                            <MenuItem name="signIn" @click.native="signIn = true">
+                            <MenuItem name="signIn" @click.native="changeToSignIn()">
                             <Icon type="ios-navigate"></Icon>
                             登陆
                             </MenuItem>
-                            <MenuItem name="signUp" @click.native="signUp = true">
+                            <MenuItem name="signUp" @click.native="changeToSignUp()">
                             <Icon type="ios-keypad"></Icon>
                             注册
                             </MenuItem>
@@ -141,57 +141,7 @@
                             <router-view></router-view>
                         </div>
                     </Content>
-                    <Modal v-model="signIn" width="360">
-                        <p slot="header" style="color:#f60;text-align:center">
-                            <Icon type="ios-information-circle"></Icon>
-                            <span>登陆页面</span>
-                        </p>
-                        <div style="text-align:center">
-                            <p>如您已经注册了账号，请输入并登陆.</p>
-                        </div>
-                        <div id="headBox2">
-                            <div id="headBox">
-                                <img id="head" src="../images/hellobg.jpg" alt="正方形的原始图片" width="150px" height="150px" />
-                            </div>
-                        </div>
-                        <div class="allInput">
-                            <Input v-model="username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
-                            <Input v-model="password" prefix="ios-contact" placeholder="请输入密码" type="password" />
-                            <Input prefix="ios-contact" placeholder="请输入验证码" />
-                        </div>
-                        <div class="allButton">
-                            <Button id="findPass" size="small">找回密码</Button>
-                            <Button id="signNow" size="small" @click="changeToSignUp">立即注册</Button>
-                        </div>
-                        <div slot="footer">
-                            <Button size="large" long @click="Confirm">确定</Button>
-                        </div>
-                    </Modal>
-                    <Modal v-model="signUp" width="360">
-                        <p slot="header" style="color:#f60;text-align:center">
-                            <Icon type="ios-information-circle"></Icon>
-                            <span>注册页面</span>
-                        </p>
-                        <div style="text-align:center">
-                            <p>清输入相关信息进行注册</p>
-                        </div>
-                        <div id="headBox2">
-                            <div id="headBox">
-                                <img id="head" src="../images/hellobg.jpg" alt="正方形的原始图片" width="150px" height="150px" />
-                            </div>
-                        </div>
-                        <div class="allInput">
-                            <Input v-model="username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
-                            <Input v-model="password" prefix="ios-contact" placeholder="请输入密码" type="password" />
-                            <Input prefix="ios-contact" placeholder="请输入验证码" />
-                        </div>
-                        <div class="allButton">
-                            <Button id="signNow" size="small" @click="changeToSignIn">已有账号？</Button>
-                        </div>
-                        <div slot="footer">
-                            <Button size="large" long @click="Confirm">确定</Button>
-                        </div>
-                    </Modal>
+                    <signCom :signInFromMain="signInFromMain" :signUpFromMain="signUpFromMain"></signCom>
                 </Layout>
             </Layout>
         </Layout>
@@ -200,14 +150,13 @@
 <script>
 import simple1 from "./test1.vue";
 import simple2 from "./test2.vue";
+import signCom from "./sign.vue";
 
 export default {
     data() {
         return {
-            signIn: false,
-            signUp: false,
-            username: "",
-            password: "",
+            signInFromMain: false,
+            signUpFromMain: false,
             tabView: "simple1"
         }
     },
@@ -219,12 +168,10 @@ export default {
             alert(this.username + this.password); //username
         },
         changeToSignUp() {
-            this.signIn = false;
-            this.signUp = true;
+            this.signUpFromMain = !this.signUpFromMain;
         },
         changeToSignIn() {
-            this.signUp = false;
-            this.signIn = true;
+            this.signInFromMain = !this.signInFrommain;
         },
         goToJump() {
             this.$router.push({ //跳转到不同后缀的页面，同理可以有多个子后缀，从而实现页面跳转
@@ -239,7 +186,8 @@ export default {
     },
     components: {
         simple1,
-        simple2
+        simple2,
+        signCom
     }
 
 }
