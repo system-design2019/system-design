@@ -22,7 +22,8 @@
     </select>
     <!--插入用户-->
     <insert id="insert" parameterType="User">
-        insert into user_table(id, phone,email, password) values(${id}, "${phone}", "${email}", "${password}")
+        insert into user_table(id, phone,email, password, name, studentId, grade, major,gender, age, nickname)
+        values(${id}, "${phone}", "${email}", "${password}", "${name}", "${studentId}", ${grade}, "${major}", ${gender},  ${age}, "${nickname}")
     </insert>
     <!--获取所有用户-->
     <select id="getUsers"  resultType="User">
@@ -42,7 +43,10 @@
     </select>
     <!--更新用户资料-->
     <update id="updateUser" parameterType="User">
-        update user_table set password="${password}" where id = ${id}
+        update user_table
+        set password="${password}", email = "${email}", phone = "${phone}", name = "${name}", studentId = "${studentId}",
+            grade = ${grade}, major = "{major}", gender =${gender}, age =${age}, nickname = "${nickname}"
+        where id = ${id}
     </update>
 
     <!--危险操作-->
