@@ -1,6 +1,22 @@
 # User
 
+**统一返回格式**
 
+```java
+public class Message<T> {
+    //是否成功的标志
+    boolean success;
+    //其他消息
+    String msg;
+    //具体数据
+    T data;
+    public Message(){
+        success = false;
+        msg = "";
+        data = null;
+    }
+}
+```
 
 ## 获取所有用户
 
@@ -10,28 +26,45 @@
 
 - 参数：无
 
-- 返回：`List<User>`
+- 返回：`Message<List<User>>`
 
 **示例：**
 
 Response:
 
 ```json
-[
-    {
-        "id": -890,
-        "password": "p",
-        "email": "e",
-        "phone": "p"
-    },
-    {
-        "id": 123,
-        "password": "p",
-        "email": "e",
-        "phone": "p"
-    }
-]
-
+{
+    "success": true,
+    "msg": "获取成功",
+    "data": [
+        {
+            "id": 1517178053,
+            "password": "mypassword",
+            "email": "a@qq.com",
+            "phone": "$10002",
+            "name": "$10002",
+            "studentId": "",
+            "grade": -1,
+            "major": "",
+            "gender": -1,
+            "age": -1,
+            "nickname": ""
+        },
+        {
+            "id": 1517178059,
+            "password": "mypassword",
+            "email": "b@qq.com",
+            "phone": "$10001",
+            "name": "$10001",
+            "studentId": "",
+            "grade": -1,
+            "major": "",
+            "gender": -1,
+            "age": -1,
+            "nickname": ""
+        }
+    ]
+}
 ```
 
 ## 注册
@@ -45,13 +78,10 @@ Response:
   - 类型：`application/json : User`
 
   - 表示：用户对象
-  - 注意：`email`和`phone`与其他用户不重复，可以只设置一个字段
+  - 注意：`email`和`phone`与其他用户不重复，**允许**只设置一个字段
 
-- 返回：`boolean`
+- 返回：`Message<String>`
 
-  若新建用户成功，返回true
-
-  若失败，返回false
 
 **示例：**
 
@@ -59,16 +89,19 @@ RequestBody:
 
 ```json
 {
-	"email":"a@qq.com",
-	"phone":"155xxxx6875",
-	"password":"mypassword"
+    "password": "mypassword",
+    "email": "a@qq.com"
 }
 ```
 
 Response:
 
 ```json
-true
+{
+    "success": true,
+    "msg": "注册成功",
+    "data": null
+}
 ```
 
 
@@ -85,15 +118,14 @@ true
 
   - 表示：账号密码
 
-  - 注意：只有其中的email，phone，password字段有效，其中email和phone必须有且仅有一个存在
+  - 注意：只有其中的email，phone，password字段有效
 
-    ​           返回的User对象如果email或者phone以字符“$"开头则表示未初始化
+    ​	   其中email和phone必须有且仅有一个存在
 
-- 返回：`User`
+    ​           返回的User对象如果**email、phone、name**以字符“$"开头则表示**未初始化**
 
-  成功登陆返回用户对象
+- 返回：`Message<User>`
 
-  失败返回`null`
 
 **示例：**
 
@@ -101,8 +133,8 @@ RequestBody:
 
 ```json
 {
-	"phone":"155xxxx6875",
-	"password":"mypassword"
+    "password": "mypassword",
+    "email": "b@qq.com"
 }
 ```
 
@@ -110,10 +142,21 @@ Response:
 
 ```json
 {
-    "id": 10002,
-    "password": "mypassword",
-    "email": "$10002",
-    "phone": "155xxxx6875"
+    "success": true,
+    "msg": "登录成功",
+    "data": {
+        "id": 1517178059,
+        "password": "mypassword",
+        "email": "b@qq.com",
+        "phone": "$10001",
+        "name": "$10001",
+        "studentId": "",
+        "grade": -1,
+        "major": "",
+        "gender": -1,
+        "age": -1,
+        "nickname": ""
+    }
 }
 ```
 
@@ -125,41 +168,36 @@ Response:
 
 - 参数：无
 
-- 返回：`boolean`
+- 返回：`Message<String>`
 
-  若删除成功，返回true
-
-  若失败，返回false
 
 **示例：**
 
 URL:
 
-```json
-http://localhost:8080/user/10002
+```
+http://localhost:8080/user/1517178059
 ```
 
 Response:
 
 ```json
-true
+{
+    "success": false,
+    "msg": "不存在该用户",
+    "data": null
+}
 ```
 
 ## 更新资料
 
 - 路径：`/user`
-
 - 方法：`PUT`
-
 - 参数：`User`
+  - 可修改除了ID所有属性，**包括密码**，此处不验证密码！
+  - **用户ID**作为唯一标识，其它字段都有改变的可能性！
+- 返回：`Message<String>`
 
-  - 用户ID作为唯一标识，其它字段都有改变的可能性！
-
-- 返回：`boolean`
-
-  若更新成功，返回true
-
-  若失败，返回false
 
 **示例：**
 
@@ -167,14 +205,60 @@ RequestBody:
 
 ```json
 {
-	"id":10000,
-	"password":"changepassword"
+    "id": 1517178053,
+    "password": "changepassword",
+    "email": "a@qq.com",
+    "phone": "$10001",
+    "name": "$10001",
+    "studentId": "",
+    "grade": -1,
+    "major": "",
+    "gender": -1,
+    "age": -1,
+    "nickname": ""
 }
 ```
 
 Response:
 
 ```json
-true
+{
+    "success": true,
+    "msg": "修改成功",
+    "data": null
+}
+```
+
+## 上传头像
+
+- 路径：`/upload`
+- 方法：`POST`
+- 参数：`multipart/form-data`
+- 返回：`Message<String>`
+  - `data`属性表示图片`URL`
+
+**示例：**
+
+html:
+
+```html
+<html>  
+<body>  
+  <form action="http://localhost:8080/upload" method="POST" enctype="multipart/form-data">  
+    <input type="file" name="file"/>  
+    <input type="submit" value="Upload"/>   
+  </form>  
+</body>  
+</html>  
+```
+
+Response:
+
+```json
+{
+	"success": true,
+	"msg": "上传成功",
+	"data": "C:\\Users\\Janking\\IdeaProjects\\systemdesign\\backend\\target\\classes/static/faces/fluidicon.png"
+}
 ```
 
