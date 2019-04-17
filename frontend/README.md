@@ -3,7 +3,6 @@
 This project is build for Vue.js 2 + vue-router + webpack2 + iView 3, just install and run.
 
 ## Install
-```bush
 
 iview环境安装
 
@@ -15,7 +14,12 @@ iview环境安装
 // install dependencies
 
 	npm install
-```
+
+引入animate库
+
+	npm install animate.css --save
+
+
 ## Run
 ### Development
 ```bush
@@ -29,6 +33,7 @@ iview环境安装
 ```bush
 
 	npm run build
+<<<<<<< HEAD:frontend/README.md
 
 ```
 ### 2019年4月1日更新
@@ -49,3 +54,5 @@ iview环境安装
 
 
 
+=======
+>>>>>>> ca19d6c0662ef34328b664bb6c23f43b6648d251:frontend/TimeIsMoney/README.md
