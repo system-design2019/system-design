@@ -16,15 +16,26 @@
         }
 
         .ivu-row-flex{
-            height: 100%;
+        height: 100%;
         }
+    }
+
+    #signIn{
+        width: 1200px;
+        height: 70px;
+    }
+    #signButton{
+        float:right;
+        margin-right: 30px;
+        font-size: 30px;
     }
 
     #block1{
         width:1200px;
-        height: 633px;
+        height: 650px;
         background-color: #ce4545;
     }
+
 
 
     #bigTitle{
@@ -52,16 +63,9 @@
        margin: auto;
      }
 
-    #signButton{
-        float:right;
-        margin-top:20px;
-        margin-right: 20px;
-        font-size: 30px;
-    }
+
     #mainButton{
-        font-size:30px;
-        position:absolute;
-        left:50%;
+        text-align: center;
     }
     #moveout{
     animation: in2out 2s;
@@ -154,9 +158,6 @@ to {opacity: 0;display: none;}
 <template>
     <div class="hellopage">
         <div id="block1">
-            <div class="signIn">
-                <Button id="signButton" @click="handleSign" size=large ghost>SignIn</Button>
-            </div>
             <Row type="flex" justify="center" align="middle">
                 <div id="moveout" ref="moveout">
                     <h2>
@@ -164,12 +165,17 @@ to {opacity: 0;display: none;}
                     </h2>
                 </div>
                 <div id="jumpdown" ref="jumpdown">
+                    <div id="signIn">
+                        <Button id="signButton" shape="circle" @click="handleSign" size=large ghost>SignIn</Button>
+                    </div>
                     <div id="logoBox">
                         <img id="logov2" src="../images/logov2big.png" alt="正方形的原始图片" />
                     </div>
                     <p id="bigTitle"> T.I.M </p>
                     <p id="title2"> 让琐碎的时间更有价值 </p>
-                    <Button id="mainButton" @click="handleStart" shape="circle" size=large ghost>Know More</Button>
+                    <div id="mainButton">
+                        <Button @click="handleStart" shape="circle" size=large ghost style="font-size:30px;width:200px">去赚钱</Button>
+                    </div>
                 </div>
             </Row>
             <signCom :signInFromJump="signInFromJump"></signCom>
