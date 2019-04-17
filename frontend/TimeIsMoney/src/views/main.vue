@@ -1,184 +1,120 @@
 <style scoped>
     .layout{
-    border: 1px solid #d7dde4;
-    background: #f5f7f9;
-    /*position: relative;*/
-    border-radius: 4px;
-    overflow: hidden;
-}
-.layout-logo{
-    width: 100px;
-    height: 35px;
-    background: #5b6270;
-    border-radius: 3px;
-    float: left;
-    position: relative;
-    top: 15px;
-    left: 10px;
-    text-align: center;
-    line-height: 35px;
-}
-.layout-nav{
-    width: 420px;
-    margin: 0 auto;
-    margin-right: 20px;
-}
-#logoN{
-  font-size:20px;
-  color:white;
-}
-
-#signB{
-  float:right;
-  font-size:20px;
-}
-
-#headBox2{
-}
-
-
-
-#head{
-  max-width:100%;
-  max-height:100%;
-  text-align: center;
-  clear:both;
-  display: block;
-  margin:auto;
-}
-
-.allButton{
-  float:right;
-  margin:5px;
-}
-
-
-
-
-
-
-
+        border: 1px solid #d7dde4;
+        background: #f5f7f9;
+        position: relative;
+        border-radius: 4px;
+        min-height: 800px;
+        overflow: hidden;
+    }
+    .layout-header-bar{
+        background: #fff;
+        box-shadow: 0 1px 1px rgba(0,0,0,.1);
+    }
+    .layout-logo-left{
+        width: 90%;
+        height: 30px;
+        background: #5b6270;
+        border-radius: 3px;
+        margin: 15px auto;
+    }
+    .menu-icon{
+        transition: all .3s;
+    }
+    .rotate-icon{
+        transform: rotate(-90deg);
+    }
+    .menu-item span{
+        display: inline-block;
+        overflow: hidden;
+        width: 69px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: bottom;
+        transition: width .2s ease .2s;
+    }
+    .menu-item i{
+        transform: translateX(0px);
+        transition: font-size .2s ease, transform .2s ease;
+        vertical-align: middle;
+        font-size: 16px;
+    }
+    .collapsed-menu span{
+        width: 0px;
+        transition: width .2s ease;
+    }
+    .collapsed-menu i{
+        transform: translateX(5px);
+        transition: font-size .2s ease .2s, transform .2s ease .2s;
+        vertical-align: middle;
+        font-size: 22px;
+    }
 </style>
 <template>
     <div class="layout">
         <Layout>
-            <Header>
-                <Menu mode="horizontal" theme="dark" active-name="1">
-                    <div class="layout-logo">
-                        <p id="logoN">T.I.M </p>
-                    </div>
-                    <div class="layout-nav">
-                        <div id="signB">
-                            <MenuItem name="signIn" @click.native="changeToSignIn()">
-                            <Icon type="ios-navigate"></Icon>
-                            登陆
-                            </MenuItem>
-                            <MenuItem name="signUp" @click.native="changeToSignUp()">
-                            <Icon type="ios-keypad"></Icon>
-                            注册
-                            </MenuItem>
-                        </div>
-                    </div>
+            <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" style="min-height: 800px;background: #fff">
+                <Menu active-name="1-2"  width="auto" :class="menuitemClasses" style="background: #fff">
+                    <MenuItem name="1-1" style="height: 64px" class="layout-header-bar">
+                        <img src="../images/true.png" v-show="isCollapsed" style="height: 30px;"></img>
+                        <img src="../images/logonamered.png" v-show="!isCollapsed" style="height: 35px;"></img>
+                    </MenuItem>
+                    <MenuItem name="1-2">
+                        <Icon type="ios-search"></Icon>
+                        <span>Option 2</span>
+                    </MenuItem>
+                    <MenuItem name="1-3">
+                        <Icon type="ios-settings"></Icon>
+                        <span>Option 3</span>
+                    </MenuItem>
                 </Menu>
-            </Header>
+            </Sider>
             <Layout>
-                <Sider hide-trigger :style="{background: '#fff'}">
-                    <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
-                        <Submenu name="1">
-                            <template slot="title">
-                                <Icon type="ios-navigate"></Icon>
-                                问卷服务
-                            </template>
-                            <MenuItem name="1-1" to="test1">查看所有问卷</MenuItem>
-                            <MenuItem name="1-2" to="test2">我发布的</MenuItem>
-                            <MenuItem name="1-3" to="/main">我参与的</MenuItem>
-                        </Submenu>
-                        <Submenu name="2">
-                            <template slot="title">
-                                <Icon type="ios-keypad"></Icon>
-                                跑腿服务
-                            </template>
-                            <MenuItem name="2-1">拿快递</MenuItem>
-                            <MenuItem name="2-2">拿外卖</MenuItem>
-                        </Submenu>
-                        <Submenu name="3">
-                            <template slot="title">
-                                <Icon type="ios-analytics"></Icon>
-                                约馆助手
-                            </template>
-                            <MenuItem name="3-1">我要约馆</MenuItem>
-                            <MenuItem name="3-2">我要约球</MenuItem>
-                        </Submenu>
-                        <Submenu name="4">
-                            <template slot="title">
-                                <Icon type="ios-analytics"></Icon>
-                                关于我们
-                            </template>
-                            <MenuItem name="4-1" @click.native="goToJump">产品概念</MenuItem>
-                            <MenuItem name="4-2">我要加盟</MenuItem>
-                        </Submenu>
-                    </Menu>
-                </Sider>
-                <Layout :style="{padding: '0 24px 24px'}">
-                    <Content :style="{padding: '24px', minHeight: '500px', background: '#fff'}">
-                        <div id="changeBox">
-                            <!--
-                            这里使用切换componet实现局部的刷新
-                            <keep-alive>
-                                <component :is="tabView"></component>
-                            </keep-alive>
-                             -->
-                            <router-view></router-view>
-                        </div>
-                    </Content>
-                    <signCom :signInFromMain="signInFromMain" :signUpFromMain="signUpFromMain"></signCom>
-                </Layout>
+                <Header :style="{padding: 0}" class="layout-header-bar">
+                    <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '0 20px'}" type="md-menu" size="24" color="#CE4545"></Icon>
+                </Header>
+                <Content :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
+                    <router-view></router-view>
+                </Content>
             </Layout>
         </Layout>
     </div>
 </template>
 <script>
-import simple1 from "./test1.vue";
-import simple2 from "./test2.vue";
-import signCom from "./sign.vue";
-
-export default {
-    data() {
-        return {
-            signInFromMain: false,
-            signUpFromMain: false,
-            tabView: "simple1"
+    export default {
+        data () {
+            return {
+                isCollapsed: false,
+                logoSrc: "../images/logonamered.png"
+            }
+        },
+        computed: {
+            rotateIcon () {
+                return [
+                    'menu-icon',
+                    this.isCollapsed ? 'rotate-icon' : ''
+                ];
+            },
+            menuitemClasses () {
+                return [
+                    'menu-item',
+                    this.isCollapsed ? 'collapsed-menu' : ''
+                ]
+            }
+        },
+        methods: {
+            collapsedSider () {
+                this.$refs.side1.toggleCollapse();
+            },
+            getLogo(){
+                if(this.isCollapsed){
+                    this.logoSrc = "../images/true.png"
+                }
+                else{
+                    this.logoSrc = "../images/logonamered.png"
+                }
+                return this.logoSrc
+            }
         }
-    },
-    methods: {
-        alertsome() {
-            alert("yes");
-        },
-        Confirm() {
-            alert(this.username + this.password); //username
-        },
-        changeToSignUp() {
-            this.signUpFromMain = !this.signUpFromMain;
-        },
-        changeToSignIn() {
-            this.signInFromMain = !this.signInFrommain;
-        },
-        goToJump() {
-            this.$router.push({ //跳转到不同后缀的页面，同理可以有多个子后缀，从而实现页面跳转
-                path: '/'
-            })
-        },
-        /*
-        tosim(index) {
-            this.tabView = `simple${index}`;
-        }
-        */
-    },
-    components: {
-        simple1,
-        simple2,
-        signCom
     }
-
-}
 </script>
