@@ -67,6 +67,7 @@
     #mainButton{
         text-align: center;
     }
+
     #moveout{
     animation: in2out 2s;
     -moz-animation: in2out 2s; /* Firefox */
@@ -90,6 +91,7 @@
         -webkit-animation:uptodown 3s; /* Safari and Chrome */
         -o-animation:uptodown 3s; /* Opera */
          animation-fill-mode: forwards;
+
          /*animation-delay: 2.5s;  /*用于延迟触发的函数*/  
          opacity: 0;
          display: none;
@@ -157,26 +159,28 @@ to {opacity: 0;display: none;}
 </style>
 <template>
     <div class="hellopage">
-        <div id="block1">
+        <div id="block1" v-show="show" class="animated shake">
             <Row type="flex" justify="center" align="middle">
                 <div id="moveout" ref="moveout">
                     <h2>
                         <p id="text1">从未想过 琐碎时间更值钱？</p>
                     </h2>
                 </div>
-                <div id="jumpdown" ref="jumpdown">
-                    <div id="signIn">
-                        <Button id="signButton" shape="circle" @click="handleSign" size=large ghost>SignIn</Button>
+                <transition>
+                    <div id="jumpdown" ref="jumpdown">
+                        <div id="signIn">
+                            <Button id="signButton" shape="circle" @click="handleSign" size=large ghost>SignIn</Button>
+                        </div>
+                        <div id="logoBox">
+                            <img id="logov2" src="../images/logov2big.png" alt="正方形的原始图片" />
+                        </div>
+                        <p id="bigTitle"> T.I.M </p>
+                        <p id="title2"> 让琐碎的时间更有价值 </p>
+                        <div id="mainButton">
+                            <Button @click="handleStart" shape="circle" size=large ghost style="font-size:30px;width:200px">去赚钱</Button>
+                        </div>
                     </div>
-                    <div id="logoBox">
-                        <img id="logov2" src="../images/logov2big.png" alt="正方形的原始图片" />
-                    </div>
-                    <p id="bigTitle"> T.I.M </p>
-                    <p id="title2"> 让琐碎的时间更有价值 </p>
-                    <div id="mainButton">
-                        <Button @click="handleStart" shape="circle" size=large ghost style="font-size:30px;width:200px">去赚钱</Button>
-                    </div>
-                </div>
+                </transition>
             </Row>
             <signCom :signInFromJump="signInFromJump"></signCom>
         </div>
@@ -200,6 +204,7 @@ export default {
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "100% 100%",
             },
+            show: true
         }
     },
     methods: {
