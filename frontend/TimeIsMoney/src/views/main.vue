@@ -36,16 +36,6 @@
 #headBox2{
 }
 
-#headBox{
-   width:120px; 
-   height:120px; 
-   border-radius:50%; 
-   overflow:hidden;
-   text-align: center;
-   margin: auto;
-   margin-top: 10px;
-   margin-bottom: 10px;
- }
 
 
 #head{
