@@ -1,4 +1,5 @@
 //此处用于处理页间路由，不同后缀进入不同页面
+import Home from "../views/Home.vue"
 
 const routers = [{
         path: '/', //跳转页面
@@ -27,31 +28,27 @@ const routers = [{
             title: 'Main'
         },
         component: (resolve) => require(['../views/main.vue'], resolve),
-        children: [{
-                name: 'test1',
-                path: '/test1',
-                meta: {
-                    title: 'test1'
-                },
-                component: (resolve) => require(['../views/test1.vue'], resolve)
+        children: [
+            {
+                path: '/main',
+                redirect: 'home'
             },
             {
-                name: 'test2',
-                path: '/test2',
-                meta: {
-                    title: 'test2'
-                },
-                component: (resolve) => require(['../views/test2.vue'], resolve)
+                path: 'home',
+                component: Home
             },
+            {
+                path: 'questionnaire',
+                component: (resolve) => require(['../views/QuestionShow.vue'], resolve)
+            }
         ]
     },
-
     {
         path: '/qs', //问卷展示页面
         meta: {
             title: "QuestionMain"
         },
-        component: (resolve) => require(['../views/questionShow.vue'], resolve)
+        component: (resolve) => require(['../views/QuestionShow.vue'], resolve)
     },
     {
         path: '/questionDesign', //问卷设计页面
@@ -100,7 +97,7 @@ const routers = [{
         meta: {
             title: "receiveBox"
         },
-        component: (resolve) => require(['../views/receiveBox.vue'], resolve)
+        component: (resolve) => require(['../views/ReceiveBox.vue'], resolve)
     }
 
 

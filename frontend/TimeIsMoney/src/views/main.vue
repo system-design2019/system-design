@@ -1,119 +1,77 @@
 <style scoped>
-    .layout{
-        border: 1px solid #d7dde4;
-        background: #f5f7f9;
-        position: relative;
-        border-radius: 4px;
-        min-height: 800px;
-        overflow: hidden;
-    }
-    .layout-header-bar{
-        background: #fff;
-        box-shadow: 0 1px 1px rgba(0,0,0,.1);
-    }
-    .layout-logo-left{
-        width: 90%;
-        height: 30px;
-        background: #5b6270;
-        border-radius: 3px;
-        margin: 15px auto;
-    }
-    .menu-icon{
-        transition: all .3s;
-    }
-    .rotate-icon{
-        transform: rotate(-90deg);
-    }
-    .menu-item span{
-        display: inline-block;
-        overflow: hidden;
-        width: 69px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        vertical-align: bottom;
-        transition: width .2s ease .2s;
-    }
-    .menu-item i{
-        transform: translateX(0px);
-        transition: font-size .2s ease, transform .2s ease;
-        vertical-align: middle;
-        font-size: 16px;
-    }
-    .collapsed-menu span{
-        width: 0px;
-        transition: width .2s ease;
-    }
-    .collapsed-menu i{
-        transform: translateX(5px);
-        transition: font-size .2s ease .2s, transform .2s ease .2s;
-        vertical-align: middle;
-        font-size: 22px;
-    }
+.layout{
+    border: 1px solid #d7dde4;
+    /* background: #f5f7f9; */
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.layout-logo{
+    width: 100px;
+    height: 30px;
+    /* background: #5b6270; */
+    border-radius: 3px;
+    float: left;
+    position: relative;
+    top: 15px;
+    left: 20px;
+}
+.layout-nav{
+    width: 420px;
+    margin: 0 auto;
+    margin-right: 20px;
+}
+.layout-footer-center{
+    text-align: center;
+}
 </style>
 <template>
     <div class="layout">
         <Layout>
-            <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" style="min-height: 800px;background: #fff">
-                <Menu active-name="1-2"  width="auto" :class="menuitemClasses" style="background: #fff">
-                    <MenuItem name="1-1" style="height: 64px" class="layout-header-bar">
-                        <img src="../images/true.png" v-show="isCollapsed" style="height: 30px;"></img>
-                        <img src="../images/logonamered.png" v-show="!isCollapsed" style="height: 35px;"></img>
-                    </MenuItem>
-                    <MenuItem name="1-2">
-                        <Icon type="ios-search"></Icon>
-                        <span>Option 2</span>
-                    </MenuItem>
-                    <MenuItem name="1-3">
-                        <Icon type="ios-settings"></Icon>
-                        <span>Option 3</span>
-                    </MenuItem>
+            <Header>
+                <Menu mode="horizontal" active-name="1" style="background: #ce4545">
+                    <div class="layout-logo" style="width: 200px;">
+                        <img src="../images/logowhite.png" style="height: 30px;">
+                    </div>
+                    <div class="layout-nav" style="float: left">
+                        <MenuItem v-for="(tag, index) in navLeftTags" :name="tag.name" >
+                            <Icon :type="tag.icon"></Icon>
+                            <span @click="changePageByLink(tag.link)" >{{tag.text}}</span>
+                        </MenuItem>
+                    </div>
+                    <div class="layout-nav" style="width: 20%; float: right; text-align: right">
+                        <MenuItem v-for="(tag, index) in navRightTags":name="tag.name">
+                            <Icon :type="tag.icon"></Icon>
+                            <span @click="changePageByLink(tag.link)">{{tag.text}}</span>
+                        </MenuItem>
+                    </div>
                 </Menu>
-            </Sider>
-            <Layout>
-                <Header :style="{padding: 0}" class="layout-header-bar">
-                    <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '0 20px'}" type="md-menu" size="24" color="#CE4545"></Icon>
-                </Header>
-                <Content :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
-                    <router-view></router-view>
-                </Content>
-            </Layout>
+            </Header>
+            <Content style="padding: '30px 150px'; min-height: 800px;">
+                <router-view style="margin: 30px 15%"></router-view>
+            </Content>
+            <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
         </Layout>
     </div>
 </template>
 <script>
     export default {
-        data () {
-            return {
-                isCollapsed: false,
-                logoSrc: "../images/logonamered.png"
-            }
-        },
-        computed: {
-            rotateIcon () {
-                return [
-                    'menu-icon',
-                    this.isCollapsed ? 'rotate-icon' : ''
-                ];
-            },
-            menuitemClasses () {
-                return [
-                    'menu-item',
-                    this.isCollapsed ? 'collapsed-menu' : ''
+        data(){
+            return{
+                navLeftTags:[
+                    {name: "1", icon:"ios-navigate", text:"首页", link: "/main/home"},
+                    {name: "2", icon:"ios-navigate", text:"问卷", link: "/main/questionnaire"},
+                    {name: "3", icon:"ios-navigate", text:"跑腿", link: "/main/home"}
+                ],
+                navRightTags:[
+                    {name: "4", icon:"ios-navigate", text:"收件箱", link: "/receivebox"},
+                    {name: "5", icon:"ios-navigate", text:"个人中心", link: "/personal"}
                 ]
-            }
+            }   
         },
         methods: {
-            collapsedSider () {
-                this.$refs.side1.toggleCollapse();
-            },
-            getLogo(){
-                if(this.isCollapsed){
-                    this.logoSrc = "../images/true.png"
-                }
-                else{
-                    this.logoSrc = "../images/logonamered.png"
-                }
-                return this.logoSrc
+            changePageByLink(link) {
+                this.$router.push(link)
             }
         }
     }
