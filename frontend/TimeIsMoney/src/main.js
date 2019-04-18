@@ -6,10 +6,6 @@ import Util from './libs/util';
 import App from './app.vue';
 import 'iview/dist/styles/iview.css';
 import animate from 'animate.css';
-<<<<<<< HEAD
-=======
-
->>>>>>> 1e4ba2fd657cf6076f116e7204ccdd3a13fd452e
 
 Vue.use(VueRouter);
 Vue.use(iView);
