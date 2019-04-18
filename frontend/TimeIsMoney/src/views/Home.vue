@@ -20,19 +20,25 @@
 
 </style>
 <template>
-    <div class="qShow">
-        home
+    <div>
+        <Carousel autoplay v-model="value2" loop style="height: 300px">
+            <CarouselItem v-for="c in carousel">
+                <img :src="c.src" style="height: 300px;object-fit: cover; width:1062px"></img>
+            </CarouselItem>
+        </Carousel>
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            summary: "songxt TQL",
-            author: "songxt",
-            pay: "￥100",
-            attend: "5/90",
-            time: "2018-4-13"
+            value2: 0,
+            carousel:[
+                {name:'adver1', src:'../../static/home/adver1.jpg'},
+                {name:'adver2', src:'../../static/home/adver2.jpg'},
+                {name:'adver3', src:'../../static/home/adver3.jpg'},
+                {name:'adver4', src:'../../static/home/adver4.jpg'}
+            ]
         }
 
     },

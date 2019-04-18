@@ -15,12 +15,8 @@
   "author": "Aresn",
   "license": "MIT",
   "dependencies": {
-<<<<<<< HEAD
-    "iview": "^3.4.0",
-=======
     "animate.css": "^3.7.0",
     "iview": "^3.3.3",
->>>>>>> ca19d6c0662ef34328b664bb6c23f43b6648d251
     "vue": "^2.5.16",
     "vue-router": "^2.8.1"
   },

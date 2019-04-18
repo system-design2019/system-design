@@ -31,7 +31,7 @@
             <Header>
                 <Menu mode="horizontal" active-name="1" style="background: #ce4545">
                     <div class="layout-logo" style="width: 200px;">
-                        <img src="../images/logowhite.png" style="height: 30px;">
+                        <img src="../images/redNav/logoname.png" style="height: 30px;">
                     </div>
                     <div class="layout-nav" style="float: left">
                         <MenuItem v-for="(tag, index) in navLeftTags" :name="tag.name" >
