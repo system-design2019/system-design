@@ -44,13 +44,6 @@ const routers = [{
         ]
     },
     {
-        path: '/qs', //问卷展示页面
-        meta: {
-            title: "QuestionMain"
-        },
-        component: (resolve) => require(['../views/QuestionShow.vue'], resolve)
-    },
-    {
         path: '/questionDesign', //问卷设计页面
         meta: {
             title: "QuestionDesign"

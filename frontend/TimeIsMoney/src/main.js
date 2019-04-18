@@ -7,7 +7,6 @@ import App from './app.vue';
 import 'iview/dist/styles/iview.css';
 import animate from 'animate.css';
 
-
 Vue.use(VueRouter);
 Vue.use(iView);
 require('animate.css/animate.min.css');

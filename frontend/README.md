@@ -19,8 +19,14 @@ iview环境安装
 
 	npm install animate.css --save
 
+修改样式库
+
+把当前文件夹内的iview.css和nodemodule->ivew->dist->styles下ivew.css替换·
+
+
 
 ## Run
+
 ### Development
 ```bush
 // For the first time, run init to create index.html
@@ -44,15 +50,10 @@ iview环境安装
 ### 2019年4月17日 更新by宋晓彤
 
 1. npm install iview-theme，但是最后没有使用，直接修改了ivew.css，将主题色调红
-
    颜色修改：#57a3f3->#CE4545 | #2b85e4->#CE4747 | #2d8cf0 -> #CE3535
-
 2. 修改主界面sider样式为不可下拉可以收缩
-
 3. 当前问题：没有静态文件夹，读取不到图片，直接写在html里，以及没有研究toggle的使用
 
+### 2019年4月18日 更新by宋晓彤
 
-
-
-=======
->>>>>>> ca19d6c0662ef34328b664bb6c23f43b6648d251:frontend/TimeIsMoney/README.md
+1. 引入静态文件夹存放静态元素
