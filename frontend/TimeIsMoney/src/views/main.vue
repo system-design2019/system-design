@@ -34,15 +34,15 @@
                         <img src="../images/redNav/logoname.png" style="height: 30px;">
                     </div>
                     <div class="layout-nav" style="float: left">
-                        <MenuItem v-for="(tag, index) in navLeftTags" :name="tag.name" >
-                            <Icon :type="tag.icon"></Icon>
-                            <span @click="changePageByLink(tag.link)" >{{tag.text}}</span>
+                        <MenuItem v-for="(tag, index) in navLeftTags" :name="tag.name" @click.native="changePageByLink(tag.link)">
+                            <Icon :type="tag.icon" size=20></Icon>
+                            <span>{{tag.text}}</span>
                         </MenuItem>
                     </div>
-                    <div class="layout-nav" style="width: 20%; float: right; text-align: right">
-                        <MenuItem v-for="(tag, index) in navRightTags":name="tag.name">
+                    <div class="layout-nav" style="width: 20%; float: right; text-align: right" @click.native="changePageByLink(tag.link)">
+                        <MenuItem v-for="(tag, index) in navRightTags":name="tag.name" @click.native="changePageByLink(tag.link)" style="float: right">
                             <Icon :type="tag.icon"></Icon>
-                            <span @click="changePageByLink(tag.link)">{{tag.text}}</span>
+                            <span>{{tag.text}}</span>
                         </MenuItem>
                     </div>
                 </Menu>
@@ -55,24 +55,49 @@
     </div>
 </template>
 <script>
+
     export default {
         data(){
             return{
+                Logged: false,
                 navLeftTags:[
-                    {name: "1", icon:"ios-navigate", text:"首页", link: "/main/home"},
-                    {name: "2", icon:"ios-navigate", text:"问卷", link: "/main/questionnaire"},
-                    {name: "3", icon:"ios-navigate", text:"跑腿", link: "/main/home"}
+                    {name: "1", icon:"md-home", text:"首页", link: "home"},
+                    {name: "2", icon:"md-paper", text:"问卷", link: "questionnaire"},
+                    {name: "3", icon:"md-walk", text:"跑腿", link: "home"}
                 ],
-                navRightTags:[
-                    {name: "4", icon:"ios-navigate", text:"收件箱", link: "/receivebox"},
-                    {name: "5", icon:"ios-navigate", text:"个人中心", link: "/personal"}
-                ]
+                allRightTags:[
+                    {name: "4", icon:"md-mail", text:"收件箱", link: "receiveBox"},
+                    {name: "5", icon:"md-person", text:"个人中心", link: "personal"},
+                    {name: "6", icon:"md-person", text:"登录/注册", link: "in"}
+                ],
+                navRightTags:[]
             }   
         },
         methods: {
             changePageByLink(link) {
-                this.$router.push(link)
+                if(link === 'in'){
+                    this.Logged = true
+                    this.showRightTags()
+                }
+                else
+                    this.$router.push(link)
+                
+            },
+            showRightTags(){
+                const temp_array = []
+                if(this.Logged){
+                    temp_array.push(this.allRightTags[0])
+                    temp_array.push(this.allRightTags[1])
+                }
+                else{
+                    temp_array.push(this.allRightTags[2])
+                }
+                console.log(temp_array)
+                this.navRightTags = temp_array
             }
+        },
+        mounted () {
+            this.showRightTags();
         }
     }
 </script>

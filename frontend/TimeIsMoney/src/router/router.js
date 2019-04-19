@@ -1,5 +1,4 @@
 //此处用于处理页间路由，不同后缀进入不同页面
-import Home from "../views/Home.vue"
 
 const routers = [{
         path: '/', //跳转页面
@@ -23,10 +22,7 @@ const routers = [{
         component: (resolve) => require(['../views/findpass.vue'], resolve)
     },
     {
-        path: '/main', //主页（分游客 & 登陆用户）
-        meta: {
-            title: 'Main'
-        },
+        path: '/', 
         component: (resolve) => require(['../views/main.vue'], resolve),
         children: [
             {
@@ -35,11 +31,19 @@ const routers = [{
             },
             {
                 path: 'home',
-                component: Home
+                component: (resolve) => require(['../views/Home.vue'], resolve)
             },
             {
                 path: 'questionnaire',
                 component: (resolve) => require(['../views/QuestionShow.vue'], resolve)
+            },
+            {
+                path: 'personal', //personal page
+                component: (resolve) => require(['../views/Personal.vue'], resolve)
+            },
+            {
+                path: 'receiveBox', //check the user's receiveBox
+                component: (resolve) => require(['../views/ReceiveBox.vue'], resolve)
             }
         ]
     },
@@ -64,13 +68,7 @@ const routers = [{
         },
         component: (resolve) => require(['../views/questionWrite.vue'], resolve)
     },
-    {
-        path: '/personal', //personal page
-        meta: {
-            title: "Personal Info"
-        },
-        component: (resolve) => require(['../views/personal.vue'], resolve)
-    },
+    
     {
         path: '/infoChange', //change the personal info
         meta: {
@@ -84,16 +82,7 @@ const routers = [{
             title: "historyCheck"
         },
         component: (resolve) => require(['../views/historyCheck.vue'], resolve)
-    },
-    {
-        path: '/receiveBox', //check the user's receiveBox
-        meta: {
-            title: "receiveBox"
-        },
-        component: (resolve) => require(['../views/ReceiveBox.vue'], resolve)
     }
-
-
 
 
 
