@@ -12,7 +12,7 @@ const routers = [{
         meta: {
             title: 'Sign'
         },
-        component: (resolve) => require(['../views/sign.vue'], resolve)
+        component: (resolve) => require(['../views/Sign.vue'], resolve)
     },
     {
         path: '/findpass', //找回密码页面
@@ -27,6 +27,7 @@ const routers = [{
         children: [
             {
                 path: '/main',
+                name: 'main',
                 redirect: 'home'
             },
             {
@@ -36,6 +37,10 @@ const routers = [{
             {
                 path: 'questionnaire',
                 component: (resolve) => require(['../views/QuestionShow.vue'], resolve)
+            },
+            {
+                path: 'favor',
+                component: (resolve) => require(['../views/RunFavor.vue'], resolve)
             },
             {
                 path: 'personal', //personal page

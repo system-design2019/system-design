@@ -22,7 +22,7 @@
 <template>
     <div class="qShow">
         <div style="height: 400px; background: white">
-            <Button type="info" style="margin-top: 220px; margin-left: 15%">发布问卷</Button>
+            <Button type="info" style="margin-top: 220px; margin-left: 15%">发布跑腿</Button>
         </div>
         <div style="margin: 30px 15%">
             <div class="bigupper">
@@ -34,7 +34,6 @@
                         </Button>
                         <DropdownMenu slot="list">
                             <DropdownItem>按发布时间</DropdownItem>
-                            <DropdownItem>按热度</DropdownItem>
                             <DropdownItem>按酬金</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>

@@ -189,7 +189,7 @@ to {opacity: 0;display: none;}
     </div>
 </template>
 <script>
-import signCom from './sign.vue'
+import signCom from './Sign.vue'
 
 
 

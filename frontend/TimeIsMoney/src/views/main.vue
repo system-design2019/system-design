@@ -31,16 +31,16 @@
             <Header>
                 <Menu mode="horizontal" active-name="1" style="background: #ce4545">
                     <div class="layout-logo" style="width: 200px;">
-                        <img src="../images/redNav/logoname.png" style="height: 30px;">
+                        <img src="../images/redNav/logoname.png" style="height: 30px;" @click="backtoindex()">
                     </div>
                     <div class="layout-nav" style="float: left">
-                        <MenuItem v-for="(tag, index) in navLeftTags" :name="tag.name" @click.native="changePageByLink(tag.link)">
+                        <MenuItem v-for="(tag, index) in navLeftTags" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link)">
                             <Icon :type="tag.icon" size=20></Icon>
                             <span>{{tag.text}}</span>
                         </MenuItem>
                     </div>
                     <div class="layout-nav" style="width: 20%; float: right; text-align: right" @click.native="changePageByLink(tag.link)">
-                        <MenuItem v-for="(tag, index) in navRightTags":name="tag.name" @click.native="changePageByLink(tag.link)" style="float: right">
+                        <MenuItem v-for="(tag, index) in navRightTags":name="tag.name" :key="index" @click.native="changePageByLink(tag.link)" style="float: right">
                             <Icon :type="tag.icon"></Icon>
                             <span>{{tag.text}}</span>
                         </MenuItem>
@@ -48,22 +48,29 @@
                 </Menu>
             </Header>
             <Content style="padding: '30px 150px'; min-height: 800px;">
-                <router-view style="margin: 30px 15%"></router-view>
+                <router-view></router-view>
             </Content>
-            <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
+            <signCom :signInFromMain="signInFromMain"></signCom>
+            <Footer class="layout-footer-center">
+                2011-2016 &copy; TalkingData
+                </Footer>
         </Layout>
     </div>
 </template>
 <script>
-
+    import signCom from './Sign.vue'
     export default {
+        components: { 
+            signCom 
+        },
         data(){
             return{
                 Logged: false,
+                signInFromMain: false,
                 navLeftTags:[
                     {name: "1", icon:"md-home", text:"首页", link: "home"},
                     {name: "2", icon:"md-paper", text:"问卷", link: "questionnaire"},
-                    {name: "3", icon:"md-walk", text:"跑腿", link: "home"}
+                    {name: "3", icon:"md-walk", text:"跑腿", link: "favor"}
                 ],
                 allRightTags:[
                     {name: "4", icon:"md-mail", text:"收件箱", link: "receiveBox"},
@@ -76,8 +83,8 @@
         methods: {
             changePageByLink(link) {
                 if(link === 'in'){
-                    this.Logged = true
-                    this.showRightTags()
+                    this.signInFromMain = !this.signInFromMain
+                    // this.showRightTags()
                 }
                 else
                     this.$router.push(link)
@@ -86,18 +93,20 @@
             showRightTags(){
                 const temp_array = []
                 if(this.Logged){
-                    temp_array.push(this.allRightTags[0])
                     temp_array.push(this.allRightTags[1])
+                    temp_array.push(this.allRightTags[0])
                 }
                 else{
                     temp_array.push(this.allRightTags[2])
                 }
-                console.log(temp_array)
                 this.navRightTags = temp_array
+            },
+            backtoindex(){
+                this.$router.push('/')
             }
         },
-        mounted () {
-            this.showRightTags();
+        mounted: function() {
+            this.showRightTags()
         }
     }
 </script>

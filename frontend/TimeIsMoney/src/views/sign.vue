@@ -23,7 +23,7 @@
                 <Button id="signNow" size="small" @click="changeToSignUp">立即注册</Button>
             </div>
             <div slot="footer">
-                <Button size="large" long>确定</Button>
+                <Button size="large" long  @click.native="doSignIn">确定</Button>
             </div>
         </Modal>
         <Modal v-model="signUp" width="360">
@@ -48,7 +48,7 @@
                 <Button id="signNow" size="small" @click="changeToSignIn">已有账号？</Button>
             </div>
             <div slot="footer">
-                <Button size="large" long>确定</Button>
+                <Button size="large" long @click="doSignUp">确定</Button>
             </div>
         </Modal>
     </div>
@@ -111,6 +111,16 @@ export default {
         changeToSignIn() {
             this.signUp = false;
             this.signIn = true;
+        },
+        doSignUp(){
+            this.changeToSignIn()
+        },
+        doSignIn(){
+            this.$router.push({
+                path:'/main',
+                name: 'main',
+            })
+            this.signIn = false
         }
     },
     watch: {
