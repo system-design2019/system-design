@@ -19,10 +19,10 @@ iview环境安装
 
 	npm install animate.css --save
 
-修改样式库
+### 修改样式库
 
-把当前文件夹内的iview.css和nodemodule->ivew->dist->styles下ivew.css替换·
-
+1. 把当前文件夹内的iview.css和node_modules->ivew->dist->styles下ivew.css替换·
+2. 将fonts文件夹中的【ionicons.woff2】文件放入node_modules->ivew->dist->styles->fonts文件夹中（也可以整个文件夹直接替换）
 
 
 ## Run
