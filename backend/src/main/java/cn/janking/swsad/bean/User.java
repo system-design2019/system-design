@@ -1,6 +1,6 @@
 package cn.janking.swsad.bean;
 
-import cn.janking.swsad.mapper.UserMapper;
+import cn.janking.swsad.Mapper.UserMapper;
 
 import java.util.Random;
 

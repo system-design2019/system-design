@@ -1,4 +1,4 @@
-package cn.janking.swsad.mapper;
+package cn.janking.swsad.Mapper;
 
 
 import cn.janking.swsad.bean.User;
