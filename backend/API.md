@@ -262,3 +262,74 @@ Response:
 }
 ```
 
+
+
+
+
+**问卷**
+
+查询所有问卷：
+
+http://localhost:8080/ques
+
+返回
+
+{
+    "success": true,
+    "msg": "获取成功",
+    "data": [
+        {
+            "task_id": 10,
+            "title": "$",
+            "publisher": "$",
+            "description": "$",
+            "reward": 0,
+            "effective": "2019-4-28",
+            "request": "$",
+            "status": "not done",
+            "panticipant": "zheng"
+        },
+        {
+            "task_id": 30,
+            "title": "postmdan_test",
+            "publisher": "yourfathder",
+            "description": "test postmdan first",
+            "reward": 800,
+            "effective": "2019-4-28",
+            "request": "sodme new",
+            "status": "not done",
+            "panticipant": "zheng"
+        },
+        {
+            "task_id": 40,
+            "title": "shixun",
+            "publisher": "yourmother",
+            "description": "test postmdan second",
+            "reward": 100,
+            "effective": "2019-4-28",
+            "request": "good boy",
+            "status": "not done",
+            "panticipant": "zheng"
+        }
+    ]
+}
+
+
+
+插入问卷
+
+http://localhost:8080/createques
+
+输入样例
+
+{
+	"task_id":40,
+	"title":"shixun",
+	"publisher":"yourmother",
+	"description":"test postmdan second",
+	"reward":100,
+	"effective_time":"2019-09-19",
+	"request":"good boy",
+	"task_status":"not done",
+	"panticipant":"songxiao"
+}
