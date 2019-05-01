@@ -5,7 +5,7 @@ const routers = [{
         meta: {
             title: 'T.I.M'
         },
-        component: (resolve) => require(['../views/jump.vue'], resolve)
+        component: (resolve) => require(['../views/Jump.vue'], resolve)
     },
     {
         path: '/sign', //登陆注册页面，登陆注册模块使用动态组件切换，参考知乎

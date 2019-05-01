@@ -7,14 +7,16 @@
   margin-top: 5px;
   clear:both;
 
-  span{
-    margin-right:15px;
+  .info{
+    margin-right: 15px;
     margin-bottom: 2px;
   }
   
   .someInfo{
     float:right;
-    margin:5px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;      
   }
 }
 
@@ -34,6 +36,7 @@
                         </Button>
                         <DropdownMenu slot="list">
                             <DropdownItem>按发布时间</DropdownItem>
+                            <DropdownItem>按热度</DropdownItem>
                             <DropdownItem>按酬金</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
@@ -49,11 +52,11 @@
                         <p slot="title" style="font-size:20px">title in here</p>
                         <div class="allupdate">
                             <div class="sum" style="font-size:15px">
-                                <span> 简介:{{summary}} </span>
+                                <span class='info'> 简介:{{summary}} </span>
                             </div>
                             <div class="someInfo">
-                                <span>发布人:{{author}}</span><span>薪酬:{{pay}}</span><span>参与情况:{{attend}}</span><span>事件:{{time}}</span>
-                                <Button> 查看详情 </Button>
+                                <span class='info'>发布人:{{author}}</span><span class='info'>薪酬:{{pay}}</span><span class='info'>参与情况:{{attend}}</span><span class='info'>事件:{{time}}</span>
+                                <Button>查看详情</Button>
                             </div>
                         </div>
                     </Card>

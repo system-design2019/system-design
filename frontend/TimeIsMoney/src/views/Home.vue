@@ -4,7 +4,7 @@
 <template>
     <div style="min-height: 800px; margin: 30px 15%">
         <div>
-            <Carousel autoplay v-model="value"
+            <Carousel autoplay loop v-model="value"
             :autoplay="setting.autoplay"
             :autoplay-speed="setting.autoplaySpeed"
             :dots="setting.dots"
