@@ -34,6 +34,7 @@
 
     .pInfo {
         font-size: 20px;
+        float:left;
     }
 
     Row {
@@ -67,13 +68,13 @@
             <Col span="16">
             <card style="height:260px;">
                 <Row>
-                    <Button ghost style="float:right;color:blue;">编辑资料</Button>
+                    <Button ghost style="float:right;color:blue;" @click="editInfo">编辑资料</Button>
                 </Row>
                 <Row style="margin:15px;">
                     <Col span="12">
-                    <div style="float:left;">
-                        <span class="pInfo">性别</span>
-                        <input type="text" prefix="logo-usd" />
+                    <div class="pInfo">
+                        <span>性别</span>
+                        <input type="text" style="margin-left:8px; !editable? border:0px : border:1px;" :disabled="editable" />
                     </div>
                     </Col>
                     <Col span="12">
@@ -118,13 +119,14 @@
 <script>
 export default {
     data() {
-        return {}
+        return {
+            editable: true
+        }
     },
     methods: {
-        handleStart() {
-            this.$router.push({ //跳转到不同后缀的页面，同理可以有多个子后缀，从而实现页面跳转
-                path: '/index'
-            })
+        editInfo() { //修改个人信息
+            // alert(this.editable);
+            this.editable = !this.editable;
         }
     }
 }
