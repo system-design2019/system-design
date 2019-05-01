@@ -2,7 +2,9 @@ package cn.janking.swsad.controller;
 
 import cn.janking.swsad.bean.Message;
 import cn.janking.swsad.bean.User;
-import cn.janking.swsad.mapper.UserMapper;
+import cn.janking.swsad.bean.questionnaire;
+import cn.janking.swsad.Mapper.UserMapper;
+import cn.janking.swsad.Mapper.QuestionnaireMapper;
 import cn.janking.swsad.singleton.SingletonMybatis;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.sun.xml.internal.ws.api.model.MEP;
@@ -34,6 +36,8 @@ public class Controller {
         sqlSessionFactory =  SingletonMybatis.getSqlSessionFactory();
         /*用户数量*/
         User.initCount(sqlSessionFactory.openSession(true).getMapper(UserMapper.class).getCount());
+        /*问卷数量*/
+        questionnaire.initCount(sqlSessionFactory.openSession(true).getMapper(QuestionnaireMapper.class).getCount());
     }
 
     //如果方法上的RequestMapping没有value，则此方法默认被父路径调用
@@ -98,6 +102,63 @@ public class Controller {
 
         return message;
     }
+
+
+    /*获取所有问卷*/
+    @RequestMapping(method = RequestMethod.GET,value = "/ques")
+    public Message<List<questionnaire>> getQueses(){
+        Message<List<questionnaire>> message = new Message<>();
+        List<questionnaire> listQues;
+        //获取一个连接
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            //得到映射器
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            listQues = quesMapper.getQues();
+            message.setData(listQues);
+            message.setSuccess(true);
+            message.setMsg("获取成功");
+            //要提交后才会生效
+            sqlSession.commit();
+        }catch (Exception e){
+            message.setData(null);
+            message.setSuccess(false);
+            message.setMsg("获取失败:" + e.getMessage());
+        }
+        finally {
+            //最后记得关闭连接
+            sqlSession.close();
+        }
+
+        return message;
+    }
+
+    /*插入一个问卷*/
+    @RequestMapping(method = RequestMethod.POST,value = "/createques")
+    public Message<String> createQues(@RequestBody questionnaire ques)
+    {
+        Message<String> message = new Message<>();
+        System.out.println(ques);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            quesMapper.insert(ques);
+            message.setSuccess(true);
+            message.setMsg("创建成功");
+            sqlSession.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("创建失败:" + e.getMessage());
+            return message;
+        }finally {
+            sqlSession.close();
+        }
+        return message;
+    }
+
+
     /*注册：插入用户数据
      * 成功返回true
      * 用户名存在返回false*/
@@ -158,6 +219,8 @@ public class Controller {
                 sqlSession.close();
             }
         }
+        System.out.println(user.getPassword());
+        System.out.println(loginUser.getPassword());
         //判断密码是否正确
         if(user!=null && user.getPassword().equals(loginUser.getPassword())){
             message.setMsg("登录成功");
