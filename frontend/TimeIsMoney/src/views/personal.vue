@@ -68,13 +68,13 @@
             <Col span="16">
             <card style="height:260px;">
                 <Row>
-                    <Button ghost style="float:right;color:blue;" @click="editInfo">编辑资料</Button>
+                    <Button ghost style="float:right;color:blue;font-size:15px;" @click="editInfo">编辑资料</Button>
                 </Row>
                 <Row style="margin:15px;">
                     <Col span="12">
                     <div class="pInfo">
                         <span>性别</span>
-                        <input type="text" style="margin-left:8px; !editable? border:0px : border:1px;" :disabled="editable" />
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                     </div>
                     </Col>
                     <Col span="12">
@@ -120,13 +120,20 @@
 export default {
     data() {
         return {
-            editable: true
+            borderSize: 1,
+            editable: true,
+            styleForText: 'border:' + this.borderSize + 'px'
         }
     },
     methods: {
         editInfo() { //修改个人信息
             // alert(this.editable);
             this.editable = !this.editable;
+            if (this.editable == true) {
+                this.styleForText = 'border:1px solid';
+            } else {
+                this.styleForText = 'border:0px';
+            }
         }
     }
 }
