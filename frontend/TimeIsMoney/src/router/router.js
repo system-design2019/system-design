@@ -39,6 +39,10 @@ const routers = [{
                 component: (resolve) => require(['../views/QuestionShow.vue'], resolve)
             },
             {
+                path: 'createQuestionnaire', //check the user's receiveBox
+                component: (resolve) => require(['../views/CreateQues.vue'], resolve)
+            },
+            {
                 path: 'favor',
                 component: (resolve) => require(['../views/RunFavor.vue'], resolve)
             },

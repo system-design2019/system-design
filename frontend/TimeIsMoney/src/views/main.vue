@@ -7,7 +7,6 @@
     overflow: hidden;
 }
 .layout-logo{
-    width: 100px;
     height: 30px;
     /* background: #5b6270; */
     border-radius: 3px;
@@ -47,13 +46,15 @@
                     </div>
                 </Menu>
             </Header>
-            <Content style="padding: '30px 150px'; min-height: 800px;">
+            <Content style="padding: '30px 150px'; min-height: 700px;">
                 <router-view></router-view>
             </Content>
             <signCom :signInFromMain="signInFromMain"></signCom>
-            <Footer class="layout-footer-center">
-                2011-2016 &copy; TalkingData
-                </Footer>
+            <Footer class="layout-footer-center" style="text-align: center; padding: 50px 20px 24px 20px">
+                <!-- <img src='../images/github.png' style="width: 2%;"></img> -->
+                <span style="padding-top: 50px">open source <img src='../images/github.png' style="width: 2%;"></img><a href='https://github.com/system-design2019' style="margin:0 3px;">blog</a>here</span>
+                <p style="width: 100%">2019-2020 &copy; TalkingDataSystem Design & Anylasis Project</p>
+            </Footer>
         </Layout>
     </div>
 </template>
@@ -65,7 +66,7 @@
         },
         data(){
             return{
-                Logged: false,
+                Logged: true,
                 signInFromMain: false,
                 navLeftTags:[
                     {name: "1", icon:"md-home", text:"首页", link: "home"},
