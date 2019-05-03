@@ -1,29 +1,3 @@
-<style scoped>
-.layout{
-    border: 1px solid #d7dde4;
-    /* background: #f5f7f9; */
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-}
-.layout-logo{
-    height: 30px;
-    /* background: #5b6270; */
-    border-radius: 3px;
-    float: left;
-    position: relative;
-    top: 15px;
-    left: 20px;
-}
-.layout-nav{
-    width: 420px;
-    margin: 0 auto;
-    margin-right: 20px;
-}
-.layout-footer-center{
-    text-align: center;
-}
-</style>
 <template>
     <div class="layout">
         <Layout>
@@ -60,54 +34,69 @@
 </template>
 <script>
     import signCom from './Sign.vue'
+    import { mapState } from 'vuex'
+    import { mapGetters } from 'vuex'
     export default {
         components: { 
             signCom 
         },
         data(){
             return{
-                Logged: true,
-                signInFromMain: false,
-                navLeftTags:[
-                    {name: "1", icon:"md-home", text:"首页", link: "home"},
-                    {name: "2", icon:"md-paper", text:"问卷", link: "questionnaire"},
-                    {name: "3", icon:"md-walk", text:"跑腿", link: "favor"}
-                ],
-                allRightTags:[
-                    {name: "4", icon:"md-mail", text:"收件箱", link: "receiveBox"},
-                    {name: "5", icon:"md-person", text:"个人中心", link: "personal"},
-                    {name: "6", icon:"md-person", text:"登录/注册", link: "in"}
-                ],
-                navRightTags:[]
-            }   
+                signInFromMain: false
+            }
         },
+        computed: mapState({
+            Logged:'isAuthenticated',
+            name: 'name',
+            activeNav: 'activeNav',
+            navRightTags: 'navRightTags',
+            navLeftTags: 'navLeftTags'
+        }),
         methods: {
             changePageByLink(link) {
                 if(link === 'in'){
-                    this.signInFromMain = !this.signInFromMain
-                    // this.showRightTags()
+                    this.signInFromMain = true
                 }
                 else
                     this.$router.push(link)
                 
             },
-            showRightTags(){
-                const temp_array = []
-                if(this.Logged){
-                    temp_array.push(this.allRightTags[1])
-                    temp_array.push(this.allRightTags[0])
-                }
-                else{
-                    temp_array.push(this.allRightTags[2])
-                }
-                this.navRightTags = temp_array
-            },
             backtoindex(){
                 this.$router.push('/')
+            },
+            showRightTags(){
+                this.$store.commit('setRightNavs')
             }
         },
         mounted: function() {
             this.showRightTags()
+            // console.log(this.navRightTags)
         }
     }
 </script>
+<style scoped>
+.layout{
+    border: 1px solid #d7dde4;
+    /* background: #f5f7f9; */
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.layout-logo{
+    height: 30px;
+    /* background: #5b6270; */
+    border-radius: 3px;
+    float: left;
+    position: relative;
+    top: 15px;
+    left: 20px;
+}
+.layout-nav{
+    width: 420px;
+    margin: 0 auto;
+    margin-right: 20px;
+}
+.layout-footer-center{
+    text-align: center;
+}
+</style>

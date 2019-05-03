@@ -19,6 +19,10 @@ iview环境安装
 
 	npm install animate.css --save
 
+引入vuex
+
+	npm install vuex --save
+
 ### 修改样式库
 
 1. 把当前文件夹内的iview.css和node_modules->ivew->dist->styles下ivew.css替换·
@@ -57,3 +61,18 @@ iview环境安装
 ### 2019年4月18日 更新by宋晓彤
 
 1. 引入静态文件夹存放静态元素
+
+### 2019年5月1日 更新by宋晓彤
+
+1. 完成首页设计
+2. 页脚内容有待商议
+
+### 2019年5月2日 更新by宋晓彤
+
+1. 完成收件箱页面，全部删除逻辑还未实现
+2. 完成问卷页面布局，未添加支付宝页面
+
+### 2019年5月3日 更新by宋晓彤
+
+1. 添加vuex管理数据
+2. main已调整，sign里面逻辑很乱，我只把需要的改了

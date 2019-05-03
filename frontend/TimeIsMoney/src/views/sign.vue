@@ -93,7 +93,9 @@
 }
 </style>
 <script>
-export default {
+import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
+export default {    
     props: ['signInFromJump', 'signInFromMain', 'signUpFromMain'],
     data() {
         return {
@@ -103,6 +105,9 @@ export default {
             password: ""
         }
     },
+    compute: mapState({
+        Logged: 'isAuthenticated'
+    }),
     methods: {
         changeToSignUp() {
             this.signIn = false;
@@ -121,6 +126,8 @@ export default {
                 name: 'main',
             })
             this.signIn = false
+            this.$store.commit('signIn')
+            this.$store.commit('setRightNavs')
         }
     },
     watch: {
