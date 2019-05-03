@@ -41,6 +41,19 @@
         margin: 30px;
     }
 
+    input{
+        width:200px;
+    }
+
+    input[disabled],input:disabled,input.disabled{  
+    background-color: #fff;  
+    -webkit-text-fill-color:#333;  
+    -webkit-opacity:1;  
+    opacity: 1;  
+    border:0px;
+    } 
+
+
 }
 </style>
 <template>
@@ -54,7 +67,7 @@
                     </div>
                 </Row>
                 <Row>
-                    <span style="font-size:25px;">宋主席</span>
+                    <input type="text" style="font-size:25px;text-align:center;" :disabled="!editable" v-bind:style="styleForText" placeholder="宋主席" />
                 </Row>
                 <Row>
                     <span>ID:Suata</span>
@@ -68,47 +81,70 @@
             <Col span="16">
             <card style="height:260px;">
                 <Row>
-                    <Button ghost style="float:right;color:blue;font-size:15px;" @click="editInfo">编辑资料</Button>
+                    <Button ghost size=small style="float:right;color:blue;font-size:15px;" @click="editInfo">编辑资料</Button>
                 </Row>
-                <Row style="margin:15px;">
-                    <Col span="12">
+                <Row style="margin:15px;margin-top:1px;">
+                    <Col span="11">
                     <div class="pInfo">
+                        <img src="../images/personal/性别.png" width="30px" height="30px" />
                         <span>性别</span>
-                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="female" />
                     </div>
                     </Col>
-                    <Col span="12">
-                    <span class="pInfo">就读院校</span>
+                    <Col span="11">
+                    <div class="pInfo">
+                        <img src="../images/personal/学校.png" width="30px" height="30px" />
+                        <span>就读院校</span>
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="中山大学" />
+                    </div>
                     </Col>
                 </Row>
-                <Row style="margin:15px">
-                    <Col span="12">
-                    <span class="pInfo">邮箱
-                    </span>
+                <Row style="margin:15px;">
+                    <Col span="11">
+                    <div class="pInfo">
+                        <img src="../images/personal/邮箱.png" width="30px" height="30px" />
+                        <span>邮箱</span>
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="123456789@qq.com" />
+                    </div>
                     </Col>
-                    <Col span="12">
-                    <span class="pInfo">年龄专业
-                    </span>
-                    </Col>
-                </Row>
-                <Row style="margin:15px">
-                    <Col span="12">
-                    <span class="pInfo">微信
-                    </span>
-                    </Col>
-                    <Col span="12">
-                    <span class="pInfo">学号
-                    </span>
+                    <Col span="11">
+                    <div class="pInfo">
+                        <img src="../images/personal/年级专业.png" width="30px" height="30px" />
+                        <span>专业年级</span>
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="软件工程16级" />
+                    </div>
                     </Col>
                 </Row>
-                <Row style="margin:15px">
-                    <Col span="12">
-                    <span class="pInfo">手机
-                    </span>
+                <Row style="margin:15px;">
+                    <Col span="11">
+                    <div class="pInfo">
+                        <img src="../images/personal/微信.png" width="30px" height="30px" />
+                        <span>微信</span>
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="sxt123568" />
+                    </div>
                     </Col>
-                    <Col span="12">
-                    <span class="pInfo">XX
-                    </span>
+                    <Col span="11">
+                    <div class="pInfo">
+                        <img src="../images/personal/学号.png" width="30px" height="30px" />
+                        <span style="width:80px;text-align:center;">学号</span>
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="16340192" />
+                    </div>
+                    </Col>
+                </Row>
+                <Row style="margin:15px;">
+                    <Col span="11">
+                    <div class="pInfo">
+                        <img src="../images/personal/手机.png" width="30px" height="30px" />
+                        <span>手机</span>
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="123455678901" />
+                    </div>
+                    </Col>
+                    <Col span="11">
+                    <div class="pInfo">
+                        <img src="../images/personal/邮箱.png" width="30px" height="30px" />
+                        <span>XX</span>
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                    </div>
                     </Col>
                 </Row>
             </card>
@@ -120,8 +156,8 @@
 export default {
     data() {
         return {
-            borderSize: 1,
-            editable: true,
+            borderSize: 0,
+            editable: false,
             styleForText: 'border:' + this.borderSize + 'px'
         }
     },
