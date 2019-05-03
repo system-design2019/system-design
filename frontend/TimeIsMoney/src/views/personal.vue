@@ -67,7 +67,7 @@
                     </div>
                 </Row>
                 <Row>
-                    <span style="font-size:25px;">宋主席</span>
+                    <input type="text" style="font-size:25px;text-align:center;" :disabled="!editable" v-bind:style="styleForText" placeholder="宋主席" />
                 </Row>
                 <Row>
                     <span>ID:Suata</span>
@@ -88,14 +88,14 @@
                     <div class="pInfo">
                         <img src="../images/personal/性别.png" width="30px" height="30px" />
                         <span>性别</span>
-                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="female" />
                     </div>
                     </Col>
                     <Col span="11">
                     <div class="pInfo">
                         <img src="../images/personal/学校.png" width="30px" height="30px" />
                         <span>就读院校</span>
-                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="中山大学" />
                     </div>
                     </Col>
                 </Row>
@@ -104,14 +104,14 @@
                     <div class="pInfo">
                         <img src="../images/personal/邮箱.png" width="30px" height="30px" />
                         <span>邮箱</span>
-                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="123456789@qq.com" />
                     </div>
                     </Col>
                     <Col span="11">
                     <div class="pInfo">
                         <img src="../images/personal/年级专业.png" width="30px" height="30px" />
                         <span>专业年级</span>
-                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="软件工程16级" />
                     </div>
                     </Col>
                 </Row>
@@ -120,14 +120,14 @@
                     <div class="pInfo">
                         <img src="../images/personal/微信.png" width="30px" height="30px" />
                         <span>微信</span>
-                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="sxt123568" />
                     </div>
                     </Col>
                     <Col span="11">
                     <div class="pInfo">
                         <img src="../images/personal/学号.png" width="30px" height="30px" />
                         <span style="width:80px;text-align:center;">学号</span>
-                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="16340192" />
                     </div>
                     </Col>
                 </Row>
@@ -136,7 +136,7 @@
                     <div class="pInfo">
                         <img src="../images/personal/手机.png" width="30px" height="30px" />
                         <span>手机</span>
-                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                        <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="123455678901" />
                     </div>
                     </Col>
                     <Col span="11">
