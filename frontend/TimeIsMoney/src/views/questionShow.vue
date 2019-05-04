@@ -64,6 +64,7 @@
             </div>
         </div>
         <Modal v-model="detail" width="550px" style="position: relative" :mask-closable="false">
+<<<<<<< HEAD
             <p slot="header" style="text-align:center;">{{detailContent.title}}<p>
             <div style="margin: 0 30px">
                 <h3 style="margin: 15px 0 5px 0">简介</h3>
@@ -78,16 +79,32 @@
                     <div style="width: 15%; float: left">
                         <img :src='detailContent.head' style="width: 100%; height: 80%"></img>
                         <p style="width:100%; text-align: center; font-weight: 700">{{detailContent.creator}}</p>
+=======
+            <p slot="header" style="text-align:center;">大学生心理健康调查<p>
+                    <div style="margin: 0 30px">
+                        <h3 style="margin: 15px 0 5px 0">简介</h3>
+                        <p style="text-indent: 2em; margin: 5px 0 0 0; ">{{detailContent.text}}</p>
+                        <h3 style="margin: 15px 0 5px 0">要求</h3>
+                        <p style="text-indent: 2em; margin: 5px 0 0 0">{{detailContent.command}}</p>
+                        <h3 style="margin: 15px 0 5px 0">薪酬</h3>
+                        <p style="text-indent: 2em; margin: 5px 0 0 0">￥{{detailContent.price}}/人</p>
+>>>>>>> 44573a13639131fb9c335e31a85358ecf7b9e902
                     </div>
-                    <div style="width: 80%; float: right; bottom: 0; position: absolute; margin-left: 20%">
-                        <Col v-for="(info, index) in detailContent.infos" :key="index" span="12" style="text-align: left; margin: 5px 0">{{index}}:{{info}}</Col>
+                    <div slot="footer" style="position: relative; overflow: hidden; margin: 5px 20px 15px 20px">
+                        <div style="width: 75%; float: left; overflow: hidden; position: relative">
+                            <div style="width: 15%; float: left">
+                                <img src='../../static/jump/social.png' style="width: 100%; height: 80%"></img>
+                                <p style="width:100%; text-align: center; font-weight: 700">suata</p>
+                            </div>
+                            <div style="width: 80%; float: right; bottom: 0; position: absolute; margin-left: 20%">
+                                <Col v-for="(info, index) in detailContent.infos" :key="index" span="12" style="text-align: left; margin: 5px 0">{{index}}:{{info}}</Col>
+                            </div>
+                        </div>
+                        <div style="width: 20%; float: right; position: absolute; bottom: 0; right: 10px">
+                            <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px">立即填写</Button>
+                            <a style="width: 100%; text-align: center; right: 25%; position:relative">点此收藏</a>
+                        </div>
                     </div>
-                </div>
-                <div style="width: 20%; float: right; position: absolute; bottom: 0; right: 10px">
-                    <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px">立即填写</Button>
-                    <a style="width: 100%; text-align: center; right: 25%; position:relative">点此收藏</a>
-                </div>
-            </div>
         </Modal>
     </div>
 </template>
@@ -97,7 +114,20 @@ import { Ques } from '../store/questionnaire/index.js'
 export default {
     data() {
         return {
+<<<<<<< HEAD
             detail: false  
+=======
+            ques: [{ summary: "songxt TQL", author: "songxt", pay: "￥10", attend: "5", total: "90", time: "2018-4-13", detail: true }],
+            detail: false,
+            detailContent: {
+                infos: { "招募人数": 90, "填写人数": 5, "发布时间": '2019.5.3 18:00', "截止时间": '2019.5.2.19:00' },
+                title: '大学生心理健康调查',
+                text: '关于大学生心理健康的相关调查，目前比较需要男孩子哦啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊',
+                command: '在校大学生',
+                price: 10
+            },
+            infos: { "招募人数": 90, "填写人数": 5, "发布时间": '2019.5.3 18:00', "截止时间": '2019.5.2.19:00' }
+>>>>>>> 44573a13639131fb9c335e31a85358ecf7b9e902
         }
 
     },
@@ -109,7 +139,7 @@ export default {
         handleSelectAll(status) {
             this.$refs.selection.selectAll(status)
         },
-        create(){
+        create() {
             this.$router.push('createQuestionnaire')
         },
         getDetail(id){
