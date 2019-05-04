@@ -47,16 +47,15 @@
         },
         computed: mapState({
             Logged:'isAuthenticated',
-            name: 'name',
+            userID: 'userID',
             activeNav: 'activeNav',
             navRightTags: 'navRightTags',
             navLeftTags: 'navLeftTags'
         }),
         methods: {
             changePageByLink(link) {
-                if(link === 'in'){
-                    this.signInFromMain = true
-                }
+                if(link === 'in')
+                    this.signInFromMain = !this.signInFromMain
                 else
                     this.$router.push(link)
                 

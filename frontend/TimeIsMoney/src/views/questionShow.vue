@@ -44,7 +44,7 @@
             </div>
             <div class="allQN">
                 <div style="background:#eee;padding: 20px;">
-                    <Card :bordered="false" style="padding:23px" v-for="q in ques">
+                    <Card :bordered="false" style="padding:23px" v-for="q in quesList">
                         <a href="#" slot="extra">
                             <Icon type="ios-loop-strong"></Icon>
                             未参与
@@ -52,11 +52,11 @@
                         <p slot="title" style="font-size:20px">title in here</p>
                         <div class="allupdate">
                             <div class="sum" style="font-size:15px">
-                                <span class='info'> 简介:{{q.summary}} </span>
+                                <span class='info'> 简介:{{q.text}} </span>
                             </div>
                             <div class="someInfo">
-                                <span class='info'>发布人:{{q.author}}</span><span class='info'>薪酬:{{q.pay}}</span><span class='info'>参与情况:{{q.attend}}/{{q.total}}</span><span class='info'>事件:{{q.time}}</span>
-                                <Button @click="detail = !detail">查看详情</Button>
+                                <span class='info'>发布人:{{q.creator}}</span><span class='info'>薪酬:{{q.price}}</span><span class='info'>参与情况:{{q.attend}}/{{q.total}}</span><span class='info'>截止时间:{{q.endtime}}</span>
+                                <Button @click="getDetail(q.id)">查看详情</Button>
                             </div>
                         </div>
                     </Card>
@@ -64,7 +64,7 @@
             </div>
         </div>
         <Modal v-model="detail" width="550px" style="position: relative" :mask-closable="false">
-            <p slot="header" style="text-align:center;">大学生心理健康调查<p>
+            <p slot="header" style="text-align:center;">{{detailContent.title}}<p>
             <div style="margin: 0 30px">
                 <h3 style="margin: 15px 0 5px 0">简介</h3>
                 <p style="text-indent: 2em; margin: 5px 0 0 0; ">{{detailContent.text}}</p>
@@ -76,8 +76,8 @@
             <div slot="footer" style="position: relative; overflow: hidden; margin: 5px 20px 15px 20px">
                 <div style="width: 75%; float: left; overflow: hidden; position: relative">
                     <div style="width: 15%; float: left">
-                        <img src='../../static/jump/social.png' style="width: 100%; height: 80%"></img>
-                        <p style="width:100%; text-align: center; font-weight: 700">suata</p>
+                        <img :src='detailContent.head' style="width: 100%; height: 80%"></img>
+                        <p style="width:100%; text-align: center; font-weight: 700">{{detailContent.creator}}</p>
                     </div>
                     <div style="width: 80%; float: right; bottom: 0; position: absolute; margin-left: 20%">
                         <Col v-for="(info, index) in detailContent.infos" :key="index" span="12" style="text-align: left; margin: 5px 0">{{index}}:{{info}}</Col>
@@ -92,26 +92,34 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+import { Ques } from '../store/questionnaire/index.js'
 export default {
     data() {
         return {
-            ques:[{summary: "songxt TQL", author: "songxt", pay: "￥10", attend: "5", total:"90", time: "2018-4-13", detail: true}],
-            detail: false,
-            detailContent:{
-                infos:{"招募人数": 90, "填写人数": 5, "发布时间": '2019.5.3 18:00', "截止时间": '2019.5.2.19:00'},
-                title:'大学生心理健康调查', text:'关于大学生心理健康的相关调查，目前比较需要男孩子哦啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', command:'在校大学生', price: 10
-            },
-            infos:{"招募人数": 90, "填写人数": 5, "发布时间": '2019.5.3 18:00', "截止时间": '2019.5.2.19:00'}        
+            detail: false  
         }
 
     },
+    computed:mapState( 'Ques', {
+        quesList: 'quesList',
+        detailContent: 'quesDetail'
+    }),
     methods: {
         handleSelectAll(status) {
             this.$refs.selection.selectAll(status)
         },
         create(){
             this.$router.push('createQuestionnaire')
+        },
+        getDetail(id){
+            this.$store.dispatch('Ques/GET_DETAIL', id)
+            this.detail = !this.detail
+            // console.log(this.detailContent)
         }
+    },
+    mounted(){
+        this.$store.dispatch('Ques/GET_QUESLIST')
     }
 }
 </script>

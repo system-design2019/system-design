@@ -48,17 +48,15 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+import { mapActions } from 'vuex'
+// import { GET_RANKLIST } from '../store/home/actions.js'
+// console.log(GET_RANKLIST)
 export default {
     data() {
         return {
             value: 0,
             tabs: 2,
-            carousel:[
-                {name:'adver1', src:'../../static/home/adver1.jpg'},
-                {name:'adver2', src:'../../static/home/adver2.jpg'},
-                {name:'adver3', src:'../../static/home/adver3.jpg'},
-                {name:'adver4', src:'../../static/home/adver4.jpg'}
-            ],
             setting: {
                 autoplay: true,
                 autoplaySpeed: 2000,
@@ -66,24 +64,21 @@ export default {
                 radiusDot: false,
                 trigger: 'hover',
                 arrow: 'never',
-            },
-            ranklist:[
-                {name: '问卷问卷1问卷问卷问卷', price: "￥12", url:'www.baidu.com'},
-                {name: '问卷1', price: "￥12", url:'www.baidu.com'},
-                {name: '问卷1', price: "￥12", url:'www.baidu.com'},
-                {name: '问卷1', price: "￥12", url:'www.baidu.com'},
-                {name: '问卷1', price: "￥12", url:'www.baidu.com'},
-                {name: '问卷1', price: "￥12", url:'www.baidu.com'},
-                {name: '问卷1', price: "￥12", url:'www.baidu.com'},
-                {name: '问卷1', price: "￥12", url:'www.baidu.com'}
-            ]
+            }
         }
 
     },
-    methods: {
-        handleTabsAdd () {
-            this.tabs ++;
-        }
+    computed:mapState('Home', {
+        ranklist: state => state.rankList,
+        carousel: state => state.advertises
+    }),
+    methods: mapActions('Home', {
+        GET_RANKLIST: 'GET_RANKLIST',
+        GET_ADVERTISES: 'GET_ADVERTISES'
+    }),
+    mounted () {
+        this.GET_RANKLIST()
+        this.GET_ADVERTISES()
     }
 }
 </script>

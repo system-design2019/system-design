@@ -6,15 +6,15 @@ import getters from './getters.js'
 
 import Ques from './questionnaire/index'
 import Run from './runFavor/index'
+import Home from './home/index'
+import Personal from './personal/index'
 
 Vue.use(Vuex)
 
-const debug = process.env.NODE_ENV !== 'production'
-
 export default new Vuex.Store({
     state: {
-        isAuthenticated: false,
-        name: '',
+        isAuthenticated: true,
+        userID: '',
         // userType: 'user',
         activeNav: undefined,
         navRightTags: undefined,
@@ -46,6 +46,8 @@ export default new Vuex.Store({
     // },
     modules: {
         Ques,
-        Run
+        Run,
+        Home,
+        Personal
     }
 })

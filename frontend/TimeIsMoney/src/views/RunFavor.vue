@@ -23,7 +23,8 @@
 </style>
 <template>
     <div class="qShow">
-        <div style="height: 400px; background: white">
+        此页面暂未开放，敬请期待
+        <!-- <div style="height: 400px; background: white">
             <Button type="info" style="margin-top: 220px; margin-left: 15%">发布跑腿</Button>
         </div>
         <div style="margin: 30px 15%">
@@ -62,25 +63,25 @@
                     </Card>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
-export default {
-    data() {
-        return {
-            summary: "songxt TQL",
-            author: "songxt",
-            pay: "￥100",
-            attend: "5/90",
-            time: "2018-4-13"
-        }
+// export default {
+//     data() {
+//         return {
+//             summary: "songxt TQL",
+//             author: "songxt",
+//             pay: "￥100",
+//             attend: "5/90",
+//             time: "2018-4-13"
+//         }
 
-    },
-    methods: {
-        handleSelectAll(status) {
-            this.$refs.selection.selectAll(status);
-        }
-    }
-}
-</script>
+//     },
+//     methods: {
+//         handleSelectAll(status) {
+//             this.$refs.selection.selectAll(status);
+//         }
+//     }
+// }
+// </script>

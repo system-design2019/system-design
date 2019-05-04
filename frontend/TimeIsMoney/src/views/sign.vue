@@ -138,11 +138,7 @@ export default {
         signInFromMain: function(signIn, oldsignIn) {
             this.signUp = false;
             this.signIn = true;
-        },
-        signUpFromMain: function(signIn, oldsignIn) {
-            this.signUp = true;
-            this.signIn = false;
-        },
+        }
     }
 }
 </script>

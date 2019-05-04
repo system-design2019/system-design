@@ -27,10 +27,10 @@
 <template>
     <div style="margin: 20px 15%; ">
         <div style="overflow: hidden"><Button style="width: 8%; margin-right: 10px; float: right">全部删除</Button></div>
-        <Card v-for="(a, index) in alerts" :key="index" style="margin: 10px 10px; padding: 0 30px;" >
+        <Card v-for="(a, index) in $store.state.Personal.mailReceive" :key="index" style="margin: 10px 10px; padding: 0 30px;" >
             <Row style="width: 100%;">
                 <span style="font-size: 15px; font-weight: 700">{{a.title}}</span>
-                <Badge :status="getStatus(a.status)" style="float: right" />
+                <Badge :status="a.status" style="float: right" />
             </Row>
             <Row style="width: 100%; font-size: 13px; margin: 5px 0"><p style="margin-left: 2em;">{{a.content}}</p></Row>
             <Row style="width: 100%; margin: 3px 0; position: ralative">
@@ -42,16 +42,11 @@
     </div>
 </template>
 <script>
+import {mapState} from 'vuex'
     export default {
-        data(){
-            return{
-                alerts:[
-                    {title:'您的问卷有人参与填写！', content:'您的ID为27018的问卷已被填写，当前已收集5份，待收集85份', type: 1, time:'2019.5.2 16:00', status: 0},
-                    {title:'标题', content:'详情', type: 1, time:'2019.5.2 16:00', status: 1}
-                ],
-                
-            }
-        },
+        computed:mapState('Personal', {
+            alerts: 'mailReceive'
+        }),
         methods: {
             handleStart () {   
                 this.$router.push({  //跳转到不同后缀的页面，同理可以有多个子后缀，从而实现页面跳转
@@ -63,15 +58,14 @@
                     return '标为已读'
                 }
             },
-            getStatus(status){
-                if(status === 1)
-                    return 'default'
-                else
-                    return 'error'
-            },
             changeStatus(index){
-                this.alerts[index].status = 1
+                this.$store.commit('Personal/CHANGE_STATUS', index)
             }
+        },
+        mounted(){
+            this.$store.dispatch('Personal/GET_ALERTS')
+            console.log(this.alerts)
+            console.log(this.$store.state.Personal.mailReceive)
         }
     }
 </script>

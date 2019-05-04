@@ -85,24 +85,26 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+import { Ques } from '../store/questionnaire/index.js'
 export default {
     data() {
         return {
             alert: false,
-            formValidate: {
-                title: '',
-                detail: '',
-                command:'',
-                reward: '',
-                // gender: '',
-                quantity:'',
-                info:[],
-                startdate: '',
-                starttime: '',
-                enddate: '',
-                endtime: '',
-                // desc: ''
-            },
+            // formValidate: {
+            //     title: '',
+            //     detail: '',
+            //     command:'',
+            //     reward: '',
+            //     // gender: '',
+            //     quantity:'',
+            //     info:[],
+            //     startdate: '',
+            //     starttime: '',
+            //     enddate: '',
+            //     endtime: '',
+            //     // desc: ''
+            // },
             ruleValidate: {
                 title: [
                     { required: true, message: '标题不能为空', trigger: 'blur' }
@@ -148,10 +150,15 @@ export default {
         }
 
     },
+    computed: mapState('Ques/createQues',{
+        formValidate: 'formValidate'
+    }),
     methods: {
         handleSubmit (name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
+                    console.log(1)
+                    this.$store.dispatch('Ques/createQues/POST_QUESTIONNAIRE', this.formValidate)
                     this.$Message.success('发布成功!');
                     this.$router.push('questionnaire');
                 } else {
