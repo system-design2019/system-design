@@ -3,15 +3,12 @@ export const SIGN_IN = 'SIGN_IN'
 
 export default{
     [SIGN_IN] ({commit, state}, info) {
-        console.log('check')
-        console.log(info.username)
-        console.log(info.password)
         if(info.username === 'admin' && info.password === '123456'){
-            console.log('right')
+            // console.log('yes')
             commit(mutations.SIGNIN, info.username)
         }
         else(
-            console.log('wrong')
+            alert('用户名：admin 密码：123456')
         )
     }
 }

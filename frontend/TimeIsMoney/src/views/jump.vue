@@ -101,6 +101,11 @@ export default {
         },
         A() {
             setTimeout(this.disapper, 2500); //记得加this。否则会找不到元素/方法
+            var obj = {
+                "log": false,
+                "username": ""
+            }
+            window.sessionStorage.setItem('LogInfo', JSON.stringify(obj))
         },
         disapper() {
             this.$refs.moveout.style.display = "none"; //html元素中插入ref钩子，然后就可以在js中调用 

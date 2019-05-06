@@ -105,9 +105,6 @@ export default {
             
         }
     },
-    compute: mapState({
-        Logged: 'isAuthenticated'
-    }),
     methods: {
         changeToSignUp() {
             this.signIn = false;
@@ -126,9 +123,9 @@ export default {
                 name: 'main',
             })
             this.signIn = false
-            console.log('password: ' + this.password)
-            this.$store.dispatch('SIGN_IN', this.info).then(() => 
-                this.$store.commit('setRightNavs') )
+            // console.log('password: ' + this.info.password)
+            this.$store.dispatch('SIGN_IN', this.info)
+            this.$emit("SignSuccess", true)
         }
     },
     watch: {

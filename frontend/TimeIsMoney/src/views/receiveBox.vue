@@ -27,7 +27,7 @@
 <template>
     <div style="margin: 20px 15%; ">
         <div style="overflow: hidden"><Button style="width: 8%; margin-right: 10px; float: right">全部删除</Button></div>
-        <Card v-for="(a, index) in $store.state.Personal.mailReceive" :key="index" style="margin: 10px 10px; padding: 0 30px;" >
+        <Card v-for="(a, index) in alerts" :key="index" style="margin: 10px 10px; padding: 0 30px;" >
             <Row style="width: 100%;">
                 <span style="font-size: 15px; font-weight: 700">{{a.title}}</span>
                 <Badge :status="a.status" style="float: right" />
