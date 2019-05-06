@@ -62,10 +62,10 @@ import {mapState} from 'vuex'
                 this.$store.commit('Personal/CHANGE_STATUS', index)
             }
         },
-        mounted(){
+        created(){
             this.$store.dispatch('Personal/GET_ALERTS')
-            console.log(this.alerts)
-            console.log(this.$store.state.Personal.mailReceive)
+            // console.log(this.alerts)
+            // console.log(this.$store.state.Personal.mailReceive)
         }
     }
 </script>

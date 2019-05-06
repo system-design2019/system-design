@@ -44,7 +44,7 @@
             </div>
             <div class="allQN">
                 <div style="background:#eee;padding: 20px;">
-                    <Card :bordered="false" style="padding:23px" v-for="q in quesList">
+                    <Card :bordered="false" style="padding:23px" v-for="(q, index) in quesList" :key="index">
                         <a href="#" slot="extra">
                             <Icon type="ios-loop-strong"></Icon>
                             未参与
