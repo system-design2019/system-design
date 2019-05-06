@@ -1,3 +1,7 @@
+export const SIGNIN = 'SIGNIN'
+
+let Storage = window.sessionStorage
+
 export default{
     setRightNavs (state) {
         // console.log(rightNavs)
@@ -19,7 +23,8 @@ export default{
         state.navRightTags = rightNavs
         // console.log(rightNavs)
     },
-    signIn (state){
-        state.isAuthenticated = true
+    [SIGNIN] (state, username){
+        Storage.setItem('log', true)
+        Storage.setItem('username', username)
     }
 }

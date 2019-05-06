@@ -14,8 +14,8 @@
                 </div>
             </div>
             <div class="allInput">
-                <Input v-model="username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
-                <Input v-model="password" prefix="ios-contact" placeholder="请输入密码" type="password" />
+                <Input v-model="info.username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
+                <Input v-model="info.password" prefix="ios-contact" placeholder="请输入密码" type="password" />
                 <Input prefix="ios-contact" placeholder="请输入验证码" />
             </div>
             <div class="allButton">
@@ -40,8 +40,8 @@
                 </div>
             </div>
             <div class="allInput">
-                <Input v-model="username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
-                <Input v-model="password" prefix="ios-contact" placeholder="请输入密码" type="password" />
+                <Input v-model="info.username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
+                <Input v-model="info.password" prefix="ios-contact" placeholder="请输入密码" type="password" />
                 <Input prefix="ios-contact" placeholder="请输入验证码" />
             </div>
             <div class="allButton">
@@ -101,8 +101,8 @@ export default {
         return {
             signIn: false,
             signUp: false,
-            username: "",
-            password: ""
+            info: {username: "", password: ""}
+            
         }
     },
     compute: mapState({
@@ -126,8 +126,9 @@ export default {
                 name: 'main',
             })
             this.signIn = false
-            this.$store.commit('signIn')
-            this.$store.commit('setRightNavs')
+            console.log('password: ' + this.password)
+            this.$store.dispatch('SIGN_IN', this.info).then(() => 
+                this.$store.commit('setRightNavs') )
         }
     },
     watch: {

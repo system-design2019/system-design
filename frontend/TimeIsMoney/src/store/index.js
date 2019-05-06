@@ -11,10 +11,12 @@ import Personal from './personal/index'
 
 Vue.use(Vuex)
 
+var Storage = window.sessionStorage
+
 export default new Vuex.Store({
     state: {
-        isAuthenticated: true,
-        userID: '',
+        isAuthenticated: Storage.getItem('log'),
+        username: Storage.getItem('username'),
         // userType: 'user',
         activeNav: undefined,
         navRightTags: undefined,
