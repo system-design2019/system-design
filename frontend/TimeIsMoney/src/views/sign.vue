@@ -115,6 +115,8 @@ export default {
             this.signIn = true;
         },
         doSignUp(){
+            if(this.info.usernmae === '' || this.info.password === '')
+            this.store
             this.changeToSignIn()
         },
         doSignIn(){

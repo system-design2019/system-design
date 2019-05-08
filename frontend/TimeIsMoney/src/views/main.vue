@@ -49,13 +49,13 @@
             return{
                 signInFromMain: false,
                 navLeftTags:[
-                    {name: "1", icon:"md-home", text:"首页", link: "home"},
-                    {name: "2", icon:"md-paper", text:"问卷", link: "questionnaire"},
-                    {name: "3", icon:"md-walk", text:"跑腿", link: "favor"}
+                    {name: "1", icon:"md-home", text:"首页", link: "/home"},
+                    {name: "2", icon:"md-paper", text:"问卷", link: "/questionnaire"},
+                    {name: "3", icon:"md-walk", text:"跑腿", link: "/favor"}
                 ],
                 navRightTags1:[
-                    {name: "5", icon:"md-person", text:"个人中心", link: "personal"},
-                    {name: "4", icon:"md-mail", text:"收件箱", link: "receiveBox"}                    
+                    {name: "5", icon:"md-person", text:"个人中心", link: "/personal"},
+                    {name: "4", icon:"md-mail", text:"收件箱", link: "/receiveBox"}                    
                 ],
                 navRightTags0: {name: "6", icon:"md-person", text:"登录/注册", link: "in"}
             }
@@ -71,7 +71,7 @@
                 if(link === 'in')
                     this.signInFromMain = !this.signInFromMain
                 else
-                    this.$router.push(link)
+                    this.$router.push({path:link})
                 
             },
             getSign: function(data){

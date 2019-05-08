@@ -35,8 +35,17 @@ const Ques = {
                     starttime: '',
                     enddate: '',
                     endtime: '',
+                    number:  0
                     // desc: ''
                 },
+                formContent:{
+                    title:'',
+                    number: 0,
+                    questions:[
+                        {mode: 1, title:'试试', choices:[], fill:false},
+                        {mode: 2, title:'试试', choices:['选项1', '选项2'], fill:false}
+                    ]
+                }
             },
             actions:{
                 POST_QUESTIONNAIRE ({state, commit, rootState}, formValidate){
