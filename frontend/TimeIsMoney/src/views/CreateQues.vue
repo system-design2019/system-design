@@ -170,7 +170,7 @@ export default {
             this.$refs[name].resetFields();
         },
         back(){
-            this.$router.push('questionnaire');
+            this.$router.go(-1)
         }
     }
 }

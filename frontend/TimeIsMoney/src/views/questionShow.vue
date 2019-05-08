@@ -45,18 +45,15 @@
             <div class="allQN">
                 <div style="background:#eee;padding: 20px;">
                     <Card :bordered="false" style="padding:23px" v-for="(q, index) in quesList" :key="index">
-                        <a href="#" slot="extra">
-                            <Icon type="ios-loop-strong"></Icon>
-                            未参与
-                        </a>
-                        <p slot="title" style="font-size:20px">title in here</p>
+                        <a href="#" slot="extra">未参与</a>
+                        <p slot="title" style="font-size:20px">{{q.title}}</p>
                         <div class="allupdate">
                             <div class="sum" style="font-size:15px">
-                                <span class='info'> 简介:{{q.text}} </span>
+                                <span class='info'> 简介:{{q.content}} </span>
                             </div>
                             <div class="someInfo">
-                                <span class='info'>发布人:{{q.creator}}</span><span class='info'>薪酬:{{q.price}}</span><span class='info'>参与情况:{{q.attend}}/{{q.total}}</span><span class='info'>截止时间:{{q.endtime}}</span>
-                                <Button @click="getDetail(q.id)">查看详情</Button>
+                                <span class='info'>发布人:{{q.publisher}}</span><span class='info'>薪酬:￥{{q.reward}}</span><span class='info'>参与情况:{{q.attend}}/{{q.total}}</span><span class='info'>截止时间:{{q.endTime}}</span>
+                                <Button @click="getDetail(q.quesid)">查看详情</Button>
                             </div>
                         </div>
                     </Card>
@@ -64,14 +61,14 @@
             </div>
         </div>
         <Modal v-model="detail" width="550px" style="position: relative" :mask-closable="false">
-            <p slot="header" style="text-align:center;">大学生心理健康调查<p>
+            <p slot="header" style="text-align:center;">{{detailContent.title}}<p>
                     <div style="margin: 0 30px">
                         <h3 style="margin: 15px 0 5px 0">简介</h3>
-                        <p style="text-indent: 2em; margin: 5px 0 0 0; ">{{detailContent.text}}</p>
+                        <p style="text-indent: 2em; margin: 5px 0 0 0; ">{{detailContent.content}}</p>
                         <h3 style="margin: 15px 0 5px 0">要求</h3>
                         <p style="text-indent: 2em; margin: 5px 0 0 0">{{detailContent.command}}</p>
                         <h3 style="margin: 15px 0 5px 0">薪酬</h3>
-                        <p style="text-indent: 2em; margin: 5px 0 0 0">￥{{detailContent.price}}/人</p>
+                        <p style="text-indent: 2em; margin: 5px 0 0 0">￥{{detailContent.reward}}/人</p>
                     </div>
                     <div slot="footer" style="position: relative; overflow: hidden; margin: 5px 20px 15px 20px">
                         <div style="width: 75%; float: left; overflow: hidden; position: relative">
@@ -110,7 +107,7 @@ export default {
             this.$refs.selection.selectAll(status)
         },
         create() {
-            this.$router.push('createQuestionnaire')
+            this.$router.push('questionnaire/createQuestionnaire')
         },
         getDetail(id){
             this.$store.dispatch('Ques/GET_DETAIL', id)
