@@ -266,13 +266,18 @@ Response:
 
 
 
-**问卷**
+# 问卷
 
-查询所有问卷：
+## 查询所有问卷：
 
-http://localhost:8080/ques
+- 路径 /allques
+- 方法 get
 
-返回
+输入
+
+![1557390318220](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390318220.png)
+
+返回样例
 
 {
     "success": true,
@@ -316,13 +321,14 @@ http://localhost:8080/ques
 
 
 
-插入问卷
+## 添加问卷
 
-http://localhost:8080/createques
+- 路径 /createques
+- post
 
 输入样例
 
-{
+![1557390007003](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390007003.png){
 	"task_id":40,
 	"title":"shixun",
 	"publisher":"yourmother",
@@ -333,3 +339,23 @@ http://localhost:8080/createques
 	"task_status":"not done",
 	"panticipant":"songxiao"
 }
+
+## 根据ID获取问卷详情
+
+- 路径 /getQues/{quesID}
+- 方法 get
+
+输入
+
+![1557390186127](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390186127.png)
+
+
+
+## 根据ID获取问卷内容
+
+- 路径 /getQues/{quesID}
+- 方法 get
+
+输入
+
+![1557390240361](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390240361.png)

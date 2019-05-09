@@ -104,8 +104,70 @@ public class Controller {
     }
 
 
+
+    /*获取问卷详情*/
+    @RequestMapping(method = RequestMethod.GET,value = "/getQues/{quesID}")
+    public Message<questionnaire> getQueseByID(@PathVariable int quesID){
+        Message<questionnaire> message = new Message<>();
+        questionnaire theQues;
+        //获取一个连接
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            //得到映射器
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            theQues = quesMapper.getQuesByID(quesID);
+            message.setData(theQues);
+            message.setSuccess(true);
+            message.setMsg("获取成功");
+            //要提交后才会生效
+            sqlSession.commit();
+        }catch (Exception e){
+            message.setData(null);
+            message.setSuccess(false);
+            message.setMsg("获取失败:" + e.getMessage());
+        }
+        finally {
+            //最后记得关闭连接
+            sqlSession.close();
+        }
+
+        return message;
+    }
+
+
+    /*获取问卷详情*/
+    @RequestMapping(method = RequestMethod.GET,value = "/getQuesCont/{quesID}")
+    public Message<String> getQueseCont(@PathVariable int quesID){
+        Message<String> message = new Message<>();
+        String theQuesCont;
+        //获取一个连接
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            //得到映射器
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            theQuesCont = quesMapper.getQuesCont(quesID);
+            message.setData(theQuesCont);
+            message.setSuccess(true);
+            message.setMsg("获取成功");
+            //要提交后才会生效
+            sqlSession.commit();
+        }catch (Exception e){
+            message.setData(null);
+            message.setSuccess(false);
+            message.setMsg("获取失败:" + e.getMessage());
+        }
+        finally {
+            //最后记得关闭连接
+            sqlSession.close();
+        }
+
+        return message;
+    }
+
     /*获取所有问卷*/
-    @RequestMapping(method = RequestMethod.GET,value = "/ques")
+    @RequestMapping(method = RequestMethod.GET,value = "/allques")
     public Message<List<questionnaire>> getQueses(){
         Message<List<questionnaire>> message = new Message<>();
         List<questionnaire> listQues;
@@ -115,7 +177,7 @@ public class Controller {
             //得到映射器
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
-            listQues = quesMapper.getQues();
+            listQues = quesMapper.getAllQues();
             message.setData(listQues);
             message.setSuccess(true);
             message.setMsg("获取成功");
