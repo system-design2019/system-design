@@ -21,7 +21,7 @@
             <div style="width: 100%; height: 30px; background: #CE5555; margin: 20px 0; border-radius: 10px; text-align: center;">
                 <p style="line-height: 30px;color: #ffffff; text-align: right; margin-right: 20px">猜你喜欢</p>
             </div>
-            <div style="width: 22%; float: left; margin-left: 1%">
+            <div style="width: 24%; float: left; margin-left: 1%">
                 <Card style="height: 380px;">
                     <p slot="title">一夜暴富</p>
                     <ul style="margin-left: 3px">
@@ -33,7 +33,7 @@
                     </ul>
                 </Card>
             </div>
-            <div style="width: 76%; float: right">
+            <div style="width: 74%; float: right">
                 <Row style="width: 100%; height: 250px;" :gutter="10">
                     <i-col span="18"><img src='../../static/home/adver1.jpg' style="width: 100%; height: 233.56px"></img></i-col>
                     <i-col span="6"><img src='../../static/home/adver1.jpg'style="width: 100%; height: 233.56px"></img></i-col>

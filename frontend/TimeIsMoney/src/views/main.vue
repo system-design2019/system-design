@@ -7,17 +7,17 @@
                         <img src="../images/redNav/logoname.png" style="height: 30px;" @click="backtoindex()">
                     </div>
                     <div class="layout-nav" style="float: left">
-                        <MenuItem v-for="(tag, index) in navLeftTags" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link)">
+                        <MenuItem v-for="(tag, index) in navLeftTags" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link)" :class="addClass(index)">
                             <Icon :type="tag.icon" size=20></Icon>
                             <span>{{tag.text}}</span>
                         </MenuItem>
                     </div>
                     <div class="layout-nav" style="min-width: 10%; float: right; text-align: right" @click.native="changePageByLink(tag.link)">
-                        <MenuItem v-for="(tag, index) in navRightTags1" v-show="logged" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link)" style="float: right">
+                        <MenuItem v-for="(tag, index) in navRightTags1" v-show="logged" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link)" style="float: right" :class="addClass(index+3)">
                             <Icon :type="tag.icon"></Icon>
                             <span>{{tag.text}}</span>
                         </MenuItem>
-                        <MenuItem v-show="!logged" :name="navRightTags0.name" @click.native="changePageByLink(navRightTags0.link)" style="float: right">
+                        <MenuItem v-show="!logged" :name="navRightTags0.name" @click.native="changePageByLink(navRightTags0.link)" :class="addClass(3)" style="float: right">
                             <Icon :type="navRightTags0.icon"></Icon>
                             <span>{{navRightTags0.text}}</span>
                         </MenuItem>
@@ -57,15 +57,16 @@
                     {name: "5", icon:"md-person", text:"个人中心", link: "/personal"},
                     {name: "4", icon:"md-mail", text:"收件箱", link: "/receiveBox"}                    
                 ],
-                navRightTags0: {name: "6", icon:"md-person", text:"登录/注册", link: "in"}
+                navRightTags0: {name: "6", icon:"md-person", text:"登录/注册", link: "in"},
+                
             }
         },
-        computed: {
+        computed: mapState({
             logged(){
-                // console.log(window.sessionStorage.getItem('LogInfo'))
                 return JSON.parse(window.sessionStorage.getItem('LogInfo')).log
-            } 
-        },
+            },
+            activeNav: 'activeNav'
+        }),
         methods: {
             changePageByLink(link) {
                 if(link === 'in')
@@ -82,6 +83,15 @@
             },
             backtoindex(){
                 this.$router.push('/')
+            },
+            addClass(index){
+                console.log(this.activeNav)
+                if(index === this.activeNav){
+                    return 'ivu-menu-item ivu-menu-item-active ivu-menu-item-selected'
+                }
+                else{
+                    return 'ivu-menu-item'
+                }
             }
         },
         mounted(){

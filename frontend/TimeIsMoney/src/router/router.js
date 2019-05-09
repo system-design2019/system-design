@@ -15,13 +15,6 @@ const routers = [{
         component: (resolve) => require(['../views/Sign.vue'], resolve)
     },
     {
-        path: '/findpass', //找回密码页面
-        meta: {
-            title: 'FindPass'
-        },
-        component: (resolve) => require(['../views/findpass.vue'], resolve)
-    },
-    {
         path: '/', 
         component: (resolve) => require(['../views/main.vue'], resolve),
         children: [
@@ -43,6 +36,10 @@ const routers = [{
                 component: (resolve) => require(['../views/CreateQues.vue'], resolve)
             },
             {
+                path: 'questionnaire/filling', //check the user's receiveBox
+                component: (resolve) => require(['../views/FillingQues.vue'], resolve)
+            },
+            {
                 path: 'favor',
                 component: (resolve) => require(['../views/RunFavor.vue'], resolve)
             },
@@ -55,35 +52,6 @@ const routers = [{
                 component: (resolve) => require(['../views/ReceiveBox.vue'], resolve)
             }
         ]
-    },
-    {
-        path: '/questionDesign', //问卷设计页面
-        meta: {
-            title: "QuestionDesign"
-        },
-        component: (resolve) => require(['../views/questionDesign.vue'], resolve)
-    },
-    {
-        path: '/questionDetail', //问卷详情页面
-        meta: {
-            title: "QuestionDetail"
-        },
-        component: (resolve) => require(['../views/questionDetail.vue'], resolve)
-    },
-    {
-        path: '/questionWrite', //问卷填写页面
-        meta: {
-            title: "QuestionWrite"
-        },
-        component: (resolve) => require(['../views/questionWrite.vue'], resolve)
-    },
-    
-    {
-        path: '/infoChange', //change the personal info
-        meta: {
-            title: "infoChange"
-        },
-        component: (resolve) => require(['../views/infoChange.vue'], resolve)
     },
     {
         path: '/historyCheck', //check the user's history deal

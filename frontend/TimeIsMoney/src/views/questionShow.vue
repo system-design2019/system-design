@@ -74,14 +74,14 @@
                         <div style="width: 75%; float: left; overflow: hidden; position: relative">
                             <div style="width: 15%; float: left">
                                 <img src='../../static/jump/social.png' style="width: 100%; height: 80%"></img>
-                                <p style="width:100%; text-align: center; font-weight: 700">suata</p>
+                                <p style="width:100%; text-align: center; font-weight: 700">{{detailContent.publisher}}</p>
                             </div>
                             <div style="width: 80%; float: right; bottom: 0; position: absolute; margin-left: 20%">
                                 <Col v-for="(info, index) in detailContent.infos" :key="index" span="12" style="text-align: left; margin: 5px 0">{{index}}:{{info}}</Col>
                             </div>
                         </div>
                         <div style="width: 20%; float: right; position: absolute; bottom: 0; right: 10px">
-                            <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px">立即填写</Button>
+                            <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px" @click="fillIn(detailContent.quesid)">立即填写</Button>
                             <a style="width: 100%; text-align: center; right: 25%; position:relative">点此收藏</a>
                         </div>
                     </div>
@@ -107,12 +107,25 @@ export default {
             this.$refs.selection.selectAll(status)
         },
         create() {
-            this.$router.push('questionnaire/createQuestionnaire')
+            let log = JSON.parse(window.sessionStorage.getItem('LogInfo')).log
+            if(log)
+                this.$router.push('questionnaire/createQuestionnaire')
+            else
+                this.$Message.warning('您还未登录，请先登录后发布问卷。')
         },
         getDetail(id){
             this.$store.dispatch('Ques/GET_DETAIL', id)
             this.detail = !this.detail
             // console.log(this.detailContent)
+        },
+        fillIn(id){
+            let log = JSON.parse(window.sessionStorage.getItem('LogInfo')).log
+            if(!log)
+                this.$Message.warning('您还未登录，请先登录后填写问卷。')
+            else{
+                window.sessionStorage.setItem('fillQuesId', id)
+                this.$router.push('questionnaire/filling')
+            }
         }
     },
     mounted(){

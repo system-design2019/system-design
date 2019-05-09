@@ -15,7 +15,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         LogInfo: JSON.parse(window.sessionStorage.getItem('LogInfo')),
-        activeNav: undefined,
+        activeNav: 0,
         navRightTags: undefined,
     },
     actions,

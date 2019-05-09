@@ -15,10 +15,10 @@
             </div>
         </div>
         <div style="margin-top: 40px;overflow: hidden;">
-            <EditQues v-show="showStep(0)" @changeStep="nextStep"></EditQues>
-            <SetQues v-show="showStep(1)" @changeStep="nextStep"></SetQues>
-            <Pay v-show="showStep(2)" @changeStep="nextStep"></Pay>
-            <Success v-show="showStep(3)"></Success>
+            <EditQues v-if="showStep(0)" @changeStep="nextStep"></EditQues>
+            <SetQues v-else-if="showStep(1)" @changeStep="nextStep"></SetQues>
+            <Pay v-else-if="showStep(2)" @changeStep="nextStep"></Pay>
+            <Success v-else="showStep(3)"></Success>
         </div>
         
         <Modal
