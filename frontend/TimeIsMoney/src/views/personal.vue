@@ -270,8 +270,23 @@ export default {
             borderSize: 0,
             editable: false,
             styleForText: 'border:' + this.borderSize + 'px'
+            //clientHeight: document.body.clientHeight,
+            //clientWidth: document.body.clientWidth
         }
     },
+    /*
+        mounted() {
+            // 在 DOM 渲染数据时，设置下区域高度为浏览器可视区域高度．
+            this.clientHeight = document.body.clientHeight;
+            this.clientWidth = document.body.clientWidth;
+            // 监听 window 的 resize 事件．在浏览器窗口变化时再设置下区域高度．
+            const _this = this;
+            window.onresize = function temp() {
+                _this.clientHeight = document.body.clientHeight;
+                _this.clientWidth = document.body.clientWidth;
+            };
+           
+        }, */
     methods: {
         editInfo() { //修改个人信息
             // alert(this.editable);
