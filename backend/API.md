@@ -82,7 +82,6 @@ Response:
 
 - 返回：`Message<String>`
 
-
 **示例：**
 
 RequestBody:
@@ -125,7 +124,6 @@ Response:
     ​           返回的User对象如果**email、phone、name**以字符“$"开头则表示**未初始化**
 
 - 返回：`Message<User>`
-
 
 **示例：**
 
@@ -170,7 +168,6 @@ Response:
 
 - 返回：`Message<String>`
 
-
 **示例：**
 
 URL:
@@ -197,7 +194,6 @@ Response:
   - 可修改除了ID所有属性，**包括密码**，此处不验证密码！
   - **用户ID**作为唯一标识，其它字段都有改变的可能性！
 - 返回：`Message<String>`
-
 
 **示例：**
 

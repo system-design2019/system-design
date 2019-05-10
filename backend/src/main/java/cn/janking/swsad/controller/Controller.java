@@ -11,6 +11,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.tomcat.util.bcel.Const;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.json.JsonSimpleJsonParser;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import static cn.janking.swsad.bean.Util.export;
 
 @RestController
 @EnableAutoConfiguration
@@ -234,6 +238,20 @@ public class Controller {
             return message;
         }
     }
+
+    @RequestMapping(method = RequestMethod.GET,value = "/report")
+    @ResponseBody
+    public File testDownload() {
+
+                //获取跟目录
+                String fileName = "C:\\Users\\Janking\\Desktop\\嵌入式操作系统\\嵌入式操作系统作业模板_Linux内核.doc";
+
+        return new File(fileName);
+
+
+
+    }
+
     /*删除指定用户
     * 通过id查找
     * 不用验证密码！！*/
