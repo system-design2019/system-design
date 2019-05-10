@@ -38,10 +38,25 @@ public class Controller {
     private static SqlSessionFactory sqlSessionFactory;
     static {
         sqlSessionFactory =  SingletonMybatis.getSqlSessionFactory();
-        /*用户数量*/
-        User.initCount(sqlSessionFactory.openSession(true).getMapper(UserMapper.class).getCount());
-        /*问卷数量*/
-        questionnaire.initCount(sqlSessionFactory.openSession(true).getMapper(QuestionnaireMapper.class).getCount());
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        try {
+            //得到映射器
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            //初始化用户表
+            userMapper.userTableInit();
+            //初始化问卷表
+            questionnaireMapper.questionnaireTableInit();
+            /*用户数量*/
+            int count = userMapper.getCount();
+            User.initCount(count);
+            /*问卷数量*/
+            count = questionnaireMapper.getCount();
+            questionnaire.initCount(count);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     //如果方法上的RequestMapping没有value，则此方法默认被父路径调用

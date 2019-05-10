@@ -42,10 +42,8 @@ public class User {
     private int credit;
     */
     static public void initCount(int c){
-
         count = c + new Random(1000).nextInt();
     }
-
     public User(){
         password = "default_password";
         email = "$"+count;

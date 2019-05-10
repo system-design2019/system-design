@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.Date;
 
 public class Util {
+    /*文件传输*/
     public static ResponseEntity<FileSystemResource> export(File file) {
         if (file == null) {
             return null;

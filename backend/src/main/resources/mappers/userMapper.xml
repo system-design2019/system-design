@@ -6,14 +6,29 @@
 
     <!--id对应接口中的方法，名字要一样，parameterType是方法的参数类型，
     resultType是查询返回的类型，需要注意的是，这里的SQL语句后面不能加分号，变量不能加引号-->
+    <!--删除表-->
+    <update id="dropTable">
+        drop table user_table;
+    </update>
     <!--初始化表-->
-    <update id="userTableInit" >
-        CREATE TABLE IF NOT EXISTS `user_table`(
-        `id` INT(32) UNSIGNED AUTO_INCREMENT,
-        `password` VARCHAR(100) NOT NULL,
-        `email` VARCHAR(40) ,
-        `phone` VARCHAR(40) ,
-        PRIMARY KEY ( `id` )
+    <update id="questionnaireTableInit" >
+        create table if not exists user_table
+        (
+            id        bigint(32) auto_increment
+                primary key,
+            password  varchar(100) not null,
+            email     varchar(40)  null,
+            phone     varchar(40)  null,
+            name      varchar(40)  null,
+            studentId varchar(40)  null,
+            grade     int          null,
+            major     varchar(40)  null,
+            gender    int          null,
+            age       int          null,
+            nickname  varchar(40)  null,
+            constraint email unique (email),
+            constraint name unique (name),
+            constraint phone unique (phone)
         )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     </update>
     <!--获取用户数量-->
