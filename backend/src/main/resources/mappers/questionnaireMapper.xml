@@ -8,7 +8,7 @@
 
     <!--初始化表-->
     <update id="questionnaireTableInit" >
-        create table if not exists questionnaire_table
+        create table if not exists quesTable
         (
             quesid    int unsigned auto_increment
                 primary key,
