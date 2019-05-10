@@ -277,7 +277,7 @@ Response:
 http://localhost:8080/allques
 
 返回样例
-
+```json
 {
     "success": true,
     "msg": "获取成功",
@@ -317,6 +317,8 @@ http://localhost:8080/allques
         }
     ]
 }
+```
+
 
 
 
@@ -327,7 +329,7 @@ http://localhost:8080/allques
 
 输入样例
 http://loacalhost:8080/createques
-
+```json
 {
 	"task_id":40,
 	"title":"shixun",
@@ -339,6 +341,8 @@ http://loacalhost:8080/createques
 	"task_status":"not done",
 	"panticipant":"songxiao"
 }
+```
+
 
 ## 根据ID获取问卷详情
 
@@ -349,7 +353,7 @@ http://loacalhost:8080/createques
 http://localhost/getQues/{quesID}
 
 返回
-
+```json
 {
     "success": true,
     "msg": "获取成功",
@@ -366,6 +370,8 @@ http://localhost/getQues/{quesID}
         "status": "not done"
     }
 }
+```
+
 
 
 
@@ -378,9 +384,10 @@ http://localhost/getQues/{quesID}
 http://localhost:8080/getQuesCont/{quesID}
 
 返回
-
+```json
 {
     "success": true,
     "msg": "获取成功",
     "data": "di11cizuoye"
 }
+```
