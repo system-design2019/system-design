@@ -9,4 +9,5 @@ export default{
         // console.log(detail)
         state.quesDetail = detail
     }
+    
 }

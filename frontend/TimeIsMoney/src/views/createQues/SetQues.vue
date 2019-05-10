@@ -60,12 +60,11 @@
             </FormItem> -->
 
             <FormItem>
-                <Button type="primary" @click="handleSubmit('formValidate')">Submit</Button>
                 <Button @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
             </FormItem>
         </Form>
         <div style="width: 100%; text-align: center; margin-top: 20px">
-            <Button @click="changeStep(-1)" style="margin-right:10px">上一步</Button><Button @click="changeStep(1)">下一步</Button>
+            <Button @click="changeStep(-1)" style="margin-right:10px">上一步</Button><Button @click="handleSubmit('formValidate')">下一步</Button>
         </div>
     </div>
 </template>
@@ -113,23 +112,35 @@ export default {
                 //     { required: true, message: 'Please enter a personal introduction', trigger: 'blur' },
                 //     { type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
                 // ]
-            }
+            },
+            formValidate: {
+                title: '1111',
+                detail: '',
+                command:'',
+                reward: 0,
+                // gender: '',
+                quantity: 0,
+                info:[],
+                startdate: '',
+                starttime: '',
+                enddate: '',
+                endtime: '',
+                number:  0
+                // desc: ''
+            },
         }
 
     },
-    computed: mapState('Ques/createQues',{
-        formValidate: 'formValidate'
-    }),
     methods: {
         handleSubmit (name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
-                    console.log(1)
-                    this.$store.dispatch('Ques/createQues/POST_QUESTIONNAIRE', this.formValidate)
-                    this.$Message.success('发布成功!');
-                    this.$router.push('questionnaire');
+                    this.$store.commit('Ques/createQues/SET_VALIDATE', this.formValidate)
+                    // this.$Message.success('发布成功!');
+                    // this.$router.push('questionnaire');
+                    this.$emit('changeStep',1)
                 } else {
-                    this.$Message.error('发布失败！请完善信息后再次尝试');
+                    this.$Message.error('设置失败！请完善信息后再次尝试');
                 }
             })
         },
