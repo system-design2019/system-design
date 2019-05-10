@@ -274,8 +274,7 @@ Response:
 - 方法 get
 
 输入
-
-![1557390318220](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390318220.png)
+http://localhost:8080/allques
 
 返回样例
 
@@ -327,8 +326,9 @@ Response:
 - post
 
 输入样例
+http://loacalhost:8080/createques
 
-![1557390007003](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390007003.png){
+{
 	"task_id":40,
 	"title":"shixun",
 	"publisher":"yourmother",
@@ -346,8 +346,7 @@ Response:
 - 方法 get
 
 输入
-
-![1557390186127](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390186127.png)
+http://localhost/getQues/{quesID}
 
 返回
 
@@ -376,8 +375,7 @@ Response:
 - 方法 get
 
 输入
-
-![1557390240361](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390240361.png)
+http://localhost:8080/getQuesCont/{quesID}
 
 返回
 
