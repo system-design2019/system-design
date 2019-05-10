@@ -82,6 +82,7 @@ Response:
 
 - 返回：`Message<String>`
 
+
 **示例：**
 
 RequestBody:
@@ -124,6 +125,7 @@ Response:
     ​           返回的User对象如果**email、phone、name**以字符“$"开头则表示**未初始化**
 
 - 返回：`Message<User>`
+
 
 **示例：**
 
@@ -168,6 +170,7 @@ Response:
 
 - 返回：`Message<String>`
 
+
 **示例：**
 
 URL:
@@ -194,6 +197,7 @@ Response:
   - 可修改除了ID所有属性，**包括密码**，此处不验证密码！
   - **用户ID**作为唯一标识，其它字段都有改变的可能性！
 - 返回：`Message<String>`
+
 
 **示例：**
 
@@ -270,11 +274,10 @@ Response:
 - 方法 get
 
 输入
-
-![1557390318220](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390318220.png)
+http://localhost:8080/allques
 
 返回样例
-
+```json
 {
     "success": true,
     "msg": "获取成功",
@@ -314,6 +317,8 @@ Response:
         }
     ]
 }
+```
+
 
 
 
@@ -323,8 +328,9 @@ Response:
 - post
 
 输入样例
-
-![1557390007003](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390007003.png){
+http://loacalhost:8080/createques
+```json
+{
 	"task_id":40,
 	"title":"shixun",
 	"publisher":"yourmother",
@@ -335,6 +341,8 @@ Response:
 	"task_status":"not done",
 	"panticipant":"songxiao"
 }
+```
+
 
 ## 根据ID获取问卷详情
 
@@ -342,16 +350,44 @@ Response:
 - 方法 get
 
 输入
+http://localhost/getQues/{quesID}
 
-![1557390186127](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390186127.png)
+返回
+```json
+{
+    "success": true,
+    "msg": "获取成功",
+    "data": {
+        "quesID": 123,
+        "title": "ziranyuyan",
+        "content": "di11cizuoye",
+        "publisher": "zheng",
+        "reward": 78,
+        "attend": 2,
+        "total": 50,
+        "endtime": "2019-10-5",
+        "request": "liangtian",
+        "status": "not done"
+    }
+}
+```
+
 
 
 
 ## 根据ID获取问卷内容
 
-- 路径 /getQues/{quesID}
+- 路径 /getQuesCont/{quesID}
 - 方法 get
 
 输入
+http://localhost:8080/getQuesCont/{quesID}
 
-![1557390240361](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390240361.png)
+返回
+```json
+{
+    "success": true,
+    "msg": "获取成功",
+    "data": "di11cizuoye"
+}
+```
