@@ -74,7 +74,8 @@ export default {
             this.$refs[name].resetFields();
         },
         back(){
-            this.$router.push('/questionnaire')
+            let id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
+            this.$router.push({name:'questionnaire', params: {id: id}})
         },
         nextStep: function(data){
             this.currentStep = this.currentStep + data

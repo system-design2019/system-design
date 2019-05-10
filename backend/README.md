@@ -18,8 +18,6 @@
 
 **Java 1.8.0**
 
-
-
 - 使用`IDEA maven`打包生成`jar`包
 
 - 运行`system-design\backend\target`目录下的`jar`包

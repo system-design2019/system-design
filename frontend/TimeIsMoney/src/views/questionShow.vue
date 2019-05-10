@@ -107,9 +107,9 @@ export default {
             this.$refs.selection.selectAll(status)
         },
         create() {
-            let log = JSON.parse(window.sessionStorage.getItem('LogInfo')).log
-            if(log)
-                this.$router.push('questionnaire/createQuestionnaire')
+            let info = JSON.parse(window.sessionStorage.getItem('LogInfo'))
+            if(info.log)
+                this.$router.push({name: 'createQuestionnaire', params: {id: info.userID}})
             else
                 this.$Message.warning('您还未登录，请先登录后发布问卷。')
         },
@@ -119,12 +119,12 @@ export default {
             // console.log(this.detailContent)
         },
         fillIn(id){
-            let log = JSON.parse(window.sessionStorage.getItem('LogInfo')).log
-            if(!log)
+            let info = JSON.parse(window.sessionStorage.getItem('LogInfo'))
+            if(!info.log)
                 this.$Message.warning('您还未登录，请先登录后填写问卷。')
             else{
                 window.sessionStorage.setItem('fillQuesId', id)
-                this.$router.push('questionnaire/filling')
+                this.$router.push({name: 'filling', params: {id: info.userID}})
             }
         }
     },

@@ -8,6 +8,10 @@ import 'iview/dist/styles/iview.css';
 import animate from 'animate.css';
 import Vuex from 'vuex'
 import store from './store/index.js'
+import axios from 'axios'
+
+Vue.prototype.$http = axios
+axios.defaults.baseURL = 'http://52.76.250.96:8080';
 
 Vue.use(Vuex)
 Vue.use(VueRouter);
