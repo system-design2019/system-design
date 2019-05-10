@@ -349,13 +349,40 @@ Response:
 
 ![1557390186127](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390186127.png)
 
+返回
+
+{
+    "success": true,
+    "msg": "获取成功",
+    "data": {
+        "quesID": 123,
+        "title": "ziranyuyan",
+        "content": "di11cizuoye",
+        "publisher": "zheng",
+        "reward": 78,
+        "attend": 2,
+        "total": 50,
+        "endtime": "2019-10-5",
+        "request": "liangtian",
+        "status": "not done"
+    }
+}
+
 
 
 ## 根据ID获取问卷内容
 
-- 路径 /getQues/{quesID}
+- 路径 /getQuesCont/{quesID}
 - 方法 get
 
 输入
 
 ![1557390240361](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390240361.png)
+
+返回
+
+{
+    "success": true,
+    "msg": "获取成功",
+    "data": "di11cizuoye"
+}
