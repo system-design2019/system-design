@@ -7,7 +7,7 @@
 
 
     <!--初始化表-->
-    <update id="userTableInit" >
+    <update id="questionnaireTableInit" >
         create table if not exists questionnaire_table
         (
             quesid    int unsigned auto_increment

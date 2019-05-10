@@ -11,7 +11,7 @@
         drop table user_table;
     </update>
     <!--初始化表-->
-    <update id="questionnaireTableInit" >
+    <update id="userTableInit" >
         create table if not exists user_table
         (
             id        bigint(32) auto_increment

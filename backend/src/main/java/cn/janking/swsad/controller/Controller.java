@@ -6,30 +6,16 @@ import cn.janking.swsad.bean.questionnaire;
 import cn.janking.swsad.Mapper.UserMapper;
 import cn.janking.swsad.Mapper.QuestionnaireMapper;
 import cn.janking.swsad.singleton.SingletonMybatis;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.sun.xml.internal.ws.api.model.MEP;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.json.JsonSimpleJsonParser;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.jws.soap.SOAPBinding;
-import javax.servlet.ServletContext;
-import javax.swing.*;
 import java.io.*;
-import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
-import static cn.janking.swsad.bean.Util.export;
 
 @RestController
 @EnableAutoConfiguration
