@@ -62,10 +62,12 @@ public class Controller {
     //如果方法上的RequestMapping没有value，则此方法默认被父路径调用
     //默认回调
     @RequestMapping
+    @CrossOrigin
     private String index(){
         return "API也会404哦!";
     }
     @RequestMapping("/hello")
+    @CrossOrigin
     private String hello(){
         return "Hello World!";
     }
@@ -74,6 +76,7 @@ public class Controller {
     //最好不要有动词。
     /*初始化表*/
     @RequestMapping(method = RequestMethod.GET,value = "/admin")
+    @CrossOrigin
     public boolean usersTableInit(){
         //获取一个连接,自动提交
         SqlSession sqlSession = sqlSessionFactory.openSession(true);
@@ -94,6 +97,7 @@ public class Controller {
     }
     /*获取所有用户*/
     @RequestMapping(method = RequestMethod.GET,value = "/users")
+    @CrossOrigin
     public Message<List<User>> getUsers(){
         Message<List<User>> message = new Message<>();
         List<User> listUsers;
@@ -126,6 +130,7 @@ public class Controller {
 
     /*获取问卷详情*/
     @RequestMapping(method = RequestMethod.GET,value = "/getQues/{quesID}")
+    @CrossOrigin
     public Message<questionnaire> getQueseByID(@PathVariable int quesID){
         Message<questionnaire> message = new Message<>();
         questionnaire theQues;
@@ -157,6 +162,7 @@ public class Controller {
 
     /*获取问卷详情*/
     @RequestMapping(method = RequestMethod.GET,value = "/getQuesCont/{quesID}")
+    @CrossOrigin
     public Message<String> getQueseCont(@PathVariable int quesID){
         Message<String> message = new Message<>();
         String theQuesCont;
@@ -187,6 +193,7 @@ public class Controller {
 
     /*获取所有问卷*/
     @RequestMapping(method = RequestMethod.GET,value = "/allques")
+    @CrossOrigin
     public Message<List<questionnaire>> getQueses(){
         Message<List<questionnaire>> message = new Message<>();
         List<questionnaire> listQues;
@@ -217,6 +224,7 @@ public class Controller {
 
     /*插入一个问卷*/
     @RequestMapping(method = RequestMethod.POST,value = "/createques")
+    @CrossOrigin
     public Message<String> createQues(@RequestBody questionnaire ques)
     {
         Message<String> message = new Message<>();
@@ -244,6 +252,7 @@ public class Controller {
      * 成功返回true
      * 用户名存在返回false*/
     @RequestMapping(method = RequestMethod.POST,value = "/register")
+    @CrossOrigin
     public Message<String> register(@RequestBody User user){
         Message<String> message = new Message<>();
         System.out.println(user);
@@ -268,6 +277,7 @@ public class Controller {
      * 一致返回当前用户的信息
      * 不一致返回null*/
     @RequestMapping(method = RequestMethod.POST,value = "/user")
+    @CrossOrigin
     public Message<User> login(@RequestBody User loginUser){
         Message<User> message = new Message<>();
         User user = null;
@@ -316,6 +326,7 @@ public class Controller {
     }
     /*更新用户数据*/
     @RequestMapping(method = RequestMethod.PUT,value = "/user")
+    @CrossOrigin
     public Message<String> updateUser(@RequestBody User user){
         Message<String> message = new Message<>();
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -340,6 +351,7 @@ public class Controller {
     /*上传用户头像,返回图片URL*/
     @RequestMapping("/upload")
     @ResponseBody
+    @CrossOrigin
     public Message handleFileUpload(@RequestParam("file") MultipartFile file) {
         Message<String> message = new Message<>();
         if (!file.isEmpty()) {
@@ -381,6 +393,7 @@ public class Controller {
 
     @RequestMapping(method = RequestMethod.GET,value = "/report")
     @ResponseBody
+    @CrossOrigin
     public File testDownload() {
 
                 //获取跟目录
@@ -396,6 +409,7 @@ public class Controller {
     * 通过id查找
     * 不用验证密码！！*/
     @RequestMapping(method = RequestMethod.DELETE,value = "/user/{userId}")
+    @CrossOrigin
     public Message<String> deleteUser(@PathVariable int userId){
         Message<String> message = new Message<>();
         SqlSession sqlSession = sqlSessionFactory.openSession();

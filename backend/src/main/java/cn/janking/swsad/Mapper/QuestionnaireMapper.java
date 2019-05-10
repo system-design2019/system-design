@@ -2,6 +2,8 @@ package cn.janking.swsad.Mapper;
 import java.util.List;
 import cn.janking.swsad.bean.questionnaire;
 public interface QuestionnaireMapper {
+    /*初始化表*/
+    void questionnaireTableInit();
     /*添加一个问卷*/
     boolean insert(questionnaire ques);
     /*获取所有问卷*/
