@@ -258,3 +258,100 @@ Response:
 }
 ```
 
+
+
+
+
+# 问卷
+
+## 查询所有问卷：
+
+- 路径 /allques
+- 方法 get
+
+输入
+
+![1557390318220](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390318220.png)
+
+返回样例
+
+{
+    "success": true,
+    "msg": "获取成功",
+    "data": [
+        {
+            "task_id": 10,
+            "title": "$",
+            "publisher": "$",
+            "description": "$",
+            "reward": 0,
+            "effective": "2019-4-28",
+            "request": "$",
+            "status": "not done",
+            "panticipant": "zheng"
+        },
+        {
+            "task_id": 30,
+            "title": "postmdan_test",
+            "publisher": "yourfathder",
+            "description": "test postmdan first",
+            "reward": 800,
+            "effective": "2019-4-28",
+            "request": "sodme new",
+            "status": "not done",
+            "panticipant": "zheng"
+        },
+        {
+            "task_id": 40,
+            "title": "shixun",
+            "publisher": "yourmother",
+            "description": "test postmdan second",
+            "reward": 100,
+            "effective": "2019-4-28",
+            "request": "good boy",
+            "status": "not done",
+            "panticipant": "zheng"
+        }
+    ]
+}
+
+
+
+## 添加问卷
+
+- 路径 /createques
+- post
+
+输入样例
+
+![1557390007003](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390007003.png){
+	"task_id":40,
+	"title":"shixun",
+	"publisher":"yourmother",
+	"description":"test postmdan second",
+	"reward":100,
+	"effective_time":"2019-09-19",
+	"request":"good boy",
+	"task_status":"not done",
+	"panticipant":"songxiao"
+}
+
+## 根据ID获取问卷详情
+
+- 路径 /getQues/{quesID}
+- 方法 get
+
+输入
+
+![1557390186127](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390186127.png)
+
+
+
+## 根据ID获取问卷内容
+
+- 路径 /getQues/{quesID}
+- 方法 get
+
+输入
+
+![1557390240361](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390240361.png)

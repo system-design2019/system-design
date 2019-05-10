@@ -13,6 +13,7 @@
     <!--别名，就是将后面那一堆，用User代替-->
     <typeAliases>
         <typeAlias alias="User" type="cn.janking.swsad.bean.User"/>
+        <typeAlias alias="questionnaire" type="cn.janking.swsad.bean.questionnaire"/>
     </typeAliases>
     <!--环境配置-->
     <environments default="development">
@@ -21,7 +22,7 @@
             <!--连接数据库-->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://52.76.250.96:3306/swsad"/>
+                <property name="url" value="jdbc:mysql://localhost/swsad"/>
                 <property name="username" value="swsad"/>
                 <property name="password" value="swsad"/>
             </dataSource>
@@ -30,5 +31,6 @@
     <!--这个就是指定映射的xml，mapper xml中的SQL查询 都要对应java接口类里面的方法-->
     <mappers>
         <mapper resource="mappers/userMapper.xml"/>
+        <mapper resource="mappers/questionnaireMapper.xml"/>
     </mappers>
 </configuration>

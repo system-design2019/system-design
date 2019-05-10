@@ -1,194 +1,137 @@
+<template>
+    <div class="layout">
+        <Layout>
+            <Header>
+                <Menu mode="horizontal" active-name="1" style="background: #ce4545">
+                    <div class="layout-logo" style="width: 200px;">
+                        <img src="../images/redNav/logoname.png" style="height: 30px;" @click="backtoindex()">
+                    </div>
+                    <div class="layout-nav" style="float: left">
+                        <MenuItem v-for="(tag, index) in navLeftTags" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index)" :class="addClass(index)">
+                            <Icon :type="tag.icon" size=20></Icon>
+                            <span>{{tag.text}}</span>
+                        </MenuItem>
+                    </div>
+                    <div class="layout-nav" style="min-width: 10%; float: right; text-align: right" @click.native="changePageByLink(tag.link)">
+                        <MenuItem v-for="(tag, index) in navRightTags1" v-show="logged" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index+3)" style="float: right" :class="addClass(index+3)">
+                            <Icon :type="tag.icon"></Icon>
+                            <span>{{tag.text}}</span>
+                        </MenuItem>
+                        <MenuItem v-show="!logged" :name="navRightTags0.name" @click.native="changePageByLink(navRightTags0.link, 3)" :class="addClass(3)" style="float: right">
+                            <Icon :type="navRightTags0.icon"></Icon>
+                            <span>{{navRightTags0.text}}</span>
+                        </MenuItem>
+                    </div>
+                </Menu>
+            </Header>
+            <Content style="padding: '30px 150px'; min-height: 700px;">
+                <router-view></router-view>
+            </Content>
+            <signCom :signInFromMain="signInFromMain" @SignSuccess="getSign"></signCom>
+            <Footer class="layout-footer-center" style="text-align: center; padding: 50px 20px 24px 20px">
+                <!-- <img src='../images/github.png' style="width: 2%;"></img> -->
+                <span style="padding-top: 50px">open source <img src='../images/github.png' style="width: 2%;"></img><a href='https://github.com/system-design2019' style="margin:0 3px;">blog</a>here</span>
+                <p style="width: 100%">2019-2020 &copy; TalkingDataSystem Design & Anylasis Project</p>
+            </Footer>
+        </Layout>
+    </div>
+</template>
+<script>
+    import signCom from './Sign.vue'
+    import { mapState } from 'vuex'
+    import { mapGetters } from 'vuex'
+    export default {
+        inject: ['reload'],
+        components: { 
+            signCom 
+        },
+        data(){
+            return{
+                signInFromMain: false,
+                navLeftTags:[
+                    {name: "1", icon:"md-home", text:"首页", link: "/home"},
+                    {name: "2", icon:"md-paper", text:"问卷", link: "/questionnaire"},
+                    {name: "3", icon:"md-walk", text:"跑腿", link: "/favor"}
+                ],
+                navRightTags1:[
+                    {name: "5", icon:"md-person", text:"个人中心", link: "/personal"},
+                    {name: "4", icon:"md-mail", text:"收件箱", link: "/receiveBox"}                    
+                ],
+                navRightTags0: {name: "6", icon:"md-person", text:"登录/注册", link: "in"},
+            }
+        },
+        computed: mapState({
+            logged(){
+                // console.log(this.$route)
+                return JSON.parse(window.sessionStorage.getItem('LogInfo')).log
+            },
+            activeNav(){
+                let data = {
+                    home:0, questionnaire: 1, favor: 2, receiveBox: 3, personal: 4,
+                }
+                return data[this.$route.path.split('/')[1]]
+            }
+        }),
+        methods: {
+            changePageByLink(link, index) {
+                if(link === 'in'){
+                    this.signInFromMain = !this.signInFromMain
+                }
+                    
+                else{
+                    // this.activeNav = index
+                    this.$router.push({path:link})
+                }
+                    
+                
+            },
+            getSign: function(data){
+                // console.log('getsign seccess!!!!!!!!!!!!')
+                if(data){
+                    this.reload()
+                }
+            },
+            backtoindex(){
+                this.$router.push('/')
+            },
+            addClass(index){
+                // console.log(this.activeNav)
+                if(index === this.activeNav){
+                    return 'ivu-menu-item-active1'
+                }
+                else{
+                    return ''
+                }
+            }
+        },
+        mounted(){
+            // console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
+        }
+    }
+</script>
 <style scoped>
-    .layout{
+.layout{
     border: 1px solid #d7dde4;
-    background: #f5f7f9;
-    /*position: relative;*/
+    /* background: #f5f7f9; */
+    position: relative;
     border-radius: 4px;
     overflow: hidden;
 }
 .layout-logo{
-    width: 100px;
-    height: 35px;
-    background: #5b6270;
+    height: 30px;
+    /* background: #5b6270; */
     border-radius: 3px;
     float: left;
     position: relative;
     top: 15px;
-    left: 10px;
-    text-align: center;
-    line-height: 35px;
+    left: 20px;
 }
 .layout-nav{
     width: 420px;
     margin: 0 auto;
     margin-right: 20px;
 }
-#logoN{
-  font-size:20px;
-  color:white;
+.layout-footer-center{
+    text-align: center;
 }
-
-#signB{
-  float:right;
-  font-size:20px;
-}
-
-#headBox2{
-}
-
-#headBox{
-   width:120px; 
-   height:120px; 
-   border-radius:50%; 
-   overflow:hidden;
-   text-align: center;
-   margin: auto;
-   margin-top: 10px;
-   margin-bottom: 10px;
- }
-
-
-#head{
-  max-width:100%;
-  max-height:100%;
-  text-align: center;
-  clear:both;
-  display: block;
-  margin:auto;
-}
-
-.allButton{
-  float:right;
-  margin:5px;
-}
-
-
-
-
-
-
-
 </style>
-<template>
-    <div class="layout">
-        <Layout>
-            <Header>
-                <Menu mode="horizontal" theme="dark" active-name="1">
-                    <div class="layout-logo">
-                        <p id="logoN">T.I.M </p>
-                    </div>
-                    <div class="layout-nav">
-                        <div id="signB">
-                            <MenuItem name="signIn" @click.native="changeToSignIn()">
-                            <Icon type="ios-navigate"></Icon>
-                            登陆
-                            </MenuItem>
-                            <MenuItem name="signUp" @click.native="changeToSignUp()">
-                            <Icon type="ios-keypad"></Icon>
-                            注册
-                            </MenuItem>
-                        </div>
-                    </div>
-                </Menu>
-            </Header>
-            <Layout>
-                <Sider hide-trigger :style="{background: '#fff'}">
-                    <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
-                        <Submenu name="1">
-                            <template slot="title">
-                                <Icon type="ios-navigate"></Icon>
-                                问卷服务
-                            </template>
-                            <MenuItem name="1-1" to="test1">查看所有问卷</MenuItem>
-                            <MenuItem name="1-2" to="test2">我发布的</MenuItem>
-                            <MenuItem name="1-3" to="/main">我参与的</MenuItem>
-                        </Submenu>
-                        <Submenu name="2">
-                            <template slot="title">
-                                <Icon type="ios-keypad"></Icon>
-                                跑腿服务
-                            </template>
-                            <MenuItem name="2-1">拿快递</MenuItem>
-                            <MenuItem name="2-2">拿外卖</MenuItem>
-                        </Submenu>
-                        <Submenu name="3">
-                            <template slot="title">
-                                <Icon type="ios-analytics"></Icon>
-                                约馆助手
-                            </template>
-                            <MenuItem name="3-1">我要约馆</MenuItem>
-                            <MenuItem name="3-2">我要约球</MenuItem>
-                        </Submenu>
-                        <Submenu name="4">
-                            <template slot="title">
-                                <Icon type="ios-analytics"></Icon>
-                                关于我们
-                            </template>
-                            <MenuItem name="4-1" @click.native="goToJump">产品概念</MenuItem>
-                            <MenuItem name="4-2">我要加盟</MenuItem>
-                        </Submenu>
-                    </Menu>
-                </Sider>
-                <Layout :style="{padding: '0 24px 24px'}">
-                    <Content :style="{padding: '24px', minHeight: '500px', background: '#fff'}">
-                        <div id="changeBox">
-                            <!--
-                            这里使用切换componet实现局部的刷新
-                            <keep-alive>
-                                <component :is="tabView"></component>
-                            </keep-alive>
-                             -->
-                            <router-view></router-view>
-                        </div>
-                    </Content>
-                    <signCom :signInFromMain="signInFromMain" :signUpFromMain="signUpFromMain"></signCom>
-                </Layout>
-            </Layout>
-        </Layout>
-    </div>
-</template>
-<script>
-import simple1 from "./test1.vue";
-import simple2 from "./test2.vue";
-import signCom from "./sign.vue";
-
-export default {
-    data() {
-        return {
-            signInFromMain: false,
-            signUpFromMain: false,
-            tabView: "simple1"
-        }
-    },
-    methods: {
-        alertsome() {
-            alert("yes");
-        },
-        Confirm() {
-            alert(this.username + this.password); //username
-        },
-        changeToSignUp() {
-            this.signUpFromMain = !this.signUpFromMain;
-        },
-        changeToSignIn() {
-            this.signInFromMain = !this.signInFrommain;
-        },
-        goToJump() {
-            this.$router.push({ //跳转到不同后缀的页面，同理可以有多个子后缀，从而实现页面跳转
-                path: '/'
-            })
-        },
-        /*
-        tosim(index) {
-            this.tabView = `simple${index}`;
-        }
-        */
-    },
-    components: {
-        simple1,
-        simple2,
-        signCom
-    }
-
-}
-</script>

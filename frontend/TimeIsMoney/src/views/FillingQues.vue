@@ -1,0 +1,62 @@
+<template>
+    <div style="margin: 20px 15%; min-height: 800px">
+        <p style="font-size: 32px; font-weight: 700; text-align: center">{{form.title}}</p>
+        <Divider />
+        <Form ref="formFill" :model="answers" :rules="rules" :label-width="80" label-position="top">
+            <Card v-for="(q, index) in form.questions" :key="index" style="margin: 5px 0; padding: 30px 10px 10px 10px" >
+                <FormItem  :label="q.title" :prop="getKey(index)">
+                    <Input v-if="q.mode === 1" v-model="answers['answer'+String(index+1)]"></Input>
+                    <CheckboxGroup v-if="q.mode === 2" v-model="answers['answer'+String(index+1)]">
+                        <Checkbox v-for="c in form.questions[1].choices" :label="c"  style="width: 100%;"></Checkbox>
+                    </CheckboxGroup>
+                </FormItem>
+            </Card>
+        </Form>
+        <div style="text-align: center">
+            <Button @click="handleSubmit('formFill')" style="margin: 20px 0">提交</Button>
+        </div>
+    </div>
+</template>
+<script>
+import { mapState } from 'vuex'
+import { Ques } from '../store/questionnaire/index.js'
+    export default {
+        computed: mapState('Ques/fillQues',{
+            form: 'formContent',
+            answers: 'answers',
+            rules: 'rules'
+        }),
+        methods:{
+            getKey(index){
+                return 'answer' + String(index+1)
+            },
+            handleSubmit(name){
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        this.$store.dispatch('Ques/fillQues/POST_QUES').then(
+                            (status) => {
+                                if(status){
+                                    this.$Message.success('提交成功');
+                                    this.$router.push('/questionnaire')
+                                }
+                                else{
+                                    this.$Message.error('Fail!');
+                                }
+                            }
+                        )
+                    } else {
+                        this.$Message.error('Fail!');
+                    }
+                })
+                
+            }
+        },
+        created: function(){
+            let id = parseInt(window.sessionStorage.getItem('fillQuesId'))
+            this.$store.dispatch('Ques/fillQues/SET_FILL_QUES', id)
+        }
+    }
+</script>
+<style scoped lang="less">
+    
+</style>

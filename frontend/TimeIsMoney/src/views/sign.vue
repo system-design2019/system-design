@@ -14,8 +14,8 @@
                 </div>
             </div>
             <div class="allInput">
-                <Input v-model="username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
-                <Input v-model="password" prefix="ios-contact" placeholder="请输入密码" type="password" />
+                <Input v-model="info.username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
+                <Input v-model="info.password" prefix="ios-contact" placeholder="请输入密码" type="password" />
                 <Input prefix="ios-contact" placeholder="请输入验证码" />
             </div>
             <div class="allButton">
@@ -23,7 +23,7 @@
                 <Button id="signNow" size="small" @click="changeToSignUp">立即注册</Button>
             </div>
             <div slot="footer">
-                <Button size="large" long>确定</Button>
+                <Button size="large" long  @click.native="doSignIn">确定</Button>
             </div>
         </Modal>
         <Modal v-model="signUp" width="360">
@@ -40,15 +40,15 @@
                 </div>
             </div>
             <div class="allInput">
-                <Input v-model="username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
-                <Input v-model="password" prefix="ios-contact" placeholder="请输入密码" type="password" />
+                <Input v-model="info.username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
+                <Input v-model="info.password" prefix="ios-contact" placeholder="请输入密码" type="password" />
                 <Input prefix="ios-contact" placeholder="请输入验证码" />
             </div>
             <div class="allButton">
                 <Button id="signNow" size="small" @click="changeToSignIn">已有账号？</Button>
             </div>
             <div slot="footer">
-                <Button size="large" long>确定</Button>
+                <Button size="large" long @click="doSignUp">确定</Button>
             </div>
         </Modal>
     </div>
@@ -93,14 +93,16 @@
 }
 </style>
 <script>
-export default {
+import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
+export default {    
     props: ['signInFromJump', 'signInFromMain', 'signUpFromMain'],
     data() {
         return {
             signIn: false,
             signUp: false,
-            username: "",
-            password: ""
+            info: {username: "", password: ""}
+            
         }
     },
     methods: {
@@ -111,6 +113,21 @@ export default {
         changeToSignIn() {
             this.signUp = false;
             this.signIn = true;
+        },
+        doSignUp(){
+            if(this.info.usernmae === '' || this.info.password === '')
+            this.store
+            this.changeToSignIn()
+        },
+        doSignIn(){
+            this.$router.push({
+                path:'/main',
+                name: 'main',
+            })
+            this.signIn = false
+            // console.log('password: ' + this.info.password)
+            this.$store.dispatch('SIGN_IN', this.info)
+            this.$emit("SignSuccess", true)
         }
     },
     watch: {
@@ -121,11 +138,7 @@ export default {
         signInFromMain: function(signIn, oldsignIn) {
             this.signUp = false;
             this.signIn = true;
-        },
-        signUpFromMain: function(signIn, oldsignIn) {
-            this.signUp = true;
-            this.signIn = false;
-        },
+        }
     }
 }
 </script>

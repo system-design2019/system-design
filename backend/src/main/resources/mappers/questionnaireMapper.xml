@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.janking.swsad.Mapper.QuestionnaireMapper">
+
+    <insert id="insert" parameterType="questionnaire">
+        insert into quesTable (quesID, title, content, publisher, reward, attend, total, endtime, request,status)
+        values (${quesID},"${title}", "${content}","${publisher}",${reward},${attend}, ${total},"${endtime}", "${request}","${status}")
+    </insert>
+
+    <!--获取问卷详情-->
+    <select id="getQuesByID"  parameterType="int" resultType="questionnaire">
+        select * from quesTable where quesID = #{quesID}
+    </select>
+
+    <!--获取问卷内容-->
+    <select id="getQuesCont"  parameterType="int" resultType="String">
+        select content from quesTable where quesID = #{quesID}
+    </select>
+
+    <!--获取所有问卷-->
+    <select id="getAllQues"  resultType="questionnaire">
+        select * from quesTable
+    </select>
+
+    <select id="getCount" resultType="int">
+      select COUNT(*) from quesTable;
+    </select>
+</mapper>
