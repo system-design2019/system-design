@@ -55,7 +55,7 @@ public class Controller {
     @RequestMapping("/hello")
     @CrossOrigin
     private String hello(){
-        return "Hello World!";
+        return "Hello World!\n 2019-5-10 update";
     }
     //这里体现了restful风格的请求，按照请求的类型，来进行增删查改。
     //设计restful api（其实也就是URL），不要有冗余，例如不要写成getUsers，URL中
