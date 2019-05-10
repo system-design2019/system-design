@@ -6,26 +6,16 @@ import cn.janking.swsad.bean.questionnaire;
 import cn.janking.swsad.Mapper.UserMapper;
 import cn.janking.swsad.Mapper.QuestionnaireMapper;
 import cn.janking.swsad.singleton.SingletonMybatis;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.sun.xml.internal.ws.api.model.MEP;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.json.JsonSimpleJsonParser;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.jws.soap.SOAPBinding;
-import javax.servlet.ServletContext;
-import javax.swing.*;
 import java.io.*;
-import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
+
 
 @RestController
 @EnableAutoConfiguration
@@ -34,19 +24,36 @@ public class Controller {
     private static SqlSessionFactory sqlSessionFactory;
     static {
         sqlSessionFactory =  SingletonMybatis.getSqlSessionFactory();
-        /*用户数量*/
-        User.initCount(sqlSessionFactory.openSession(true).getMapper(UserMapper.class).getCount());
-        /*问卷数量*/
-        questionnaire.initCount(sqlSessionFactory.openSession(true).getMapper(QuestionnaireMapper.class).getCount());
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        try {
+            //得到映射器
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            //初始化用户表
+            userMapper.userTableInit();
+            //初始化问卷表
+            questionnaireMapper.questionnaireTableInit();
+            /*用户数量*/
+            int count = userMapper.getCount();
+            User.initCount(count);
+            /*问卷数量*/
+            count = questionnaireMapper.getCount();
+            questionnaire.initCount(count);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     //如果方法上的RequestMapping没有value，则此方法默认被父路径调用
     //默认回调
     @RequestMapping
+    @CrossOrigin
     private String index(){
         return "API也会404哦!";
     }
     @RequestMapping("/hello")
+    @CrossOrigin
     private String hello(){
         return "Hello World!";
     }
@@ -55,6 +62,7 @@ public class Controller {
     //最好不要有动词。
     /*初始化表*/
     @RequestMapping(method = RequestMethod.GET,value = "/admin")
+    @CrossOrigin
     public boolean usersTableInit(){
         //获取一个连接,自动提交
         SqlSession sqlSession = sqlSessionFactory.openSession(true);
@@ -75,6 +83,7 @@ public class Controller {
     }
     /*获取所有用户*/
     @RequestMapping(method = RequestMethod.GET,value = "/users")
+    @CrossOrigin
     public Message<List<User>> getUsers(){
         Message<List<User>> message = new Message<>();
         List<User> listUsers;
@@ -107,6 +116,7 @@ public class Controller {
 
     /*获取问卷详情*/
     @RequestMapping(method = RequestMethod.GET,value = "/getQues/{quesID}")
+    @CrossOrigin
     public Message<questionnaire> getQueseByID(@PathVariable int quesID){
         Message<questionnaire> message = new Message<>();
         questionnaire theQues;
@@ -138,6 +148,7 @@ public class Controller {
 
     /*获取问卷详情*/
     @RequestMapping(method = RequestMethod.GET,value = "/getQuesCont/{quesID}")
+    @CrossOrigin
     public Message<String> getQueseCont(@PathVariable int quesID){
         Message<String> message = new Message<>();
         String theQuesCont;
@@ -168,6 +179,7 @@ public class Controller {
 
     /*获取所有问卷*/
     @RequestMapping(method = RequestMethod.GET,value = "/allques")
+    @CrossOrigin
     public Message<List<questionnaire>> getQueses(){
         Message<List<questionnaire>> message = new Message<>();
         List<questionnaire> listQues;
@@ -198,6 +210,7 @@ public class Controller {
 
     /*插入一个问卷*/
     @RequestMapping(method = RequestMethod.POST,value = "/createques")
+    @CrossOrigin
     public Message<String> createQues(@RequestBody questionnaire ques)
     {
         Message<String> message = new Message<>();
@@ -225,6 +238,7 @@ public class Controller {
      * 成功返回true
      * 用户名存在返回false*/
     @RequestMapping(method = RequestMethod.POST,value = "/register")
+    @CrossOrigin
     public Message<String> register(@RequestBody User user){
         Message<String> message = new Message<>();
         System.out.println(user);
@@ -249,6 +263,7 @@ public class Controller {
      * 一致返回当前用户的信息
      * 不一致返回null*/
     @RequestMapping(method = RequestMethod.POST,value = "/user")
+    @CrossOrigin
     public Message<User> login(@RequestBody User loginUser){
         Message<User> message = new Message<>();
         User user = null;
@@ -297,6 +312,7 @@ public class Controller {
     }
     /*更新用户数据*/
     @RequestMapping(method = RequestMethod.PUT,value = "/user")
+    @CrossOrigin
     public Message<String> updateUser(@RequestBody User user){
         Message<String> message = new Message<>();
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -321,6 +337,7 @@ public class Controller {
     /*上传用户头像,返回图片URL*/
     @RequestMapping("/upload")
     @ResponseBody
+    @CrossOrigin
     public Message handleFileUpload(@RequestParam("file") MultipartFile file) {
         Message<String> message = new Message<>();
         if (!file.isEmpty()) {
@@ -359,10 +376,26 @@ public class Controller {
             return message;
         }
     }
+
+    @RequestMapping(method = RequestMethod.GET,value = "/report")
+    @ResponseBody
+    @CrossOrigin
+    public File testDownload() {
+
+                //获取跟目录
+                String fileName = "C:\\Users\\Janking\\Desktop\\嵌入式操作系统\\嵌入式操作系统作业模板_Linux内核.doc";
+
+        return new File(fileName);
+
+
+
+    }
+
     /*删除指定用户
     * 通过id查找
     * 不用验证密码！！*/
     @RequestMapping(method = RequestMethod.DELETE,value = "/user/{userId}")
+    @CrossOrigin
     public Message<String> deleteUser(@PathVariable int userId){
         Message<String> message = new Message<>();
         SqlSession sqlSession = sqlSessionFactory.openSession();

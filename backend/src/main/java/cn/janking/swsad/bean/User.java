@@ -42,9 +42,8 @@ public class User {
     private int credit;
     */
     static public void initCount(int c){
-        count = c + 10000;
+        count = c + new Random(1000).nextInt();
     }
-
     public User(){
         password = "default_password";
         email = "$"+count;
@@ -56,6 +55,7 @@ public class User {
         gender = -1;
         age = -1;
         nickname = null;
+        count++;
     }
     public void setId(int id) {
         this.id = id;

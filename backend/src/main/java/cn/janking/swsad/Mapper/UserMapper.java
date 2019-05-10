@@ -6,6 +6,8 @@ import cn.janking.swsad.bean.User;
 import java.util.List;
 
 public interface UserMapper {
+    /*判断表是否存在*/
+    int existTable(String tableName);
     /*初始化表格*/
      void userTableInit();
     /*获取用户数量*/
