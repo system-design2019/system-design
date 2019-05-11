@@ -1,30 +1,17 @@
-<style>
-    .upper {
-    margin-bottom: 5px;
-    float:right;
-}
-.allQN{
-  margin-top: 5px;
-  clear:both;
-
-  .info{
-    margin-right: 15px;
-    margin-bottom: 2px;
-  }
-  
-  .someInfo{
-    float:right;
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;      
-  }
-}
-
-</style>
 <template>
     <div class="qShow">
-        <div style="height: 400px; background: white">
-            <Button type="info" style="margin-top: 220px; margin-left: 15%" @click="create()">发布问卷</Button>
+        <div id="grad" >
+            <div style="width: 40%; float: left; height:400px">
+                <img src="./../../static/ques/detail2.png" style="float: right; height: 250px; margin-top: 75px"></img>
+            </div>
+            <div style="width: 60%; float: right; height:400px; padding-left: 6%;display: flex;align-items:Center;">
+                <div style="min-height: 150px">
+                    <p style="width: 100%"><span style="font-size: 32px; color: #fff">问卷调查</span> <span style="font-size: 20px; color: #fff">Questionnaire</span></p>
+                    <p style="font-size: 18px; color: #fff; width: 100%">问卷调查，收集意见，随时随地为你提供最丰富的信息！</p>
+                    <Button type="info" style="margin-top: 20px; " @click="create()">发布问卷</Button>
+                </div>
+            </div>
+            
         </div>
         <div style="margin: 30px 15%">
             <div class="bigupper">
@@ -107,9 +94,9 @@ export default {
             this.$refs.selection.selectAll(status)
         },
         create() {
-            let log = JSON.parse(window.sessionStorage.getItem('LogInfo')).log
-            if(log)
-                this.$router.push('questionnaire/createQuestionnaire')
+            let info = JSON.parse(window.sessionStorage.getItem('LogInfo'))
+            if(info.log)
+                this.$router.push({name: 'createQuestionnaire', params: {id: info.userID}})
             else
                 this.$Message.warning('您还未登录，请先登录后发布问卷。')
         },
@@ -119,12 +106,12 @@ export default {
             // console.log(this.detailContent)
         },
         fillIn(id){
-            let log = JSON.parse(window.sessionStorage.getItem('LogInfo')).log
-            if(!log)
+            let info = JSON.parse(window.sessionStorage.getItem('LogInfo'))
+            if(!info.log)
                 this.$Message.warning('您还未登录，请先登录后填写问卷。')
             else{
                 window.sessionStorage.setItem('fillQuesId', id)
-                this.$router.push('questionnaire/filling')
+                this.$router.push({name: 'filling', params: {id: info.userID}})
             }
         }
     },
@@ -133,3 +120,30 @@ export default {
     }
 }
 </script>
+<style>
+    #grad {
+        height: 400px; 
+        background: linear-gradient(to right, rgb(82,189,240) , rgb(102,255,255));
+    }
+    .upper {
+    margin-bottom: 5px;
+    float:right;
+}
+.allQN{
+  margin-top: 5px;
+  clear:both;
+
+  .info{
+    margin-right: 15px;
+    margin-bottom: 2px;
+  }
+  
+  .someInfo{
+    float:right;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;      
+  }
+}
+
+</style>

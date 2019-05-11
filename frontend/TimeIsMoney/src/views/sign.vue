@@ -120,14 +120,20 @@ export default {
             this.changeToSignIn()
         },
         doSignIn(){
-            this.$router.push({
-                path:'/main',
-                name: 'main',
-            })
             this.signIn = false
-            // console.log('password: ' + this.info.password)
-            this.$store.dispatch('SIGN_IN', this.info)
             this.$emit("SignSuccess", true)
+            // console.log('password: ' + this.info.password)
+            this.$store.dispatch('SIGN_IN', this.info).then(
+                () => {
+                    this.$router.push({
+                        path:'/main',
+                        name: 'main',
+                    })
+                }
+            )
+            
+            
+            
         }
     },
     watch: {
