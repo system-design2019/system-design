@@ -89,7 +89,6 @@
                 
             },
             getSign: function(data){
-                // console.log('getsign seccess!!!!!!!!!!!!')
                 if(data){
                     this.reload()
                 }

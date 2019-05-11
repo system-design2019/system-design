@@ -1,10 +1,10 @@
 <template>
     <div class="qShow">
-        <div id="grad" >
-            <div style="width: 40%; float: left; height:400px">
-                <img src="./../../static/ques/detail2.png" style="float: right; height: 250px; margin-top: 75px"></img>
+        <div style="height: 400px">
+            <div style="width: 40%; float: left; height:400px; background: #52BDF0">
+                <img src="./../../static/ques/create.jpg" style="float: right; height: 250px; margin-top: 75px"></img>
             </div>
-            <div style="width: 60%; float: right; height:400px; padding-left: 6%;display: flex;align-items:Center;">
+            <div id="grad"  style="width: 60%; float: right; height:400px; padding-left: 6%;display: flex;align-items:Center;">
                 <div style="min-height: 150px">
                     <p style="width: 100%"><span style="font-size: 32px; color: #fff">问卷调查</span> <span style="font-size: 20px; color: #fff">Questionnaire</span></p>
                     <p style="font-size: 18px; color: #fff; width: 100%">问卷调查，收集意见，随时随地为你提供最丰富的信息！</p>
@@ -14,9 +14,9 @@
             
         </div>
         <div style="margin: 30px 15%">
-            <div class="bigupper">
-                <div class="upper">
-                    <Dropdown style="margin-left: 20px" trigger="click">
+            <div style="width: 100%; min-height: 20px;">
+                <div style="overflow: hidden">
+                    <Dropdown style="margin-left: 20px; float: right;" trigger="click">
                         <Button type="primary">
                             按发布时间排序
                             <Icon type="ios-arrow-down"></Icon>
@@ -29,22 +29,8 @@
                     </Dropdown>
                 </div>
             </div>
-            <div class="allQN">
-                <div style="background:#eee;padding: 20px;">
-                    <Card :bordered="false" style="padding:23px" v-for="(q, index) in quesList" :key="index">
-                        <a href="#" slot="extra">未参与</a>
-                        <p slot="title" style="font-size:20px">{{q.title}}</p>
-                        <div class="allupdate">
-                            <div class="sum" style="font-size:15px">
-                                <span class='info'> 简介:{{q.content}} </span>
-                            </div>
-                            <div class="someInfo">
-                                <span class='info'>发布人:{{q.publisher}}</span><span class='info'>薪酬:￥{{q.reward}}</span><span class='info'>参与情况:{{q.attend}}/{{q.total}}</span><span class='info'>截止时间:{{q.endTime}}</span>
-                                <Button @click="getDetail(q.quesid)">查看详情</Button>
-                            </div>
-                        </div>
-                    </Card>
-                </div>
+            <div style="width: 100%; ">
+                <task></task>
             </div>
         </div>
         <Modal v-model="detail" width="550px" style="position: relative" :mask-closable="false">
@@ -78,7 +64,11 @@
 <script>
 import { mapState } from 'vuex'
 import { Ques } from '../store/questionnaire/index.js'
+import task from "./components/Task.vue"
 export default {
+    components:{
+        task
+    },
     data() {
         return {
             detail: false  
@@ -122,12 +112,12 @@ export default {
 </script>
 <style>
     #grad {
-        height: 400px; 
-        background: linear-gradient(to right, rgb(82,189,240) , rgb(102,255,255));
+        background: linear-gradient(to right, #52BDF0 , rgb(102,255,255));
     }
     .upper {
     margin-bottom: 5px;
     float:right;
+
 }
 .allQN{
   margin-top: 5px;

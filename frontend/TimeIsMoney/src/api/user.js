@@ -10,17 +10,18 @@ import qs from 'qs'
  * @return {Promise}
  * Promise will return the json data with success and message 
  */
-export async function login (username, password) {
-    let data = {
-        "email": username,
-        "password": password
-    }
+export async function login (username, password, mode) {
+    let data = {}
+    if(mode === 'phone')
+        data = {"phone": username,"password": password}
+    else
+        data = {"email": username,"password": password}
     axios.post('/user', JSON.stringify(data))
         .then((response)=>{
-            console.log('response:'+response.data['msg'])
+            return response.data['success']
         })
         .catch((error)=>{
-            console.log('error啊啊啊:'+ error)
+            console.log('error:'+ error)
         })
 }
 
@@ -34,14 +35,16 @@ export async function login (username, password) {
  * @return {Promise}
  * Promise will return the json data with success and message
  */
-export async function userRegister (username, password) {
-    let data = {
-        email: username,
-        password: password
-    }
-    axios.post('/register_form', data)
+export async function userRegister (username, password, mode) {
+    let data = {}
+    if(mode === 'phone')
+        data = {"phone": username,"password": password}
+    else
+        data = {"email": username,"password": password}
+    await axios.post('/register_form', data)
         .then((response)=>{
-            console.log('response:'+response.data['msg'])
+            console.log(response.data)
+            return response.data
         })
         .catch((error)=>{
             console.log('error:'+ error)

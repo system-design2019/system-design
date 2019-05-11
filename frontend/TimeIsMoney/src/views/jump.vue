@@ -186,6 +186,12 @@ export default {
     #mainButton{
         text-align: center;
     }
+    #mainButton .ivu-btn-ghost.ivu-btn-dashed:hover, .ivu-btn-ghost.ivu-btn-default:hover{
+        text-align: center;
+        color: rgb(206, 69, 69);
+        border-color: rgb(255,255,255)!important;
+        background: rgb(255,255,255)!important;
+    }
 
     #moveout{
     animation: in2out 2s;

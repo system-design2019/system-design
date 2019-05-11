@@ -34,7 +34,7 @@ const routers = [{
             {
                 path: 'questionnaire/:id',
                 name: 'questionnaire',
-                component: (resolve) => require(['../views/QuestionShow.vue'], resolve)
+                component: (resolve) => require(['../views/Questionnaire.vue'], resolve)
             },
             {
                 path: 'questionnaire/:id/createQuestionnaire', //check the user's receiveBox
