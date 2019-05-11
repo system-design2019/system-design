@@ -1,6 +1,4 @@
-package cn.janking.swsad.Mapper;
-
-
+package cn.janking.swsad.mapper;
 import cn.janking.swsad.bean.User;
 
 import java.util.List;
@@ -8,8 +6,11 @@ import java.util.List;
 public interface UserMapper {
     /*判断表是否存在*/
     int existTable(String tableName);
-    /*初始化表格*/
+    /*新建表格*/
      void userTableInit();
+     /*删除表格*/
+     void userTableDrop();
+
     /*获取用户数量*/
      int getCount();
     /*添加一个用户*/
@@ -32,6 +33,5 @@ public interface UserMapper {
      int deleteUser(int id);
     /*删除所有用户！*/
      boolean deleteAllUsers();
-
 
 }

@@ -1,4 +1,4 @@
-package cn.janking.swsad.Mapper;
+package cn.janking.swsad.mapper;
 import java.util.List;
 import cn.janking.swsad.bean.questionnaire;
 public interface QuestionnaireMapper {
