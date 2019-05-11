@@ -3,8 +3,8 @@ package cn.janking.swsad.controller;
 import cn.janking.swsad.bean.Message;
 import cn.janking.swsad.bean.User;
 import cn.janking.swsad.bean.questionnaire;
-import cn.janking.swsad.Mapper.UserMapper;
-import cn.janking.swsad.Mapper.QuestionnaireMapper;
+import cn.janking.swsad.mapper.UserMapper;
+import cn.janking.swsad.mapper.QuestionnaireMapper;
 import cn.janking.swsad.singleton.SingletonMybatis;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -60,26 +60,35 @@ public class Controller {
     //这里体现了restful风格的请求，按照请求的类型，来进行增删查改。
     //设计restful api（其实也就是URL），不要有冗余，例如不要写成getUsers，URL中
     //最好不要有动词。
-    /*初始化表*/
-    @RequestMapping(method = RequestMethod.GET,value = "/admin")
+
+    /*重置表*/
+    @RequestMapping(method = RequestMethod.GET,value = "/users/reset")
     @CrossOrigin
-    public boolean usersTableInit(){
+    public Message<String> usersTableInit(){
+        Message<String> message = new Message<>();
         //获取一个连接,自动提交
         SqlSession sqlSession = sqlSessionFactory.openSession(true);
         try {
             //得到映射器
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
+            userMapper.userTableDrop();
             userMapper.userTableInit();
         }catch (Exception e){
             e.printStackTrace();
-            return false;
+            message.setSuccess(false);
+            message.setMsg("重置失败: "+ e.toString());
+            System.out.println(message);
+            return message;
         }
         finally {
             //最后记得关闭连接
             sqlSession.close();
         }
-        return true;
+        message.setSuccess(true);
+        message.setMsg("用户表重置成功");
+        System.out.println(message);
+        return message;
     }
     /*获取所有用户*/
     @RequestMapping(method = RequestMethod.GET,value = "/users")
@@ -108,7 +117,6 @@ public class Controller {
             //最后记得关闭连接
             sqlSession.close();
         }
-
         return message;
     }
 
@@ -237,11 +245,53 @@ public class Controller {
     /*注册：插入用户数据
      * 成功返回true
      * 用户名存在返回false*/
+    @RequestMapping(method = RequestMethod.POST,value = "/register_form")
+    @CrossOrigin
+    public Message<String> register_form(@RequestParam(value = "password", defaultValue = "", required = false) String password,
+                                         @RequestParam(value = "email", defaultValue = "", required = false) String email,
+                                         @RequestParam(value = "phone", defaultValue = "", required = false) String phone){
+        Message<String> message = new Message<>();
+        System.out.println(phone + "\n" + email + "\n" + password);
+        User user = new User();
+        if(!password.isEmpty())
+            user.setPassword(password);
+        if(!email.isEmpty()){
+            user.setEmail(email);
+        }
+        if(!phone.isEmpty())
+            user.setPhone(phone);
+        System.out.println("--------Request-------");
+        System.out.println(user);
+        System.out.println("--------Request-------");
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            userMapper.insert(user);
+            message.setSuccess(true);
+            message.setMsg("注册成功");
+            sqlSession.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("注册失败:" + e.getMessage());
+            return message;
+        }finally {
+            sqlSession.close();
+        }
+        return message;
+    }
+
+
+    /*注册：插入用户数据
+     * 成功返回true
+     * 用户名存在返回false*/
     @RequestMapping(method = RequestMethod.POST,value = "/register")
     @CrossOrigin
     public Message<String> register(@RequestBody User user){
         Message<String> message = new Message<>();
+        System.out.println("--------Request-------");
         System.out.println(user);
+        System.out.println("--------Request-------");
         SqlSession sqlSession = sqlSessionFactory.openSession();
         try {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -269,7 +319,9 @@ public class Controller {
         User user = null;
         SqlSession sqlSession = sqlSessionFactory.openSession();
         //判断是手机还是邮箱
-        System.out.println(loginUser.getPhone() + loginUser.getEmail());
+        System.out.println("--------Request-------");
+        System.out.println(loginUser);
+        System.out.println("--------Request-------");
         if(loginUser.getPhone() != null && !loginUser.getPhone().isEmpty() && loginUser.getPhone().charAt(0) != '$'){
             try {
                 UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -295,9 +347,15 @@ public class Controller {
             }finally {
                 sqlSession.close();
             }
+        }else{
+            message.setMsg("登录失败：邮箱或手机为空");
+            message.setSuccess(false);
+            message.setData(null);
+            return message;
         }
-        System.out.println(user.getPassword());
-        System.out.println(loginUser.getPassword());
+        System.out.println("--------Verify-------");
+        System.out.println(loginUser);
+        System.out.println("--------Verify-------");
         //判断密码是否正确
         if(user!=null && user.getPassword().equals(loginUser.getPassword())){
             message.setMsg("登录成功");
@@ -316,6 +374,9 @@ public class Controller {
     public Message<String> updateUser(@RequestBody User user){
         Message<String> message = new Message<>();
         SqlSession sqlSession = sqlSessionFactory.openSession();
+        System.out.println("--------Request-------");
+        System.out.println(user);
+        System.out.println("--------Request-------");
         boolean result;
         try {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);

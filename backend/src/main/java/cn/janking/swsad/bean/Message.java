@@ -38,4 +38,11 @@ public class Message<T> {
         this.success = success;
     }
 
+    @Override
+    public String toString() {
+        String s = "Message: " + msg;
+        if(data!=null)
+            s += "\nData: " + data.toString();
+        return s;
+    }
 }
