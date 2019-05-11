@@ -1,4 +1,4 @@
-# User
+# 用户(User)
 
 **统一返回格式**
 
@@ -17,6 +17,29 @@ public class Message<T> {
     }
 }
 ```
+
+## 重置用户表
+
+删除原来的用户表，并且重新创建用户表
+
+- `/users/reset`  
+- `GET` 
+- 参数：无
+- 返回：`Message<String>`
+
+**示例：**
+
+Response:
+
+```json
+{
+    "success": true,
+    "msg": "用户表重置成功",
+    "data": null
+}
+```
+
+
 
 ## 获取所有用户
 

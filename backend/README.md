@@ -33,6 +33,11 @@
   $ nohup java -jar swsad-0.0.1-SNAPSHOT.jar &
 
   ```
+- 查看后台jar包
+```bash
+  $ ps -def | grep
+  $ kill 进程号
+```
 
 - 测试`url`为 http://localhost:8080
 

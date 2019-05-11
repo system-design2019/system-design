@@ -1,6 +1,6 @@
 package cn.janking.swsad.bean;
 
-import cn.janking.swsad.Mapper.UserMapper;
+import cn.janking.swsad.mapper.UserMapper;
 
 import java.util.Random;
 
@@ -166,4 +166,12 @@ public class User {
         return name;
     }
 
+    @Override
+    public String toString() {
+        String s = "Id: " + id;
+        s += "\nPassword: " + password;
+        s += "\nEmail: " + email;
+        s += "\nPhone: " + phone;
+        return s;
+    }
 }

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: cn.janking.swsad.SwsadApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.35 sec - in cn.janking.swsad.SwsadApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.258 sec - in cn.janking.swsad.SwsadApplicationTests

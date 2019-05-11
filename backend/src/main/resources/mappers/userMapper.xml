@@ -2,12 +2,12 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.janking.swsad.Mapper.UserMapper">
+<mapper namespace="cn.janking.swsad.mapper.UserMapper">
 
     <!--id对应接口中的方法，名字要一样，parameterType是方法的参数类型，
     resultType是查询返回的类型，需要注意的是，这里的SQL语句后面不能加分号，变量不能加引号-->
     <!--删除表-->
-    <update id="dropTable">
+    <update id="userTableDrop">
         drop table user_table;
     </update>
     <!--初始化表-->
@@ -31,6 +31,7 @@
             constraint phone unique (phone)
         )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     </update>
+
     <!--获取用户数量-->
     <select id="getCount" resultType="int">
       select COUNT(*) from user_table;
