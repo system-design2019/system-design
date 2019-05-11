@@ -13,11 +13,11 @@
                         </MenuItem>
                     </div>
                     <div class="layout-nav" style="min-width: 10%; float: right; text-align: right" @click.native="changePageByLink(tag.link)">
-                        <MenuItem v-for="(tag, index) in navRightTags1" v-show="logged" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index+3)" style="float: right" :class="addClass(index+3)">
+                        <MenuItem v-for="(tag, index) in navRightTags1" v-if="logged" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index+3)" style="float: right" :class="addClass(index+3)">
                             <Icon :type="tag.icon"></Icon>
                             <span>{{tag.text}}</span>
                         </MenuItem>
-                        <MenuItem v-show="!logged" :name="navRightTags0.name" @click.native="changePageByLink(navRightTags0.link, 3)" :class="addClass(3)" style="float: right">
+                        <MenuItem v-else :name="navRightTags0.name" @click.native="changePageByLink(navRightTags0.link, 3)" :class="addClass(3)" style="float: right">
                             <Icon :type="navRightTags0.icon"></Icon>
                             <span>{{navRightTags0.text}}</span>
                         </MenuItem>
@@ -67,7 +67,7 @@
             },
             activeNav(){
                 let data = {
-                    home:0, questionnaire: 1, favor: 2, receiveBox: 3, personal: 4,
+                    home:0, questionnaire: 1, favor: 2, receiveBox: 4, personal: 3,
                 }
                 return data[this.$route.path.split('/')[1]]
             }

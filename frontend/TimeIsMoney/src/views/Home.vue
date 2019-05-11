@@ -26,9 +26,9 @@
                     <p slot="title">一夜暴富</p>
                     <ul style="margin-left: 3px">
                         <li v-for="(item, index) in ranklist" :key="index" style="list-style: none; margin-top: 10px;">
-                            <Icon type="ios-paper"></Icon>
-                            <a href="#" target="_blank">{{ item.name }}</a>
-                            <span style="float: right">{{ item.price }}</span>
+                            <Icon type="ios-paper"  style="width: 7%;overflow: hidden;"></Icon>
+                            <a href="#" target="_blank" style="width: 65%; overflow: hidden;display:inline-block;word-break: keep-all;white-space: nowrap;text-overflow: ellipsis;">{{ item.name }}</a>
+                            <span  style=" float: right; width: 20%; overflow: hidden;display:inline-block;word-break: keep-all;white-space: nowrap;text-overflow: ellipsis;">{{ item.price }}</span>
                         </li>
                     </ul>
                 </Card>
