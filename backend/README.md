@@ -35,7 +35,7 @@
   ```
 - 查看后台jar包
 ```bash
-  $ ps -def | grep
+  $ ps -def | grep jar
   $ kill 进程号
 ```
 
@@ -45,7 +45,13 @@
 
 [API详细文档](./API.md)
 
-请求`URL` ：http://52.76.250.96:8080
+请求`URL` ：
+
+http://timoney.xyz:8080
+
+或
+
+<http://api.timoney.xyz>
 
 > 此URL的API不一定是最新的
 
@@ -78,6 +84,10 @@
 - MySQL8使用JDBC连接的问题(但是服务器用不了版本8)
 
   <https://blog.csdn.net/qq_22076345/article/details/81952035>
+  
+- 升级java 1.8
+
+  <https://www.jianshu.com/p/848b06dd19aa>
 
 ## 笔记
 
