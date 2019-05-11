@@ -143,7 +143,7 @@ Response:
 
   - 注意：只有其中的email，phone，password字段有效
 
-    ​	   其中email和phone必须有且仅有一个存在
+    ​	        其中email和phone**必须有且仅有一个**存在
 
     ​           返回的User对象如果**email、phone、name**以字符“$"开头则表示**未初始化**
 
