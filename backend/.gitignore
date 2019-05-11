@@ -5,7 +5,5 @@ projectName.iml
 /.springBeans
 *.DS_Store
 *.iml
-*.jar
 /build
 /local.properties
-/target/
