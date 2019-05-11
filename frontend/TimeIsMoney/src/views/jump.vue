@@ -1,12 +1,14 @@
 <template>
     <div class="hellopage">
         <div id="block1" v-show="show">
-            <Row type="flex" justify="center" align="middle" >
-                <div id="moveout" ref="moveout">
+            <Row type="flex" justify="center">
+                <Row type="flex" justify="center" align="middle">
+                <div id="moveout" ref="moveout" >
                     <h2>
                         <p id="text1">从未想过 琐碎时间更值钱？</p>
                     </h2>
                 </div>
+                </Row>
                 <transition>
                     <div id="showon" ref="showon">
                         <div id="signIn">
@@ -16,10 +18,10 @@
                             <div id="logoBox">
                                 <img id="logov2" src="../images/logov2big.png" alt="正方形的原始图片" />
                             </div>
-                            <p id="bigTitle"> T.I.M </p>
+                            <p id="bigTitle"> TimeIsMoney </p>
                             <p id="title2"> 让琐碎的时间更有价值 </p>
                             <div id="mainButton">
-                                <Button @click="handleStart" shape="circle" size=large ghost style="font-size:30px;width:200px">去赚钱</Button>
+                                <Button @click="handleStart" shape="circle" size=large ghost style="font-size:25px;width:200px">去赚钱</Button>
                             </div>
                         </div>
                     </div>
@@ -124,7 +126,7 @@ export default {
         bottom: 0;
         left: 0;
         display: flex;
-        align-items: center; 
+        /*align-items: center; */
         justify-content: center;
 
         h2{
@@ -137,46 +139,50 @@ export default {
         height: 100%;
         }
     }
-
+    
     #signIn{
         width: 1200px;
-        height: 70px;
+        height: 80px;
     }
+    
     #signButton{
         float:right;
-        margin-right: 30px;
-        font-size: 30px;
+        margin-right: 20px;
+        margin-top: 20px;
+        font-size: 15px;
     }
 
     #block1{
-        width:1200px;
-        height: 650px;
+        /*width:1200px;*/
+        height: 500px;
         background-color: #ce4545;
     }
 
 
-
     #bigTitle{
-        font-size:100px;
+        font-size:40px;
         color: #FFF;
         margin-top: 0px;
         text-align: center;
+        font-family:Lobster-Regular;
+        margin-bottom: 20px;
     }
     #title2{
-        font-size:30px;
+        font-size:20px;
         color:#FFF;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
         text-align: center;
     }
     #logov2{
-        width:200px;
-        height:200px;
+        width:150px;
+        height:150px;
+        text-align: center;
+        margin: auto;
     }
     #logoBox{
-       width:200px; 
-       height:200px; 
+       width:150px; 
+       height:150px; 
        border-radius:50%; 
-       overflow:hidden;
        text-align: center;
        margin: auto;
      }
@@ -195,7 +201,7 @@ export default {
     animation-fill-mode: forwards;
     font-size: 100px;
     justify-content: center;
-    align-items:center;
+   /* align-items:center;*/
     }
 
     #text1{
@@ -204,10 +210,10 @@ export default {
     }
 
     #showon{
-        animation:uptodown 3s;
-        -moz-animation:uptodown 3s; /* Firefox */
-        -webkit-animation:uptodown 3s; /* Safari and Chrome */
-        -o-animation:uptodown 3s; /* Opera */
+        animation:uptodown 4s;
+        -moz-animation:uptodown 4s; /* Firefox */
+        -webkit-animation:uptodown 4s; /* Safari and Chrome */
+        -o-animation:uptodown 4s; /* Opera */
          animation-fill-mode: forwards;
 
          /*animation-delay: 2.5s;  /*用于延迟触发的函数*/  
