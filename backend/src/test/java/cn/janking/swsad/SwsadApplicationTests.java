@@ -1,4 +1,4 @@
-package cn.janking.swsad;
+package xyz.timoney.swsad;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

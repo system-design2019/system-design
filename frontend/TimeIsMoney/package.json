@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "init": "webpack --progress --config webpack.dev.config.js",
-    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --compress --history-api-fallback --config webpack.dev.config.js",
+    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --port=8080 --compress --history-api-fallback --config webpack.dev.config.js",
     "build": "webpack --progress --hide-modules --config webpack.prod.config.js"
   },
   "repository": {
@@ -16,7 +16,9 @@
   "license": "MIT",
   "dependencies": {
     "animate.css": "^3.7.0",
+    "axios": "^0.18.0",
     "iview": "^3.3.3",
+    "qs": "^6.7.0",
     "vue": "^2.5.16",
     "vue-router": "^2.8.1",
     "vuex": "^3.1.0"

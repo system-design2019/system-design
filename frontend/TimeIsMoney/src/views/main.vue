@@ -13,11 +13,13 @@
                         </MenuItem>
                     </div>
                     <div class="layout-nav" style="min-width: 10%; float: right; text-align: right" @click.native="changePageByLink(tag.link)">
-                        <MenuItem v-for="(tag, index) in navRightTags1" v-show="logged" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index+3)" style="float: right" :class="addClass(index+3)">
+                        <div v-if="logged">
+                        <MenuItem v-for="(tag, index) in navRightTags1" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index+3)" style="float: right" :class="addClass(index+3)">
                             <Icon :type="tag.icon"></Icon>
                             <span>{{tag.text}}</span>
                         </MenuItem>
-                        <MenuItem v-show="!logged" :name="navRightTags0.name" @click.native="changePageByLink(navRightTags0.link, 3)" :class="addClass(3)" style="float: right">
+                        </div>
+                        <MenuItem v-else :name="navRightTags0.name" @click.native="changePageByLink(navRightTags0.link, 3)" :class="addClass(3)" style="float: right">
                             <Icon :type="navRightTags0.icon"></Icon>
                             <span>{{navRightTags0.text}}</span>
                         </MenuItem>
@@ -49,13 +51,13 @@
             return{
                 signInFromMain: false,
                 navLeftTags:[
-                    {name: "1", icon:"md-home", text:"首页", link: "/home"},
-                    {name: "2", icon:"md-paper", text:"问卷", link: "/questionnaire"},
-                    {name: "3", icon:"md-walk", text:"跑腿", link: "/favor"}
+                    {name: "1", icon:"md-home", text:"首页", link: "home"},
+                    {name: "2", icon:"md-paper", text:"问卷", link: "questionnaire"},
+                    {name: "3", icon:"md-walk", text:"跑腿", link: "favor"}
                 ],
                 navRightTags1:[
-                    {name: "5", icon:"md-person", text:"个人中心", link: "/personal"},
-                    {name: "4", icon:"md-mail", text:"收件箱", link: "/receiveBox"}                    
+                    {name: "5", icon:"md-person", text:"个人中心", link: "personal"},
+                    {name: "4", icon:"md-mail", text:"收件箱", link: "receiveBox"}                    
                 ],
                 navRightTags0: {name: "6", icon:"md-person", text:"登录/注册", link: "in"},
             }
@@ -67,7 +69,7 @@
             },
             activeNav(){
                 let data = {
-                    home:0, questionnaire: 1, favor: 2, receiveBox: 3, personal: 4,
+                    home:0, questionnaire: 1, favor: 2, receiveBox: 4, personal: 3,
                 }
                 return data[this.$route.path.split('/')[1]]
             }
@@ -79,8 +81,9 @@
                 }
                     
                 else{
-                    // this.activeNav = index
-                    this.$router.push({path:link})
+                    let id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
+                    // console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
+                    this.$router.push({name:link, params: {id: id}})
                 }
                     
                 

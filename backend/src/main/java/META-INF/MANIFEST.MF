@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: cn.janking.swsad.SwsadApplication
+Main-Class: xyz.timoney.swsad.SwsadApplication
 

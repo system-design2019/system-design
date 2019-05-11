@@ -93,6 +93,7 @@ export default {
     },
     methods: {
         handleStart() {
+            let id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
             this.$router.push({ //跳转到不同后缀的页面，同理可以有多个子后缀，从而实现页面跳转
                 path: '/main'
             })
@@ -105,7 +106,7 @@ export default {
             setTimeout(this.disapper, 2500); //记得加this。否则会找不到元素/方法
             var obj = {
                 "log": false,
-                "username": ""
+                "userID": 0
             }
             window.sessionStorage.setItem('LogInfo', JSON.stringify(obj))
         },

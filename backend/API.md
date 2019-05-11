@@ -1,4 +1,4 @@
-# User
+# 用户(User)
 
 **统一返回格式**
 
@@ -17,6 +17,29 @@ public class Message<T> {
     }
 }
 ```
+
+## 重置用户表
+
+删除原来的用户表，并且重新创建用户表
+
+- `/users/reset`  
+- `GET` 
+- 参数：无
+- 返回：`Message<String>`
+
+**示例：**
+
+Response:
+
+```json
+{
+    "success": true,
+    "msg": "用户表重置成功",
+    "data": null
+}
+```
+
+
 
 ## 获取所有用户
 
@@ -274,11 +297,10 @@ Response:
 - 方法 get
 
 输入
-
-![1557390318220](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390318220.png)
+http://localhost:8080/allques
 
 返回样例
-
+```json
 {
     "success": true,
     "msg": "获取成功",
@@ -318,6 +340,8 @@ Response:
         }
     ]
 }
+```
+
 
 
 
@@ -327,8 +351,9 @@ Response:
 - post
 
 输入样例
-
-![1557390007003](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390007003.png){
+http://loacalhost:8080/createques
+```json
+{
 	"task_id":40,
 	"title":"shixun",
 	"publisher":"yourmother",
@@ -339,6 +364,8 @@ Response:
 	"task_status":"not done",
 	"panticipant":"songxiao"
 }
+```
+
 
 ## 根据ID获取问卷详情
 
@@ -346,16 +373,44 @@ Response:
 - 方法 get
 
 输入
+http://localhost/getQues/{quesID}
 
-![1557390186127](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390186127.png)
+返回
+```json
+{
+    "success": true,
+    "msg": "获取成功",
+    "data": {
+        "quesID": 123,
+        "title": "ziranyuyan",
+        "content": "di11cizuoye",
+        "publisher": "zheng",
+        "reward": 78,
+        "attend": 2,
+        "total": 50,
+        "endtime": "2019-10-5",
+        "request": "liangtian",
+        "status": "not done"
+    }
+}
+```
+
 
 
 
 ## 根据ID获取问卷内容
 
-- 路径 /getQues/{quesID}
+- 路径 /getQuesCont/{quesID}
 - 方法 get
 
 输入
+http://localhost:8080/getQuesCont/{quesID}
 
-![1557390240361](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1557390240361.png)
+返回
+```json
+{
+    "success": true,
+    "msg": "获取成功",
+    "data": "di11cizuoye"
+}
+```

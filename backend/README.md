@@ -6,8 +6,10 @@
 
 - 直接将项目导入为`IntelliJ`项目，点击运行
 
-- 服务器数据库地址为 jdbc:mysql://52.76.250.96:3306/swsad
-
+- 服务器数据库地址为 jdbc:mysql://localhost:3306/swsad
+  
+  (直接在本地数据库调试)
+  
   用户名:swsad
 
   密码:swsad
@@ -20,7 +22,7 @@
 
 
 
-- 使用`IDEA maven`打包生成`jar`包
+- 使用`IDEA maven`的`package`命令打包生成`jar`包
 
 - 运行`system-design\backend\target`目录下的`jar`包
 
@@ -31,6 +33,11 @@
   $ nohup java -jar swsad-0.0.1-SNAPSHOT.jar &
 
   ```
+- 查看后台jar包
+```bash
+  $ ps -def | grep
+  $ kill 进程号
+```
 
 - 测试`url`为 http://localhost:8080
 
