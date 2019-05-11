@@ -1,5 +1,5 @@
 cn\janking\swsad\SwsadApplication.class
 cn\janking\swsad\controller\Controller.class
-cn\janking\swsad\Mapper\UserMapper.class
 cn\janking\swsad\singleton\SingletonMybatis.class
 cn\janking\swsad\bean\User.class
+cn\janking\swsad\mapper\UserMapper.class

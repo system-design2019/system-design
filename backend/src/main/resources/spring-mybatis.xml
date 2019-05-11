@@ -12,8 +12,8 @@
     </settings>
     <!--别名，就是将后面那一堆，用User代替-->
     <typeAliases>
-        <typeAlias alias="User" type="cn.janking.swsad.bean.User"/>
-        <typeAlias alias="questionnaire" type="cn.janking.swsad.bean.questionnaire"/>
+        <typeAlias alias="User" type="xyz.timoney.swsad.bean.User"/>
+        <typeAlias alias="questionnaire" type="xyz.timoney.swsad.bean.questionnaire"/>
     </typeAliases>
     <!--环境配置-->
     <environments default="development">
