@@ -12,10 +12,10 @@ import qs from 'qs'
  */
 export async function login (username, password) {
     let data = {
-        email: username,
-        password: password
+        "email": username,
+        "password": password
     }
-    axios.post('/register_form', qs.stringify(data))
+    axios.post('/user', JSON.stringify(data))
         .then((response)=>{
             console.log('response:'+response.data['msg'])
         })
@@ -36,10 +36,15 @@ export async function login (username, password) {
  */
 export async function userRegister (username, password) {
     let data = {
-        phone: username,
+        email: username,
         password: password
     }
-    let response = await axios.post(ROOT + 'register/', data)
-    throwErrorIfExists(response)
+    axios.post('/register_form', data)
+        .then((response)=>{
+            console.log('response:'+response.data['msg'])
+        })
+        .catch((error)=>{
+            console.log('error:'+ error)
+        })
 }
  
