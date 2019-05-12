@@ -1,6 +1,6 @@
 <template>
-<div>
-<Modal v-model="detail" width="800px" class-name="vertical-center-modal" :mask-closable="false">
+<div class="d">
+<Modal v-model="detail"  width="800px" class-name="vertical-center-modal" :mask-closable="false">
     <img src="./../../../static/ques/detail.png" style="position:relative; float: left; left: -60px; top: -60px; height:500px"></img>
     <p style="font-size:26px; margin: 20px 0 10px 0">{{detailContent.title}}</p>
     <div style="overflow: hidden; width: 400px">
@@ -100,7 +100,7 @@ export default{
             top: 0;
         }
     }
-    .ivu-modal-content {
+    .d .ivu-modal-content {
         height: 500px!important;
         border-radius: 0!important;
     }
