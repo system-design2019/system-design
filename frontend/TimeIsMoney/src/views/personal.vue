@@ -11,13 +11,12 @@
     justify-content: center;
     margin-bottom: 30px;
 }
-    #qInformation{
+    /* #qInformation{
     text-align: center;
     align-items: center;
     display: flex;
     justify-content: center;
-    /**/
-    }
+    } */
 
     h1 {
         height: 150px;
@@ -72,6 +71,9 @@
     .iconInDy{
         float:left;
         margin-top:10px;
+    }
+    .personal .ivu-tabs-nav-container{
+        font-size: 22px!important;
     }
 
 </style>
@@ -171,9 +173,9 @@
                 </Col>
             </Row>
         </div>
-        <div id="qInformation">
-            <Tabs value="credit" style="font-size:30px;width:80%;">
-                <TabPane label="我的信用" name="credit">
+        <div class="personal" style="margin: 0 10%">
+            <Tabs value="credit" style="font-size: 20px">
+                <TabPane label="我的信用" name="credit" >
                     <card>这是我的信用
                     </card>
                 </TabPane>
@@ -182,40 +184,7 @@
                         <div>
                             <span id="dynamicDate" style="font-size:20px;color:red;"> 04.15 </span><span style="font-size:15px;color:gray;">我参与了</span>
                         </div>
-                        <card>
-                            <Row>
-                                <span style="font-size:30px;margin:5px;float:left;">电子竞技行业认知度市场调查
-                                </span>
-                                <img src="../images/personal/进行中.png" style="float:right;margin-top:0px;" width="60px" height="60px" />
-                            </Row>
-                            <Row><span style="font-size:15px;margin:5px;float:left;">这里是为了凑格式给上面题目进行的一些解释</span></Row>
-                            <Row type="flex" align="bottom">
-                                <Col span="2" class="iconInDy">
-                                <img src="../images/github.png" width="30px" height="30px" />
-                                <span id="questionOwner"> 问卷主人 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy" offset="1">
-                                <img src="../images/问卷.png" width="30px" height="30px" />
-                                <span id="theQuestion"> 问卷 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy">
-                                <img src="../images/personal/时长.png" width="30px" height="30px" />
-                                <span id="theQTime"> 5~10分钟 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy">
-                                <img src="../images/personal/价格.png" width="30px" height="30px" />
-                                <span id="theQMoney" style="font-size:15px;color:red;"> 10元 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy" offset="9">
-                                <img src="../images/personal/头像2.png" width="30px" height="30px" />
-                                <span id="theQmembers"> 120人 </span>
-                                </Col>
-                                <Col span="4" class="iconInDy">
-                                <img src="../images/true.png" width="30px" height="30px" />
-                                <span id="theQuestion"> 2019年5月3日 </span>
-                                </Col>
-                            </Row>
-                        </card>
+                        <task></task>
                     </div>
                 </TabPane>
                 <TabPane label="我的收藏" name="collect">
@@ -223,40 +192,7 @@
                         <div>
                             <span id="dynamicDate" style="font-size:20px;color:red;"> 04.15 </span><span style="font-size:15px;color:gray;">我参与了</span>
                         </div>
-                        <card>
-                            <Row>
-                                <span style="font-size:30px;margin:5px;float:left;">电子竞技行业认知度市场调查
-                                </span>
-                                <img src="../images/personal/进行中.png" style="float:right;margin-top:0px;" width="60px" height="60px" />
-                            </Row>
-                            <Row><span style="font-size:15px;margin:5px;float:left;">这里是为了凑格式给上面题目进行的一些解释</span></Row>
-                            <Row type="flex" align="bottom">
-                                <Col span="2" class="iconInDy">
-                                <img src="../images/github.png" width="30px" height="30px" />
-                                <span id="questionOwner"> 问卷主人 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy" offset="1">
-                                <img src="../images/问卷.png" width="30px" height="30px" />
-                                <span id="theQuestion"> 问卷 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy">
-                                <img src="../images/personal/时长.png" width="30px" height="30px" />
-                                <span id="theQTime"> 5~10分钟 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy">
-                                <img src="../images/personal/价格.png" width="30px" height="30px" />
-                                <span id="theQMoney" style="font-size:15px;color:red;"> 10元 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy" offset="9">
-                                <img src="../images/personal/头像2.png" width="30px" height="30px" />
-                                <span id="theQmembers"> 120人 </span>
-                                </Col>
-                                <Col span="4" class="iconInDy">
-                                <img src="../images/true.png" width="30px" height="30px" />
-                                <span id="theQuestion"> 2019年5月3日 </span>
-                                </Col>
-                            </Row>
-                        </card>
+                        <task></task>
                     </div>
                 </TabPane>
             </Tabs>
@@ -264,7 +200,11 @@
     </div>
 </template>
 <script>
+import task from './components/Task.vue'
 export default {
+    components:{
+        task
+    },
     data() {
         return {
             borderSize: 0,

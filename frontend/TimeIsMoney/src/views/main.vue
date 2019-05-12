@@ -12,7 +12,7 @@
                             <span>{{tag.text}}</span>
                         </MenuItem>
                     </div>
-                    <div class="layout-nav" style="min-width: 10%; float: right; text-align: right" @click.native="changePageByLink(tag.link)">
+                    <div class="layout-nav" style="float: right; text-align: right" @click.native="changePageByLink(tag.link)">
                         <div v-if="logged">
                         <MenuItem v-for="(tag, index) in navRightTags1" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index+3)" style="float: right" :class="addClass(index+3)">
                             <Icon :type="tag.icon"></Icon>
@@ -83,13 +83,12 @@
                 else{
                     let id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
                     // console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
-                    this.$router.push({name:link, params: {id: id}})
+                    this.$router.push({name:link})
                 }
                     
                 
             },
             getSign: function(data){
-                // console.log('getsign seccess!!!!!!!!!!!!')
                 if(data){
                     this.reload()
                 }
@@ -108,7 +107,7 @@
             }
         },
         mounted(){
-            // console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
+            console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
         }
     }
 </script>
@@ -131,9 +130,7 @@
     left: 20px;
 }
 .layout-nav{
-    width: 420px;
     margin: 0 auto;
-    margin-right: 20px;
 }
 .layout-footer-center{
     text-align: center;

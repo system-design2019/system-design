@@ -23,41 +23,41 @@ const routers = [{
                 name: 'main',
                 redirect: function(to){
                     let id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
-                    return 'home/'+String(id)
+                    return 'home'
                 }
             },
             {
-                path: 'home/:id',
+                path: 'home',
                 name: 'home',
                 component: (resolve) => require(['../views/Home.vue'], resolve)
             },
             {
-                path: 'questionnaire/:id',
+                path: 'questionnaire',
                 name: 'questionnaire',
-                component: (resolve) => require(['../views/QuestionShow.vue'], resolve)
+                component: (resolve) => require(['../views/Questionnaire.vue'], resolve)
             },
             {
-                path: 'questionnaire/:id/createQuestionnaire', //check the user's receiveBox
+                path: 'questionnaire/createQuestionnaire', //check the user's receiveBox
                 name:'createQuestionnaire',
                 component: (resolve) => require(['../views/CreateQues.vue'], resolve)
             },
             {
-                path: 'questionnaire/:id/filling', //check the user's receiveBox
+                path: 'questionnaire/filling', //check the user's receiveBox
                 name:'filling',
                 component: (resolve) => require(['../views/FillingQues.vue'], resolve)
             },
             {
-                path: 'favor/:id',
+                path: 'favor',
                 name: 'favor',
                 component: (resolve) => require(['../views/RunFavor.vue'], resolve)
             },
             {
-                path: 'personal/:id', //personal page
+                path: 'personal', //personal page
                 name: 'personal',
                 component: (resolve) => require(['../views/Personal.vue'], resolve)
             },
             {
-                path: 'receiveBox/:id', //check the user's receiveBox
+                path: 'receiveBox', //check the user's receiveBox
                 name:'receiveBox',
                 component: (resolve) => require(['../views/ReceiveBox.vue'], resolve)
             }
