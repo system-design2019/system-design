@@ -88,6 +88,9 @@ http://timoney.xyz:8080
 - 升级java 1.8
 
   <https://www.jianshu.com/p/848b06dd19aa>
+  
+- JDBC连接闲置太旧报错
+  <https://blog.csdn.net/huanggang028/article/details/44646387>
 
 ## 笔记
 
