@@ -41,6 +41,7 @@ public class Message<T> {
     @Override
     public String toString() {
         String s = "--------Message-------\n" +
+                "Success: " + success +
                 "Message: " + msg;
         if(data!=null )
             s += "\nData: " + data.toString();
