@@ -1,10 +1,10 @@
 <template>
     <div class="layout">
         <Layout>
-            <Header>
-                <Menu mode="horizontal" active-name="1" style="background: #ce4545">
-                    <div class="layout-logo" style="width: 200px;">
-                        <img src="../images/redNav/logoname.png" style="height: 30px;" @click="backtoindex()">
+            <Header style="background: #ffffff">
+                <Menu mode="horizontal" active-name="1" style="background: #ffffff;">
+                    <div class="layout-logo" style="width: 230px;">
+                        <img src="../images/whiteNav/logonamered.png" style="height: 35px;" @click="backtoindex()">
                     </div>
                     <div class="layout-nav" style="float: left">
                         <MenuItem v-for="(tag, index) in navLeftTags" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index)" :class="addClass(index)">
@@ -107,16 +107,17 @@
             }
         },
         mounted(){
-            // console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
+            console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
         }
     }
 </script>
 <style scoped>
 .layout{
-    border: 1px solid #d7dde4;
+    /*border: 1px solid #d7dde4;*/
     /* background: #f5f7f9; */
+    background: #ffffff;
     position: relative;
-    border-radius: 4px;
+    /*border-radius: 4px;*/
     overflow: hidden;
 }
 .layout-logo{
