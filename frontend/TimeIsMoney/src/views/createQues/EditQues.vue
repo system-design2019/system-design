@@ -21,7 +21,7 @@
                     <Card>
                         <p>类型：{{getMode(questions[curr].mode)}}</p><Divider />
                         <p>标题</p><Input v-model="questions[curr].title"></Input><Divider />
-                        <div v-show="questions[curr].mode === 2" >
+                        <div v-if="questions[curr].mode === 2" >
                             <div v-for="(op,index) in questions[curr].choices" style="margin: 15px 0">
                                 <span>选项{{index+1}}:</span><Input v-model="questions[curr].choices[index]"></Input>
                             </div>

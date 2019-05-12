@@ -5,18 +5,12 @@ export const SIGN_UP = 'SIGN_UP'
 
 export default{
     [SIGN_IN] ({commit, state}, info) {
-        userAPI.login(info.username, info.password, info.mode).then(
-            (response) => {
-                return response
-            }
-        )
+        let res = userAPI.login(info.username, info.password, info.mode)    
+        return res       
+        
     },
     [SIGN_UP] ({commit, state}, info){
-        userAPI.userRegister(info.username, info.password, info.mode).then(
-            (response) => {
-                console.log(response)
-                return response
-            }
-        )
+        let res = userAPI.userRegister(info.username, info.password, info.mode)
+        return res
     }
 }

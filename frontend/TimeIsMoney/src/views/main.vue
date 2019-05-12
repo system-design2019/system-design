@@ -83,7 +83,7 @@
                 else{
                     let id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
                     // console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
-                    this.$router.push({name:link, params: {id: id}})
+                    this.$router.push({name:link})
                 }
                     
                 

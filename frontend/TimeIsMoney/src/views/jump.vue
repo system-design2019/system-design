@@ -10,7 +10,7 @@
                 <transition>
                     <div id="showon" ref="showon">
                         <div id="signIn">
-                            <Button id="signButton" shape="circle" @click="handleSign" size=large ghost>SignIn</Button>
+                            <Button v-show="!logged" id="signButton" shape="circle" @click="handleSign" size=large ghost>SignIn</Button>
                         </div>
                         <div class="animated bounce">
                             <div id="logoBox">
@@ -86,7 +86,8 @@ export default {
                 {show: false, src:'../../static/jump/image4.jpg', title:'', text:''},
                 {show: false, src:'../../static/jump/image5.jpg', title:'', text:''},
                 {show: true, src:'../../static/jump/image5.jpg', title:'问卷跑腿，收益双保障', text:'在这里，你可以完成带有悬赏的问卷，提交有效问卷后既可以获得对应的金额，积少成多。如果你是问卷发布者，这里同样欢迎你提交需要调查的问卷和资金，我们会帮你保管好你的资金和问卷，为你的调查助力。'}
-            ]
+            ],
+            logged: false
         }
     },
     methods: {
@@ -102,11 +103,18 @@ export default {
         },
         A() {
             setTimeout(this.disapper, 2500); //记得加this。否则会找不到元素/方法
-            var obj = {
-                "log": false,
-                "userID": 0
+            if(window.sessionStorage.getItem('LogInfo')){
+                this.logged = JSON.parse(window.sessionStorage.getItem('LogInfo')).log
             }
-            window.sessionStorage.setItem('LogInfo', JSON.stringify(obj))
+            else{
+                var obj = {
+                    "log": false,
+                    "userID": 0
+                }
+                window.sessionStorage.setItem('LogInfo', JSON.stringify(obj))
+                this.logged = false
+            }
+            
         },
         disapper() {
             this.$refs.moveout.style.display = "none"; //html元素中插入ref钩子，然后就可以在js中调用 

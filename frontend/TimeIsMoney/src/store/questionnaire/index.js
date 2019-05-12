@@ -43,7 +43,7 @@ const Ques = {
                     title:'aaaaaaaa',
                     number: 2,
                     questions:[
-                        {mode: 1, title:'试试', choose: 0,choices:[], fill:false},
+                        {mode: 1, title:'试试', fill:false},
                         {mode: 2, title:'试试', choose:1, choices:['选项1', '选项2'], fill:false}
                     ]
                 }

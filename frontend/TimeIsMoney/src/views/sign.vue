@@ -84,6 +84,8 @@ export default {
                 this.info.mode = this.checkValid(this.info.username)
                 this.$store.dispatch('SIGN_UP', this.info).then(
                     (response) => {
+                        console.log('response')
+                        console.log(response)
                         if(response['success']){
                             this.wrong = false
                             this.changeToSignIn()
@@ -100,11 +102,19 @@ export default {
         doSignIn(){
             if(this.checkValid(this.info.username) !== 'invalid'){
                 this.info.mode = this.checkValid(this.info.username)
+                // console.log('@@@@@@@@@@@')
                 this.$store.dispatch('SIGN_IN', this.info).then(
                     (response) => {
-                        if(response){
+                        if(response['success']){
+                            // console.log('!!!!!!!!!!!!!')
                             this.$emit("SignSuccess", true)
                             this.signIn = false
+                            let data = {
+                                log: true,
+                                userID: parseInt(response.data.id)
+                            }
+                            // console.log('data'+JSON.stringify(data))
+                            window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
                             this.$router.push({
                                 path:'/main',
                                 name: 'main',
@@ -112,8 +122,9 @@ export default {
                             this.wrong = false
                         }
                         else{
+                            // console.log('??????????')
                             this.wrong = true;
-                            this.alert = '用户名或密码错误'
+                            this.alert = response['msg']
                         }
                     }
                 )
