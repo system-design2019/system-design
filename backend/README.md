@@ -41,6 +41,7 @@
   $ java -jar .\swsad-0.0.1-SNAPSHOT.jar 
   //linux 持续运行，输出日志到log.txt，每次运行日志会清空
   $ nohup java -jar swsad-0.0.1-SNAPSHOT.jar > log.txt &
+  ```
 ```
   
   红圈指示地方为命令行入口
@@ -48,7 +49,7 @@
   ![1557644707702](README/1557644707702.png)
   
 - 查看后台jar包
-```bash
+​```bash
   $ ps -def | grep jar
   $ kill 进程号
 ```
