@@ -1,13 +1,13 @@
 <template>
     <div class="qShow">
         <div style="height: 400px">
-            <div style="width: 40%; float: left; height:400px; background: #52BDF0">
-                <img src="./../../static/ques/create.jpg" style="float: right; height: 250px; margin-top: 75px"></img>
+            <div style="width: 45%; float: left; height:400px; background: #52BDF0">
+                <img src="./../../static/ques/create.jpg" style="float: right; height: 350px; margin-top: 25px"></img>
             </div>
-            <div id="grad"  style="width: 60%; float: right; height:400px; padding-left: 6%;display: flex;align-items:Center;">
+            <div id="grad"  style="width: 55%; float: right; height:400px; padding-left: 6%;display: flex;align-items:Center;">
                 <div style="min-height: 150px">
-                    <p style="width: 100%"><span style="font-size: 32px; color: #fff">问卷调查</span> <span style="font-size: 20px; color: #fff">Questionnaire</span></p>
-                    <p style="font-size: 18px; color: #fff; width: 100%">问卷调查，收集意见，随时随地为你提供最丰富的信息！</p>
+                    <p style="width: 100%"><span style="font-size: 34px; font-weight:100; color: #fff">问卷调查</span> <span style="font-size: 20px; font-weight:100;  color: #fff">Questionnaire</span></p>
+                    <p style="font-size: 20px; color: #fff; width: 100%; font-weight:100; ">问卷调查，收集意见，随时随地为你提供最丰富的信息！</p>
                     <Button type="info" style="margin-top: 20px; " @click="create()">发布问卷</Button>
                 </div>
             </div>

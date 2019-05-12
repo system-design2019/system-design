@@ -1,50 +1,57 @@
 <template>
-<div class="d">
-<Modal v-model="detail"  width="800px" class-name="vertical-center-modal" :mask-closable="false">
-    <img src="./../../../static/ques/detail.png" style="position:relative; float: left; left: -60px; top: -60px; height:500px"></img>
-    <p style="font-size:26px; margin: 20px 0 10px 0">{{detailContent.title}}</p>
-    <div style="overflow: hidden; width: 400px">
-    <div style="width: 200px; float:left">
-        <div style="width: 100px; float:left">
-            <img src="./../../../static/task/publisher.png" style="width:30px"></img>
-            <span style="font-size: 22px">{{detailContent.publisher}}</span>
+<div >
+    <Modal v-model="detail"  width="800px" class-name="vertical-center-modal d"   :mask-closable="false">
+        <img src="./../../../static/ques/detail.png" style="position:relative; float: left; left: -50px; top: -50px; height:500px"></img>
+        <p style="font-size:24px; font-weight: 500px; margin: 20px 0 10px 0">{{detailContent.title}}</p>
+        <div style="overflow: hidden; width: 400px; height: 7%">
+            <div style="width: 200px; float:left">
+                <div style="width: 100px; float:left; margin-bottom: 10px">
+                    <img src="./../../../static/task/publisher.png" style="width:30px"></img>
+                    <span style="font-size: 22px">{{detailContent.publisher}}</span>
+                </div>
+                <div style="width: 100px; float:right; margin-bottom: 10px">
+                    <img src="./../../../static/task/reward.png" style="width:30px"></img>
+                    <span class="hint" style="font-size: 22px; color: #ce4545">{{detailContent.reward}}</span>
+                </div>
+            </div>
+            <div style="float:right;width: 180px; text-align: right; margin-bottom: 10px">
+                <span class="hint" >{{detailContent.endTime}}</span>
+                <img src="./../../../static/task/collect.png" style="width:30px"></img>
+            </div>
+            <Divider class="detail"></Divider>
         </div>
-        <div style="width: 100px; float:right">
-            <img src="./../../../static/task/reward.png" style="width:30px"></img>
-            <span style="font-size: 22px; color: #ce4545">{{detailContent.reward}}</span>
+        <div>
+            <h3 style="margin: 15px 0 5px 0">简介</h3>
+            <p  class="hint" style="text-indent: 2em; margin: 5px 0 0 0; height: 9%">{{detailContent.detail}}</p>
+            <h3 style="margin: 15px 0 5px 0">要求</h3>
+            <p  class="hint" style="text-indent: 2em; margin: 5px 0 0 0; height: 4%">{{detailContent.command}}</p>
         </div>
-    </div>
-    <div style="float:right;width: 180px; text-align: right">
-        <span>{{detailContent.endTime}}</span>
-        <img src="./../../../static/task/collect.png" style="width:30px"></img>
-    </div>
-    </div>
-    <div>
-        <h3 style="margin: 15px 0 5px 0">简介</h3>
-        <p style="text-indent: 2em; margin: 5px 0 0 0; ">{{detailContent.detail}}</p>
-        <h3 style="margin: 15px 0 5px 0">要求</h3>
-        <p style="text-indent: 2em; margin: 5px 0 0 0">{{detailContent.command}}</p>
-        <h3 style="margin: 15px 0 5px 0">薪酬</h3>
-        <p style="text-indent: 2em; margin: 5px 0 0 0">￥{{detailContent.reward}}/人</p>
-    </div>
-    
+        
 
-    <div slot="footer" style="position: relative; overflow: hidden; margin: 5px 20px 15px 20px">
-        <div style="width: 75%; float: left; overflow: hidden; position: relative">
-            <div style="width: 15%; float: left">
-                <img src='../../../static/jump/social.png' style="width: 100%; height: 80%"></img>
-                <p style="width:100%; text-align: center; font-weight: 700">{{detailContent.publisher}}</p>
-            </div>
-            <div style="width: 80%; float: right; bottom: 0; position: absolute; margin-left: 20%">
-                <Col v-for="(info, index) in detailContent.infos" :key="index" span="12" style="text-align: left; margin: 5px 0">{{index}}:{{info}}</Col>
+        <div slot="footer" style=" width: 50%;position: relative; overflow: hidden; float:left; text-align: left; height: 37%">
+            <div style="width: 100%; overflow: hidden; position: relative">
+                <div style="width: 100%;">
+                    <img src="./../../../static/task/collect.png" style="width:30px"></img>
+                    <span  class="hint" >题目数量 {{detailContent.number}}</span>
+                </div>
+                <div style="width: 100%;">
+                    <img src="./../../../static/task/collect.png" style="width:30px"></img>
+                    <span class="hint" >参与情况 {{detailContent.attend}}/{{detailContent.total}}</span>
+                </div>
+                <div style="width: 100%;">
+                    <img src="./../../../static/task/collect.png" style="width:30px"></img>
+                    <span class="hint" >开始时间 {{detailContent.startTime}}</span>
+                </div>
+                <div style="width: 100%;">
+                    <img src="./../../../static/task/collect.png" style="width:30px"></img>
+                    <span class="hint" >截止时间 {{detailContent.endTime}}</span>
+                </div>
+                <div style="width: 100%; text-align: center; margin-top: 20px">
+                    <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px" @click="fillIn(detailContent.quesid)">立即填写</Button>
+                </div>
             </div>
         </div>
-        <div style="width: 20%; float: right; position: absolute; bottom: 0; right: 10px">
-            <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px" @click="fillIn(detailContent.quesid)">立即填写</Button>
-            <a style="width: 100%; text-align: center; right: 25%; position:relative">点此收藏</a>
-        </div>
-    </div>
-</Modal>
+    </Modal>
 </div>
 </template>
 <script>
@@ -90,7 +97,7 @@ export default{
     }
 }
 </script>
-<style>
+<style >
     .vertical-center-modal{
         display: flex;
         align-items: center;
@@ -100,8 +107,18 @@ export default{
             top: 0;
         }
     }
-    .d .ivu-modal-content {
-        height: 500px!important;
+    .ivu-modal-content{
+        height: 520px!important;
         border-radius: 0!important;
+    }
+    .ivu-divider-horizontal{
+        margin:0 0;
+    }
+    .hint{
+        color: rgb(178,178,178);
+        font-size: 14px;
+    }
+    .ivu-divider-horizontal{
+        margin: 0!important;
     }
 </style>
