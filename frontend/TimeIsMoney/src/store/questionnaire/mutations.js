@@ -7,7 +7,9 @@ export default{
     },
     [SET_DETAIL] (state, detail){
         // console.log(detail)
+        console.log('detail!!!  '+JSON.stringify(detail))
         state.quesDetail = detail
+        return true
     }
     
 }

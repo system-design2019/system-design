@@ -75,7 +75,7 @@ export default {
         },
         back(){
             let id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
-            this.$router.push({name:'questionnaire', params: {id: id}})
+            this.$router.go(-1)
         },
         nextStep: function(data){
             this.currentStep = this.currentStep + data

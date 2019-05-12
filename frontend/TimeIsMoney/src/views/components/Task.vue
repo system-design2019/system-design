@@ -29,7 +29,7 @@ export default{
     data(){
         return{
             contents:{
-                id: 123, title: '电子竞技行业认知度市场调查',detail: '这里是为了凑格式给上面题目进行的一些解释',status: 1,total: 100,
+                id: 123, title: '电子',detail: '这里是为了凑格式给上面题目进行的一些解释',status: 1,total: 100,
                 info: {publisher: 'anonymous',type:'问卷',time:'5min',reward: '10',endTime: '2019.5.3',attend: '90'}
             },
             showMode: 0,
@@ -45,7 +45,7 @@ export default{
         },
         ifShow(i){
             if(i === 1){
-                if(this.mode === 0)
+                if(this.mode === '0')
                     return true
                 else
                     return false
@@ -56,16 +56,19 @@ export default{
         }
     },
     mounted(){
-        this.contents.title = this.data.title
-        this.contents.detail = this.data.detail
-        this.contents.status = this.data.status === 'not done' ? 1 : 0
-        this.contents.total = this.data.total
-        this.contents.info.publisher = this.data.publisher
-        this.contents.info.type = this.data.type
-        this.contents.info.time = '0min'
-        this.contents.info.reward = this.data.reward
-        this.contents.info.endTime = this.data.endtime
-        this.contents.info.attend = this.mode===0 ? String(this.data.total) : String(this.data.attend)+'/'+String(this.data.total)
+        if(typeof(this.data) != 'undefined'){
+            this.contents.title = this.data.title
+            this.contents.detail = this.data.detail
+            this.contents.status = this.data.status === 'not done' ? 1 : 0
+            this.contents.total = this.data.total
+            this.contents.info.publisher = this.data.publisher
+            this.contents.info.type = this.type === '1' ? '问卷' : '跑腿'
+            this.contents.info.time = '0min'
+            this.contents.info.reward = this.data.reward
+            this.contents.info.endTime = this.data.endtime
+            this.contents.info.attend = this.mode===0 ? String(this.data.total) : String(this.data.attend)+'/'+String(this.data.total)
+        }
+        console.log(this.mode)
     }
 }
 </script>

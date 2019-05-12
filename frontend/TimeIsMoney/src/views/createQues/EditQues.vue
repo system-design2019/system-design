@@ -63,7 +63,7 @@ export default {
             pos: 0,
             title:'',
             questions:[
-                {mode: 1, title:'试试', maxchoose:1,choices:[], fill:false},
+                {mode: 1, title:'试试', fill:false},
                 {mode: 2, title:'试试', maxchoose:1,choices:['选项1', '选项2'], fill:false}
             ]
         }

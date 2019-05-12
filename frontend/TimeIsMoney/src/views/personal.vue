@@ -184,7 +184,7 @@
                         <div>
                             <span id="dynamicDate" style="font-size:20px;color:red;"> 04.15 </span><span style="font-size:15px;color:gray;">我参与了</span>
                         </div>
-                        <task></task>
+                        <task type="2" mode="0"></task>
                     </div>
                 </TabPane>
                 <TabPane label="我的收藏" name="collect">
@@ -192,7 +192,7 @@
                         <div>
                             <span id="dynamicDate" style="font-size:20px;color:red;"> 04.15 </span><span style="font-size:15px;color:gray;">我参与了</span>
                         </div>
-                        <task></task>
+                        <task type="1" mode="0"></task>
                     </div>
                 </TabPane>
             </Tabs>

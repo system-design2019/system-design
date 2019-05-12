@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div style="width: 100%; ">
-                <task v-for="ques in quesList" :data="ques" type="问卷" mode="1" @click.native="getDetail(ques.task_id)"></task>
+                <task v-for="ques in quesList" :data="ques" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
             </div>
         </div>
         <detail :detailContent="detailContent" v-show="detailModel" :showDetail="detailModel"></detail>
@@ -69,12 +69,15 @@ export default {
         },
         getDetail(id){
             this.$store.dispatch('Ques/GET_DETAIL', id)
+            console.log('aaaa')
+            console.log('quesdetail!!'+this.detailContent)
             this.detailModel = !this.detailModel
         },
         
     },
     mounted(){
         this.$store.dispatch('Ques/GET_QUESLIST')
+        // this.$store.dispatch('Ques/GET_DETAIL', 3)
     }
 }
 </script>
