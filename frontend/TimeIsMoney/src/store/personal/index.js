@@ -23,7 +23,8 @@ const Personal = {
             payaccount:''
         },
         attending:[],
-        starring:[]
+        starring:[],
+        mailReceive:[]
     },
     actions,
     mutations,

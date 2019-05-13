@@ -2,7 +2,7 @@
 <div >
     <Modal v-model="detail" width="800px" class-name="vertical-center-modal d"  :mask-closable="false">
         <img src="./../../../static/ques/detail.png" style="position:relative; float: left; left: -50px; top: -50px; height:500px"></img>
-        <p style="font-size:24px; font-weight: 500px; margin: 20px 0 10px 0">{{detailContent.title}}</p>
+        <p style="font-size:24px; font-weight: 500px; margin: 200x 0 10px 0">{{detailContent.title}}</p>
         <div style="overflow: hidden; width: 400px; height: 7%">
             <div style="width: 200px; float:left">
                 <div style="width: 100px; float:left; margin-bottom: 10px">
@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div style="float:right;width: 180px; text-align: right; margin-bottom: 10px">
-                <span class="hint" >{{detailContent.endTime}}</span>
+                <span class="hint" >{{detailContent.endtime}}</span>
                 <img src="./../../../static/task/collect.png" style="width:30px"></img>
             </div>
             <Divider class="detail"></Divider>
@@ -24,11 +24,9 @@
             <h3 style="margin: 15px 0 5px 0">简介</h3>
             <p  class="hint" style="text-indent: 2em; margin: 5px 0 0 0; height: 9%">{{detailContent.detail}}</p>
             <h3 style="margin: 15px 0 5px 0">要求</h3>
-            <p  class="hint" style="text-indent: 2em; margin: 5px 0 0 0; height: 4%">{{detailContent.command}}</p>
+            <p  class="hint" style="text-indent: 2em; margin: 5px 0 0 0; height: 4%">{{detailContent.request}}</p>
         </div>
-        
-
-        <div slot="footer" style=" width: 50%;position: relative; overflow: hidden; float:left; text-align: left; height: 37%">
+        <div style="margin-top: 30px; width: 50%;position: relative; overflow: hidden; float:left; text-align: left; height: 37%">
             <div style="width: 100%; overflow: hidden; position: relative">
                 <div style="width: 100%;">
                     <img src="./../../../static/task/collect.png" style="width:30px"></img>
@@ -74,6 +72,7 @@ export default{
         }
     },
     mounted(){
+        console.log("哎呦喂"+JSON.stringify(this.detailContent))
     },
     watch:{
         showDetail: function(detail, olddetail) {

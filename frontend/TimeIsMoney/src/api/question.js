@@ -45,7 +45,6 @@ export async function getQuesContent(id){
  */
 export async function getDetail (id) {
     let response = await axios.get('/getQues/'+String(id))
-    // console.log('response:'+JSON.stringify(response))
     return response.data
 }
 
