@@ -1,13 +1,30 @@
 import * as mutations from './mutations'
+import * as personalAPI from './../../api/personal.js'
 
+export const GET_INFO = 'GET_INFO'
+export const GET_ATTEND = 'GET_ATTEND'
+export const GET_STAR = 'GET_STAR'
 export const GET_ALERTS = 'GET_ALERTS'
 
-export default{
-    [GET_ALERTS] ({commit}) {
-        let data = [
-            {title:'您的问卷有人参与填写！', content:'您的ID为27018的问卷已被填写，当前已收集5份，待收集85份', type: 1, time:'2019.5.2 16:00', status: 'error'},
-            {title:'标题', content:'详情', type: 1, time:'2019.5.2 16:00', status: 'default'}
-        ]
-        commit(mutations.SET_ALERTS, data)
+export default {
+    [GET_INFO] ({commit}, id) {
+        personalAPI.getPersonalInfo(id).then((response)=>{
+            commit(mutations.SET_PER_INFO, response)
+        })
+    },
+    [GET_ATTEND] ({commit}, id) {
+        personalAPI.getAttending(id).then((response)=>{
+            commit(mutations.SET_ATTENDING, response)
+        })
+    },
+    [GET_STAR] ({commit}, id) {
+        personalAPI.getStarring(id).then((response)=>{
+            commit(mutations.SET_SATRRIGN, response)
+        })
+    },
+    [GET_ALERTS] ({commit}, id) {
+        personalAPI.getAlerts(id).then((response)=>{
+            commit(mutations.SET_RECEIVE, response)
+        })
     },
 }

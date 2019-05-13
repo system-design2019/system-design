@@ -1,3 +1,68 @@
+<template>
+    <div style="margin: 20px 15%; ">
+        <div style="padding: 10px;background: #f8f8f9">
+            <Card style="width: 100%;">
+                <div >
+                    <div style="width: 60%; float:left"><p style="margin:10px 0">您有{{}}条未读消息</p></div>
+                    <div style="width: 40%; float:right; text-align: right; margin:10px 0">
+                        <a>全部标记为已读</a>
+                        <Divider type="vertical"/>
+                        <a>全部删除</a>
+                    </div>
+                </div>
+                <CellGroup style="width: 100%">
+                    <Cell class="alert" v-for="(a, index) in alerts" :key="index" :title="a.title" style="width: 100%">
+                        <div style="float:left; width: 2%">
+                            <Badge :status="a.status" style="float: left;" />
+                        </div>
+                        <div style="float:right; width: 98%">
+                            <span style="font-size: 15px; font-weight: 700; float: left; width: 85%">
+                                {{a.title}}
+                                <span style="padding: 0 20px; color: rgb(174,174,174);font-weight: 100;">{{a.content}}</span>
+                            </span>
+                            <span style="float:right;width: 10%; text-align: right; margin-right: 20px;color: rgb(174,174,174);">{{a.time}}</span>   
+                        </div>               
+                    </Cell>
+                </CellGroup>
+            </Card>
+        </div>
+        
+    </div>
+</template>
+<script>
+import {mapState} from 'vuex'
+    export default {
+        data(){
+            return{
+            }
+        },
+        computed:mapState('Personal', {
+            alerts: 'mailReceive'
+        }),
+        methods: {
+            handleStart () {   
+                this.$router.push({  //跳转到不同后缀的页面，同理可以有多个子后缀，从而实现页面跳转
+                    path:'/index'
+                })
+            },
+            getButtonText(type){
+                if(type === 1){
+                    return '标为已读'
+                }
+            },
+            changeStatus(index){
+                this.$store.commit('Personal/CHANGE_STATUS', index)
+            }
+        },
+        created(){
+            let userid = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
+            console.log('userid:'+userid)
+            this.$store.dispatch('Personal/GET_ALERTS', userid)
+            // console.log(this.alerts)
+            // console.log(this.$store.state.Personal.mailReceive)
+        }
+    }
+</script>
 <style scoped lang="less">
     .index{
         width: 100%;
@@ -23,49 +88,8 @@
             height: 100%;
         }
     }
-</style>
-<template>
-    <div style="margin: 20px 15%; ">
-        <div style="overflow: hidden"><Button style="width: 8%; margin-right: 10px; float: right">全部删除</Button></div>
-        <Card v-for="(a, index) in alerts" :key="index" style="margin: 10px 10px; padding: 0 30px;" >
-            <Row style="width: 100%;">
-                <span style="font-size: 15px; font-weight: 700">{{a.title}}</span>
-                <Badge :status="a.status" style="float: right" />
-            </Row>
-            <Row style="width: 100%; font-size: 13px; margin: 5px 0"><p style="margin-left: 2em;">{{a.content}}</p></Row>
-            <Row style="width: 100%; margin: 3px 0; position: ralative">
-                <Button style="float: right; position: relative; bottom: 0" @click="changeStatus(index)">{{getButtonText(a.type)}}</Button>
-                <span style="position: absolute; bottom: 5%; right: 10%">时间：{{a.time}}</span>                
-            </Row>
-        </Card>
-        
-    </div>
-</template>
-<script>
-import {mapState} from 'vuex'
-    export default {
-        computed:mapState('Personal', {
-            alerts: 'mailReceive'
-        }),
-        methods: {
-            handleStart () {   
-                this.$router.push({  //跳转到不同后缀的页面，同理可以有多个子后缀，从而实现页面跳转
-                    path:'/index'
-                })
-            },
-            getButtonText(type){
-                if(type === 1){
-                    return '标为已读'
-                }
-            },
-            changeStatus(index){
-                this.$store.commit('Personal/CHANGE_STATUS', index)
-            }
-        },
-        created(){
-            this.$store.dispatch('Personal/GET_ALERTS')
-            // console.log(this.alerts)
-            // console.log(this.$store.state.Personal.mailReceive)
-        }
+    .alert .ivu-cell-link .ivu-cell-item .ivu-cell-main{
+        display: inherit!important;
+        width: 100%
     }
-</script>
+</style>
