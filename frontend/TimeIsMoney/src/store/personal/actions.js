@@ -1,4 +1,4 @@
-import * as mutations from './mutations'
+import * as mutations from './mutations.js'
 import * as personalAPI from './../../api/personal.js'
 
 export const GET_INFO = 'GET_INFO'
@@ -19,7 +19,7 @@ export default {
     },
     [GET_STAR] ({commit}, id) {
         personalAPI.getStarring(id).then((response)=>{
-            commit(mutations.SET_SATRRIGN, response)
+            commit(mutations.SET_STARRING, response)
         })
     },
     [GET_ALERTS] ({commit}, id) {

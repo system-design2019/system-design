@@ -58,3 +58,26 @@ export async function getAlerts (id) {
     }]
     return data
 }
+
+/**
+ * Set the status of the alert default
+ * @param {int} id the id of the alert
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function changeAlertStatusById (id) {
+    let response = axios.post('/', id)
+    return response.data
+    return data
+}
+
+/**
+ * Delete all the alerts by userid
+ * @param {int} id the target user's id
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function deleteAllAlerts (id) {
+    let response = await axios.delete('/', id)
+    return response.data
+}

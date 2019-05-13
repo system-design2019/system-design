@@ -1,9 +1,9 @@
 <template>
-    <div style="margin: 20px 15%; ">
+    <div style="margin: 20px 9%; ">
         <div style="padding: 10px;background: #f8f8f9">
-            <Card style="width: 100%;">
+            <Card style="width: 100%; min-height: 600px">
                 <div >
-                    <div style="width: 60%; float:left"><p style="margin:10px 0">您有{{}}条未读消息</p></div>
+                    <div style="width: 60%; float:left"><p style="margin:10px 0">您有{{getNumber()}}条未读消息</p></div>
                     <div style="width: 40%; float:right; text-align: right; margin:10px 0">
                         <a>全部标记为已读</a>
                         <Divider type="vertical"/>
@@ -11,12 +11,12 @@
                     </div>
                 </div>
                 <CellGroup style="width: 100%">
-                    <Cell class="alert" v-for="(a, index) in alerts" :key="index" :title="a.title" style="width: 100%">
+                    <Cell class="alert" v-for="(a, index) in alerts" :key="index" :title="a.title" style="width: 100%" @click.native="changeStatus(index)">
                         <div style="float:left; width: 2%">
                             <Badge :status="a.status" style="float: left;" />
                         </div>
                         <div style="float:right; width: 98%">
-                            <span style="font-size: 15px; font-weight: 700; float: left; width: 85%">
+                            <span style="font-size: 25px; font-weight: 700; float: left; width: 85%">
                                 {{a.title}}
                                 <span style="padding: 0 20px; color: rgb(174,174,174);font-weight: 100;">{{a.content}}</span>
                             </span>
@@ -52,11 +52,20 @@ import {mapState} from 'vuex'
             },
             changeStatus(index){
                 this.$store.commit('Personal/CHANGE_STATUS', index)
+            },
+            getNumber(){
+                let number = 0
+                // console.log(this.alerts)
+                for(let a in this.alerts){
+                    if(this.alerts[a].status === 'error'){
+                        number++;
+                    }
+                }
+                return number;
             }
         },
         created(){
-            let userid = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
-            console.log('userid:'+userid)
+            let userid = JSON.parse(window.sessionStorage.getItem('LogInfo')).userid
             this.$store.dispatch('Personal/GET_ALERTS', userid)
             // console.log(this.alerts)
             // console.log(this.$store.state.Personal.mailReceive)
