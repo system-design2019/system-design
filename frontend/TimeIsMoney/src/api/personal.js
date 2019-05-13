@@ -32,3 +32,29 @@ export async function getStarring (id) {
     let response = await axios.get('/allques', id)
     return response.data
 }
+
+/**
+ * Get the list of the alert information
+ * @param {int} id the id of the target user
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function getAlerts (id) {
+    // let response = await axios.get('/', id)
+    // return response.data
+    let data = [{
+        time:'2019.2.3',
+        title: 'aaaaa',
+        content: 'fdsafdsafdsafd',
+        status: 'error',
+        type: 1
+    },
+    {
+        time:'2019.2.3',
+        title: 'aaaaa',
+        content: 'fdsafdsafdsafd',
+        status: 'error',
+        type: 1
+    }]
+    return data
+}
