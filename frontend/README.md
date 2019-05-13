@@ -23,6 +23,10 @@ iview环境安装
 
 	npm install vuex --save
 
+引入 axios
+	
+	npm install vue-axios --save
+
 ### 修改样式库
 
 1. 把当前文件夹内的iview.css和node_modules->ivew->dist->styles下ivew.css替换·
