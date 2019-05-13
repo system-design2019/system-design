@@ -1,14 +1,14 @@
 <template>
     <div class="qShow">
         <div style="height: 400px">
-            <div style="width: 45%; float: left; height:400px; background: #52BDF0">
+            <div style="width: 43%; float: left; height:400px; background: #52BDF0">
                 <img src="./../../static/ques/create.jpg" style="float: right; height: 350px; margin-top: 25px"></img>
             </div>
-            <div id="grad"  style="width: 55%; float: right; height:400px; padding-left: 6%;display: flex;align-items:Center;">
-                <div style="min-height: 150px">
-                    <p style="width: 100%"><span style="font-size: 34px; font-weight:100; color: #fff">问卷调查</span> <span style="font-size: 20px; font-weight:100;  color: #fff">Questionnaire</span></p>
-                    <p style="font-size: 20px; color: #fff; width: 100%; font-weight:100; ">问卷调查，收集意见，随时随地为你提供最丰富的信息！</p>
-                    <Button type="info" style="margin-top: 20px; " @click="create()">发布问卷</Button>
+            <div id="grad"  style="width: 57%; float: right; height:400px; padding-left: 6%;display: flex;align-items:Center;">
+                <div class="showPage" style="min-height: 150px">
+                    <p style="width: 100%"><span style="font-size: 38px; font-weight:100; color: #fff">问卷调查</span> <span style="font-size: 20px; font-weight:100;  color: #fff">Questionnaire</span></p>
+                    <p style="font-size: 22px; color: #fff; width: 100%;margin-top: 20px; font-weight:100; ">问卷调查，收集意见，随时随地为你提供最丰富的信息！</p>
+                    <Button type="info" style="margin-top: 30px; " @click="create()">发布问卷</Button>
                 </div>
             </div>
             
@@ -76,7 +76,7 @@ export default {
         
     },
     mounted(){
-        this.$store.dispatch('Ques/GET_QUESLIST')
+        // this.$store.dispatch('Ques/GET_QUESLIST')
         // this.$store.dispatch('Ques/GET_DETAIL', 3)
     }
 }
@@ -105,6 +105,31 @@ export default {
     vertical-align: middle;
     text-align: center;      
   }
+}
+.showPage {
+    .ivu-btn-info {
+        color: #fff;
+        background-color: rgba(255,255,255,0)!important;
+        border-color: #fff!important;
+    }
+    .ivu-btn-info span{
+        font-size: 28px!important;
+    }
+    .ivu-btn-info:hover {
+        color: #2db7f5!important;
+        background-color: #2db7f5;
+        border-color: #2db7f5!important;
+    }
+    .ivu-btn{
+        border-radius: 30px!important;
+        background: rgba(255,255,255,0)!important;
+        width: 200px;
+        height: 60px;
+    }
+    .ivu-btn:hover{
+        border-radius: 30px!important;
+        background: #fff!important;
+    }
 }
 
 </style>

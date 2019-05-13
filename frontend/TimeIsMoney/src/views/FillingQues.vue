@@ -33,7 +33,9 @@ import { Ques } from '../store/questionnaire/index.js'
             handleSubmit(name){
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.$store.dispatch('Ques/fillQues/POST_QUES').then(
+                        let userid = JSON.parse(window.sessionStorage.getItem('LogInfo')).userid
+                        let quesid = window.sessionStorage.getItem('fillQuesId')
+                        this.$store.dispatch('Ques/fillQues/POST_QUES',{userid, quesid, this.answer}).then(
                             (status) => {
                                 if(status){
                                     this.$Message.success('提交成功');
