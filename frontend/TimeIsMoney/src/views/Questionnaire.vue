@@ -1,17 +1,16 @@
 <template>
     <div class="qShow">
-        <div style="height: 400px">
-            <div style="width: 43%; float: left; height:400px; background: #52BDF0">
-                <img src="./../../static/ques/create.jpg" style="float: right; height: 350px; margin-top: 25px"></img>
+        <div style="height: 350px">
+            <div style="width: 43%; float: left; height:350px; background: #52BDF0">
+                <img src="./../../static/ques/create.jpg" style="float: right; height: 300px; margin-top: 25px"></img>
             </div>
-            <div id="grad"  style="width: 57%; float: right; height:400px; padding-left: 6%;display: flex;align-items:Center;">
+            <div id="grad"  style="width: 57%; float: right; height:350px; padding-left: 6%;display: flex;align-items:Center;">
                 <div class="showPage" style="min-height: 150px">
                     <p style="width: 100%"><span style="font-size: 38px; font-weight:100; color: #fff">问卷调查</span> <span style="font-size: 20px; font-weight:100;  color: #fff">Questionnaire</span></p>
                     <p style="font-size: 22px; color: #fff; width: 100%;margin-top: 20px; font-weight:100; ">问卷调查，收集意见，随时随地为你提供最丰富的信息！</p>
                     <Button type="info" style="margin-top: 30px; " @click="create()">发布问卷</Button>
                 </div>
             </div>
-            
         </div>
         <div style="margin: 30px 15%">
             <div style="width: 100%; min-height: 20px;">
@@ -30,7 +29,7 @@
                 </div>
             </div>
             <div style="width: 100%; ">
-                <task v-for="ques in quesList" :data="ques" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
+                <task v-for="(ques,index) in quesList" :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
             </div>
         </div>
         <detail :detailContent="detailContent" v-show="detailModel" :showDetail="detailModel"></detail>
@@ -69,15 +68,12 @@ export default {
         },
         getDetail(id){
             this.$store.dispatch('Ques/GET_DETAIL', id)
-            console.log('aaaa')
-            console.log('quesdetail!!'+this.detailContent)
             this.detailModel = !this.detailModel
         },
         
     },
     mounted(){
-        this.$store.dispatch('Ques/GET_QUESLIST')
-        // this.$store.dispatch('Ques/GET_DETAIL', 3)
+        // this.$store.dispatch('Ques/GET_QUESLIST')
     }
 }
 </script>
