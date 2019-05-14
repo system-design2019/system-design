@@ -105,7 +105,9 @@
                 <Col span="16">
                 <card id="bigPInfo" style="height:270px;white-space:nowrap;">
                     <Row>
-                        <Button ghost size=small style="float:right;color:blue;font-size:15px;" @click="editInfo">编辑资料</Button>
+                        <Button ghost size=small style="float:right;color:blue;font-size:15px;" @click="editInfo">
+                            <span>{{this.buttonText}}</span>
+                        </Button>
                     </Row>
                     <Row style="margin:15px;margin-top:1px;">
                         <Col span="12">
@@ -212,7 +214,8 @@ export default {
             borderSize: 0,
             editable: false,
             styleForText: 'border:' + this.borderSize + 'px',
-            creditRate: 5
+            creditRate: 5,
+            buttonText: "编辑资料"
             //clientHeight: document.body.clientHeight,
             //clientWidth: document.body.clientWidth
         }
@@ -238,6 +241,11 @@ export default {
                 this.styleForText = 'border:1px solid';
             } else {
                 this.styleForText = 'border:0px';
+            }
+            if (this.buttonText == "编辑资料") {
+                this.buttonText = "保存资料";
+            } else {
+                this.buttonText = "编辑资料";
             }
         }
     }
