@@ -103,7 +103,7 @@
                 </card>
                 </Col>
                 <Col span="16">
-                <card id="bigPInfo" style="height:270px;">
+                <card id="bigPInfo" style="height:270px;white-space:nowrap;">
                     <Row>
                         <Button ghost size=small style="float:right;color:blue;font-size:15px;" @click="editInfo">编辑资料</Button>
                     </Row>
