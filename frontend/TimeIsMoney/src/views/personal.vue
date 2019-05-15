@@ -179,11 +179,15 @@
         </div>
         <div class="personal" style="margin: 0 10%">
             <Tabs value="credit" style="font-size: 20px">
-                <TabPane label="我的信用" name="credit">
-                    <card>这是我的信用
-                    </card>
+                <TabPane label="我发布的" name="credit">
+                    <div id="Dynamic">
+                        <div>
+                            <span id="dynamicDate" style="font-size:20px;color:red;"> 04.12 </span><span style="font-size:15px;color:gray;">我发布了</span>
+                        </div>
+                        <task type="3" mode="0"></task>
+                    </div>
                 </TabPane>
-                <TabPane label="历史动态" name="history">
+                <TabPane label="我参与的" name="history">
                     <div id="Dynamic">
                         <div>
                             <span id="dynamicDate" style="font-size:20px;color:red;"> 04.15 </span><span style="font-size:15px;color:gray;">我参与了</span>
