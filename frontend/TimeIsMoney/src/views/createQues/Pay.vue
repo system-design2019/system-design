@@ -17,10 +17,13 @@ export default {
 
     },
     computed: mapState('Ques/createQues',{
-        formValidate: 'formValidate'
+        formValidate: 'formValidate',
+        formContent: 'formContent'
     }),
     methods: {
         changeStep(step){
+            let data = JSON.parse('{"formValidate":'+JSON.stringify(this.formValidate)+',"formContent":'+JSON.stringify(this.formContent)+'}')
+            this.$store.dispatch('Ques/CREATE_QUES', data)
             this.$emit('changeStep', step)
         }
     }

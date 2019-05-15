@@ -1,25 +1,27 @@
 <template>
     <div class="hellopage">
         <div id="block1" v-show="show">
-            <Row type="flex" justify="center" align="middle" >
-                <div id="moveout" ref="moveout">
+            <Row type="flex" justify="center">
+                <Row type="flex" justify="center" align="middle">
+                <div id="moveout" ref="moveout" >
                     <h2>
                         <p id="text1">从未想过 琐碎时间更值钱？</p>
                     </h2>
                 </div>
+                </Row>
                 <transition>
                     <div id="showon" ref="showon">
                         <div id="signIn">
-                            <Button id="signButton" shape="circle" @click="handleSign" size=large ghost>SignIn</Button>
+                            <Button v-show="!logged" id="signButton" shape="circle" @click="handleSign" size=large ghost>SignIn</Button>
                         </div>
                         <div class="animated bounce">
                             <div id="logoBox">
                                 <img id="logov2" src="../images/logov2big.png" alt="正方形的原始图片" />
                             </div>
-                            <p id="bigTitle"> T.I.M </p>
+                            <p id="bigTitle"> TimeIsMoney </p>
                             <p id="title2"> 让琐碎的时间更有价值 </p>
                             <div id="mainButton">
-                                <Button @click="handleStart" shape="circle" size=large ghost style="font-size:30px;width:200px">去赚钱</Button>
+                                <Button @click="handleStart" shape="circle" size=large ghost style="font-size:25px;width:200px">去赚钱</Button>
                             </div>
                         </div>
                     </div>
@@ -86,7 +88,8 @@ export default {
                 {show: false, src:'../../static/jump/image4.jpg', title:'', text:''},
                 {show: false, src:'../../static/jump/image5.jpg', title:'', text:''},
                 {show: true, src:'../../static/jump/image5.jpg', title:'问卷跑腿，收益双保障', text:'在这里，你可以完成带有悬赏的问卷，提交有效问卷后既可以获得对应的金额，积少成多。如果你是问卷发布者，这里同样欢迎你提交需要调查的问卷和资金，我们会帮你保管好你的资金和问卷，为你的调查助力。'}
-            ]
+            ],
+            logged: false
         }
     },
     methods: {
@@ -102,11 +105,18 @@ export default {
         },
         A() {
             setTimeout(this.disapper, 2500); //记得加this。否则会找不到元素/方法
-            var obj = {
-                "log": false,
-                "userID": 0
+            if(window.sessionStorage.getItem('LogInfo')){
+                this.logged = JSON.parse(window.sessionStorage.getItem('LogInfo')).log
             }
-            window.sessionStorage.setItem('LogInfo', JSON.stringify(obj))
+            else{
+                var obj = {
+                    "log": false,
+                    "userID": 0
+                }
+                window.sessionStorage.setItem('LogInfo', JSON.stringify(obj))
+                this.logged = false
+            }
+            
         },
         disapper() {
             this.$refs.moveout.style.display = "none"; //html元素中插入ref钩子，然后就可以在js中调用 
@@ -125,7 +135,7 @@ export default {
         bottom: 0;
         left: 0;
         display: flex;
-        align-items: center; 
+        /*align-items: center; */
         justify-content: center;
 
         h2{
@@ -138,46 +148,50 @@ export default {
         height: 100%;
         }
     }
-
+    
     #signIn{
         width: 1200px;
-        height: 70px;
+        height: 80px;
     }
+    
     #signButton{
         float:right;
-        margin-right: 30px;
-        font-size: 30px;
+        margin-right: 20px;
+        margin-top: 20px;
+        font-size: 15px;
     }
 
     #block1{
-        width:1200px;
-        height: 650px;
+        /*width:1200px;*/
+        height: 500px;
         background-color: #ce4545;
     }
 
 
-
     #bigTitle{
-        font-size:100px;
+        font-size:40px;
         color: #FFF;
         margin-top: 0px;
         text-align: center;
+        font-family:Lobster-Regular;
+        margin-bottom: 20px;
     }
     #title2{
-        font-size:30px;
+        font-size:20px;
         color:#FFF;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
         text-align: center;
     }
     #logov2{
-        width:200px;
-        height:200px;
+        width:150px;
+        height:150px;
+        text-align: center;
+        margin: auto;
     }
     #logoBox{
-       width:200px; 
-       height:200px; 
+       width:150px; 
+       height:150px; 
        border-radius:50%; 
-       overflow:hidden;
        text-align: center;
        margin: auto;
      }
@@ -185,6 +199,12 @@ export default {
 
     #mainButton{
         text-align: center;
+    }
+    #mainButton .ivu-btn-ghost.ivu-btn-dashed:hover, .ivu-btn-ghost.ivu-btn-default:hover{
+        text-align: center;
+        color: rgb(206, 69, 69);
+        border-color: rgb(255,255,255)!important;
+        background: rgb(255,255,255)!important;
     }
 
     #moveout{
@@ -196,7 +216,7 @@ export default {
     animation-fill-mode: forwards;
     font-size: 100px;
     justify-content: center;
-    align-items:center;
+   /* align-items:center;*/
     }
 
     #text1{
@@ -205,10 +225,10 @@ export default {
     }
 
     #showon{
-        animation:uptodown 3s;
-        -moz-animation:uptodown 3s; /* Firefox */
-        -webkit-animation:uptodown 3s; /* Safari and Chrome */
-        -o-animation:uptodown 3s; /* Opera */
+        animation:uptodown 4s;
+        -moz-animation:uptodown 4s; /* Firefox */
+        -webkit-animation:uptodown 4s; /* Safari and Chrome */
+        -o-animation:uptodown 4s; /* Opera */
          animation-fill-mode: forwards;
 
          /*animation-delay: 2.5s;  /*用于延迟触发的函数*/  

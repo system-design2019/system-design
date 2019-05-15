@@ -68,7 +68,8 @@ module.exports = {
             {
                 test: /\.(html|tpl)$/,
                 loader: 'html-loader'
-            }
+            },
+        
         ]
     },
     resolve: {
