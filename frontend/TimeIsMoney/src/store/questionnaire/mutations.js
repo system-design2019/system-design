@@ -6,7 +6,6 @@ export default{
         state.quesList = list
     },
     [SET_DETAIL] (state, detail){
-        // console.log(detail)
         state.quesDetail = detail
     }
     

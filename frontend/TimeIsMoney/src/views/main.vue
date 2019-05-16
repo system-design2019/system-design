@@ -1,27 +1,27 @@
 <template>
     <div class="layout">
         <Layout>
-            <Header>
-                <Menu mode="horizontal" active-name="1" style="background: #ce4545">
-                    <div class="layout-logo" style="width: 200px;">
-                        <img src="../images/redNav/logoname.png" style="height: 30px;" @click="backtoindex()">
+            <Header style="background: #ffffff">
+                <Menu mode="horizontal" active-name="1" style="background: #ffffff;">
+                    <div class="layout-logo" style="width: 230px;">
+                        <img src="../images/whiteNav/logonamered.png" style="height: 35px;" @click="backtoindex()">
                     </div>
                     <div class="layout-nav" style="float: left">
                         <MenuItem v-for="(tag, index) in navLeftTags" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index)" :class="addClass(index)">
-                            <Icon :type="tag.icon" size=20></Icon>
+                            <Icon :type="tag.icon" size=27></Icon>
                             <span>{{tag.text}}</span>
                         </MenuItem>
                     </div>
-                    <div class="layout-nav" style="min-width: 10%; float: right; text-align: right" @click.native="changePageByLink(tag.link)">
+                    <div class="layout-nav" style="float: right; text-align: right" @click.native="changePageByLink(tag.link)">
                         <div v-if="logged">
                         <MenuItem v-for="(tag, index) in navRightTags1" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index+3)" style="float: right" :class="addClass(index+3)">
-                            <Icon :type="tag.icon"></Icon>
-                            <span>{{tag.text}}</span>
+                            <Icon :type="tag.icon" size=27></Icon>
+                            <!-- <span>{{tag.text}}</span> -->
                         </MenuItem>
                         </div>
                         <MenuItem v-else :name="navRightTags0.name" @click.native="changePageByLink(navRightTags0.link, 3)" :class="addClass(3)" style="float: right">
-                            <Icon :type="navRightTags0.icon"></Icon>
-                            <span>{{navRightTags0.text}}</span>
+                            <Icon :type="navRightTags0.icon" size=27></Icon>
+                            <!-- <span>{{navRightTags0.text}}</span> -->
                         </MenuItem>
                     </div>
                 </Menu>
@@ -56,6 +56,7 @@
                     {name: "3", icon:"md-walk", text:"跑腿", link: "favor"}
                 ],
                 navRightTags1:[
+                    {name: "6", icon:"md-exit", text:"个人中心", link: "out"},
                     {name: "5", icon:"md-person", text:"个人中心", link: "personal"},
                     {name: "4", icon:"md-mail", text:"收件箱", link: "receiveBox"}                    
                 ],
@@ -69,7 +70,7 @@
             },
             activeNav(){
                 let data = {
-                    home:0, questionnaire: 1, favor: 2, receiveBox: 4, personal: 3,
+                    home:0, questionnaire: 1, favor: 2, receiveBox: 5, personal: 4,
                 }
                 return data[this.$route.path.split('/')[1]]
             }
@@ -79,17 +80,23 @@
                 if(link === 'in'){
                     this.signInFromMain = !this.signInFromMain
                 }
-                    
+                else if(link === 'out'){
+                    let data = {
+                        log: false,
+                        userID: 0
+                    }
+                    window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
+                    this.reload()
+                }
                 else{
                     let id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
                     // console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
-                    this.$router.push({name:link, params: {id: id}})
+                    this.$router.push({name:link})
                 }
                     
                 
             },
             getSign: function(data){
-                // console.log('getsign seccess!!!!!!!!!!!!')
                 if(data){
                     this.reload()
                 }
@@ -108,16 +115,17 @@
             }
         },
         mounted(){
-            // console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
+            console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
         }
     }
 </script>
 <style scoped>
 .layout{
-    border: 1px solid #d7dde4;
+    /*border: 1px solid #d7dde4;*/
     /* background: #f5f7f9; */
+    background: #ffffff;
     position: relative;
-    border-radius: 4px;
+    /*border-radius: 4px;*/
     overflow: hidden;
 }
 .layout-logo{
@@ -130,11 +138,18 @@
     left: 20px;
 }
 .layout-nav{
-    width: 420px;
     margin: 0 auto;
-    margin-right: 20px;
 }
 .layout-footer-center{
     text-align: center;
+}
+.ivu-menu-item span{
+    font-size: 20px;
+    font-weight: 200;
+    position: relative;
+    bottom: -4px;
+}
+.ivu-menu-horizontal {
+    line-height: 57px;
 }
 </style>

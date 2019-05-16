@@ -11,13 +11,12 @@
     justify-content: center;
     margin-bottom: 30px;
 }
-    #qInformation{
+    /* #qInformation{
     text-align: center;
     align-items: center;
     display: flex;
     justify-content: center;
-    /**/
-    }
+    } */
 
     h1 {
         height: 150px;
@@ -47,6 +46,7 @@
     .pInfo {
         font-size: 20px;
         float:left;
+
     }
 
     Row {
@@ -54,7 +54,7 @@
     }
 
     input{
-        width:200px;
+        width:60%;
     }
 
     input[disabled],input:disabled,input.disabled{  
@@ -67,12 +67,16 @@
 
     .ivu-tabs-nav-container{
      font-size:30px!important;
-}
+    }
 
     .iconInDy{
         float:left;
         margin-top:10px;
     }
+    .personal .ivu-tabs-nav-container{
+        font-size: 22px!important;
+    }
+
 
 </style>
 <template>
@@ -80,142 +84,115 @@
         <div class="personInformation">
             <Row id="personInfo">
                 <Col span="8">
-                    <card style="height:260px;">
-                        <Row>
-                            <div id="headBox">
-                                <img id="head" src="../images/hellobg.jpg" alt="正方形的原始图片" width="150px" height="150px" />
-                            </div>
-                        </Row>
-                        <Row>
-                            <input type="text" style="font-size:25px;text-align:center;" :disabled="!editable" v-bind:style="styleForText" placeholder="宋主席" />
-                        </Row>
-                        <Row>
-                            <span>ID:Suata</span>
-                        </Row>
-                        <Row>
-                            <span> 信用： </span>
-                            <Rate> </Rate>
-                        </Row>
-                    </card>
+                <card style="height:270px;">
+                    <Row>
+                        <div id="headBox">
+                            <img id="head" src="../images/hellobg.jpg" alt="正方形的原始图片" width="150px" height="150px" />
+                        </div>
+                    </Row>
+                    <Row>
+                        <input type="text" style="font-size:25px;text-align:center;" :disabled="!editable" v-bind:style="styleForText" placeholder="宋主席" />
+                    </Row>
+                    <Row>
+                        <span>ID:Suata</span>
+                    </Row>
+                    <Row>
+                        <span> 信用： </span>
+                        <Rate disabled="true" v-model="creditRate"> </Rate>
+                    </Row>
+                </card>
                 </Col>
                 <Col span="16">
-                    <card style="height:260px;">
-                        <Row>
-                            <Button ghost size=small style="float:right;color:blue;font-size:15px;" @click="editInfo">编辑资料</Button>
-                        </Row>
-                        <Row style="margin:15px;margin-top:1px;">
-                            <Col span="11">
-                            <div class="pInfo">
-                                <img src="../images/personal/性别.png" width="30px" height="30px" />
-                                <span>性别</span>
-                                <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="female" />
-                            </div>
-                            </Col>
-                            <Col span="11">
-                            <div class="pInfo">
-                                <img src="../images/personal/学校.png" width="30px" height="30px" />
-                                <span>就读院校</span>
-                                <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="中山大学" />
-                            </div>
-                            </Col>
-                        </Row>
-                        <Row style="margin:15px;">
-                            <Col span="11">
-                            <div class="pInfo">
-                                <img src="../images/personal/邮箱.png" width="30px" height="30px" />
-                                <span>邮箱</span>
-                                <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="123456789@qq.com" />
-                            </div>
-                            </Col>
-                            <Col span="11">
-                            <div class="pInfo">
-                                <img src="../images/personal/年级专业.png" width="30px" height="30px" />
-                                <span>专业年级</span>
-                                <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="软件工程16级" />
-                            </div>
-                            </Col>
-                        </Row>
-                        <Row style="margin:15px;">
-                            <Col span="11">
-                            <div class="pInfo">
-                                <img src="../images/personal/微信.png" width="30px" height="30px" />
-                                <span>微信</span>
-                                <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="sxt123568" />
-                            </div>
-                            </Col>
-                            <Col span="11">
-                            <div class="pInfo">
-                                <img src="../images/personal/学号.png" width="30px" height="30px" />
-                                <span style="width:80px;text-align:center;">学号</span>
-                                <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="16340192" />
-                            </div>
-                            </Col>
-                        </Row>
-                        <Row style="margin:15px;">
-                            <Col span="11">
-                            <div class="pInfo">
-                                <img src="../images/personal/手机.png" width="30px" height="30px" />
-                                <span>手机</span>
-                                <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="123455678901" />
-                            </div>
-                            </Col>
-                            <Col span="11">
-                            <div class="pInfo">
-                                <img src="../images/personal/邮箱.png" width="30px" height="30px" />
-                                <span>XX</span>
-                                <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
-                            </div>
-                            </Col>
-                        </Row>
-                    </card>
+                <card id="bigPInfo" style="height:270px;white-space:nowrap;">
+                    <Row>
+                        <Button ghost size=small style="float:right;color:blue;font-size:15px;" @click="editInfo">
+                            <span>{{this.buttonText}}</span>
+                        </Button>
+                    </Row>
+                    <Row style="margin:15px;margin-top:1px;">
+                        <Col span="12">
+                        <div class="pInfo">
+                            <img src="../images/personal/性别.png" width="30px" height="30px" style="margin-right:3px" />
+                            <span>性别</span>
+                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" size="small" placeholder="female" />
+                        </div>
+                        </Col>
+                        <Col span="12">
+                        <div class="pInfo">
+                            <img src="../images/personal/学校.png" width="30px" height="30px" style="margin-right:3px" />
+                            <span>就读院校</span>
+                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="中山大学" />
+                        </div>
+                        </Col>
+                    </Row>
+                    <Row style="margin:15px;">
+                        <Col span="12">
+                        <div class="pInfo">
+                            <img src="../images/personal/邮箱.png" width="30px" height="30px" style="margin-right:3px" />
+                            <span>邮箱</span>
+                            <input type="text" style="margin-left:8px" :disabled="!editable" v-bind:style="styleForText" placeholder="123456789@qq.com" />
+                        </div>
+                        </Col>
+                        <Col span="12">
+                        <div class="pInfo">
+                            <img src="../images/personal/年级专业.png" width="30px" height="30px" style="margin-right:3px" />
+                            <span>专业年级</span>
+                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="软件工程16级" />
+                        </div>
+                        </Col>
+                    </Row>
+                    <Row style="margin:15px;">
+                        <Col span="12">
+                        <div class="pInfo">
+                            <img src="../images/personal/微信.png" width="30px" height="30px" style="margin-right:3px" />
+                            <span>微信</span>
+                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="sxt123568" />
+                        </div>
+                        </Col>
+                        <Col span="12">
+                        <div class="pInfo">
+                            <img src="../images/personal/学号.png" width="30px" height="30px" style="margin-right:3px" />
+                            <span>学生卡号</span>
+                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="16340192" />
+                        </div>
+                        </Col>
+                    </Row>
+                    <Row style="margin:15px;">
+                        <Col span="12">
+                        <div class="pInfo">
+                            <img src="../images/personal/手机.png" width="30px" height="30px" style="margin-right:3px" />
+                            <span>手机</span>
+                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="123455678901" />
+                        </div>
+                        </Col>
+                        <Col span="12">
+                        <div class="pInfo">
+                            <img src="../images/personal/邮箱.png" width="30px" height="30px" style="margin-right:3px" />
+                            <span>这里放啥</span>
+                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                        </div>
+                        </Col>
+                    </Row>
+                </card>
                 </Col>
             </Row>
         </div>
-        <div id="qInformation">
-            <Tabs value="credit" style="font-size:30px;width:80%;">
-                <TabPane label="我的信用" name="credit">
-                    <card>这是我的信用
-                    </card>
+        <div class="personal" style="margin: 0 10%">
+            <Tabs value="credit" style="font-size: 20px">
+                <TabPane label="我发布的" name="credit">
+                    <div id="Dynamic">
+                        <div>
+                            <span id="dynamicDate" style="font-size:20px;color:red;"> 04.12 </span><span style="font-size:15px;color:gray;">我发布了</span>
+                        </div>
+                        <task type="3" mode="0"></task>
+                    </div>
                 </TabPane>
-                <TabPane label="历史动态" name="history">
+                <TabPane label="我参与的" name="history">
                     <div id="Dynamic">
                         <div>
                             <span id="dynamicDate" style="font-size:20px;color:red;"> 04.15 </span><span style="font-size:15px;color:gray;">我参与了</span>
                         </div>
-                        <card>
-                            <Row>
-                                <span style="font-size:30px;margin:5px;float:left;">电子竞技行业认知度市场调查
-                                </span>
-                                <img src="../images/personal/进行中.png" style="float:right;margin-top:0px;" width="60px" height="60px" />
-                            </Row>
-                            <Row><span style="font-size:15px;margin:5px;float:left;">这里是为了凑格式给上面题目进行的一些解释</span></Row>
-                            <Row type="flex" align="bottom">
-                                <Col span="2" class="iconInDy">
-                                <img src="../images/github.png" width="30px" height="30px" />
-                                <span id="questionOwner"> 问卷主人 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy" offset="1">
-                                <img src="../images/问卷.png" width="30px" height="30px" />
-                                <span id="theQuestion"> 问卷 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy">
-                                <img src="../images/personal/时长.png" width="30px" height="30px" />
-                                <span id="theQTime"> 5~10分钟 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy">
-                                <img src="../images/personal/价格.png" width="30px" height="30px" />
-                                <span id="theQMoney" style="font-size:15px;color:red;"> 10元 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy" offset="9">
-                                <img src="../images/personal/头像2.png" width="30px" height="30px" />
-                                <span id="theQmembers"> 120人 </span>
-                                </Col>
-                                <Col span="4" class="iconInDy">
-                                <img src="../images/true.png" width="30px" height="30px" />
-                                <span id="theQuestion"> 2019年5月3日 </span>
-                                </Col>
-                            </Row>
-                        </card>
+                        <task type="2" mode="0"></task>
                     </div>
                 </TabPane>
                 <TabPane label="我的收藏" name="collect">
@@ -223,40 +200,7 @@
                         <div>
                             <span id="dynamicDate" style="font-size:20px;color:red;"> 04.15 </span><span style="font-size:15px;color:gray;">我参与了</span>
                         </div>
-                        <card>
-                            <Row>
-                                <span style="font-size:30px;margin:5px;float:left;">电子竞技行业认知度市场调查
-                                </span>
-                                <img src="../images/personal/进行中.png" style="float:right;margin-top:0px;" width="60px" height="60px" />
-                            </Row>
-                            <Row><span style="font-size:15px;margin:5px;float:left;">这里是为了凑格式给上面题目进行的一些解释</span></Row>
-                            <Row type="flex" align="bottom">
-                                <Col span="2" class="iconInDy">
-                                <img src="../images/github.png" width="30px" height="30px" />
-                                <span id="questionOwner"> 问卷主人 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy" offset="1">
-                                <img src="../images/问卷.png" width="30px" height="30px" />
-                                <span id="theQuestion"> 问卷 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy">
-                                <img src="../images/personal/时长.png" width="30px" height="30px" />
-                                <span id="theQTime"> 5~10分钟 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy">
-                                <img src="../images/personal/价格.png" width="30px" height="30px" />
-                                <span id="theQMoney" style="font-size:15px;color:red;"> 10元 </span>
-                                </Col>
-                                <Col span="2" class="iconInDy" offset="9">
-                                <img src="../images/personal/头像2.png" width="30px" height="30px" />
-                                <span id="theQmembers"> 120人 </span>
-                                </Col>
-                                <Col span="4" class="iconInDy">
-                                <img src="../images/true.png" width="30px" height="30px" />
-                                <span id="theQuestion"> 2019年5月3日 </span>
-                                </Col>
-                            </Row>
-                        </card>
+                        <task type="1" mode="0"></task>
                     </div>
                 </TabPane>
             </Tabs>
@@ -264,12 +208,18 @@
     </div>
 </template>
 <script>
+import task from './components/Task.vue'
 export default {
+    components: {
+        task
+    },
     data() {
         return {
             borderSize: 0,
             editable: false,
-            styleForText: 'border:' + this.borderSize + 'px'
+            styleForText: 'border:' + this.borderSize + 'px',
+            creditRate: 5,
+            buttonText: "编辑资料"
             //clientHeight: document.body.clientHeight,
             //clientWidth: document.body.clientWidth
         }
@@ -295,6 +245,11 @@ export default {
                 this.styleForText = 'border:1px solid';
             } else {
                 this.styleForText = 'border:0px';
+            }
+            if (this.buttonText == "编辑资料") {
+                this.buttonText = "保存资料";
+            } else {
+                this.buttonText = "编辑资料";
             }
         }
     }

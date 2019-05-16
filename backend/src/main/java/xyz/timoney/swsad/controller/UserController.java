@@ -38,11 +38,9 @@ public class UserController {
         }
     }
 
-    //这里体现了restful风格的请求，按照请求的类型，来进行增删查改。
-    //设计restful api（其实也就是URL），不要有冗余，例如不要写成getUsers，URL中
-    //最好不要有动词。
-
-    /*重置表*/
+    /**
+     * 重置用户表
+     * */
     @RequestMapping(method = RequestMethod.GET,value = "/users/reset")
     @CrossOrigin
     public Message<String> usersTableInit(){
@@ -59,7 +57,7 @@ public class UserController {
         }catch (Exception e){
             e.printStackTrace();
             message.setSuccess(false);
-            message.setMsg("重置失败: "+ e.toString());
+            message.setMsg("重置失败: 出现异常");
             System.out.println(message);
             return message;
         }
@@ -72,7 +70,9 @@ public class UserController {
         System.out.println(message);
         return message;
     }
-    /*获取所有用户*/
+    /**
+     * 获取所有用户
+     * */
     @RequestMapping(method = RequestMethod.GET,value = "/users")
     @CrossOrigin
     public Message<List<User>> getUsers(){
@@ -94,7 +94,7 @@ public class UserController {
         }catch (Exception e){
             message.setData(null);
             message.setSuccess(false);
-            message.setMsg("获取失败:" + e.getMessage());
+            message.setMsg("获取失败: 出现异常");
         }
         finally {
             //最后记得关闭连接
@@ -104,54 +104,11 @@ public class UserController {
         return message;
     }
 
-
-    /*调试表单传递参数*/
-    /*注册：插入用户数据
+    /**
+     * 注册：插入用户数据
      * 成功返回true
-     * 用户名存在返回false*/
-    /*@RequestMapping(method = RequestMethod.POST,value = "/register_form")
-    @CrossOrigin
-    public Message<String> register_form(@RequestParam(value = "password", defaultValue = "", required = false) String password,
-                                         @RequestParam(value = "email", defaultValue = "", required = false) String email,
-                                         @RequestParam(value = "phone", defaultValue = "", required = false) String phone){
-        System.out.println("\nPOST /register_form\n");
-        Message<String> message = new Message<>();
-        System.out.println(phone + "\n" + email + "\n" + password);
-        User user = new User();
-        if(!password.isEmpty())
-            user.setPassword(password);
-        if(!email.isEmpty()){
-            user.setEmail(email);
-        }
-        if(!phone.isEmpty())
-            user.setPhone(phone);
-        System.out.println("--------Request-------");
-        System.out.println(user);
-        System.out.println("--------Request-------");
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try {
-            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            userMapper.insert(user);
-            message.setSuccess(true);
-            message.setMsg("注册成功");
-            sqlSession.commit();
-        }catch (Exception e){
-            e.printStackTrace();
-            message.setSuccess(false);
-            message.setMsg("注册失败:" + e.getMessage());
-            System.out.println(message);
-            return message;
-        }finally {
-            sqlSession.close();
-        }
-        System.out.println(message);
-        return message;
-    }*/
-
-
-    /*注册：插入用户数据
-     * 成功返回true
-     * 用户名存在返回false*/
+     * 用户名存在返回false
+     * */
     @RequestMapping(method = RequestMethod.POST,value = "/register")
     @CrossOrigin
     public Message<String> register(@RequestBody User user){
@@ -176,7 +133,12 @@ public class UserController {
         }catch (Exception e){
             e.printStackTrace();
             message.setSuccess(false);
-            message.setMsg("注册失败:" + e.getMessage());
+            //不能直接e instanceof ...
+            if(e.getCause() instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException){
+                message.setMsg("注册失败: 账号已存在" );
+            }else {
+                message.setMsg("注册失败: 出现异常" );
+            }
             System.out.println(message);
             return message;
         }finally {
@@ -185,9 +147,11 @@ public class UserController {
         System.out.println(message);
         return message;
     }
-    /*登录：判断用户名和密码是否一致
+    /**
+     * 登录：判断用户名和密码是否一致
      * 一致返回当前用户的信息
-     * 不一致返回null*/
+     * 不一致返回null
+     * */
     @RequestMapping(method = RequestMethod.POST,value = "/user")
     @CrossOrigin
     public Message<User> login(@RequestBody User loginUser){
@@ -213,7 +177,7 @@ public class UserController {
             }catch (Exception e){
                 e.printStackTrace();
                 message.setSuccess(false);
-                message.setMsg("登录失败:" + e.getMessage());
+                message.setMsg("登录失败: 出现异常");
                 System.out.println(message);
                 return message;
             }finally {
@@ -228,7 +192,7 @@ public class UserController {
             }catch (Exception e){
                 e.printStackTrace();
                 message.setSuccess(false);
-                message.setMsg("登录失败:" + e.getMessage());
+                message.setMsg("登录失败: 出现异常" );
                 System.out.println(message);
                 return message;
             }finally {
@@ -258,7 +222,9 @@ public class UserController {
         System.out.println(message);
         return message;
     }
-    /*更新用户数据*/
+    /**
+     * 更新用户数据
+     * */
     @RequestMapping(method = RequestMethod.PUT,value = "/user")
     @CrossOrigin
     public Message<String> updateUser(@RequestBody User user){
@@ -283,7 +249,7 @@ public class UserController {
             sqlSession.commit();
         }catch (Exception e){
             e.printStackTrace();
-            message.setMsg("修改失败:" + e.getMessage());
+            message.setMsg("修改失败: 出现异常" );
             message.setSuccess(false);
         }
         finally {
@@ -293,7 +259,9 @@ public class UserController {
         return message;
     }
 
-    /*上传用户头像,返回图片URL*/
+    /**
+     * 上传用户头像,返回图片URL
+     * */
     @RequestMapping(method = RequestMethod.POST ,value = "/upload")
     @ResponseBody
     @CrossOrigin
@@ -339,7 +307,7 @@ public class UserController {
             }catch (IOException e) {
                 e.printStackTrace();
                 message.setSuccess(false);
-                message.setMsg("上传失败," + e.getMessage());
+                message.setMsg("上传失败: 出现异常");
                 System.out.println(message);
                 return message;
             }
@@ -357,9 +325,10 @@ public class UserController {
         return new File(fileName);
     }
 
-    /*删除指定用户
+    /**删除指定用户
      * 通过id查找
-     * 不用验证密码！！*/
+     * 不用验证密码！！
+     * */
     @RequestMapping(method = RequestMethod.DELETE,value = "/user/{userId}")
     @CrossOrigin
     public Message<String> deleteUser(@PathVariable int userId){
@@ -380,7 +349,7 @@ public class UserController {
             sqlSession.commit();
         }catch (Exception e){
             e.printStackTrace();
-            message.setMsg("删除失败:"+e.getMessage());
+            message.setMsg("删除失败: 出现异常");
             System.out.println(message);
             return message;
         }

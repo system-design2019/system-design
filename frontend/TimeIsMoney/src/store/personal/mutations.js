@@ -1,14 +1,24 @@
 import Vue from 'vue'
-export const SET_ALERTS = 'SET_ALERTS'
+export const SET_PER_INFO = 'SET_PER_INFO'
+export const SET_ATTENDING = 'SET_ATTENDING'
+export const SET_STARRING = 'SET_STARRING'
+export const SET_RECEIVE = 'SET_RECEIVE'
 export const CHANGE_STATUS = 'CHANGE_STATUS'
 
 export default{
-  [SET_ALERTS]  (state, alerts) {
-      state.mailReceive = alerts
-  },
-  [CHANGE_STATUS] (state, index) {
-      let temp = state.mailReceive[index]
-      temp.status = 'default'
-      Vue.set(state.mailReceive, index, temp)
-  }
+    [SET_PER_INFO]  (state, info) {
+        state.personalInfo = info
+    },
+    [SET_RECEIVE]  (state, info) {
+        state.mailReceive = info
+    },
+    [SET_ATTENDING]  (state, info) {
+        state.attending = info
+    },
+    [SET_STARRING]  (state, info) {
+        state.starring = info
+    },
+    [CHANGE_STATUS] (state, index) {
+        state.mailReceive[index].status = 'default'
+    }
 }

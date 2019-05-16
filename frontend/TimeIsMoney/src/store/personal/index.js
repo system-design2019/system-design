@@ -6,15 +6,29 @@ import getters from './getters.js'
 
 Vue.use(Vuex)
 
-const Home = {
+const Personal = {
     namespaced:true,
     state: {
-        rankList: [],
-        advertises: []
+        perosonalInfo:{
+            username: '',
+            userid: 0,
+            sex: 0,
+            email: '',
+            phone: '',
+            wechat: '',
+            university:'',
+            major:'',
+            grade:'',
+            studentid:'',
+            payaccount:''
+        },
+        attending:[],
+        starring:[],
+        mailReceive:[]
     },
     actions,
     mutations,
     getters
 }
 
-export default Home
+export default Personal
