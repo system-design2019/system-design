@@ -8,6 +8,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.http.ProtocolType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.mysql.jdbc.jdbc2.optional.SuspendableXAConnection;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -16,7 +17,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class SMS {
-
     private static HashMap<String,String> SMSCode = new HashMap<>();
     //  0:注册
     //  1:忘记密码
@@ -27,11 +27,11 @@ public class SMS {
      * 初始化获取私钥
      * */
     static {
-        ClassPathResource mailKey = new ClassPathResource("privateKey/SMSKey.txt");
-        System.out.println(mailKey);
+        ClassPathResource smsKey = new ClassPathResource("privateKey/SMSKey.txt");
+        System.out.println(smsKey);
         Scanner scanner = null;
         try {
-            scanner = new Scanner(mailKey.getInputStream());
+            scanner = new Scanner(smsKey.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,6 +39,7 @@ public class SMS {
         secret = scanner.nextLine();
         scanner.close();
     }
+
     /**发送短信服务*/
     //type表示类型:
     public static void sendSMSMessage(String phoneNum, int type) throws Exception{
@@ -61,7 +62,7 @@ public class SMS {
         request.putQueryParameter("TemplateParam", "{\"code\":\"" + code + "\"}");
         //可能会抛出异常
         CommonResponse response = client.getCommonResponse(request);
-        System.out.println(response.getHttpResponse());
+        System.out.println(response.getHttpStatus());
     }
     /**
      * 检查验证码是否正确
