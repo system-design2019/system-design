@@ -3,7 +3,7 @@ package xyz.timoney.swsad.bean;
 public class questionnaire {
     private int quesID;
     private String title;
-    private String content;
+    private String detail;
     private String publisher;
     private int reward;
     private int attend;
@@ -18,7 +18,7 @@ public class questionnaire {
         quesID=0;
         title="#";
         publisher="#";
-        content="#";
+        detail="#";
         reward=0;
         attend=0;
         total=0;
@@ -53,9 +53,7 @@ public class questionnaire {
         this.publisher = publisher;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+
 
     public void setReward(int reward) {
         this.reward = reward;
@@ -90,10 +88,6 @@ public class questionnaire {
         return publisher;
     }
 
-    public String getContent() {
-        return content;
-    }
-
     public int getReward() {
         return reward;
     }
@@ -119,6 +113,14 @@ public class questionnaire {
     }
 
     private static int count = 10000;
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
 
     static public void initCount(int c){
         count = c + 10000;
