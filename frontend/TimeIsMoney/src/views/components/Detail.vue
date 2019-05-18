@@ -29,19 +29,19 @@
         <div style="margin-top: 30px; width: 50%;position: relative; overflow: hidden; float:left; text-align: left; height: 37%">
             <div style="width: 100%; overflow: hidden; position: relative">
                 <div style="width: 100%;">
-                    <img src="./../../../static/task/collect.png" style="width:30px"></img>
+                    <img src="./../../../static/task/quesNum.png" style="width:30px"></img>
                     <span  class="hint" >题目数量 {{detailContent.number}}</span>
                 </div>
                 <div style="width: 100%;">
-                    <img src="./../../../static/task/collect.png" style="width:30px"></img>
+                    <img src="./../../../static/task/peopleNum.png" style="width:30px"></img>
                     <span class="hint" >招募人数 {{detailContent.total}}人 已有{{detailContent.attend}}人参加</span>
                 </div>
                 <div style="width: 100%;">
-                    <img src="./../../../static/task/collect.png" style="width:30px"></img>
+                    <img src="./../../../static/task/startTime.png" style="width:30px"></img>
                     <span class="hint" >开始时间 {{detailContent.startime}}</span>
                 </div>
                 <div style="width: 100%;">
-                    <img src="./../../../static/task/collect.png" style="width:30px"></img>
+                    <img src="./../../../static/task/startTime.png" style="width:30px"></img>
                     <span class="hint" >截止时间 {{detailContent.endtime}}</span>
                 </div>
                 <div style="width: 100%; text-align: center; margin-top: 20px">

@@ -4,7 +4,7 @@
             <Header style="background: #ffffff">
                 <Menu mode="horizontal" active-name="1" style="background: #ffffff;">
                     <div class="layout-logo" style="width: 230px;">
-                        <img src="../images/whiteNav/logonamered.png" style="height: 35px;" @click="backtoindex()">
+                        <img src="../images/whiteNav/logonamered.png" style="height: 40px;" @click="backtoindex()">
                     </div>
                     <div class="layout-nav" style="float: left">
                         <MenuItem v-for="(tag, index) in navLeftTags" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index)" :class="addClass(index)">
@@ -121,7 +121,7 @@
     overflow: hidden;
 }
 .layout-logo{
-    height: 30px;
+    height: 40px;
     /* background: #5b6270; */
     border-radius: 3px;
     float: left;
@@ -136,7 +136,7 @@
     text-align: center;
 }
 .ivu-menu-item span{
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 200;
     position: relative;
     bottom: -4px;

@@ -18,7 +18,10 @@
                             <div id="logoBox">
                                 <img id="logov2" src="../images/logov2big.png" alt="正方形的原始图片" />
                             </div>
-                            <p id="bigTitle"> TimeIsMoney </p>
+                            <!--<p id="bigTitle"> TimeIsMoney </p>-->
+                            <div id="titleBox">
+                                <img id="title" src="../images/title.png" alt="标题" />
+                            </div>
                             <p id="title2"> 让琐碎的时间更有价值 </p>
                             <div id="mainButton">
                                 <Button @click="handleStart" shape="circle" size=large ghost style="font-size:25px;width:200px">去赚钱</Button>
@@ -168,13 +171,17 @@ export default {
     }
 
 
-    #bigTitle{
+ /*   #bigTitle{
         font-size:40px;
         color: #FFF;
         margin-top: 0px;
         text-align: center;
         font-family:Lobster-Regular;
         margin-bottom: 20px;
+    }*/
+    #titleBox{
+        text-align: center;
+        margin-top:15px;
     }
     #title2{
         font-size:20px;
