@@ -1,5 +1,6 @@
 package xyz.timoney.swsad.mapper;
 import xyz.timoney.swsad.bean.User;
+import xyz.timoney.swsad.bean.questionnaire;
 
 import java.util.List;
 
@@ -10,6 +11,13 @@ public interface UserMapper {
      void userTableInit();
      /*删除表格*/
      void userTableDrop();
+
+     /*初始化用户发布问卷列表*/
+     List<questionnaire> userInitPublishList(int userId);
+     /*初始化用户参加问卷列表*/
+     List<questionnaire> userInitAttendList(int userId);
+     /*初始化用户收藏问卷列表*/
+     List<questionnaire> userInitFavoritehList(int userId);
 
     /*获取用户数量*/
      int getCount();

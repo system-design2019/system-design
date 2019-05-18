@@ -28,6 +28,11 @@
         select * from quesTable
     </select>
 
+    <!--Janking: 获取用户发布的所有问卷-->
+    <select id="getAllPublished"  resultType="questionnaire">
+        select * from quesTable where publisher = #{userId}
+    </select>
+
     <select id="getCount" resultType="int">
       select COUNT(*) from quesTable;
     </select>

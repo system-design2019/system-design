@@ -13,5 +13,9 @@ public interface QuestionnaireMapper {
     questionnaire getQuesByID(int quesID);
     /*获取问卷内容*/
     String getQuesCont(int quesID);
+
+    /*Janking: 获取用户发布的所有问卷*/
+    List<questionnaire> getAllPublished(int userId);
+
     int getCount();
 }

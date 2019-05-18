@@ -52,7 +52,7 @@ public class Email {
         EmailCode.put(address, code);
         try {
             //request.setVersion("2017-06-22");// 如果是除杭州region外的其它region（如新加坡region）,必须指定为2017-06-22
-            request.setAccountName("no-reply@timoney.xyz");
+            request.setAccountName("no-reply@service.timoney.xyz");
             request.setFromAlias("TimeIsMoney");
             request.setAddressType(1);
             //request.setTagName("控制台创建的标签");
@@ -77,7 +77,7 @@ public class Email {
             PrintWriter writer = new PrintWriter(new FileWriter("C:\\Users\\Janking\\Desktop\\out.html"));
             {
                 reader.lines().forEach(line -> writer.println(line));
-            }
+            }Capacity
             writer.close();*/
             scanner.close();
             SingleSendMailResponse httpResponse = client.getAcsResponse(request);

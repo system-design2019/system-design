@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
@@ -117,5 +118,20 @@ public class Util {
         Pattern regex = Pattern.compile(REGEX_EMAIL);
         Matcher matcher = regex.matcher(email);
         return matcher.matches();
+    }
+
+    /**
+     * long转date
+     * */
+    public static String longToDate(long milliseconds){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliseconds);
+        return calendar.getTime().toString();
+    }
+    public static long getCurrentDateLong(){
+        // 使用Calendar获取当前系统时间，需要获取Calendar对象后转换成Date输出
+        Calendar calendar = Calendar.getInstance();
+        // 这个方法相当于Date中的getTime，获取当前时间的毫秒数
+        return calendar.getTimeInMillis();
     }
 }
