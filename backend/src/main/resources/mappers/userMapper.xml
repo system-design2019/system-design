@@ -44,8 +44,26 @@
     </select>
     <!--插入用户-->
     <insert id="insert" parameterType="User">
-        insert into user_table(id, phone,email, password, name, studentId, grade, major,gender, age, nickname)
-        values(${id}, "${phone}", "${email}", "${password}", "${name}", "${studentId}", ${grade}, "${major}", ${gender},  ${age}, "${nickname}")
+        insert into user_table(id,
+                               password,
+                               email,
+                               phone,
+                               name,
+                               university,
+                               studentId,
+                               grade,
+                               major,
+                               gender,
+                               age,
+                               nickname,
+                               face,
+                               wechatpay,
+                               alipay,
+                               qq,
+                               credit)
+        values(${id},  '${password}','${email}', '${phone}',  '${name}', '${university}', '${studentId}',
+               ${grade}, '${major}', ${gender},  ${age}, '${nickname}','${face}','${weChatPay}','${aliPay}',
+               '${qq}',${credit})
     </insert>
     <!--获取所有用户-->
     <select id="getUsers"  resultType="User">
@@ -66,14 +84,30 @@
     <!--更新用户资料-->
     <update id="updateUser" parameterType="User">
         update user_table
-        set password="${password}", email = "${email}", phone = "${phone}", name = "${name}", studentId = "${studentId}",
-            grade = ${grade}, major = "{major}", gender =${gender}, age =${age}, nickname = "${nickname}"
+        set password='${password}',
+            email = '${email}',
+            phone = '${phone}',
+            name = '${name}',
+            university = '${university}',
+            studentId = '${studentId}',
+            grade = ${grade},
+            major = '{major}',
+            gender =${gender},
+            age =${age},
+            nickname = '${nickname}',
+            age = ${age}, '${aliPay}',
+            nickname = '${nickname}',
+            face = '${face}',
+            wechatpay = '${weChatPay}',
+            alipay = '${aliPay}',
+            qq = '${qq}',
+            credit = ${credit}
         where id = ${id}
     </update>
 
     <!--危险操作-->
     <delete id="deleteAllUsers">
-        delete from user_table
+        drop table user_table
     </delete>
     <delete id="deleteUser" parameterType="int" >
         delete from user_table where id = #{id}
