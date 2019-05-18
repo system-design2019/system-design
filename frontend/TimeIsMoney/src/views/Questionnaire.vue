@@ -6,8 +6,8 @@
             </div>
             <div id="grad"  style="width: 57%; float: right; height:350px; padding-left: 6%;display: flex;align-items:Center;">
                 <div class="showPage" style="min-height: 150px">
-                    <p style="width: 100%"><span style="font-size: 38px; font-weight:100; color: #fff">问卷调查</span> <span style="font-size: 20px; font-weight:100;  color: #fff">Questionnaire</span></p>
-                    <p style="font-size: 22px; color: #fff; width: 100%;margin-top: 20px; font-weight:100; ">问卷调查，收集意见，随时随地为你提供最丰富的信息！</p>
+                    <p style="width: 100%"><span style="font-size: 33px; font-weight:100; color: #fff">问卷调查</span> <span style="font-size: 20px; font-weight:100;  color: #fff">Questionnaire</span></p>
+                    <p style="font-size: 20px; color: #fff; width: 100%;margin-top: 20px; font-weight:100; ">问卷调查，收集意见，随时随地为你提供最丰富的信息！</p>
                     <Button type="info" style="margin-top: 30px; " @click="create()">发布问卷</Button>
                 </div>
             </div>
@@ -93,6 +93,7 @@ export default {
   .info{
     margin-right: 15px;
     margin-bottom: 2px;
+
   }
   
   .someInfo{
@@ -109,7 +110,7 @@ export default {
         border-color: #fff!important;
     }
     .ivu-btn-info span{
-        font-size: 28px!important;
+        font-size: 24px!important;
     }
     .ivu-btn-info:hover {
         color: #2db7f5!important;
@@ -119,8 +120,8 @@ export default {
     .ivu-btn{
         border-radius: 30px!important;
         background: rgba(255,255,255,0)!important;
-        width: 200px;
-        height: 60px;
+        width: 180px;
+        height: 50px;
     }
     .ivu-btn:hover{
         border-radius: 30px!important;
