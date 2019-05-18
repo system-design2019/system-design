@@ -11,7 +11,6 @@
                     <Button type="info" style="margin-top: 30px; " @click="create()">发布问卷</Button>
                 </div>
             </div>
-            
         </div>
         <div style="margin: 30px 15%">
             <div style="width: 100%; min-height: 20px;">
@@ -30,7 +29,7 @@
                 </div>
             </div>
             <div style="width: 100%; ">
-                <task v-for="ques in quesList" :data="ques" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
+                <task v-for="(ques,index) in quesList" :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
             </div>
         </div>
         <detail :detailContent="detailContent" v-show="detailModel" :showDetail="detailModel"></detail>
@@ -69,15 +68,12 @@ export default {
         },
         getDetail(id){
             this.$store.dispatch('Ques/GET_DETAIL', id)
-            console.log('aaaa')
-            console.log('quesdetail!!'+this.detailContent)
             this.detailModel = !this.detailModel
         },
         
     },
     mounted(){
-        this.$store.dispatch('Ques/GET_QUESLIST')
-        // this.$store.dispatch('Ques/GET_DETAIL', 3)
+        // this.$store.dispatch('Ques/GET_QUESLIST')
     }
 }
 </script>

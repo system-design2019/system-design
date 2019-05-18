@@ -105,7 +105,9 @@
                 <Col span="16">
                 <card id="bigPInfo" style="height:270px;white-space:nowrap;">
                     <Row>
-                        <Button ghost size=small style="float:right;color:blue;font-size:15px;" @click="editInfo">编辑资料</Button>
+                        <Button ghost size=small style="float:right;color:blue;font-size:15px;" @click="editInfo">
+                            <span>{{this.buttonText}}</span>
+                        </Button>
                     </Row>
                     <Row style="margin:15px;margin-top:1px;">
                         <Col span="12">
@@ -177,11 +179,15 @@
         </div>
         <div class="personal" style="margin: 0 10%">
             <Tabs value="credit" style="font-size: 20px">
-                <TabPane label="我的信用" name="credit">
-                    <card>这是我的信用
-                    </card>
+                <TabPane label="我发布的" name="credit">
+                    <div id="Dynamic">
+                        <div>
+                            <span id="dynamicDate" style="font-size:20px;color:red;"> 04.12 </span><span style="font-size:15px;color:gray;">我发布了</span>
+                        </div>
+                        <task type="3" mode="0"></task>
+                    </div>
                 </TabPane>
-                <TabPane label="历史动态" name="history">
+                <TabPane label="我参与的" name="history">
                     <div id="Dynamic">
                         <div>
                             <span id="dynamicDate" style="font-size:20px;color:red;"> 04.15 </span><span style="font-size:15px;color:gray;">我参与了</span>
@@ -212,7 +218,8 @@ export default {
             borderSize: 0,
             editable: false,
             styleForText: 'border:' + this.borderSize + 'px',
-            creditRate: 5
+            creditRate: 5,
+            buttonText: "编辑资料"
             //clientHeight: document.body.clientHeight,
             //clientWidth: document.body.clientWidth
         }
@@ -238,6 +245,11 @@ export default {
                 this.styleForText = 'border:1px solid';
             } else {
                 this.styleForText = 'border:0px';
+            }
+            if (this.buttonText == "编辑资料") {
+                this.buttonText = "保存资料";
+            } else {
+                this.buttonText = "编辑资料";
             }
         }
     }

@@ -16,12 +16,12 @@
                         <div v-if="logged">
                         <MenuItem v-for="(tag, index) in navRightTags1" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index+3)" style="float: right" :class="addClass(index+3)">
                             <Icon :type="tag.icon" size=27></Icon>
-                            <span>{{tag.text}}</span>
+                            <!-- <span>{{tag.text}}</span> -->
                         </MenuItem>
                         </div>
                         <MenuItem v-else :name="navRightTags0.name" @click.native="changePageByLink(navRightTags0.link, 3)" :class="addClass(3)" style="float: right">
                             <Icon :type="navRightTags0.icon" size=27></Icon>
-                            <span>{{navRightTags0.text}}</span>
+                            <!-- <span>{{navRightTags0.text}}</span> -->
                         </MenuItem>
                     </div>
                 </Menu>
@@ -56,6 +56,7 @@
                     {name: "3", icon:"md-walk", text:"跑腿", link: "favor"}
                 ],
                 navRightTags1:[
+                    {name: "6", icon:"md-exit", text:"个人中心", link: "out"},
                     {name: "5", icon:"md-person", text:"个人中心", link: "personal"},
                     {name: "4", icon:"md-mail", text:"收件箱", link: "receiveBox"}                    
                 ],
@@ -69,7 +70,7 @@
             },
             activeNav(){
                 let data = {
-                    home:0, questionnaire: 1, favor: 2, receiveBox: 4, personal: 3,
+                    home:0, questionnaire: 1, favor: 2, receiveBox: 5, personal: 4,
                 }
                 return data[this.$route.path.split('/')[1]]
             }
@@ -79,7 +80,14 @@
                 if(link === 'in'){
                     this.signInFromMain = !this.signInFromMain
                 }
-                    
+                else if(link === 'out'){
+                    let data = {
+                        log: false,
+                        userID: 0
+                    }
+                    window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
+                    this.reload()
+                }
                 else{
                     let id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
                     // console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))

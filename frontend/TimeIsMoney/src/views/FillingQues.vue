@@ -7,7 +7,7 @@
                 <FormItem  :label="q.title" :prop="getKey(index)">
                     <Input v-if="q.mode === 1" v-model="answers['answer'+String(index+1)]"></Input>
                     <CheckboxGroup v-if="q.mode === 2" v-model="answers['answer'+String(index+1)]">
-                        <Checkbox v-for="c in form.questions[1].choices" :label="c"  style="width: 100%;"></Checkbox>
+                        <Checkbox v-for="(c, index_c) in form.questions[1].choices" :label="c" :key="index_c" style="width: 100%;"></Checkbox>
                     </CheckboxGroup>
                 </FormItem>
             </Card>

@@ -24,7 +24,7 @@ public class QuestionnaireController {
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             //初始化问卷表
-            questionnaireMapper.questionnaireTableInit();
+            //questionnaireMapper.questionnaireTableInit();
             /*用户数量*/
             /*问卷数量*/
             int count = questionnaireMapper.getCount();

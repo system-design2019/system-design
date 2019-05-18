@@ -13,7 +13,8 @@
             :arrow="setting.arrow"
             style="height: 300px">
                 <CarouselItem v-for="(c, index) in carousel" :key="index">
-                    <img :src="c.src" style="height: 300px;object-fit: cover; width:100%"></img>
+                    <img :src="c.src" style="height: 300px; width:100%"></img>
+                    <!-- object-fit: cover; -->
                 </CarouselItem>
             </Carousel>
         </div>
@@ -35,13 +36,13 @@
             </div>
             <div style="width: 74%; float: right">
                 <Row style="width: 100%; height: 250px;" :gutter="10">
-                    <i-col span="18"><img src='../../static/home/adver1.jpg' style="width: 100%; height: 233.56px"></img></i-col>
-                    <i-col span="6"><img src='../../static/home/adver1.jpg'style="width: 100%; height: 233.56px"></img></i-col>
+                    <i-col span="18"><img src='../../static/home/show1.jpg' style="width: 100%; height: 233.56px"></img></i-col>
+                    <i-col span="6"><img src='../../static/home/show2.jpg'style="width: 100%; height: 233.56px"></img></i-col>
                 </Row>
                 <Row style="width: 100%; height: 100px;" :gutter="10">
-                    <i-col span="8"><img src='../../static/home/adver1.jpg' style="width: 100%"></img></i-col>
-                    <i-col span="8"><img src='../../static/home/adver1.jpg' style="width: 100%"></img></i-col>
-                    <i-col span="8"><img src='../../static/home/adver1.jpg' style="width: 100%"></img></i-col>
+                    <i-col span="8"><img src='../../static/home/show3.jpg' style="width: 100%; height: 163px"></img></i-col>
+                    <i-col span="8"><img src='../../static/home/show4.jpg' style="width: 100%; height: 163px"></img></i-col>
+                    <i-col span="8"><img src='../../static/home/show5.jpg' style="width: 100%; height: 163px"></img></i-col>
                 </Row>
             </div>
         </div>

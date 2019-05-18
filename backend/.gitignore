@@ -10,3 +10,5 @@ projectName.iml
 /build
 /local.properties
 /target/
+EmailKey.txt
+SMSKey.txt

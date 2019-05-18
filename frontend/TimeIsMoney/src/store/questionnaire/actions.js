@@ -13,22 +13,18 @@ export default {
     quesAPI.getQuesList().then((info) => {
         if(info.success)
           commit(mutations.SET_QUESLIST, info.data)
-        else
-          console.log('error:'+JSON.stringify(info))
       }
     ) 
   },
   [GET_DETAIL] ({commit}, id) {
     // console.log('123456789')
     quesAPI.getDetail(id).then((info)=>{
-      console.log('info'+JSON.stringify(info))
       commit(mutations.SET_DETAIL, info.data)
     })
     // console.log(data)
   },
   [CREATE_QUES] ({commit}, data) {
     quesAPI.createQues(data).then((info)=>{
-      console.log('info'+JSON.stringify(info))
       commit(mutations.SET_DETAIL, info)
     })
   }

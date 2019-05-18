@@ -22,7 +22,7 @@
             <!--连接数据库-->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost/swsad"/>
+                <property name="url" value="jdbc:mysql://118.25.215.11/swsad"/>
                 <property name="username" value="swsad"/>
                 <property name="password" value="swsad"/>
                 <property name="poolPingEnabled" value="true"/>
