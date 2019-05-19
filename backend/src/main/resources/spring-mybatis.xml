@@ -16,6 +16,7 @@
         <typeAlias alias="questionnaire" type="xyz.timoney.swsad.bean.questionnaire"/>
         <typeAlias alias="Notification" type="xyz.timoney.swsad.bean.Notification"/>
         <typeAlias alias="QuesFillUser" type="xyz.timoney.swsad.bean.QuesFillUser"/>
+        <typeAlias alias="QuesCollectUser" type="xyz.timoney.swsad.bean.QuesCollectUser"/>
     </typeAliases>
     <!--环境配置-->
     <environments default="development">
@@ -39,5 +40,6 @@
         <mapper resource="mappers/questionnaireMapper.xml"/>
         <mapper resource="mappers/notificationMapper.xml"/>
         <mapper resource="mappers/quesFillUserMapper.xml"/>
+        <mapper resource="mappers/quesCollectUserMapper.xml"/>
     </mappers>
 </configuration>

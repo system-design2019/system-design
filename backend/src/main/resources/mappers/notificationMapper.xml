@@ -40,7 +40,7 @@
         where id = #{arg0}
     </update>
     <!--获取某个用户所有通知-->
-    <select id="getAllNotifications" parameterType="int" resultType="xyz.timoney.swsad.bean.Notification" >
+    <select id="getAllNotifications" parameterType="int" resultType="Notification" >
         select * from notification_table
         where toId= #{userId};
     </select>

@@ -43,7 +43,7 @@
       select COUNT(*) from user_table;
     </select>
     <!--插入用户，返回主键-->
-    <insert id="insert" parameterType="xyz.timoney.swsad.bean.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         insert into user_table(password,
                                email,
                                phone,
@@ -65,19 +65,19 @@
                #{QQ},#{credit})
     </insert>
     <!--获取所有用户-->
-    <select id="getUsers"  resultType="xyz.timoney.swsad.bean.User">
+    <select id="getUsers"  resultType="User">
         select * from user_table
     </select>
     <!--获取指定ID用户-->
-    <select id="getById" parameterType="int" resultType="xyz.timoney.swsad.bean.User">
+    <select id="getById" parameterType="int" resultType="User">
         select * from user_table where id = #{id}
     </select>
     <!--获取指定手机号用户-->
-    <select id="getByPhone" parameterType="String" resultType="xyz.timoney.swsad.bean.User">
+    <select id="getByPhone" parameterType="String" resultType="User">
         select * from user_table where phone = #{phone}
     </select>
     <!--获取指定邮箱用户-->
-    <select id="getByEmail" parameterType="String" resultType="xyz.timoney.swsad.bean.User">
+    <select id="getByEmail" parameterType="String" resultType="User">
         select * from user_table where email = #{email}
     </select>
     <!--更新用户资料-->

@@ -18,10 +18,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static xyz.timoney.swsad.bean.UserState.verifyCookie;
 
@@ -56,24 +53,20 @@ public class UserController {
         System.out.println("\nGET /users/reset\n");
         Message<String> message = new Message<>();
         //获取一个连接,自动提交
-        SqlSession sqlSession = sqlSessionFactory.openSession(true);
-        try {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             userMapper.userTableDrop();
             userMapper.userTableInit();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
             message.setMsg("重置失败: 出现异常");
             System.out.println(message);
             return message;
         }
-        finally {
-            //最后记得关闭连接
-            sqlSession.close();
-        }
+        //最后记得关闭连接
         message.setSuccess(true);
         message.setMsg("用户表重置成功");
         System.out.println(message);
@@ -89,8 +82,7 @@ public class UserController {
         Message<List<User>> message = new Message<>();
         List<User> listUsers;
         //获取一个连接
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
@@ -100,15 +92,12 @@ public class UserController {
             message.setMsg("获取成功");
             //要提交后才会生效
             sqlSession.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             message.setData(null);
             message.setSuccess(false);
             message.setMsg("获取失败: 出现异常");
         }
-        finally {
-            //最后记得关闭连接
-            sqlSession.close();
-        }
+        //最后记得关闭连接
         System.out.println(message);
         return message;
     }
@@ -133,31 +122,28 @@ public class UserController {
         System.out.println(user);
         System.out.println("--------Request-------");
 
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
             userMapper.insert(user);
             int userId = user.getId();
             System.out.println(userId);
-            notificationMapper.insert(new Notification(0, userId,"注册后第一条通知","感谢注册TimeIsMoney，有问题尽管联系我们哦"));
-            notificationMapper.insert(new Notification(0, userId,"注册后第二条通知","请尽快实名认证哦"));
+            notificationMapper.insert(new Notification(0, userId, "注册后第一条通知", "感谢注册TimeIsMoney，有问题尽管联系我们哦"));
+            notificationMapper.insert(new Notification(0, userId, "注册后第二条通知", "请尽快实名认证哦"));
             message.setSuccess(true);
             message.setMsg("注册成功");
             sqlSession.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
             //不能直接e instanceof ...
-            if(e.getCause() instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException){
-                message.setMsg("注册失败: 账号已存在" );
-            }else {
-                message.setMsg("注册失败: 出现异常" );
+            if (e.getCause() instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException) {
+                message.setMsg("注册失败: 账号已存在");
+            } else {
+                message.setMsg("注册失败: 出现异常");
             }
             System.out.println(message);
             return message;
-        }finally {
-            sqlSession.close();
         }
         System.out.println(message);
         return message;
@@ -183,7 +169,7 @@ public class UserController {
         System.out.println("--------Request-------");
         System.out.println(loginUser);
         System.out.println("--------Request-------");
-        User user = null;
+        User user;
         //手机号登录
         if(loginUser.getPhone() != null && !loginUser.getPhone().isEmpty() && loginUser.getPhone().charAt(0) != '$'){
             try {
@@ -264,7 +250,7 @@ public class UserController {
     public Message<User> getUser(@CookieValue("user") String userCookieKey){
         System.out.println("\nGET /user\n");
         Message<User> message = new Message<>();
-        int userId = UserState.<User>verifyCookie(userCookieKey, message);
+        int userId = UserState.verifyCookie(userCookieKey, message);
         if(!message.isSuccess()){
             return message;
         }
@@ -278,23 +264,29 @@ public class UserController {
                 return message;
             }
         }
-        SqlSession sqlSession = sqlSessionFactory.openSession();
         User user;
         //时间有效
-        try {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            QuestionnaireMapper questionnaireMapper =  sqlSession.getMapper(QuestionnaireMapper.class);
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
-            QuesFillUserMapper quesFillUserMapper= sqlSession.getMapper(QuesFillUserMapper.class);
+            QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
             //获取用户基本信息
             user = userMapper.getById(userId);
+            //用户不存在
+            if(user ==null){
+                message.setSuccess(false);
+                message.setMsg("获取用户信息失败: 该用户不存在");
+                System.out.println(message);
+                return message;
+            }
             //获取发布问卷列表
             List<questionnaire> publishedList = questionnaireMapper.getAllPublished(userId);
             user.setPublished(publishedList);
             //获取填写问卷列表
             List<Integer> quesFilledIdList = quesFillUserMapper.getAllFilled(userId);
             List<questionnaire> quesFilledList = new ArrayList<>();
-            for(int i:quesFilledIdList){
+            for (int i : quesFilledIdList) {
                 quesFilledList.add(questionnaireMapper.getQuesByID(i));
             }
             user.setFilled(quesFilledList);
@@ -305,28 +297,18 @@ public class UserController {
             User.cacheList.add(user);
             //一次性提交
             sqlSession.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
             message.setMsg("获取用户信息失败: 出现异常");
             System.out.println(message);
             return message;
-        }finally {
-            sqlSession.close();
         }
-        //用户不存在
-        if(user ==null){
-            message.setSuccess(false);
-            message.setMsg("获取用户信息失败: 该用户不存在");
-            System.out.println(message);
-            return message;
-        }else{
             message.setSuccess(false);
             message.setMsg("获取用户信息成功: 来自数据库");
             message.setData(user);
             System.out.println(message);
             return message;
-        }
     }
 
     /**
@@ -343,7 +325,7 @@ public class UserController {
             System.out.println(message);
             return message;
         }
-        int userId = UserState.<String>verifyCookie(userCookieKey, message);
+        int userId = UserState.verifyCookie(userCookieKey, message);
         if(!message.isSuccess()){
             return message;
         }
@@ -353,27 +335,24 @@ public class UserController {
         }
 
         //自动提交
-        SqlSession sqlSession = sqlSessionFactory.openSession(true);
         //时间有效
-        try {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             int result = userMapper.updateUser(modifyUser);
-            if(result > 0){
+            if (result > 0) {
                 message.setSuccess(true);
                 message.setMsg("更新用户信息成功");
-            }else{
+            } else {
                 message.setSuccess(false);
                 message.setMsg("更新用户信息失败: 不存在该用户");
             }
             message.setMsg("修改成功");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
             message.setMsg("修改用户信息失败: 出现异常");
             System.out.println(message);
             return message;
-        }finally {
-            sqlSession.close();
         }
         //同步修改缓存中数据
         User.cacheList.removeIf(user -> user.getId()==userId);
@@ -458,31 +437,27 @@ public class UserController {
     public Message<String> deleteUser(@CookieValue("user") String userCookieKey){
         System.out.println("\nDELETE /user/\n");
         Message<String> message = new Message<>();
-        int userId = UserState.<String>verifyCookie(userCookieKey, message);
+        int userId = UserState.verifyCookie(userCookieKey, message);
         if(!message.isSuccess()){
             return message;
         }
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        int result;
-        try {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            int result;
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             result = userMapper.deleteUser(userId);
-            if(result > 0){
+            if (result > 0) {
                 message.setSuccess(true);
                 message.setMsg("删除成功");
-            }else{
+            } else {
                 message.setSuccess(false);
                 message.setMsg("不存在该用户");
             }
             sqlSession.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             message.setMsg("删除失败: 出现异常");
             System.out.println(message);
             return message;
-        }
-        finally {
-            sqlSession.close();
         }
         //同步删除缓存中数据
         User.cacheList.removeIf(user -> user.getId()==userId);

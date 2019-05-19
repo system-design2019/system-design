@@ -2,6 +2,7 @@ package xyz.timoney.swsad.controller;
 
 import xyz.timoney.swsad.bean.Message;
 import xyz.timoney.swsad.bean.questionnaire;
+import xyz.timoney.swsad.mapper.QuesCollectUserMapper;
 import xyz.timoney.swsad.mapper.QuesFillUserMapper;
 import xyz.timoney.swsad.mapper.QuestionnaireMapper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
@@ -23,12 +24,14 @@ public class QuestionnaireController {
         try {
             //得到映射器
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            /**
-             * Author:Janking
-             * 初始化用户填写问卷表格
-             * */
+
+             //初始化用户填写问卷表格
             QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
             quesFillUserMapper.quesFillUserTableInit();
+
+             //初始化用户收藏问卷表格
+            QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
+            quesCollectUserMapper.quesCollectUserTableInit();
             //调用接口中的方法去执行xml文件中的SQL语句
             //初始化问卷表
             //questionnaireMapper.questionnaireTableInit();
@@ -48,8 +51,7 @@ public class QuestionnaireController {
         Message<questionnaire> message = new Message<>();
         questionnaire theQues;
         //获取一个连接
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
@@ -59,15 +61,12 @@ public class QuestionnaireController {
             message.setMsg("获取成功");
             //要提交后才会生效
             sqlSession.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             message.setData(null);
             message.setSuccess(false);
             message.setMsg("获取失败:" + e.getMessage());
         }
-        finally {
-            //最后记得关闭连接
-            sqlSession.close();
-        }
+        //最后记得关闭连接
         System.out.println(message);
         return message;
     }
@@ -80,8 +79,7 @@ public class QuestionnaireController {
         Message<String> message = new Message<>();
         String theQuesCont;
         //获取一个连接
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
@@ -91,15 +89,12 @@ public class QuestionnaireController {
             message.setMsg("获取成功");
             //要提交后才会生效
             sqlSession.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             message.setData(null);
             message.setSuccess(false);
             message.setMsg("获取失败:" + e.getMessage());
         }
-        finally {
-            //最后记得关闭连接
-            sqlSession.close();
-        }
+        //最后记得关闭连接
 
         return message;
     }
@@ -111,8 +106,7 @@ public class QuestionnaireController {
         Message<List<questionnaire>> message = new Message<>();
         List<questionnaire> listQues;
         //获取一个连接
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
@@ -122,15 +116,12 @@ public class QuestionnaireController {
             message.setMsg("获取成功");
             //要提交后才会生效
             sqlSession.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             message.setData(null);
             message.setSuccess(false);
             message.setMsg("获取失败:" + e.getMessage());
         }
-        finally {
-            //最后记得关闭连接
-            sqlSession.close();
-        }
+        //最后记得关闭连接
 
         return message;
     }
@@ -142,20 +133,17 @@ public class QuestionnaireController {
     {
         Message<String> message = new Message<>();
         System.out.println(ques);
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             quesMapper.insert(ques);
             message.setSuccess(true);
             message.setMsg("创建成功");
             sqlSession.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
             message.setMsg("创建失败:" + e.getMessage());
             return message;
-        }finally {
-            sqlSession.close();
         }
         return message;
     }

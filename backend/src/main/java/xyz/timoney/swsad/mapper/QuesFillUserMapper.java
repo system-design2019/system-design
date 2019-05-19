@@ -9,9 +9,9 @@ public interface QuesFillUserMapper {
     void quesFillUserTableInit();
     /*删除表格*/
     void quesFillUserTableDrop();
-    /*添加参与者*/
+    /*添加填写者*/
     int insert(QuesFillUser quesFillUser);
-    /*删除参与者*/
+    /*删除填写者*/
     int delete(QuesFillUser quesFillUser);
     /*获取指定用户填写的所有问卷id*/
     List<Integer> getAllFilled(int userId);
