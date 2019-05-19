@@ -42,10 +42,9 @@
     <select id="getCount" resultType="int">
       select COUNT(*) from user_table;
     </select>
-    <!--插入用户-->
-    <insert id="insert" parameterType="User">
-        insert into user_table(id,
-                               password,
+    <!--插入用户，返回主键-->
+    <insert id="insert" parameterType="xyz.timoney.swsad.bean.User" useGeneratedKeys="true" keyProperty="id">
+        insert into user_table(password,
                                email,
                                phone,
                                name,
@@ -61,48 +60,49 @@
                                alipay,
                                qq,
                                credit)
-        values(${id},  '${password}','${email}', '${phone}',  '${name}', '${university}', '${studentId}',
-               ${grade}, '${major}', ${gender},  ${age}, '${nickname}','${face}','${weChatPay}','${aliPay}',
-               '${qq}',${credit})
+        values(#{password},#{email}, #{phone},  #{name}, #{university}, #{studentId},
+               #{grade}, #{major}, #{gender},  #{age}, #{nickname},#{face},#{weChatPay},#{aliPay},
+               #{QQ},#{credit})
     </insert>
     <!--获取所有用户-->
-    <select id="getUsers"  resultType="User">
+    <select id="getUsers"  resultType="xyz.timoney.swsad.bean.User">
         select * from user_table
     </select>
     <!--获取指定ID用户-->
-    <select id="getById" parameterType="int" resultType="User">
+    <select id="getById" parameterType="int" resultType="xyz.timoney.swsad.bean.User">
         select * from user_table where id = #{id}
     </select>
     <!--获取指定手机号用户-->
-    <select id="getByPhone" parameterType="String" resultType="User">
+    <select id="getByPhone" parameterType="String" resultType="xyz.timoney.swsad.bean.User">
         select * from user_table where phone = #{phone}
     </select>
     <!--获取指定邮箱用户-->
-    <select id="getByEmail" parameterType="String" resultType="User">
+    <select id="getByEmail" parameterType="String" resultType="xyz.timoney.swsad.bean.User">
         select * from user_table where email = #{email}
     </select>
     <!--更新用户资料-->
     <update id="updateUser" parameterType="User">
         update user_table
-        set password='${password}',
-            email = '${email}',
-            phone = '${phone}',
-            name = '${name}',
-            university = '${university}',
-            studentId = '${studentId}',
-            grade = ${grade},
-            major = '{major}',
-            gender =${gender},
-            age =${age},
-            nickname = '${nickname}',
-            age = ${age}, '${aliPay}',
-            nickname = '${nickname}',
-            face = '${face}',
-            wechatpay = '${weChatPay}',
-            alipay = '${aliPay}',
-            qq = '${qq}',
-            credit = ${credit}
-        where id = ${id}
+        set password=#{password},
+            email = #{email},
+            phone = #{phone},
+            name = #{name},
+            university = #{university},
+            studentId = #{studentId},
+            grade = #{grade},
+            major = #{major},
+            gender =#{gender},
+            age =#{age},
+            nickname = #{nickname},
+            age = #{age},
+            aliPay = #{aliPay},
+            nickname = #{nickname},
+            face = #{face},
+            wechatpay = #{weChatPay},
+            alipay = #{aliPay},
+            qq = #{QQ},
+            credit = #{credit}
+        where id = #{id}
     </update>
 
     <!--危险操作-->

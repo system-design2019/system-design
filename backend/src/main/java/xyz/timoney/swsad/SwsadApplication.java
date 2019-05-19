@@ -1,5 +1,6 @@
 package xyz.timoney.swsad;
 
+import xyz.timoney.swsad.bean.Notification;
 import xyz.timoney.swsad.controller.Controller;
 import xyz.timoney.swsad.controller.QuestionnaireController;
 import xyz.timoney.swsad.controller.UserController;

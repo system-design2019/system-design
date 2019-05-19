@@ -18,6 +18,11 @@
         select * from quesTable where quesID = #{quesID}
     </select>
 
+    <!--Janking: 获取用户发布的所有问卷-->
+    <select id="getAllPublished"  resultType="questionnaire">
+        select * from quesTable where publisher = #{userId}
+    </select>
+
     <!--获取问卷内容-->
     <select id="getQuesCont"  parameterType="int" resultType="String">
         select detail from quesTable where quesID = #{quesID}

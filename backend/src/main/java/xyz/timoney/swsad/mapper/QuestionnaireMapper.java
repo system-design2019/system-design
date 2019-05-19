@@ -14,6 +14,13 @@ public interface QuestionnaireMapper {
     /*获取问卷内容*/
     String getQuesCont(int quesID);
 
+    /*获取用户发布的所有问卷*/
+    List<questionnaire> getAllPublished(int userId);
+    /*初始化用户填写问卷列表*/
+    List<questionnaire> getAllFilled(int userId);
+    /*初始化用户收藏问卷列表*/
+    List<questionnaire> getAllCollected(int userId);
+
     /*Janking: 获取用户发布的所有问卷*/
     List<questionnaire> getAllPublished(int userId);
 

@@ -165,16 +165,20 @@ public class User {
     }
 
     //同步方法
-    public void setAttend(List<questionnaire> attend) {
-        this.attend = attend;
+    public void setCollected(List<questionnaire> collected) {
+        this.collected = collected;
     }
 
-    public void setFavorite(List<questionnaire> favorite) {
-        this.favorite = favorite;
+    public void setFilled(List<questionnaire> filled) {
+        this.filled = filled;
     }
 
-    public void setPublish(List<questionnaire> publish) {
-        this.publish = publish;
+    public void setPublished(List<questionnaire> published) {
+        this.published = published;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
     }
 
     public int getId() {
@@ -249,16 +253,20 @@ public class User {
         return university;
     }
     //同步方法
-    public synchronized List<questionnaire> getAttend() {
-        return attend;
+    public List<questionnaire> getCollected() {
+        return collected;
     }
 
-    public synchronized List<questionnaire> getFavorite() {
-        return favorite;
+    public List<questionnaire> getFilled() {
+        return filled;
     }
 
-    public synchronized List<questionnaire> getPublish() {
-        return publish;
+    public List<questionnaire> getPublished() {
+        return published;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
     }
 
     @Override

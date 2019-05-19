@@ -1,6 +1,7 @@
 package xyz.timoney.swsad.controller;
 
 import xyz.timoney.swsad.bean.*;
+import xyz.timoney.swsad.mapper.NotificationMapper;
 import xyz.timoney.swsad.mapper.QuestionnaireMapper;
 import xyz.timoney.swsad.mapper.UserMapper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
@@ -31,6 +32,7 @@ public class UserController {
         try {
             //得到映射器
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             //初始化用户表
             userMapper.userTableInit();
@@ -131,7 +133,12 @@ public class UserController {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         try {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
             userMapper.insert(user);
+            int userId = user.getId();
+            System.out.println(userId);
+            notificationMapper.insert(new Notification(0, userId,"注册后第一条通知","感谢注册TimeIsMoney，有问题尽管联系我们哦"));
+            notificationMapper.insert(new Notification(0, userId,"注册后第二条通知","请尽快实名认证哦"));
             message.setSuccess(true);
             message.setMsg("注册成功");
             sqlSession.commit();
@@ -275,6 +282,9 @@ public class UserController {
                     //时间有效
                     try {
                         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+                        QuestionnaireMapper questionnaireMapper =  sqlSession.getMapper(QuestionnaireMapper.class);
+                        NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
+                        //获取用户基本信息
                         user = userMapper.getById(us.getId());
                         //获取发布问卷列表
                         QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
