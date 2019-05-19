@@ -1,6 +1,13 @@
 package xyz.timoney.swsad.bean;
 
+import org.apache.ibatis.session.SqlSession;
+import xyz.timoney.swsad.mapper.NotificationMapper;
+import xyz.timoney.swsad.mapper.QuestionnaireMapper;
+import xyz.timoney.swsad.mapper.UserMapper;
+
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 

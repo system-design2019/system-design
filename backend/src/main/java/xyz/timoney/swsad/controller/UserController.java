@@ -1,5 +1,6 @@
 package xyz.timoney.swsad.controller;
 
+import com.google.gson.Gson;
 import xyz.timoney.swsad.bean.*;
 import xyz.timoney.swsad.mapper.NotificationMapper;
 import xyz.timoney.swsad.mapper.QuestionnaireMapper;
@@ -20,6 +21,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import static xyz.timoney.swsad.bean.UserState.verifyCookie;
+
 
 @RestController
 @EnableAutoConfiguration
@@ -32,8 +35,6 @@ public class UserController {
         try {
             //得到映射器
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
-            //调用接口中的方法去执行xml文件中的SQL语句
             //初始化用户表
             userMapper.userTableInit();
             /*用户数量*/
@@ -229,7 +230,7 @@ public class UserController {
             Cookie cookie = new Cookie("user", cookieKey);
             //有效期一天
             UserState userState = new UserState(user.getId(), cookieKey, Util.getCurrentDateLong() + 24*60*60*1000);
-            UserState.list.add(userState);
+            UserState.cookieList.add(userState);
             cookie.setPath(request.getContextPath());
             cookie.setMaxAge(80000);
             response.addCookie(cookie);
@@ -251,84 +252,64 @@ public class UserController {
     public Message<User> getUser(@CookieValue("user") String userCookieKey){
         System.out.println("\nGET /user\n");
         Message<User> message = new Message<>();
-        if(userCookieKey==null || userCookieKey.isEmpty()){
+        int userId = UserState.<User>verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        //先看缓存中是否有
+        for(User u : User.cacheList){
+            if(u.getId() == userId){
+                message.setSuccess(false);
+                message.setMsg("获取用户信息成功: 来自缓存");
+                message.setData(u);
+                System.out.println(message);
+                return message;
+            }
+        }
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        User user;
+        //时间有效
+        try {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            QuestionnaireMapper questionnaireMapper =  sqlSession.getMapper(QuestionnaireMapper.class);
+            NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
+            //获取用户基本信息
+            user = userMapper.getById(userId);
+            //获取发布问卷列表
+            List<questionnaire> publishedList = questionnaireMapper.getAllPublished(userId);
+            user.setPublished(publishedList);
+            //获取用户所有通知
+            List<Notification> notifications = notificationMapper.getAllNotifications(userId);
+            System.out.println("***********");
+            System.out.println(new Gson().toJson(notifications));
+            System.out.println("***********");
+            user.setNotifications(notifications);
+            //加到缓存中去，避免每次都查询数据库
+            User.cacheList.add(user);
+            //一次性提交
+            sqlSession.commit();
+        }catch (Exception e){
+            e.printStackTrace();
             message.setSuccess(false);
-            message.setMsg("获取用户信息失败: cookie为空");
+            message.setMsg("获取用户信息失败: 出现异常");
+            System.out.println(message);
+            return message;
+        }finally {
+            sqlSession.close();
+        }
+        //用户不存在
+        if(user ==null){
+            message.setSuccess(false);
+            message.setMsg("获取用户信息失败: 该用户不存在");
+            System.out.println(message);
+            return message;
+        }else{
+            message.setSuccess(false);
+            message.setMsg("获取用户信息成功: 来自数据库");
+            message.setData(user);
             System.out.println(message);
             return message;
         }
-        System.out.println("--------Request-------");
-        System.out.println(userCookieKey);
-        System.out.println("--------Request-------");
-        for(UserState us : UserState.list){
-           if(us.getCookieKey().equals(userCookieKey)){
-               System.out.println("--------Verify-------");
-               System.out.println(us);
-               System.out.println("--------Verify-------");
-                if(us.getValidTime() >= new Date().getTime()){
-                    //先看缓存中是否有
-                    for(User u : User.userList){
-                        if(u.getId() == us.getId()){
-                            message.setSuccess(false);
-                            message.setMsg("获取用户信息成功: 来自缓存");
-                            message.setData(u);
-                            System.out.println(message);
-                            return message;
-                        }
-                    }
-                    //自动提交
-                    SqlSession sqlSession = sqlSessionFactory.openSession();
-                    User user;
-                    //时间有效
-                    try {
-                        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-                        QuestionnaireMapper questionnaireMapper =  sqlSession.getMapper(QuestionnaireMapper.class);
-                        NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
-                        //获取用户基本信息
-                        user = userMapper.getById(us.getId());
-                        //获取发布问卷列表
-                        QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-                        List<questionnaire> publishedList = questionnaireMapper.getAllPublished(us.getId());
-                        user.setPublish(publishedList);
-                        //加到缓存中去，避免每次都查询数据库
-                        User.userList.add(user);
-                        //一次性提交
-                        sqlSession.commit();
-                    }catch (Exception e){
-                        e.printStackTrace();
-                        message.setSuccess(false);
-                        message.setMsg("获取用户信息失败: 出现异常");
-                        System.out.println(message);
-                        return message;
-                    }finally {
-                        sqlSession.close();
-                    }
-                    //用户不存在
-                    if(user ==null){
-                        message.setSuccess(false);
-                        message.setMsg("获取用户信息失败: 该用户不存在");
-                        System.out.println(message);
-                        return message;
-                    }else{
-                        message.setSuccess(false);
-                        message.setMsg("获取用户信息成功: 来自数据库");
-                        message.setData(user);
-                        System.out.println(message);
-                        return message;
-                    }
-                }else {
-                   //时间无效
-                    message.setSuccess(false);
-                    message.setMsg("获取用户信息失败: cookie已过期");
-                    System.out.println(message);
-                    return message;
-                }
-           }
-        }
-        message.setSuccess(false);
-        message.setMsg("获取用户信息失败: cookie无效");
-        System.out.println(message);
-        return message;
     }
 
     /**
@@ -345,59 +326,45 @@ public class UserController {
             System.out.println(message);
             return message;
         }
-        if(userCookieKey==null || userCookieKey.isEmpty()){
-            message.setSuccess(false);
-            message.setMsg("更新用户信息失败: cookie为空");
-            System.out.println(message);
+        int userId = UserState.<String>verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
             return message;
         }
-        System.out.println("--------Request-------");
-        System.out.println(modifyUser);
-        System.out.println(userCookieKey);
-        System.out.println("--------Request-------");
-        //us指用户状态记录
-        for(UserState us : UserState.list){
-            if(us.getCookieKey().equals(userCookieKey)){
-                System.out.println("--------Verify-------");
-                System.out.println(us);
-                System.out.println("--------Verify-------");
-                if(us.getValidTime() >= new Date().getTime()){
-                    //自动提交
-                    SqlSession sqlSession = sqlSessionFactory.openSession(true);
-                    //时间有效
-                    try {
-                        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-                        message.setSuccess(userMapper.updateUser(modifyUser));
-                        message.setMsg("修改成功");
-                    }catch (Exception e){
-                        e.printStackTrace();
-                        message.setSuccess(false);
-                        message.setMsg("修改用户信息失败: 出现异常");
-                        System.out.println(message);
-                        return message;
-                    }finally {
-                        sqlSession.close();
-                    }
-                    //同步修改缓存中数据
-                    User.userList.removeIf(user -> user.getId()==us.getId());
-                    User.userList.add(modifyUser);
-                    message.setSuccess(false);
-                    message.setMsg("修改用户信息成功");
-                    System.out.println(message);
-                    return message;
-                }else {
-                    //时间无效
-                    message.setSuccess(false);
-                    message.setMsg("修改用户信息失败: cookie已过期");
-                    System.out.println(message);
-                    return message;
-                }
-            }
+        if(userId != modifyUser.getId()){
+            message.setMsg("更新用户信息失败：Cookie不一致");
+            return message;
         }
-        message.setSuccess(false);
-        message.setMsg("修改用户信息失败: cookie无效");
+
+        //自动提交
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        //时间有效
+        try {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            int result = userMapper.updateUser(modifyUser);
+            if(result > 0){
+                message.setSuccess(true);
+                message.setMsg("更新用户信息成功");
+            }else{
+                message.setSuccess(false);
+                message.setMsg("更新用户信息失败: 不存在该用户");
+            }
+            message.setMsg("修改成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("修改用户信息失败: 出现异常");
+            System.out.println(message);
+            return message;
+        }finally {
+            sqlSession.close();
+        }
+        //同步修改缓存中数据
+        User.cacheList.removeIf(user -> user.getId()==userId);
+        User.cacheList.add(modifyUser);
+
         System.out.println(message);
         return message;
+
     }
 
     /**
@@ -468,13 +435,16 @@ public class UserController {
 
     /**删除指定用户
      * 通过id查找
-     * 不用验证密码！！
      * */
-    @RequestMapping(method = RequestMethod.DELETE,value = "/user/{userId}")
+    @RequestMapping(method = RequestMethod.DELETE,value = "/user")
     @CrossOrigin
-    public Message<String> deleteUser(@PathVariable int userId){
-        System.out.println("\nDELETE /user/" + userId + ":\n");
+    public Message<String> deleteUser(@CookieValue("user") String userCookieKey){
+        System.out.println("\nDELETE /user/\n");
         Message<String> message = new Message<>();
+        int userId = UserState.<String>verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
         SqlSession sqlSession = sqlSessionFactory.openSession();
         int result;
         try {
@@ -497,6 +467,8 @@ public class UserController {
         finally {
             sqlSession.close();
         }
+        //同步删除缓存中数据
+        User.cacheList.removeIf(user -> user.getId()==userId);
         System.out.println(message);
         return message;
     }

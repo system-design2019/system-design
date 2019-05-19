@@ -13,20 +13,21 @@
         (
             id          bigint(32) auto_increment
                 primary key,
-            to_id       bigint(32) not null,
-            from_id     bigint(32) not null,
-            has_read    boolean    not null,
+            toId       bigint(32) not null,
+            fromId     bigint(32) not null,
+            hasRead    boolean    not null,
+            title       CHAR(40)   not null,
             content     CHAR(100)  not null
         )ENGINE=InnoDB DEFAULT CHARSET=utf8
     </update>
     <!--添加通知，返回主键-->
     <insert id="insert" parameterType="Notification" useGeneratedKeys="true" keyProperty="id">
-        insert into notification_table(id,
-                                       to_id,
-                                       from_id,
-                                       has_read,
+        insert into notification_table(toId,
+                                       fromId,
+                                       hasRead,
+                                       title,
                                        content)
-        values(#{id},  #{toId},#{fromId}, #{hasRead},#{content})
+        values( #{toId},#{fromId}, #{hasRead},#{title},#{content})
     </insert>
     <!--删除通知-->
     <delete id="delete" parameterType="int">
@@ -35,13 +36,12 @@
     <!--设置已读或未读-->
     <update id="setRead">
         update notification_table
-        set has_read = #{1}
-        where id = #{0}
+        set hasRead = #{arg1}
+        where id = #{arg0}
     </update>
     <!--获取某个用户所有通知-->
     <select id="getAllNotifications" parameterType="int" resultType="xyz.timoney.swsad.bean.Notification" >
-        select *
-        from notification_table
-        where to_id= #{userId};
+        select * from notification_table
+        where toId= #{userId};
     </select>
 </mapper>

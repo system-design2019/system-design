@@ -33,7 +33,7 @@ public interface UserMapper {
      int getId(String phoneOrEmail);
 
     /*更新用户信息*/
-     boolean updateUser(User user);
+     int updateUser(User user);
 
     /*返回所有用户*/
     List<User> getUsers();
