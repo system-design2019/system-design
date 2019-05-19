@@ -18,9 +18,9 @@
         select * from quesTable where quesID = #{quesID}
     </select>
 
-    <!--Janking: 获取用户发布的所有问卷-->
+    <!--Janking: 获取用户发布的所有问卷，降序，也就是时间最近排在最前面-->
     <select id="getAllPublished"  resultType="questionnaire">
-        select * from quesTable where publisher = #{userId}
+        select * from quesTable where publisher = #{userId} order by startTime DESC
     </select>
 
     <!--获取问卷内容-->

@@ -3,6 +3,7 @@ package xyz.timoney.swsad.controller;
 import com.google.gson.Gson;
 import xyz.timoney.swsad.bean.*;
 import xyz.timoney.swsad.mapper.NotificationMapper;
+import xyz.timoney.swsad.mapper.QuesFillUserMapper;
 import xyz.timoney.swsad.mapper.QuestionnaireMapper;
 import xyz.timoney.swsad.mapper.UserMapper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
@@ -17,6 +18,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -283,11 +285,19 @@ public class UserController {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             QuestionnaireMapper questionnaireMapper =  sqlSession.getMapper(QuestionnaireMapper.class);
             NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
+            QuesFillUserMapper quesFillUserMapper= sqlSession.getMapper(QuesFillUserMapper.class);
             //获取用户基本信息
             user = userMapper.getById(userId);
             //获取发布问卷列表
             List<questionnaire> publishedList = questionnaireMapper.getAllPublished(userId);
             user.setPublished(publishedList);
+            //获取填写问卷列表
+            List<Integer> quesFilledIdList = quesFillUserMapper.getAllFilled(userId);
+            List<questionnaire> quesFilledList = new ArrayList<>();
+            for(int i:quesFilledIdList){
+                quesFilledList.add(questionnaireMapper.getQuesByID(i));
+            }
+            user.setFilled(quesFilledList);
             //获取用户所有通知
             List<Notification> notifications = notificationMapper.getAllNotifications(userId);
             user.setNotifications(notifications);

@@ -2,6 +2,7 @@ package xyz.timoney.swsad.controller;
 
 import xyz.timoney.swsad.bean.Message;
 import xyz.timoney.swsad.bean.questionnaire;
+import xyz.timoney.swsad.mapper.QuesFillUserMapper;
 import xyz.timoney.swsad.mapper.QuestionnaireMapper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
 import org.apache.ibatis.session.SqlSession;
@@ -22,6 +23,12 @@ public class QuestionnaireController {
         try {
             //得到映射器
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            /**
+             * Author:Janking
+             * 初始化用户填写问卷表格
+             * */
+            QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
+            quesFillUserMapper.quesFillUserTableInit();
             //调用接口中的方法去执行xml文件中的SQL语句
             //初始化问卷表
             //questionnaireMapper.questionnaireTableInit();
