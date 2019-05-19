@@ -72,8 +72,11 @@ public class NotificationController {
         for(User user : User.cacheList){
             if(user.getId() == userId){
                 for(Notification newNotice : notifications){
-                    if(newNotice.getToId()!=userId)
+                    if(newNotice.getToId()!=userId){
+                        message.setData("某些通知无权发送");
                         continue;
+                    }
+
                     user.getNotifications().add(newNotice);
                 }
             }
@@ -129,13 +132,9 @@ public class NotificationController {
         //同步修改缓存中数据
         for(User user : User.cacheList){
             if(user.getId() == userId){
-                for(Notification newNotice : notifications){
-                    if(newNotice.getToId()!=userId)
-                        continue;
-                    for(Notification originNotice : user.getNotifications()){
-                        if(originNotice.getId() == newNotice.getId())
-                            originNotice.setHasRead(newNotice.isHasRead());
-                    }
+                for(Notification deleteNotice : notifications){
+                    user.getNotifications().removeIf(originNotice ->
+                            (originNotice.getToId()==userId)&&(originNotice.getId()==deleteNotice.getId()));
                 }
             }
         }
@@ -190,9 +189,15 @@ public class NotificationController {
         //同步修改缓存中数据
         for(User user : User.cacheList){
             if(user.getId() == userId){
-                for(Notification deleteNotice : notifications){
-                    user.getNotifications().removeIf(originNotice ->
-                            (originNotice.getToId()==userId)&&(originNotice.getId()==deleteNotice.getId()));
+                for(Notification newNotice : notifications){
+                    if(newNotice.getToId()!=userId){
+                        message.setData("某些通知无权修改状态");
+                        continue;
+                    }
+                    for(Notification originNotice : user.getNotifications()){
+                        if(originNotice.getId() == newNotice.getId())
+                            originNotice.setHasRead(newNotice.isHasRead());
+                    }
                 }
             }
         }
