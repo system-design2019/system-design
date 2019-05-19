@@ -220,28 +220,38 @@ public class UserController {
         System.out.println("--------Verify-------");
         System.out.println(user);
         System.out.println("--------Verify-------");
-        //判断密码是否正确
-        if(user!=null && user.getPassword().equals(loginUser.getPassword())){
-            message.setMsg("登录成功");
-            message.setSuccess(true);
-            //message.setData(user);
-            //add cookie
-            String cookieKey = Util.getUUID();
-            Cookie cookie = new Cookie("user", cookieKey);
-            //有效期一天
-            UserState userState = new UserState(user.getId(), cookieKey, Util.getCurrentDateLong() + 24*60*60*1000);
-            UserState.cookieList.add(userState);
-            cookie.setPath(request.getContextPath());
-            cookie.setMaxAge(80000);
-            response.addCookie(cookie);
-            System.out.println("cookies:" + cookie.getValue());
+        //判断用户是否存在
+        if(user == null){
+            message.setMsg("登录失败：账号不存在");
+            message.setSuccess(false);
+            message.setData(null);
+            System.out.println(message);
+            return message;
+        }else {
+            //判断密码是否正确
+            if(user.getPassword().equals(loginUser.getPassword())){
+                message.setMsg("登录成功");
+                message.setSuccess(true);
+                //message.setData(user);
+                //add cookie
+                String cookieKey = Util.getUUID();
+                Cookie cookie = new Cookie("user", cookieKey);
+                //有效期一天
+                UserState userState = new UserState(user.getId(), cookieKey, Util.getCurrentDateLong() + 24*60*60*1000);
+                UserState.cookieList.add(userState);
+                cookie.setPath(request.getContextPath());
+                cookie.setMaxAge(80000);
+                response.addCookie(cookie);
+                System.out.println("cookies:" + cookie.getValue());
+                return message;
+            }
+            message.setMsg("登录失败：用户名或密码错误");
+            message.setSuccess(false);
+            message.setData(null);
+            System.out.println(message);
             return message;
         }
-        message.setMsg("登录失败：用户名或密码错误");
-        message.setSuccess(false);
-        message.setData(null);
-        System.out.println(message);
-        return message;
+
     }
 
     /**
@@ -280,9 +290,6 @@ public class UserController {
             user.setPublished(publishedList);
             //获取用户所有通知
             List<Notification> notifications = notificationMapper.getAllNotifications(userId);
-            System.out.println("***********");
-            System.out.println(new Gson().toJson(notifications));
-            System.out.println("***********");
             user.setNotifications(notifications);
             //加到缓存中去，避免每次都查询数据库
             User.cacheList.add(user);
