@@ -17,6 +17,7 @@
         <typeAlias alias="infos" type="xyz.timoney.swsad.bean.infos"/>
         <typeAlias alias="Ques1" type="xyz.timoney.swsad.bean.Ques1"/>
         <typeAlias alias="Ques2" type="xyz.timoney.swsad.bean.Ques2"/>
+        <typeAlias alias="Ques2_temp" type="xyz.timoney.swsad.bean.Ques2_temp"/>
         <typeAlias alias="Notification" type="xyz.timoney.swsad.bean.Notification"/>
         <typeAlias alias="QuesFillUser" type="xyz.timoney.swsad.bean.QuesFillUser"/>
         <typeAlias alias="QuesCollectUser" type="xyz.timoney.swsad.bean.QuesCollectUser"/>

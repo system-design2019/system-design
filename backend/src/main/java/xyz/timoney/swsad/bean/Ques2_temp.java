@@ -1,25 +1,22 @@
 package xyz.timoney.swsad.bean;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Ques2 {
+public class Ques2_temp {
     private int xuanID;
     private int quesID;
     private int mode;
     private String title;
     private int choose;
     private boolean fill;
-    private List<String> choices;
+    private String choices;
 
-    public Ques2()
+    public Ques2_temp()
     {
         xuanID=0;
         quesID=0;
         mode=2;
         title="xuanze";
         choose=1;
-        choices=new ArrayList<String>();
+        choices="#";
         fill=false;
     }
 
@@ -71,11 +68,11 @@ public class Ques2 {
         this.fill = fill;
     }
 
-    public List<String> getChoices() {
+    public String getChoices() {
         return choices;
     }
 
-    public void setChoices(List<String> choices) {
+    public void setChoices(String choices) {
         this.choices = choices;
     }
 }

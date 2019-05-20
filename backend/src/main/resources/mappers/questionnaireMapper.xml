@@ -19,6 +19,12 @@
         values (${tianID},${quesID},${mode}, "${title}",${fill})
     </insert>
 
+    <!--插入选择题-->
+    <insert id="insertXuan" parameterType="Ques2_temp">
+        insert into xuanze (xuanID, quesID, mode, title, choose, choices,fill)
+        values (${xuanID},${quesID},${mode}, "${title}",${choose},"${choices}",${fill})
+    </insert>
+
     <!--获取问卷详情-->
     <select id="getQuesByID"  parameterType="int" resultType="questionnaire">
         select * from quesTable where quesID = #{quesID}
