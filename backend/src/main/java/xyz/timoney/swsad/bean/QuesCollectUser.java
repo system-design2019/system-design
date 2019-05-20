@@ -1,11 +1,22 @@
 package xyz.timoney.swsad.bean;
 
-//保存某个问卷收藏的用户单项
+/**
+ * 保存某个问卷收藏的用户单项
+ */
 public class QuesCollectUser {
-    //问卷ID
+    /**
+     * 问卷ID
+     */
     private int quesId;
-    //用户ID
+    /**
+     *用户ID
+     */
     private int userId;
+
+    public QuesCollectUser(int quesId, int userId){
+        this.quesId = quesId;
+        this.userId = userId;
+    }
 
     public int getQuesId() {
         return quesId;

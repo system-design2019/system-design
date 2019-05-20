@@ -1,7 +1,7 @@
 package xyz.timoney.swsad.controller;
 
-import xyz.timoney.swsad.bean.Message;
-import xyz.timoney.swsad.bean.questionnaire;
+import org.apache.ibatis.annotations.Param;
+import xyz.timoney.swsad.bean.*;
 import xyz.timoney.swsad.mapper.QuesCollectUserMapper;
 import xyz.timoney.swsad.mapper.QuesFillUserMapper;
 import xyz.timoney.swsad.mapper.QuestionnaireMapper;
@@ -11,7 +11,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import xyz.timoney.swsad.bean.infos;
 
 
 @RestController
@@ -136,10 +135,14 @@ public class QuestionnaireController {
     }
 
     /*插入一个问卷*/
+    /*并且更新缓存中的用户创建表的List*/
     @RequestMapping(method = RequestMethod.POST,value = "/createques")
     @CrossOrigin
     public Message<String> createQues(@RequestBody questionnaire ques)
     {
+        /*
+        @TODO  验证用户身份
+        */
         Message<String> message = new Message<>();
         System.out.println(ques);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
@@ -154,7 +157,58 @@ public class QuestionnaireController {
             message.setMsg("创建失败:" + e.getMessage());
             return message;
         }
+        /*
+        @TODO  更新缓存
+        */
         return message;
     }
+
+
+    /**
+     * 收藏某个问卷
+     * */
+    @RequestMapping(method = RequestMethod.PUT,value = "/questionnaires/collect")
+    @CrossOrigin
+    public Message<String> questionnaireCollect(@CookieValue("user") String userCookieKey, @Param("id") int quesId)
+    {
+        /*
+        验证用户身份
+        */
+        System.out.println("\nPUT /questionnaires/collect" +  quesId + "\n");
+        Message<String> message = new Message<>();
+        int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        questionnaire questionnaire;
+        //修改数据库
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+            //得到映射器
+            QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            quesCollectUserMapper.insert(new QuesCollectUser(quesId, userId));
+
+            //获得问卷对象
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            questionnaire = questionnaireMapper.getQuesByID(quesId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("收藏问卷失败: 出现异常");
+            System.out.println(message);
+            return message;
+        }
+        //同步通知发送到缓存中的用户
+        for(User u : User.cacheList){
+            if(u.getId() == userId){
+                u.getCollected().add(questionnaire);
+            }
+        }
+        message.setSuccess(true);
+        message.setMsg("收藏问卷成功");
+        System.out.println(message);
+        return message;
+    }
+
 
 }

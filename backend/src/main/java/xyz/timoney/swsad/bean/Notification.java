@@ -1,9 +1,4 @@
 package xyz.timoney.swsad.bean;
-
-import org.apache.catalina.LifecycleState;
-import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
-
-import java.sql.Time;
 import java.util.*;
 
 public class Notification {
