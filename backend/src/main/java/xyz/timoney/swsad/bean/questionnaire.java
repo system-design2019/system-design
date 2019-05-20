@@ -1,5 +1,9 @@
 package xyz.timoney.swsad.bean;
+import org.springframework.aop.target.LazyInitTargetSource;
 import xyz.timoney.swsad.bean.infos;
+
+import java.util.List;
+
 public class questionnaire {
     private int quesID;
     private String title;
@@ -9,7 +13,6 @@ public class questionnaire {
     private infos Infos;
     private String command;
     private String status;
-
 
     public questionnaire()
     {
