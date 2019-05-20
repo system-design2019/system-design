@@ -226,8 +226,7 @@ public class UserController {
                 UserState.cookieList.add(userState);
                 cookie.setMaxAge(80000);
                 cookie.setPath("/");
-                //适用于本地
-                cookie.setDomain("localhost");
+                //cookie.setDomain(".timoney.xyz");
                 //跨域问题
                 response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
                 response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, If-Modified-Since");
