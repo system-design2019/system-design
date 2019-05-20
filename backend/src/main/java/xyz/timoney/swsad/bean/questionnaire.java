@@ -1,15 +1,13 @@
 package xyz.timoney.swsad.bean;
-
+import xyz.timoney.swsad.bean.infos;
 public class questionnaire {
     private int quesID;
     private String title;
     private String detail;
     private String publisher;
     private int reward;
-    private int attend;
-    private int total;
-    private String endtime;
-    private String request;
+    private infos Infos;
+    private String command;
     private String status;
 
 
@@ -20,68 +18,59 @@ public class questionnaire {
         publisher="#";
         detail="#";
         reward=0;
-        attend=0;
-        total=0;
-        endtime="2019-4-28";
-        request="#";
+        Infos = new infos();
+        command="#";
         status="not done";
 
     }
 
-    public void setTotal(int total) {
-        this.total = total;
+    public infos getInfos() {
+        return Infos;
     }
 
-    public int getQuesID() {
-        return quesID;
+    public void setInfos(infos infos) {
+        Infos = infos;
     }
 
     public void setQuesID(int quesID) {
         this.quesID = quesID;
     }
 
-    public int getTotal() {
-        return total;
-    }
-
-
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
 
-
-
     public void setReward(int reward) {
         this.reward = reward;
     }
 
-    public void setAttend(int attend) {
-        this.attend = attend;
-    }
 
-    public void setEndtime(String endtime) {
-        this.endtime = endtime;
-    }
-
-    public void setRequest(String request) {
-        this.request = request;
+    public void setCommand(String command) {
+        this.command = command;
     }
 
     public void setStatus(String status) {
         this.status = status;
     }
 
-    public static void setCount(int count) {
-        questionnaire.count = count;
+    public int getQuesID() {
+        return quesID;
     }
-
 
     public String getTitle() {
         return title;
+    }
+
+    public String getDetail() {
+        return detail;
     }
 
     public String getPublisher() {
@@ -92,41 +81,13 @@ public class questionnaire {
         return reward;
     }
 
-    public int getAttend() {
-        return attend;
-    }
 
-    public String getEndtime() {
-        return endtime;
-    }
 
-    public String getRequest() {
-        return request;
+    public String getCommand() {
+        return command;
     }
 
     public String getStatus() {
         return status;
     }
-
-    public static int getCount() {
-        return count;
-    }
-
-    private static int count = 10000;
-
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
-
-    static public void initCount(int c){
-        count = c + 10000;
-    }
-
-
-
-
 }
