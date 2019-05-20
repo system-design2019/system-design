@@ -1,6 +1,7 @@
 package xyz.timoney.swsad.controller;
 
 import xyz.timoney.swsad.bean.Message;
+import xyz.timoney.swsad.bean.Ques1;
 import xyz.timoney.swsad.bean.questionnaire;
 import xyz.timoney.swsad.mapper.QuesCollectUserMapper;
 import xyz.timoney.swsad.mapper.QuesFillUserMapper;
@@ -145,6 +146,30 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             quesMapper.insert(ques);
+            message.setSuccess(true);
+            message.setMsg("创建成功");
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("创建失败:" + e.getMessage());
+            return message;
+        }
+        return message;
+    }
+
+    /*添加问卷的选择题*/
+    @RequestMapping(method = RequestMethod.POST,value = "/addtian")
+    @CrossOrigin
+    public Message<String> addXuan(@RequestBody List<Ques1> tians)
+    {
+        Message<String> message = new Message<>();
+        System.out.println(tians);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            for(int i=0;i<tians.size();i++) {
+                quesMapper.insertTian(tians.get(i));
+            }
             message.setSuccess(true);
             message.setMsg("创建成功");
             sqlSession.commit();

@@ -2,6 +2,7 @@ package xyz.timoney.swsad.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import xyz.timoney.swsad.bean.Ques1;
 import xyz.timoney.swsad.bean.questionnaire;
 import xyz.timoney.swsad.bean.infos;
 public interface QuestionnaireMapper {
@@ -9,6 +10,8 @@ public interface QuestionnaireMapper {
     void questionnaireTableInit();
     /*添加一个问卷*/
     boolean insert(questionnaire ques);
+
+    boolean insertTian(Ques1 ques1);
     /*获取所有正在进行问卷*/
     List<questionnaire> getAllQues();
 
