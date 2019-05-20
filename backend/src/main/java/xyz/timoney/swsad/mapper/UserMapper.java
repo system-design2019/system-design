@@ -12,13 +12,6 @@ public interface UserMapper {
      /*删除表格*/
      void userTableDrop();
 
-     /*初始化用户发布问卷列表*/
-     List<questionnaire> userInitPublishList(int userId);
-     /*初始化用户参加问卷列表*/
-     List<questionnaire> userInitAttendList(int userId);
-     /*初始化用户收藏问卷列表*/
-     List<questionnaire> userInitFavoritehList(int userId);
-
     /*获取用户数量*/
      int getCount();
     /*添加一个用户*/

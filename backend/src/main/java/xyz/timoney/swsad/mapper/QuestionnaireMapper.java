@@ -21,8 +21,5 @@ public interface QuestionnaireMapper {
     /*初始化用户收藏问卷列表*/
     List<questionnaire> getAllCollected(int userId);
 
-    /*Janking: 获取用户发布的所有问卷*/
-    List<questionnaire> getAllPublished(int userId);
-
     int getCount();
 }

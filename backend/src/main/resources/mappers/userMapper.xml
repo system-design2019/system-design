@@ -7,8 +7,8 @@
     <!--id对应接口中的方法，名字要一样，parameterType是方法的参数类型，
     resultType是查询返回的类型，需要注意的是，这里的SQL语句后面不能加分号，变量不能加引号-->
     <!--删除表-->
-    <update id="userTableDrop">
-        drop table user_table;
+    <update id="userTableDrop" >
+        drop table user_table
     </update>
     <!--初始化表-->
     <update id="userTableInit" >
@@ -35,7 +35,7 @@
             constraint email unique (email),
             constraint name unique (name),
             constraint phone unique (phone)
-        )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        )ENGINE=InnoDB DEFAULT CHARSET=utf8
     </update>
 
     <!--获取用户数量-->

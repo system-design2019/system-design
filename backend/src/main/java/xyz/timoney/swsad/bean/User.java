@@ -12,18 +12,28 @@ import java.util.List;
 import java.util.Random;
 
 public class User {
-    /**用户的缓存*/
-    public static List<User> userList = new ArrayList<>();
-    /**用户数量*/
+    /**
+     * 用户的缓存
+     * */
+    public static List<User> cacheList = new ArrayList<>();
+
+    /**
+     * 用户数量
+     * */
+    //目前还没有使用这个字段
     private static int count = 10000;
-    /**登录资料*/
-    //数据库自动生成
+    /**
+     * 登录资料
+     * */
+    //数据库自动生成auto increase
     private int id;
     private String password;
     //邮箱和手机号均唯一，且不为空，初始状态以"$"开头，表示未初始化
     private String email;
     private String phone;
-    /**实名资料*/
+    /**
+     * 实名资料
+     * */
     //用户名 唯一
     private String name;
     private String university;
@@ -40,7 +50,9 @@ public class User {
     //初始化-1
     //范围0~150
     private int age;
-    /**个性资料*/
+    /**
+     * 个性资料
+     * */
     private String nickname;
     //头像保存URL
     private String face;
@@ -54,10 +66,20 @@ public class User {
     //信用
     private double credit;
 
-    /**问卷资料*/
-    private List<questionnaire> publish;
-    private List<questionnaire> attend;
-    private List<questionnaire> favorite;
+    /**
+     * 问卷资料
+     * */
+    //发布的所有问卷
+    private List<questionnaire> published;
+    //填写的所有问卷
+    private List<questionnaire> filled;
+    //收藏的所有问卷
+    private List<questionnaire> collected;
+
+    /**
+     * 通知资料
+     * */
+    private List<Notification> notifications;
 
     static public void initCount(int c){
         count = c;
@@ -80,10 +102,10 @@ public class User {
         weChatPay = null;
         QQ = null;
         credit = 0;
-        publish = null;
-        attend = null;
-        favorite = null;
-
+        published = null;
+        filled = null;
+        collected = null;
+        notifications = null;
         count++;
     }
     public void setId(int id) {

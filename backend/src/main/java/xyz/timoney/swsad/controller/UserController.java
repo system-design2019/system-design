@@ -36,7 +36,7 @@ public class UserController {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             //初始化用户表
             userMapper.userTableInit();
-            /*用户数量*/
+            //用户数量
             int count = userMapper.getCount();
             User.initCount(count);
         }catch (Exception e){
