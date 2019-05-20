@@ -2,10 +2,7 @@ package xyz.timoney.swsad.controller;
 
 import com.google.gson.Gson;
 import xyz.timoney.swsad.bean.*;
-import xyz.timoney.swsad.mapper.NotificationMapper;
-import xyz.timoney.swsad.mapper.QuesFillUserMapper;
-import xyz.timoney.swsad.mapper.QuestionnaireMapper;
-import xyz.timoney.swsad.mapper.UserMapper;
+import xyz.timoney.swsad.mapper.*;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -269,8 +266,8 @@ public class UserController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
             QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
+            QuesCollectUserMapper quesCollectUserMapper = sqlSession.getMapper(QuesCollectUserMapper.class);
             //获取用户基本信息
             user = userMapper.getById(userId);
             //用户不存在
@@ -280,19 +277,37 @@ public class UserController {
                 System.out.println(message);
                 return message;
             }
-            //获取发布问卷列表
+            //获取发布问卷列表,按时间逆序
             List<questionnaire> publishedList = questionnaireMapper.getAllPublished(userId);
-            user.setPublished(publishedList);
             //获取填写问卷列表
             List<Integer> quesFilledIdList = quesFillUserMapper.getAllFilled(userId);
             List<questionnaire> quesFilledList = new ArrayList<>();
             for (int i : quesFilledIdList) {
                 quesFilledList.add(questionnaireMapper.getQuesByID(i));
             }
+            //还不知道排序情况，预想降序排列
+            quesFilledList.sort(new Comparator<questionnaire>() {
+                @Override
+                public int compare(questionnaire o1, questionnaire o2) {
+                    return -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime());
+                }
+            });
+            //获取收藏问卷列表
+            List<Integer> quesCollectedIdList = quesCollectUserMapper.getAllCollected(userId);
+            List<questionnaire> quesCollectedList = new ArrayList<>();
+            for (int i : quesCollectedIdList) {
+                quesCollectedList.add(questionnaireMapper.getQuesByID(i));
+            }
+            //还不知道排序情况，预想降序排列
+            quesCollectedList.sort(new Comparator<questionnaire>() {
+                @Override
+                public int compare(questionnaire o1, questionnaire o2) {
+                    return -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime());
+                }
+            });
+            user.setPublished(publishedList);
             user.setFilled(quesFilledList);
-            //获取用户所有通知
-            List<Notification> notifications = notificationMapper.getAllNotifications(userId);
-            user.setNotifications(notifications);
+            user.setCollected(quesCollectedList);
             //加到缓存中去，避免每次都查询数据库
             User.cacheList.add(user);
             //一次性提交

@@ -19,8 +19,17 @@
     </select>
 
     <!--Janking: 获取用户发布的所有问卷，降序，也就是时间最近排在最前面-->
-    <select id="getAllPublished"  resultType="questionnaire">
+    <select id="getAllPublished"  resultType="questionnaire" parameterType="int">
         select * from quesTable where publisher = #{userId} order by startTime DESC
+    </select>
+
+
+    <!--Janking: Bug未解决!通过问卷id的列表获取问卷的列表，降序，也就是时间最近排在最前面-->
+    <select id="getAllQuesByIdListDateDesc">
+        select * from quesTable where quesID in
+        <foreach item="item" collection="list" separator="," open="(" close=")" index="index">
+         #{item}
+        </foreach>
     </select>
 
     <!--获取问卷内容-->

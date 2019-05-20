@@ -10,6 +10,9 @@ import xyz.timoney.swsad.bean.User;
 import xyz.timoney.swsad.bean.UserState;
 import xyz.timoney.swsad.mapper.NotificationMapper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
+
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -32,14 +35,63 @@ public class NotificationController {
     }
 
     /**
+     * 获取用户所有通知
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/notifications")
+    @CrossOrigin
+    public Message<List<Notification>> sendNotification(@CookieValue("user") String userCookieKey) {
+        System.out.println("\nGET /notifications\n");
+        Message<List<Notification>> message = new Message<>();
+        int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        //先查询缓存
+        if(Notification.cacheList.containsKey(userId)){
+            //返回
+            message.setSuccess(true);
+            message.setData(Notification.cacheList.get(userId));
+            message.setMsg("已获取" + message.getData().size() + "条通知: 来自缓存");
+        }
+        List<Notification> list = new ArrayList<>();
+        //获取一个连接,自动提交
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        try {
+            //得到映射器
+            NotificationMapper notificationMapper= sqlSession.getMapper(NotificationMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            list = notificationMapper.getAllNotifications(userId);
+            message.setData(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("获取通知失败: 出现异常");
+            System.out.println(message);
+            return message;
+        } finally {
+            //最后记得关闭连接
+            sqlSession.close();
+        }
+        //同步到缓存
+        Notification.cacheList.put(userId, list);
+        //返回
+        message.setSuccess(true);
+        message.setMsg("已获取" + list.size() + "条通知: 来自数据库");
+        System.out.println(message);
+        return message;
+    }
+
+
+    /**
      * 添加新通知
      * 可以批操作
      */
     @RequestMapping(method = RequestMethod.POST, value = "/notifications")
     @CrossOrigin
     public Message<String> sendNotification(@CookieValue("user") String userCookieKey, @RequestBody List<Notification> notifications) {
-        System.out.println("\nPOST /notification\n");
+        System.out.println("\nPOST /notifications\n");
         Message<String> message = new Message<>();
+        //这个userId是发送方的
         int userId = UserState.verifyCookie(userCookieKey, message);
         if(!message.isSuccess()){
             return message;
@@ -47,6 +99,7 @@ public class NotificationController {
         int successCount = 0;
         for(Notification notification : notifications){
             if(userId != notification.getFromId()){
+                message.setData("部分通知无权发送");
                 continue;
             }
             //获取一个连接,自动提交
@@ -68,25 +121,27 @@ public class NotificationController {
             }
             successCount++;
         }
-        //同步修改缓存中数据
-        for(User user : User.cacheList){
-            if(user.getId() == userId){
-                for(Notification newNotice : notifications){
-                    if(newNotice.getToId()!=userId){
-                        message.setData("某些通知无权发送");
-                        continue;
-                    }
-
-                    user.getNotifications().add(newNotice);
+        //同步通知发送到缓存中的用户
+        for(Notification newNotification: notifications){
+            if(newNotification.getFromId() == userId){
+                if(Notification.cacheList.containsKey(newNotification.getToId())){
+                    Notification.cacheList.get(newNotification.getToId()).add(newNotification);
+                    Notification.cacheList.get(newNotification.getToId()).sort(new Comparator<Notification>() {
+                        //重新排列，预想降序排列
+                        @Override
+                        public int compare(Notification o1, Notification o2) {
+                            return o1.getDate().compareTo(o2.getDate());
+                        }
+                    });
                 }
             }
         }
         if(successCount < notifications.size()){
             message.setSuccess(false);
-            message.setMsg("发送成功条数: " + successCount);
+            message.setMsg("通知发送成功条数: " + successCount);
         }else {
             message.setSuccess(true);
-            message.setMsg("全部发送成功");
+            message.setMsg("通知全部发送成功");
         }
         System.out.println(message);
         return message;
@@ -99,7 +154,7 @@ public class NotificationController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/notifications")
     @CrossOrigin
     public Message<String> deleteNotification(@CookieValue("user") String userCookieKey, @RequestBody List<Notification> notifications) {
-        System.out.println("\nDELETE /notification/send\n");
+        System.out.println("\nDELETE /notifications\n");
         Message<String> message = new Message<>();
         int userId = UserState.verifyCookie(userCookieKey, message);
         if(!message.isSuccess()){
@@ -108,6 +163,7 @@ public class NotificationController {
         int successCount = 0;
         for(Notification notification : notifications){
             if(userId != notification.getToId()){
+                message.setData("部分通知无权删除");
                 continue;
             }
             //获取一个连接,自动提交
@@ -129,13 +185,11 @@ public class NotificationController {
             }
             successCount++;
         }
-        //同步修改缓存中数据
-        for(User user : User.cacheList){
-            if(user.getId() == userId){
-                for(Notification deleteNotice : notifications){
-                    user.getNotifications().removeIf(originNotice ->
-                            (originNotice.getToId()==userId)&&(originNotice.getId()==deleteNotice.getId()));
-                }
+        //同步删除缓存中数据
+        if(Notification.cacheList.containsKey(userId)){
+            for(Notification deleteNotice : notifications){
+                Notification.cacheList.get(userId).removeIf(originNotice ->
+                        (originNotice.getToId()==userId)&&(originNotice.getId()==deleteNotice.getId()));
             }
         }
         if(successCount < notifications.size()){
@@ -143,8 +197,46 @@ public class NotificationController {
             message.setMsg("删除成功条数: " + successCount);
         }else {
             message.setSuccess(true);
-            message.setMsg("全部删除成功");
+            message.setMsg("删除操作全部成功");
         }
+        System.out.println(message);
+        return message;
+    }
+    /**
+     * 删除所有通知
+     */
+    @RequestMapping(method = RequestMethod.DELETE, value = "/notifications/all")
+    @CrossOrigin
+    public Message<String> deleteNotification(@CookieValue("user") String userCookieKey) {
+        System.out.println("\nDELETE /notifications/all\n");
+        Message<String> message = new Message<>();
+        int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        //获取一个连接,自动提交
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        try {
+            //得到映射器
+            NotificationMapper notificationMapper= sqlSession.getMapper(NotificationMapper.class);
+            //删除所有通知
+            notificationMapper.deleteAll(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("删除通知失败: 出现异常");
+            System.out.println(message);
+            return message;
+        } finally {
+            //最后记得关闭连接
+            sqlSession.close();
+        }
+        //同步清空缓存中通知
+        if(Notification.cacheList.containsKey(userId)){
+            Notification.cacheList.get(userId).clear();
+        }
+        message.setSuccess(true);
+        message.setMsg("已删除所有通知");
         System.out.println(message);
         return message;
     }
@@ -156,7 +248,7 @@ public class NotificationController {
     @RequestMapping(method = RequestMethod.PUT, value = "/notifications")
     @CrossOrigin
     public Message<String> readNotification(@CookieValue("user") String userCookieKey, @RequestBody List<Notification> notifications) {
-        System.out.println("\nPUT /notification\n");
+        System.out.println("\nPUT /notifications\n");
         Message<String> message = new Message<>();
         int userId = UserState.verifyCookie(userCookieKey, message);
         if(!message.isSuccess()){
@@ -165,6 +257,7 @@ public class NotificationController {
         int successCount = 0;
         for(Notification notification : notifications){
             if(userId != notification.getToId()){
+                message.setData("部分通知无权修改状态");
                 continue;
             }
             //获取一个连接,自动提交
@@ -187,17 +280,15 @@ public class NotificationController {
             successCount++;
         }
         //同步修改缓存中数据
-        for(User user : User.cacheList){
-            if(user.getId() == userId){
-                for(Notification newNotice : notifications){
-                    if(newNotice.getToId()!=userId){
-                        message.setData("某些通知无权修改状态");
-                        continue;
-                    }
-                    for(Notification originNotice : user.getNotifications()){
-                        if(originNotice.getId() == newNotice.getId())
-                            originNotice.setHasRead(newNotice.isHasRead());
-                    }
+        if(Notification.cacheList.containsKey(userId)){
+            for(Notification newNotification : notifications){
+                if(newNotification.getToId()!=userId){
+                    message.setData("某些通知无权修改状态");
+                    continue;
+                }
+                for(Notification originNotice : Notification.cacheList.get(userId)){
+                    if(originNotice.getId() == newNotification.getId())
+                        originNotice.setHasRead(newNotification.isHasRead());
                 }
             }
         }
@@ -206,9 +297,55 @@ public class NotificationController {
             message.setMsg("更新成功条数: " + successCount);
         }else {
             message.setSuccess(true);
-            message.setMsg("全部更新成功");
+            message.setMsg("更新操作全部成功");
         }
         System.out.println(message);
         return message;
     }
+
+    /**
+     * 设置全部通知为已读/未读
+     */
+    @RequestMapping(method = RequestMethod.PUT, value = "/notifications/all")
+    @CrossOrigin
+    public Message<String> readNotification(@CookieValue("user") String userCookieKey, boolean hasRead) {
+        System.out.println("\nPUT /notifications/all\n");
+        Message<String> message = new Message<>();
+        int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        //获取一个连接,自动提交
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        try {
+            //得到映射器
+            NotificationMapper notificationMapper= sqlSession.getMapper(NotificationMapper.class);
+            //修改通知的已读未读状态，仅此而已
+            if(hasRead)
+                notificationMapper.setReadAllTrue(userId);
+            else
+                notificationMapper.setReadAllFlase(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("更新通知失败: 出现异常");
+            System.out.println(message);
+            return message;
+        } finally {
+            //最后记得关闭连接
+            sqlSession.close();
+        }
+        //同步修改缓存中数据
+        if(Notification.cacheList.containsKey(userId)){
+             for(Notification originNotice : Notification.cacheList.get(userId)){
+                 originNotice.setHasRead(hasRead);
+             }
+        }
+        message.setSuccess(true);
+        message.setMsg("已将所有通知设为" + (hasRead?"已读":"未读"));
+        System.out.println(message);
+        return message;
+    }
+
+
 }

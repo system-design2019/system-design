@@ -12,11 +12,17 @@ public interface NotificationMapper {
     /*添加通知*/
     int insert(Notification notification);
     /*修改通知*/
-    boolean update(Notification notification);
+    int update(Notification notification);
     /*删除通知*/
-    boolean delete(int notificationId);
+    int delete(int notificationId);
+    /*删除所有通知*/
+    int deleteAll(int toId);
     /*设置已读或未读*/
-    boolean setRead(int notificationId, boolean read);
+    int setRead(int notificationId, boolean read);
+    /*全部设置已读*/
+    int setReadAllTrue(int toId);
+    /*全部设置未读*/
+    int setReadAllFlase(int toId);
 
     //获取用户的所有通知
     List<Notification> getAllNotifications(int userId);

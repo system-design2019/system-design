@@ -1,5 +1,7 @@
 package xyz.timoney.swsad.mapper;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import xyz.timoney.swsad.bean.questionnaire;
 import xyz.timoney.swsad.bean.infos;
 public interface QuestionnaireMapper {
@@ -18,11 +20,10 @@ public interface QuestionnaireMapper {
     String getQuesCont(int quesID);
 
     /*获取用户发布的所有问卷*/
-    //List<questionnaire> getAllPublished(int userId);
-    /*初始化用户填写问卷列表*/
-    List<questionnaire> getAllFilled(int userId);
-    /*初始化用户收藏问卷列表*/
-    List<questionnaire> getAllCollected(int userId);
+    List<questionnaire> getAllPublished(int userId);
+
+    /*通过Id集获取所有的问卷*/
+    List<questionnaire> getAllQuesByIdListDateDesc(List<Integer> idList);
 
     int getCount();
 }
