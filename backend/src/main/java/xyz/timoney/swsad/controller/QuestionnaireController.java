@@ -167,9 +167,9 @@ public class QuestionnaireController {
     /**
      * 收藏某个问卷
      * */
-    @RequestMapping(method = RequestMethod.PUT,value = "/questionnaires/collect")
+    @RequestMapping(method = RequestMethod.PUT,value = "/questionnaires/{id}/collect")
     @CrossOrigin
-    public Message<String> questionnaireCollect(@CookieValue("user") String userCookieKey, @Param("id") int quesId)
+    public Message<String> questionnaireCollect(@CookieValue("user") String userCookieKey, @PathVariable("id") int quesId)
     {
         /*
         验证用户身份

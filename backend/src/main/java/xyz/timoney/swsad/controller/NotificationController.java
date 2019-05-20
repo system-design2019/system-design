@@ -268,8 +268,9 @@ public class NotificationController {
                     continue;
                 }
                 for(Notification originNotice : Notification.cacheList.get(userId)){
-                    if(originNotice.getId() == newNotification.getId())
+                    if(originNotice.getId() == newNotification.getId()){
                         originNotice.setHasRead(newNotification.isHasRead());
+                    }
                 }
             }
         }
@@ -301,10 +302,11 @@ public class NotificationController {
             //得到映射器
             NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
             //修改通知的已读未读状态，仅此而已
-            if (hasRead)
+            if (hasRead) {
                 notificationMapper.setReadAllTrue(userId);
-            else
+            } else {
                 notificationMapper.setReadAllFalse(userId);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);

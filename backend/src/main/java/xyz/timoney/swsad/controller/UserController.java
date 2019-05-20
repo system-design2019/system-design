@@ -224,11 +224,19 @@ public class UserController {
                 //有效期一天
                 UserState userState = new UserState(user.getId(), cookieKey, Util.getCurrentDateLong() + 24*60*60*1000);
                 UserState.cookieList.add(userState);
-                cookie.setPath(request.getContextPath());
                 cookie.setMaxAge(80000);
-                //解决js获取不到的问题
-                cookie.setHttpOnly(false);
+                cookie.setPath("/");
+                //适用于本地
+                cookie.setDomain("localhost");
+                //跨域问题
+                response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+                response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, If-Modified-Since");
+                response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+                //这个是要前端设置
+                //response.addHeader("Access-Control-Allow-Credentials", "true");
+
                 response.addCookie(cookie);
+                //response.addHeader("User",cookieKey);
                 System.out.println("cookies:" + cookie.getValue());
                 return message;
             }
