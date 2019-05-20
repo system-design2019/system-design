@@ -22,7 +22,7 @@ public interface NotificationMapper {
     /*全部设置已读*/
     int setReadAllTrue(int toId);
     /*全部设置未读*/
-    int setReadAllFlase(int toId);
+    int setReadAllFalse(int toId);
 
     //获取用户的所有通知
     List<Notification> getAllNotifications(int userId);

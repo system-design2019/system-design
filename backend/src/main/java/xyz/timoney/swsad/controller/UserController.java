@@ -226,6 +226,8 @@ public class UserController {
                 UserState.cookieList.add(userState);
                 cookie.setPath(request.getContextPath());
                 cookie.setMaxAge(80000);
+                //解决js获取不到的问题
+                cookie.setHttpOnly(false);
                 response.addCookie(cookie);
                 System.out.println("cookies:" + cookie.getValue());
                 return message;
@@ -286,12 +288,7 @@ public class UserController {
                 quesFilledList.add(questionnaireMapper.getQuesByID(i));
             }
             //还不知道排序情况，预想降序排列
-            quesFilledList.sort(new Comparator<questionnaire>() {
-                @Override
-                public int compare(questionnaire o1, questionnaire o2) {
-                    return -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime());
-                }
-            });
+            quesFilledList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
             //获取收藏问卷列表
             List<Integer> quesCollectedIdList = quesCollectUserMapper.getAllCollected(userId);
             List<questionnaire> quesCollectedList = new ArrayList<>();
@@ -299,12 +296,7 @@ public class UserController {
                 quesCollectedList.add(questionnaireMapper.getQuesByID(i));
             }
             //还不知道排序情况，预想降序排列
-            quesCollectedList.sort(new Comparator<questionnaire>() {
-                @Override
-                public int compare(questionnaire o1, questionnaire o2) {
-                    return -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime());
-                }
-            });
+            quesCollectedList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
             user.setPublished(publishedList);
             user.setFilled(quesFilledList);
             user.setCollected(quesCollectedList);

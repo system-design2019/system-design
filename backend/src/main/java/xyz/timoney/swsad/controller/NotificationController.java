@@ -1,5 +1,6 @@
 package xyz.timoney.swsad.controller;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -37,10 +38,10 @@ public class NotificationController {
     /**
      * 获取用户所有通知
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/notifications")
+    @RequestMapping(method = RequestMethod.GET, value = "/notifications/all")
     @CrossOrigin
     public Message<List<Notification>> sendNotification(@CookieValue("user") String userCookieKey) {
-        System.out.println("\nGET /notifications\n");
+        System.out.println("\nGET /notifications/all\n");
         Message<List<Notification>> message = new Message<>();
         int userId = UserState.verifyCookie(userCookieKey, message);
         if(!message.isSuccess()){
@@ -53,12 +54,11 @@ public class NotificationController {
             message.setData(Notification.cacheList.get(userId));
             message.setMsg("已获取" + message.getData().size() + "条通知: 来自缓存");
         }
-        List<Notification> list = new ArrayList<>();
+        List<Notification> list;
         //获取一个连接,自动提交
-        SqlSession sqlSession = sqlSessionFactory.openSession(true);
-        try {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
-            NotificationMapper notificationMapper= sqlSession.getMapper(NotificationMapper.class);
+            NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             list = notificationMapper.getAllNotifications(userId);
             message.setData(list);
@@ -68,10 +68,8 @@ public class NotificationController {
             message.setMsg("获取通知失败: 出现异常");
             System.out.println(message);
             return message;
-        } finally {
-            //最后记得关闭连接
-            sqlSession.close();
         }
+        //最后记得关闭连接
         //同步到缓存
         Notification.cacheList.put(userId, list);
         //返回
@@ -103,10 +101,9 @@ public class NotificationController {
                 continue;
             }
             //获取一个连接,自动提交
-            SqlSession sqlSession = sqlSessionFactory.openSession(true);
-            try {
+            try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
                 //得到映射器
-                NotificationMapper notificationMapper= sqlSession.getMapper(NotificationMapper.class);
+                NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
                 //调用接口中的方法去执行xml文件中的SQL语句
                 notificationMapper.insert(notification);
             } catch (Exception e) {
@@ -115,10 +112,8 @@ public class NotificationController {
                 message.setMsg("发送通知失败: 出现异常");
                 System.out.println(message);
                 return message;
-            } finally {
-                //最后记得关闭连接
-                sqlSession.close();
             }
+            //最后记得关闭连接
             successCount++;
         }
         //同步通知发送到缓存中的用户
@@ -126,13 +121,8 @@ public class NotificationController {
             if(newNotification.getFromId() == userId){
                 if(Notification.cacheList.containsKey(newNotification.getToId())){
                     Notification.cacheList.get(newNotification.getToId()).add(newNotification);
-                    Notification.cacheList.get(newNotification.getToId()).sort(new Comparator<Notification>() {
-                        //重新排列，预想降序排列
-                        @Override
-                        public int compare(Notification o1, Notification o2) {
-                            return o1.getDate().compareTo(o2.getDate());
-                        }
-                    });
+                    //重新排列，预想降序排列
+                    Notification.cacheList.get(newNotification.getToId()).sort(Comparator.comparing(Notification::getDate));
                 }
             }
         }
@@ -167,10 +157,9 @@ public class NotificationController {
                 continue;
             }
             //获取一个连接,自动提交
-            SqlSession sqlSession = sqlSessionFactory.openSession(true);
-            try {
+            try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
                 //得到映射器
-                NotificationMapper notificationMapper= sqlSession.getMapper(NotificationMapper.class);
+                NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
                 //删除给定ID通知
                 notificationMapper.delete(notification.getId());
             } catch (Exception e) {
@@ -179,10 +168,8 @@ public class NotificationController {
                 message.setMsg("删除通知失败: 出现异常");
                 System.out.println(message);
                 return message;
-            } finally {
-                //最后记得关闭连接
-                sqlSession.close();
             }
+            //最后记得关闭连接
             successCount++;
         }
         //同步删除缓存中数据
@@ -215,10 +202,9 @@ public class NotificationController {
             return message;
         }
         //获取一个连接,自动提交
-        SqlSession sqlSession = sqlSessionFactory.openSession(true);
-        try {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
-            NotificationMapper notificationMapper= sqlSession.getMapper(NotificationMapper.class);
+            NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
             //删除所有通知
             notificationMapper.deleteAll(userId);
         } catch (Exception e) {
@@ -227,10 +213,8 @@ public class NotificationController {
             message.setMsg("删除通知失败: 出现异常");
             System.out.println(message);
             return message;
-        } finally {
-            //最后记得关闭连接
-            sqlSession.close();
         }
+        //最后记得关闭连接
         //同步清空缓存中通知
         if(Notification.cacheList.containsKey(userId)){
             Notification.cacheList.get(userId).clear();
@@ -261,10 +245,9 @@ public class NotificationController {
                 continue;
             }
             //获取一个连接,自动提交
-            SqlSession sqlSession = sqlSessionFactory.openSession(true);
-            try {
+            try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
                 //得到映射器
-                NotificationMapper notificationMapper= sqlSession.getMapper(NotificationMapper.class);
+                NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
                 //修改通知的已读未读状态，仅此而已
                 notificationMapper.setRead(notification.getId(), notification.isHasRead());
             } catch (Exception e) {
@@ -273,10 +256,8 @@ public class NotificationController {
                 message.setMsg("更新通知失败: 出现异常");
                 System.out.println(message);
                 return message;
-            } finally {
-                //最后记得关闭连接
-                sqlSession.close();
             }
+            //最后记得关闭连接
             successCount++;
         }
         //同步修改缓存中数据
@@ -306,35 +287,32 @@ public class NotificationController {
     /**
      * 设置全部通知为已读/未读
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/notifications/all")
+    @RequestMapping(method = RequestMethod.PUT, value = "/notifications/all/{read}")
     @CrossOrigin
-    public Message<String> readNotification(@CookieValue("user") String userCookieKey, boolean hasRead) {
-        System.out.println("\nPUT /notifications/all\n");
+    public Message<String> readNotification(@CookieValue("user") String userCookieKey,@PathVariable("read") boolean hasRead) {
+        System.out.println("\nPUT /notifications/all  " + hasRead + "\n");
         Message<String> message = new Message<>();
         int userId = UserState.verifyCookie(userCookieKey, message);
         if(!message.isSuccess()){
             return message;
         }
         //获取一个连接,自动提交
-        SqlSession sqlSession = sqlSessionFactory.openSession(true);
-        try {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
-            NotificationMapper notificationMapper= sqlSession.getMapper(NotificationMapper.class);
+            NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
             //修改通知的已读未读状态，仅此而已
-            if(hasRead)
+            if (hasRead)
                 notificationMapper.setReadAllTrue(userId);
             else
-                notificationMapper.setReadAllFlase(userId);
+                notificationMapper.setReadAllFalse(userId);
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
             message.setMsg("更新通知失败: 出现异常");
             System.out.println(message);
             return message;
-        } finally {
-            //最后记得关闭连接
-            sqlSession.close();
         }
+        //最后记得关闭连接
         //同步修改缓存中数据
         if(Notification.cacheList.containsKey(userId)){
              for(Notification originNotice : Notification.cacheList.get(userId)){
