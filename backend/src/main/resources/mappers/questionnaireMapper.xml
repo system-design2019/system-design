@@ -6,26 +6,11 @@
 
 
 
-    <!--初始化表-->
-    <update id="questionnaireTableInit" >
-        create table if not exists quesTable
-        (
-            quesid    int unsigned auto_increment
-                primary key,
-            title     varchar(100) not null,
-            content   varchar(400) not null,
-            publisher varchar(100) not null,
-            reward    int          not null,
-            attend    int          not null,
-            endtime   varchar(100) not null,
-            request   varchar(400) not null,
-            status    varchar(40)  not null
-        )ENGINE=InnoDB DEFAULT CHARSET=utf8;
-    </update>
 
+    <!--插入一个问卷-->
     <insert id="insert" parameterType="questionnaire">
-        insert into quesTable (quesID, title, content, publisher, reward, attend, total, endtime, request,status)
-        values (${quesID},"${title}", "${content}","${publisher}",${reward},${attend}, ${total},"${endtime}", "${request}","${status}")
+        insert into quesTable (quesID, title, detail, publisher, reward, total, attend, startTime, endTime, command,status)
+        values (${quesID},"${title}", "${detail}","${publisher}",${reward},${total},${attend},"${startTime}","${endTime}", "${command}","${status}")
     </insert>
 
     <!--获取问卷详情-->
@@ -33,14 +18,24 @@
         select * from quesTable where quesID = #{quesID}
     </select>
 
-    <!--获取问卷内容-->
-    <select id="getQuesCont"  parameterType="int" resultType="String">
-        select content from quesTable where quesID = #{quesID}
+    <!--Janking: 获取用户发布的所有问卷，降序，也就是时间最近排在最前面-->
+    <select id="getAllPublished"  resultType="questionnaire">
+        select * from quesTable where publisher = #{userId} order by startTime DESC
     </select>
 
-    <!--获取所有问卷-->
+    <!--获取问卷内容-->
+    <select id="getQuesCont"  parameterType="int" resultType="String">
+        select detail from quesTable where quesID = #{quesID}
+    </select>
+
+
+    <select id="getInfo"  parameterType="int" resultType="infos">
+        select * from quesTable where quesID = #{quesID}
+    </select>
+
+    <!--获取所有正在进行的问卷-->
     <select id="getAllQues"  resultType="questionnaire">
-        select * from quesTable
+        select * from quesTable where status = "not done"
     </select>
 
     <select id="getCount" resultType="int">

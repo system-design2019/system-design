@@ -1,5 +1,6 @@
 package xyz.timoney.swsad.mapper;
 import xyz.timoney.swsad.bean.User;
+import xyz.timoney.swsad.bean.questionnaire;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface UserMapper {
     /*获取用户数量*/
      int getCount();
     /*添加一个用户*/
-     boolean insert(User user);
+     int insert(User user) throws com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
     /*查找特定id的用户*/
      User getById(int id);
     /*查找特定手机号的用户*/
@@ -25,7 +26,7 @@ public interface UserMapper {
      int getId(String phoneOrEmail);
 
     /*更新用户信息*/
-     boolean updateUser(User user);
+     int updateUser(User user);
 
     /*返回所有用户*/
     List<User> getUsers();

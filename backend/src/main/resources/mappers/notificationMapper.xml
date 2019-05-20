@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.timoney.swsad.mapper.NotificationMapper">
+    <!--删除表-->
+    <update id="notificationTableDrop">
+        drop table notification_table
+    </update>
+    <!--初始化表-->
+    <update id="notificationTableInit" >
+        create table if not exists notification_table
+        (
+            id          bigint(32) auto_increment
+                primary key,
+            toId       bigint(32) not null,
+            fromId     bigint(32) not null,
+            hasRead    boolean    not null,
+            title       CHAR(40)   not null,
+            content     CHAR(100)  not null
+        )ENGINE=InnoDB DEFAULT CHARSET=utf8
+    </update>
+    <!--添加通知，返回主键-->
+    <insert id="insert" parameterType="Notification" useGeneratedKeys="true" keyProperty="id">
+        insert into notification_table(toId,
+                                       fromId,
+                                       hasRead,
+                                       title,
+                                       content)
+        values( #{toId},#{fromId}, #{hasRead},#{title},#{content})
+    </insert>
+    <!--删除通知-->
+    <delete id="delete" parameterType="int">
+        delete from notification_table where id=#{id}
+    </delete>
+    <!--设置已读或未读-->
+    <update id="setRead">
+        update notification_table
+        set hasRead = #{arg1}
+        where id = #{arg0}
+    </update>
+    <!--获取某个用户所有通知-->
+    <select id="getAllNotifications" parameterType="int" resultType="Notification" >
+        select * from notification_table
+        where toId= #{userId};
+    </select>
+</mapper>

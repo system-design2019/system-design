@@ -10,3 +10,4 @@ projectName.iml
 /build
 /local.properties
 /target/
+/src/main/resources/privateKey/

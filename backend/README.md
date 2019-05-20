@@ -72,19 +72,11 @@
 
 > 为什么api.timoney.xyz可以监听8080端口，这是对网站的nginx做了配置，不用管就好
 
-## API接口
+## API文档
 
-[API详细文档](./API.md)
+[API详细文档](https://documenter.getpostman.com/view/7006450/S1LzynKU?version=latest)
 
-请求`URL` ：
-
-http://timoney.xyz:8080
-
-或
-
-<http://api.timoney.xyz>
-
-> 此URL的API不一定是最新的
+> 但是服务器的API不一定是最新的
 
 ## 资料
 

@@ -7,8 +7,8 @@
     <!--id对应接口中的方法，名字要一样，parameterType是方法的参数类型，
     resultType是查询返回的类型，需要注意的是，这里的SQL语句后面不能加分号，变量不能加引号-->
     <!--删除表-->
-    <update id="userTableDrop">
-        drop table user_table;
+    <update id="userTableDrop" >
+        drop table user_table
     </update>
     <!--初始化表-->
     <update id="userTableInit" >
@@ -20,26 +20,49 @@
             email     varchar(40)  null,
             phone     varchar(40)  null,
             name      varchar(40)  null,
+            university varchar(40) null,
             studentId varchar(40)  null,
             grade     int          null,
             major     varchar(40)  null,
             gender    int          null,
             age       int          null,
             nickname  varchar(40)  null,
+            face      varchar(40)  null,
+            weChatPay varchar(40)  null,
+            aliPay    varchar(40)  null,
+            QQ        varchar(40)  null,
+            credit    double  null,
             constraint email unique (email),
             constraint name unique (name),
             constraint phone unique (phone)
-        )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        )ENGINE=InnoDB DEFAULT CHARSET=utf8
     </update>
 
     <!--获取用户数量-->
     <select id="getCount" resultType="int">
       select COUNT(*) from user_table;
     </select>
-    <!--插入用户-->
-    <insert id="insert" parameterType="User">
-        insert into user_table(id, phone,email, password, name, studentId, grade, major,gender, age, nickname)
-        values(${id}, "${phone}", "${email}", "${password}", "${name}", "${studentId}", ${grade}, "${major}", ${gender},  ${age}, "${nickname}")
+    <!--插入用户，返回主键-->
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into user_table(password,
+                               email,
+                               phone,
+                               name,
+                               university,
+                               studentId,
+                               grade,
+                               major,
+                               gender,
+                               age,
+                               nickname,
+                               face,
+                               wechatpay,
+                               alipay,
+                               qq,
+                               credit)
+        values(#{password},#{email}, #{phone},  #{name}, #{university}, #{studentId},
+               #{grade}, #{major}, #{gender},  #{age}, #{nickname},#{face},#{weChatPay},#{aliPay},
+               #{QQ},#{credit})
     </insert>
     <!--获取所有用户-->
     <select id="getUsers"  resultType="User">
@@ -60,14 +83,31 @@
     <!--更新用户资料-->
     <update id="updateUser" parameterType="User">
         update user_table
-        set password="${password}", email = "${email}", phone = "${phone}", name = "${name}", studentId = "${studentId}",
-            grade = ${grade}, major = "{major}", gender =${gender}, age =${age}, nickname = "${nickname}"
-        where id = ${id}
+        set password=#{password},
+            email = #{email},
+            phone = #{phone},
+            name = #{name},
+            university = #{university},
+            studentId = #{studentId},
+            grade = #{grade},
+            major = #{major},
+            gender =#{gender},
+            age =#{age},
+            nickname = #{nickname},
+            age = #{age},
+            aliPay = #{aliPay},
+            nickname = #{nickname},
+            face = #{face},
+            wechatpay = #{weChatPay},
+            alipay = #{aliPay},
+            qq = #{QQ},
+            credit = #{credit}
+        where id = #{id}
     </update>
 
     <!--危险操作-->
     <delete id="deleteAllUsers">
-        delete from user_table
+        drop table user_table
     </delete>
     <delete id="deleteUser" parameterType="int" >
         delete from user_table where id = #{id}

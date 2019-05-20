@@ -14,6 +14,9 @@
     <typeAliases>
         <typeAlias alias="User" type="xyz.timoney.swsad.bean.User"/>
         <typeAlias alias="questionnaire" type="xyz.timoney.swsad.bean.questionnaire"/>
+        <typeAlias alias="Notification" type="xyz.timoney.swsad.bean.Notification"/>
+        <typeAlias alias="QuesFillUser" type="xyz.timoney.swsad.bean.QuesFillUser"/>
+        <typeAlias alias="QuesCollectUser" type="xyz.timoney.swsad.bean.QuesCollectUser"/>
     </typeAliases>
     <!--环境配置-->
     <environments default="development">
@@ -22,7 +25,7 @@
             <!--连接数据库-->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost/swsad"/>
+                <property name="url" value="jdbc:mysql://118.25.215.11/swsad"/>
                 <property name="username" value="swsad"/>
                 <property name="password" value="swsad"/>
                 <property name="poolPingEnabled" value="true"/>
@@ -35,5 +38,8 @@
     <mappers>
         <mapper resource="mappers/userMapper.xml"/>
         <mapper resource="mappers/questionnaireMapper.xml"/>
+        <mapper resource="mappers/notificationMapper.xml"/>
+        <mapper resource="mappers/quesFillUserMapper.xml"/>
+        <mapper resource="mappers/quesCollectUserMapper.xml"/>
     </mappers>
 </configuration>

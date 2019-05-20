@@ -1,8 +1,7 @@
 package xyz.timoney.swsad;
 
-import xyz.timoney.swsad.controller.Controller;
-import xyz.timoney.swsad.controller.QuestionnaireController;
-import xyz.timoney.swsad.controller.UserController;
+import xyz.timoney.swsad.bean.Notification;
+import xyz.timoney.swsad.controller.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,7 +12,9 @@ public class SwsadApplication {
         Object[] objects = new Object[]{
                 Controller.class,
                 UserController.class,
-                QuestionnaireController.class};
+                QuestionnaireController.class,
+                NotificationController.class,
+                VerifyCodeController.class};
 
         SpringApplication.run(objects, args);
     }
