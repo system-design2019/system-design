@@ -193,6 +193,7 @@ public class User {
         this.university = university;
     }
 
+
     //同步方法
     public void setCollected(List<questionnaire> collected) {
         this.collected = collected;
@@ -281,6 +282,7 @@ public class User {
     public String getUniversity() {
         return university;
     }
+
     //同步方法
     public List<questionnaire> getCollected() {
         return collected;

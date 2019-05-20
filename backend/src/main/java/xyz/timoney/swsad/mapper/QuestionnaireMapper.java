@@ -18,7 +18,7 @@ public interface QuestionnaireMapper {
     String getQuesCont(int quesID);
 
     /*获取用户发布的所有问卷*/
-    //List<questionnaire> getAllPublished(int userId);
+    List<questionnaire> getAllPublished(int userId);
     /*初始化用户填写问卷列表*/
     List<questionnaire> getAllFilled(int userId);
     /*初始化用户收藏问卷列表*/

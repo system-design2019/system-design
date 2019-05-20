@@ -23,7 +23,7 @@
         select * from quesTable where publisher = #{userId} order by startTime DESC
     </select>
 
-    <!--获取问卷内容-->
+    <!--获取问卷问题-->
     <select id="getQuesCont"  parameterType="int" resultType="String">
         select detail from quesTable where quesID = #{quesID}
     </select>

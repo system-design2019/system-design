@@ -57,6 +57,9 @@ public class QuestionnaireController {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             theQues = quesMapper.getQuesByID(quesID);
+            infos temp=quesMapper.getInfo(theQues.getQuesID());
+            theQues.setInfos(temp);
+
             message.setData(theQues);
             message.setSuccess(true);
             message.setMsg("获取成功");
@@ -73,7 +76,7 @@ public class QuestionnaireController {
     }
 
 
-    /*获取问卷详情*/
+    /*获取问卷内容，即题目等*/
     @RequestMapping(method = RequestMethod.GET,value = "/getQuesCont/{quesID}")
     @CrossOrigin
     public Message<String> getQueseCont(@PathVariable int quesID){
