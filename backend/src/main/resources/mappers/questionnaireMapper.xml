@@ -9,8 +9,8 @@
 
     <!--插入一个问卷-->
     <insert id="insert" parameterType="questionnaire">
-        insert into quesTable (quesID, title, detail, publisher, reward, attend,total, endtime, request,status)
-        values (${quesID},"${title}", "${detail}","${publisher}",${reward},${attend},${total},"${endtime}", "${request}","${status}")
+        insert into quesTable (quesID, title, detail, publisher, reward, total, attend, startTime, endTime, command,status)
+        values (${quesID},"${title}", "${detail}","${publisher}",${reward},${total},${attend},"${startTime}","${endTime}", "${command}","${status}")
     </insert>
 
     <!--获取问卷详情-->
@@ -28,9 +28,14 @@
         select detail from quesTable where quesID = #{quesID}
     </select>
 
-    <!--获取所有问卷-->
+
+    <select id="getInfo"  parameterType="int" resultType="infos">
+        select * from quesTable where quesID = #{quesID}
+    </select>
+
+    <!--获取所有正在进行的问卷-->
     <select id="getAllQues"  resultType="questionnaire">
-        select * from quesTable
+        select * from quesTable where status = "not done"
     </select>
 
     <!--Janking: 获取用户发布的所有问卷-->

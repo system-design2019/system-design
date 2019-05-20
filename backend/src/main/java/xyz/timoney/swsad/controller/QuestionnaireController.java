@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import xyz.timoney.swsad.bean.infos;
 
 
 @RestController
@@ -38,7 +39,7 @@ public class QuestionnaireController {
             /*用户数量*/
             /*问卷数量*/
             int count = questionnaireMapper.getCount();
-            questionnaire.initCount(count);
+            //questionnaire.initCount(count);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -99,7 +100,7 @@ public class QuestionnaireController {
         return message;
     }
 
-    /*获取所有问卷*/
+    /*获取所有正在进行的问卷*/
     @RequestMapping(method = RequestMethod.GET,value = "/allques")
     @CrossOrigin
     public Message<List<questionnaire>> getQueses(){
@@ -111,6 +112,11 @@ public class QuestionnaireController {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             listQues = quesMapper.getAllQues();
+            for(int i=0; i<listQues.size();i++)
+            {
+                infos temp=quesMapper.getInfo(listQues.get(i).getQuesID());
+                listQues.get(i).setInfos(temp);
+            }
             message.setData(listQues);
             message.setSuccess(true);
             message.setMsg("获取成功");
