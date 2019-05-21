@@ -78,8 +78,9 @@ public class User {
 
     /**
      * 通知资料
+     * 现在不在这里面啦
      * */
-    private List<Notification> notifications;
+    //private List<Notification> notifications;
 
     static public void initCount(int c){
         count = c;
@@ -105,7 +106,6 @@ public class User {
         published = null;
         filled = null;
         collected = null;
-        notifications = null;
         count++;
     }
     public void setId(int id) {
@@ -193,6 +193,7 @@ public class User {
         this.university = university;
     }
 
+
     //同步方法
     public void setCollected(List<questionnaire> collected) {
         this.collected = collected;
@@ -206,9 +207,6 @@ public class User {
         this.published = published;
     }
 
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
-    }
 
     public int getId() {
         return id;
@@ -281,6 +279,7 @@ public class User {
     public String getUniversity() {
         return university;
     }
+
     //同步方法
     public List<questionnaire> getCollected() {
         return collected;
@@ -294,9 +293,6 @@ public class User {
         return published;
     }
 
-    public List<Notification> getNotifications() {
-        return notifications;
-    }
 
     @Override
     public String toString() {

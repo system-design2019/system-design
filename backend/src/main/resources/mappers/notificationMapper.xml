@@ -15,6 +15,7 @@
                 primary key,
             toId       bigint(32) not null,
             fromId     bigint(32) not null,
+            date       DATETIME   not null,
             hasRead    boolean    not null,
             title       CHAR(40)   not null,
             content     CHAR(100)  not null
@@ -24,24 +25,42 @@
     <insert id="insert" parameterType="Notification" useGeneratedKeys="true" keyProperty="id">
         insert into notification_table(toId,
                                        fromId,
+                                       date,
                                        hasRead,
                                        title,
                                        content)
-        values( #{toId},#{fromId}, #{hasRead},#{title},#{content})
+        values( #{toId},#{fromId},#{date}, #{hasRead},#{title},#{content})
     </insert>
-    <!--删除通知-->
+    <!--删除单个通知-->
     <delete id="delete" parameterType="int">
         delete from notification_table where id=#{id}
     </delete>
-    <!--设置已读或未读-->
+    <!--删除所有通知-->
+    <delete id="deleteAll" parameterType="int">
+        delete from notification_table where toId=#{toId}
+    </delete>
+    <!--设置单个已读或未读-->
     <update id="setRead">
         update notification_table
         set hasRead = #{arg1}
         where id = #{arg0}
     </update>
+    <!--设置全部已读-->
+    <update id="setReadAllTrue" parameterType="int">
+        update notification_table
+        set hasRead = true
+        where toId=#{toId}
+    </update>
+    <!--设置全部已读-->
+    <update id="setReadAllFalse" parameterType="int">
+        update notification_table
+        set hasRead = false
+        where toId=#{toId}
+    </update>
     <!--获取某个用户所有通知-->
     <select id="getAllNotifications" parameterType="int" resultType="Notification" >
         select * from notification_table
-        where toId= #{userId};
+        where toId= #{userId}
+        order by date desc
     </select>
 </mapper>
