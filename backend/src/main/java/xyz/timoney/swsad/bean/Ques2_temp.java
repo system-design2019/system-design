@@ -1,27 +1,31 @@
 package xyz.timoney.swsad.bean;
 
-public class Ques1 {
-    private int tianID;
+public class Ques2_temp {
+    private int xuanID;
     private int quesID;
     private int mode;
     private String title;
+    private int choose;
     private boolean fill;
+    private String choices;
 
-    public Ques1()
+    public Ques2_temp()
     {
-        tianID=0;
+        xuanID=0;
         quesID=0;
-        mode=1;
-        title="tiankong";
+        mode=2;
+        title="xuanze";
+        choose=1;
+        choices="#";
         fill=false;
     }
 
-    public int getTianID() {
-        return tianID;
+    public int getXuanID() {
+        return xuanID;
     }
 
-    public void setTianID(int tianID) {
-        this.tianID = tianID;
+    public void setXuanID(int xuanID) {
+        this.xuanID = xuanID;
     }
 
     public int getQuesID() {
@@ -48,11 +52,27 @@ public class Ques1 {
         this.title = title;
     }
 
+    public int getChoose() {
+        return choose;
+    }
+
+    public void setChoose(int choose) {
+        this.choose = choose;
+    }
+
     public boolean isFill() {
         return fill;
     }
 
     public void setFill(boolean fill) {
         this.fill = fill;
+    }
+
+    public String getChoices() {
+        return choices;
+    }
+
+    public void setChoices(String choices) {
+        this.choices = choices;
     }
 }

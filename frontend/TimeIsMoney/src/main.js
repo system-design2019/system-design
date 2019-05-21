@@ -11,9 +11,7 @@ import store from './store/index.js'
 import axios from 'axios'
 
 Vue.prototype.$http = axios
-axios.defaults.baseURL = 'http://api.timoney.xyz';
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
+axios.defaults.withCredentials=true;
 
 Vue.use(Vuex)
 Vue.use(VueRouter);
