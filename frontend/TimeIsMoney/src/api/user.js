@@ -1,4 +1,5 @@
 import axios from 'axios'
+import service from './service.js'
 import qs from 'qs'
 
 
@@ -17,8 +18,8 @@ export async function login (username, password, mode) {
         data = {"phone": username,"password": password}
     else
         data = {"email": username,"password": password}
-    let response = await axios.post('/user', data)
-    // console.log('response:'+JSON.stringify(response.data))
+    let response = await service.post('/login', data)
+    console.log('response:'+JSON.stringify(response))
     return response.data
 }
 
