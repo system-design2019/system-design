@@ -6,7 +6,7 @@ public class Questionnaire {
     private String detail;
     private String publisher;
     private int reward;
-    private Infos Infos;
+    public Infos Infos;
     private String command;
     private String status;
     private String cont_title;
