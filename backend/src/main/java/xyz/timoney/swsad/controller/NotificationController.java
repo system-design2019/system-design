@@ -53,6 +53,7 @@ public class NotificationController {
             message.setSuccess(true);
             message.setData(Notification.cacheList.get(userId));
             message.setMsg("已获取" + message.getData().size() + "条通知: 来自缓存");
+            return message;
         }
         List<Notification> list;
         //获取一个连接,自动提交

@@ -1,5 +1,7 @@
 package xyz.timoney.swsad.bean;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import org.apache.ibatis.session.SqlSession;
 import xyz.timoney.swsad.mapper.NotificationMapper;
 import xyz.timoney.swsad.mapper.QuestionnaireMapper;
@@ -11,6 +13,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+/**
+ *
+ */
 public class User {
     /**
      * 用户的缓存
@@ -85,6 +90,8 @@ public class User {
     static public void initCount(int c){
         count = c;
     }
+
+
     public User(){
         String uuid = Util.getUUID();
         password = "default_password";

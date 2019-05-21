@@ -29,7 +29,7 @@ public class UserState {
                 System.out.println("--------Verify-------");
                 System.out.println(us);
                 System.out.println("--------Verify-------");
-                if(us.getValidTime() >= new Date().getTime()){
+                if(us.getValidTime() >= System.currentTimeMillis()){
                     //时间有效
                     message.setSuccess(true);
                     message.setMsg("身份校验成功");
