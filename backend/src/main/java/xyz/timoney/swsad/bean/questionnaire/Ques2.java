@@ -1,22 +1,25 @@
-package xyz.timoney.swsad.bean;
+package xyz.timoney.swsad.bean.questionnaire;
 
-public class Ques2_temp {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Ques2 {
     private int xuanID;
     private int quesID;
     private int mode;
     private String title;
     private int choose;
     private boolean fill;
-    private String choices;
+    private List<String> choices;
 
-    public Ques2_temp()
+    public Ques2()
     {
         xuanID=0;
         quesID=0;
         mode=2;
         title="xuanze";
         choose=1;
-        choices="#";
+        choices= new ArrayList<>();
         fill=false;
     }
 
@@ -68,11 +71,11 @@ public class Ques2_temp {
         this.fill = fill;
     }
 
-    public String getChoices() {
+    public List<String> getChoices() {
         return choices;
     }
 
-    public void setChoices(String choices) {
+    public void setChoices(List<String> choices) {
         this.choices = choices;
     }
 }

@@ -1,29 +1,25 @@
-package xyz.timoney.swsad.bean;
-import org.springframework.aop.target.LazyInitTargetSource;
-import xyz.timoney.swsad.bean.infos;
+package xyz.timoney.swsad.bean.questionnaire;
 
-import java.util.List;
-
-public class questionnaire {
+public class Questionnaire {
     private int quesID;
     private String title;
     private String detail;
     private String publisher;
     private int reward;
-    public infos Infos;
+    private Infos Infos;
     private String command;
     private String status;
     private String cont_title;
     private int number;
 
-    public questionnaire()
+    public Questionnaire()
     {
         quesID=0;
         title="#";
         publisher="#";
         detail="#";
         reward=0;
-        Infos = new infos();
+        Infos = new Infos();
         command="#";
         status="not done";
         cont_title="#";
@@ -46,11 +42,11 @@ public class questionnaire {
         this.number = number;
     }
 
-    public infos getInfos() {
+    public xyz.timoney.swsad.bean.questionnaire.Infos getInfos() {
         return Infos;
     }
 
-    public void setInfos(infos infos) {
+    public void setInfos(xyz.timoney.swsad.bean.questionnaire.Infos infos) {
         Infos = infos;
     }
 

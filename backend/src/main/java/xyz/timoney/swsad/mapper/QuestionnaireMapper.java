@@ -1,18 +1,17 @@
 package xyz.timoney.swsad.mapper;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-import xyz.timoney.swsad.bean.Ques1;
-import xyz.timoney.swsad.bean.Ques2_temp;
-import xyz.timoney.swsad.bean.questionnaire;
-import xyz.timoney.swsad.bean.infos;
+import xyz.timoney.swsad.bean.questionnaire.Ques1;
+import xyz.timoney.swsad.bean.questionnaire.Ques2_temp;
+import xyz.timoney.swsad.bean.questionnaire.Infos;
+import xyz.timoney.swsad.bean.questionnaire.Questionnaire;
 public interface QuestionnaireMapper {
     /*初始化表*/
     void questionnaireTableInit();
     /**
      * 添加一个问卷
      * */
-    boolean insert(questionnaire ques);
+    boolean insert(Questionnaire ques);
     /**
      * 获取所有正在进行问卷
      * */
@@ -23,14 +22,14 @@ public interface QuestionnaireMapper {
     boolean insertXuan(Ques2_temp ques2_temp);
 
     /*获取所有正在进行问卷*/
-    List<questionnaire> getAllQues();
+    List<Questionnaire> getAllQues();
 
     /**
      * 获取问卷详情
      * */
-    questionnaire getQuesByID(int quesID);
+    Questionnaire getQuesByID(int quesID);
 
-    infos getInfo(int quesID);
+    Infos getInfo(int quesID);
     /**
      * 获取问卷内容
      * */
@@ -39,7 +38,7 @@ public interface QuestionnaireMapper {
     /**
      * 获取用户发布的所有问卷
      * */
-    List<questionnaire> getAllPublished(int userId);
+    List<Questionnaire> getAllPublished(int userId);
 
     /**
      * 通过Id集获取所有的问卷
@@ -47,7 +46,7 @@ public interface QuestionnaireMapper {
      * @param idList 问卷id的列表
      * @return 问卷对象的列表
      * */
-    List<questionnaire> getAllQuesByIdListDateDesc(List<Integer> idList);
+    List<Questionnaire> getAllQuesByIdListDateDesc(List<Integer> idList);
 
     int getCount();
 }

@@ -12,15 +12,15 @@
     </settings>
     <!--别名，就是将后面那一堆，用User代替-->
     <typeAliases>
-        <typeAlias alias="User" type="xyz.timoney.swsad.bean.User"/>
-        <typeAlias alias="questionnaire" type="xyz.timoney.swsad.bean.questionnaire"/>
-        <typeAlias alias="infos" type="xyz.timoney.swsad.bean.infos"/>
-        <typeAlias alias="Ques1" type="xyz.timoney.swsad.bean.Ques1"/>
-        <typeAlias alias="Ques2" type="xyz.timoney.swsad.bean.Ques2"/>
-        <typeAlias alias="Ques2_temp" type="xyz.timoney.swsad.bean.Ques2_temp"/>
-        <typeAlias alias="Notification" type="xyz.timoney.swsad.bean.Notification"/>
-        <typeAlias alias="QuesFillUser" type="xyz.timoney.swsad.bean.QuesFillUser"/>
-        <typeAlias alias="QuesCollectUser" type="xyz.timoney.swsad.bean.QuesCollectUser"/>
+        <typeAlias alias="User" type="xyz.timoney.swsad.bean.user.User"/>
+        <typeAlias alias="questionnaire" type="xyz.timoney.swsad.bean.questionnaire.Questionnaire"/>
+        <typeAlias alias="infos" type="xyz.timoney.swsad.bean.questionnaire.Infos"/>
+        <typeAlias alias="Ques1" type="xyz.timoney.swsad.bean.questionnaire.Ques1"/>
+        <typeAlias alias="Ques2" type="xyz.timoney.swsad.bean.questionnaire.Ques2"/>
+        <typeAlias alias="Ques2_temp" type="xyz.timoney.swsad.bean.questionnaire.Ques2_temp"/>
+        <typeAlias alias="Notification" type="xyz.timoney.swsad.bean.user.Notification"/>
+        <typeAlias alias="QuesFillUser" type="xyz.timoney.swsad.bean.quesUser.QuesFillUser"/>
+        <typeAlias alias="QuesCollectUser" type="xyz.timoney.swsad.bean.quesUser.QuesCollectUser"/>
     </typeAliases>
     <!--环境配置-->
     <environments default="development">

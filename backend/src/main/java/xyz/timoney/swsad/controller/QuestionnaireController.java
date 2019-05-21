@@ -1,7 +1,11 @@
 package xyz.timoney.swsad.controller;
 
-import xyz.timoney.swsad.bean.Message;
-import xyz.timoney.swsad.bean.questionnaire;
+import xyz.timoney.swsad.bean.*;
+import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
+import xyz.timoney.swsad.bean.quesUser.QuesFillUser;
+import xyz.timoney.swsad.bean.questionnaire.*;
+import xyz.timoney.swsad.bean.user.User;
+import xyz.timoney.swsad.bean.user.UserState;
 import xyz.timoney.swsad.mapper.QuesCollectUserMapper;
 import xyz.timoney.swsad.mapper.QuesFillUserMapper;
 import xyz.timoney.swsad.mapper.QuestionnaireMapper;
@@ -11,7 +15,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import xyz.timoney.swsad.bean.infos;
 
 
 @RestController
@@ -39,7 +42,7 @@ public class QuestionnaireController {
             /*用户数量*/
             /*问卷数量*/
             int count = questionnaireMapper.getCount();
-            //questionnaire.initCount(count);
+            //Questionnaire.initCount(count);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -48,16 +51,16 @@ public class QuestionnaireController {
     /*获取问卷详情*/
     @RequestMapping(method = RequestMethod.GET,value = "/getQues/{quesID}")
     @CrossOrigin
-    public Message<questionnaire> getQueseByID(@PathVariable int quesID){
-        Message<questionnaire> message = new Message<>();
-        questionnaire theQues;
+    public Message<Questionnaire> getQueseByID(@PathVariable int quesID){
+        Message<Questionnaire> message = new Message<>();
+        Questionnaire theQues;
         //获取一个连接
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             theQues = quesMapper.getQuesByID(quesID);
-            infos temp=quesMapper.getInfo(theQues.getQuesID());
+            Infos temp=quesMapper.getInfo(theQues.getQuesID());
             theQues.setInfos(temp);
 
             message.setData(theQues);
@@ -106,9 +109,9 @@ public class QuestionnaireController {
     /*获取所有正在进行的问卷*/
     @RequestMapping(method = RequestMethod.GET,value = "/allques")
     @CrossOrigin
-    public Message<List<questionnaire>> getQueses(){
-        Message<List<questionnaire>> message = new Message<>();
-        List<questionnaire> listQues;
+    public Message<List<Questionnaire>> getQueses(){
+        Message<List<Questionnaire>> message = new Message<>();
+        List<Questionnaire> listQues;
         //获取一个连接
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
@@ -117,7 +120,7 @@ public class QuestionnaireController {
             listQues = quesMapper.getAllQues();
             for(int i=0; i<listQues.size();i++)
             {
-                infos temp=quesMapper.getInfo(listQues.get(i).getQuesID());
+                Infos temp=quesMapper.getInfo(listQues.get(i).getQuesID());
                 listQues.get(i).setInfos(temp);
             }
             message.setData(listQues);
@@ -139,7 +142,7 @@ public class QuestionnaireController {
     /*并且更新缓存中的用户创建表的List*/
     @RequestMapping(method = RequestMethod.POST,value = "/createques")
     @CrossOrigin
-    public Message<String> createQues(@RequestBody questionnaire ques)
+    public Message<String> createQues(@RequestBody Questionnaire ques)
     {
         /*
         @TODO  验证用户身份
@@ -181,7 +184,7 @@ public class QuestionnaireController {
         if(!message.isSuccess()){
             return message;
         }
-        questionnaire questionnaire;
+        Questionnaire questionnaire;
         //修改数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
@@ -207,6 +210,51 @@ public class QuestionnaireController {
         }
         message.setSuccess(true);
         message.setMsg("收藏问卷成功");
+        System.out.println(message);
+        return message;
+    }
+
+    /**
+     * 填写某个问卷
+     * */
+    @RequestMapping(method = RequestMethod.PUT,value = "/questionnaires/{id}/fill")
+    @CrossOrigin
+    public Message<String> questionnaireFill(@CookieValue("user") String userCookieKey, @PathVariable("id") int quesId)
+    {
+        /*
+        验证用户身份
+        */
+        System.out.println("\nPUT /questionnaires/fill" +  quesId + "\n");
+        Message<String> message = new Message<>();
+        int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        Questionnaire questionnaire;
+        //修改数据库
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+            //得到映射器
+            QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            quesFillUserMapper.insert(new QuesFillUser(quesId, userId));
+            //获得问卷对象
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            questionnaire = questionnaireMapper.getQuesByID(quesId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("填写问卷失败: 出现异常");
+            System.out.println(message);
+            return message;
+        }
+        //同步通知发送到缓存中的用户
+        for(User u : User.cacheList){
+            if(u.getId() == userId){
+                u.getFilled().add(questionnaire);
+            }
+        }
+        message.setSuccess(true);
+        message.setMsg("开始填写问卷");
         System.out.println(message);
         return message;
     }

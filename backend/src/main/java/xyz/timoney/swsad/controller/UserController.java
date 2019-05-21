@@ -1,12 +1,10 @@
 package xyz.timoney.swsad.controller;
 
-import com.google.gson.Gson;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwt;
-import org.apache.naming.factory.BeanFactory;
-import org.springframework.http.HttpRequest;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import xyz.timoney.swsad.bean.*;
+import xyz.timoney.swsad.bean.questionnaire.Questionnaire;
+import xyz.timoney.swsad.bean.user.Notification;
+import xyz.timoney.swsad.bean.user.User;
+import xyz.timoney.swsad.bean.user.UserState;
 import xyz.timoney.swsad.mapper.*;
 import xyz.timoney.swsad.service.JwtHelper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
@@ -17,14 +15,11 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.security.auth.login.LoginException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
-
-import static xyz.timoney.swsad.bean.UserState.verifyCookie;
 
 
 @RestController
@@ -299,10 +294,10 @@ public class UserController {
                 return message;
             }
             //获取发布问卷列表,按时间逆序
-            List<questionnaire> publishedList = questionnaireMapper.getAllPublished(userId);
+            List<Questionnaire> publishedList = questionnaireMapper.getAllPublished(userId);
             //获取填写问卷列表
             List<Integer> quesFilledIdList = quesFillUserMapper.getAllFilled(userId);
-            List<questionnaire> quesFilledList = new ArrayList<>();
+            List<Questionnaire> quesFilledList = new ArrayList<>();
             for (int i : quesFilledIdList) {
                 quesFilledList.add(questionnaireMapper.getQuesByID(i));
             }
@@ -310,7 +305,7 @@ public class UserController {
             quesFilledList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
             //获取收藏问卷列表
             List<Integer> quesCollectedIdList = quesCollectUserMapper.getAllCollected(userId);
-            List<questionnaire> quesCollectedList = new ArrayList<>();
+            List<Questionnaire> quesCollectedList = new ArrayList<>();
             for (int i : quesCollectedIdList) {
                 quesCollectedList.add(questionnaireMapper.getQuesByID(i));
             }
@@ -382,10 +377,10 @@ public class UserController {
                 return message;
             }
             //获取发布问卷列表,按时间逆序
-            List<questionnaire> publishedList = questionnaireMapper.getAllPublished(userId);
+            List<Questionnaire> publishedList = questionnaireMapper.getAllPublished(userId);
             //获取填写问卷列表
             List<Integer> quesFilledIdList = quesFillUserMapper.getAllFilled(userId);
-            List<questionnaire> quesFilledList = new ArrayList<>();
+            List<Questionnaire> quesFilledList = new ArrayList<>();
             for (int i : quesFilledIdList) {
                 quesFilledList.add(questionnaireMapper.getQuesByID(i));
             }
@@ -393,7 +388,7 @@ public class UserController {
             quesFilledList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
             //获取收藏问卷列表
             List<Integer> quesCollectedIdList = quesCollectUserMapper.getAllCollected(userId);
-            List<questionnaire> quesCollectedList = new ArrayList<>();
+            List<Questionnaire> quesCollectedList = new ArrayList<>();
             for (int i : quesCollectedIdList) {
                 quesCollectedList.add(questionnaireMapper.getQuesByID(i));
             }

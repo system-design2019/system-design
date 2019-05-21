@@ -1,6 +1,6 @@
 package xyz.timoney.swsad;
 
-//import xyz.timoney.swsad.bean.Notification;
+//import xyz.timoney.swsad.bean.user.Notification;
 import xyz.timoney.swsad.controller.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,18 +1,15 @@
 package xyz.timoney.swsad.controller;
 
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 import xyz.timoney.swsad.bean.Message;
-import xyz.timoney.swsad.bean.Notification;
-import xyz.timoney.swsad.bean.User;
-import xyz.timoney.swsad.bean.UserState;
+import xyz.timoney.swsad.bean.user.Notification;
+import xyz.timoney.swsad.bean.user.UserState;
 import xyz.timoney.swsad.mapper.NotificationMapper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 

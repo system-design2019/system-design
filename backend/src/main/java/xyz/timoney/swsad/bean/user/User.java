@@ -1,17 +1,10 @@
-package xyz.timoney.swsad.bean;
+package xyz.timoney.swsad.bean.user;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import org.apache.ibatis.session.SqlSession;
-import xyz.timoney.swsad.mapper.NotificationMapper;
-import xyz.timoney.swsad.mapper.QuestionnaireMapper;
-import xyz.timoney.swsad.mapper.UserMapper;
+import xyz.timoney.swsad.bean.Util;
+import xyz.timoney.swsad.bean.questionnaire.Questionnaire;
 
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 /**
  *
@@ -75,11 +68,11 @@ public class User {
      * 问卷资料
      * */
     //发布的所有问卷
-    private List<questionnaire> published;
+    private List<Questionnaire> published;
     //填写的所有问卷
-    private List<questionnaire> filled;
+    private List<Questionnaire> filled;
     //收藏的所有问卷
-    private List<questionnaire> collected;
+    private List<Questionnaire> collected;
 
     /**
      * 通知资料
@@ -202,15 +195,15 @@ public class User {
 
 
     //同步方法
-    public void setCollected(List<questionnaire> collected) {
+    public void setCollected(List<Questionnaire> collected) {
         this.collected = collected;
     }
 
-    public void setFilled(List<questionnaire> filled) {
+    public void setFilled(List<Questionnaire> filled) {
         this.filled = filled;
     }
 
-    public void setPublished(List<questionnaire> published) {
+    public void setPublished(List<Questionnaire> published) {
         this.published = published;
     }
 
@@ -288,15 +281,15 @@ public class User {
     }
 
     //同步方法
-    public List<questionnaire> getCollected() {
+    public List<Questionnaire> getCollected() {
         return collected;
     }
 
-    public List<questionnaire> getFilled() {
+    public List<Questionnaire> getFilled() {
         return filled;
     }
 
-    public List<questionnaire> getPublished() {
+    public List<Questionnaire> getPublished() {
         return published;
     }
 

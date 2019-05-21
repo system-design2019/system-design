@@ -1,6 +1,5 @@
 package xyz.timoney.swsad.mapper;
-import xyz.timoney.swsad.bean.User;
-import xyz.timoney.swsad.bean.questionnaire;
+import xyz.timoney.swsad.bean.user.User;
 
 import java.util.List;
 

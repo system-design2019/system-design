@@ -1,4 +1,4 @@
-package xyz.timoney.swsad.bean;
+package xyz.timoney.swsad.bean.quesUser;
 
 //保存某个问卷填写的用户单项
 public class QuesFillUser {
@@ -6,6 +6,12 @@ public class QuesFillUser {
     private int quesId;
     //用户ID
     private int userId;
+
+
+    public QuesFillUser(int quesId, int userId){
+        this.quesId = quesId;
+        this.userId = userId;
+    }
 
     public int getQuesId() {
         return quesId;

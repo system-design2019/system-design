@@ -1,4 +1,6 @@
-package xyz.timoney.swsad.bean;
+package xyz.timoney.swsad.bean.user;
+import xyz.timoney.swsad.bean.Util;
+
 import java.util.*;
 
 public class Notification {

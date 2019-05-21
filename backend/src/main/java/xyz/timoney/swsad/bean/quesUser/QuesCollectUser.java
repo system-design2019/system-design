@@ -1,4 +1,4 @@
-package xyz.timoney.swsad.bean;
+package xyz.timoney.swsad.bean.quesUser;
 
 /**
  * 保存某个问卷收藏的用户单项
