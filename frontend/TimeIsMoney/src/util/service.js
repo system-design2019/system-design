@@ -4,7 +4,7 @@ import axios from 'axios'
 const service = axios.create({
   baseURL: 'http://172.26.70.9:8080', // node环境的不同，对应不同的baseURL
   timeout: 5000, // 请求的超时时间
-  // 设置默认请求类型
+  method: 'get',
   headers: {  
     "Content-Type": "application/json;charset=UTF-8"
   },
