@@ -35,6 +35,10 @@ public interface QuestionnaireMapper {
      * */
     String getQuesCont(int quesID);
 
+    /**
+     * 获取用户发布的所有问卷
+     * */
+    List<Questionnaire> getAllPublished(int userId);
 
     /**
      * 问卷填写人数加1
