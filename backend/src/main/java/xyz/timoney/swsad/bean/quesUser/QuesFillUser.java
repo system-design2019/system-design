@@ -1,10 +1,24 @@
 package xyz.timoney.swsad.bean.quesUser;
 
-//保存某个问卷填写的用户单项
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 保存某个问卷填写的用户单项
+ */
 public class QuesFillUser {
-    //问卷ID
+    /**
+     * 缓存用户收藏的问卷ID
+     */
+    public static Map<Integer, List<Integer>> cacheList = new HashMap<>();
+    /**
+     * 问卷ID
+     */
     private int quesId;
-    //用户ID
+    /**
+     * 用户ID
+     */
     private int userId;
 
 

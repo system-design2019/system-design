@@ -13,8 +13,12 @@ public interface QuesCollectUserMapper {
     int insert(QuesCollectUser quesCollectUser);
     /*删除收藏者*/
     int delete(QuesCollectUser quesCollectUser);
-    /*获取指定用户收藏的所有问卷id*/
+    /**
+     * 获取指定用户收藏的所有问卷id
+     * */
     List<Integer> getAllCollected(int userId);
-    /*获取指定问卷所有的收藏者id*/
+    /**
+     * 获取指定问卷所有的收藏者id
+     * */
     List<Integer> getAlsCollector(int quesId);
 }

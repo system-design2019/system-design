@@ -4,7 +4,7 @@ import xyz.timoney.swsad.bean.Util;
 import java.util.*;
 
 public class Notification {
-    //缓存用户的信息
+    //缓存用户的通知
     public static Map<Integer,List<Notification>> cacheList = new HashMap<>();
     //消息id,数据库自动递增
     private int id;

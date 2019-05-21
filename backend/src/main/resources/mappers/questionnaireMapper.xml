@@ -35,6 +35,12 @@
         select * from questionnaire_table where publisher = #{userId} order by startTime DESC
     </select>
 
+    <!--Janking: 问卷参与者加一(前提，参与人数小于限制人数)-->
+    <update id="addOneFill">
+        update questionnaire_table
+        set attend = attend + 1
+        where attend &lt; total
+    </update>
 
     <!--Janking: Bug未解决!通过问卷id的列表获取问卷的列表，降序，也就是时间最近排在最前面-->
     <select id="getAllQuesByIdListDateDesc">

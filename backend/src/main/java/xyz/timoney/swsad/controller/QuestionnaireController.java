@@ -169,8 +169,11 @@ public class QuestionnaireController {
 
 
     /**
-     * 收藏某个问卷
-     * */
+     *
+     *  收藏某个问卷
+     * @param userCookieKey 用户cookie
+     * @param quesId 问卷id
+     * @return*/
     @RequestMapping(method = RequestMethod.PUT,value = "/questionnaires/{id}/collect")
     @CrossOrigin
     public Message<String> questionnaireCollect(@CookieValue("user") String userCookieKey, @PathVariable("id") int quesId)
@@ -178,7 +181,7 @@ public class QuestionnaireController {
         /*
         验证用户身份
         */
-        System.out.println("\nPUT /questionnaires/collect" +  quesId + "\n");
+        System.out.println("\nPUT /questionnaires/" + quesId + "/collect" + "\n");
         Message<String> message = new Message<>();
         int userId = UserState.verifyCookie(userCookieKey, message);
         if(!message.isSuccess()){
@@ -214,6 +217,47 @@ public class QuestionnaireController {
         return message;
     }
 
+
+    /**
+     * @param userCookieKey 用户cookie
+     * @return 用户收藏所有问卷的集合
+     */
+    @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/collect/all")
+    @CrossOrigin
+    public Message<List<Integer>> questionnaireCollectList(@CookieValue("user") String userCookieKey)
+    {
+        /*
+        验证用户身份
+        */
+        System.out.println("\nGET /questionnaires/collect/all"  + "\n");
+        Message<List<Integer>> message = new Message<>();
+        int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        //修改数据库
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+            //得到映射器
+            QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            List<Integer> list = quesCollectUserMapper.getAllCollected(userId);
+            message.setData(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("获取收藏问卷id失败: 出现异常");
+            System.out.println(message);
+            return message;
+        }
+        /**
+         * @TODO 增加缓存
+         * */
+        message.setSuccess(true);
+        message.setMsg("获取收藏问卷id成功");
+        System.out.println(message);
+        return message;
+    }
+
     /**
      * 填写某个问卷
      * */
@@ -224,37 +268,107 @@ public class QuestionnaireController {
         /*
         验证用户身份
         */
-        System.out.println("\nPUT /questionnaires/fill" +  quesId + "\n");
+        System.out.println("\nPUT /questionnaires/"+ quesId + "/fill" + "\n");
         Message<String> message = new Message<>();
         int userId = UserState.verifyCookie(userCookieKey, message);
         if(!message.isSuccess()){
             return message;
         }
         Questionnaire questionnaire;
+        int fillerCount;
         //修改数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
-            //得到映射器
+            //获得问卷填写者列表
             QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
-            //调用接口中的方法去执行xml文件中的SQL语句
-            quesFillUserMapper.insert(new QuesFillUser(quesId, userId));
-            //获得问卷对象
+            fillerCount = quesFillUserMapper.getAllFiller(quesId).size();
+            //获取问卷详情
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             questionnaire = questionnaireMapper.getQuesByID(quesId);
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
-            message.setMsg("填写问卷失败: 出现异常");
+            message.setMsg("填写问卷失败: 获取问卷出现异常");
             System.out.println(message);
             return message;
         }
-        //同步通知发送到缓存中的用户
-        for(User u : User.cacheList){
-            if(u.getId() == userId){
-                u.getFilled().add(questionnaire);
+        /**
+         * 人数是否已满
+         * */
+        if(questionnaire.getInfos().getTotal() > fillerCount ){
+            //修改数据库
+            try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+                //新加一条参与的记录
+                QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
+                quesFillUserMapper.insert(new QuesFillUser(quesId, userId));
+                //获得问卷本身
+                QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+                int affect = questionnaireMapper.addOneFill();
+                System.out.println("Affect : " + affect);
+            } catch (Exception e) {
+                e.printStackTrace();
+                message.setSuccess(false);
+                message.setMsg("填写问卷失败: 填写问卷出现异常");
+                System.out.println(message);
+                return message;
             }
+
+            //同步通知发送到缓存中的用户
+            for(User u : User.cacheList){
+                if(u.getId() == userId){
+                    u.getFilled().add(questionnaire);
+                }
+            }
+            message.setSuccess(true);
+            message.setMsg("开始填写问卷");
+            System.out.println(message);
+            return message;
         }
+        /**
+         * 人数已满
+         * */
+        message.setSuccess(false);
+        message.setMsg("填写问卷失败: 人数已满");
+        System.out.println(message);
+        return message;
+    }
+
+    /**
+     * 用户填写的所有问卷id
+     * @param userCookieKey 用户cookie
+     * @return 用户填写所有问卷的集合
+     */
+    @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/fill/all")
+    @CrossOrigin
+    public Message<List<Integer>> questionnaireFillList(@CookieValue("user") String userCookieKey)
+    {
+        /*
+        验证用户身份
+        */
+        System.out.println("\nGET /questionnaires/fill/all"  + "\n");
+        Message<List<Integer>> message = new Message<>();
+        int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        //修改数据库
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+            //得到映射器
+            QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            List<Integer> list = quesFillUserMapper.getAllFilled(userId);
+            message.setData(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("获取填写问卷id失败: 出现异常");
+            System.out.println(message);
+            return message;
+        }
+        /**
+         * @TODO 增加缓存
+         * */
         message.setSuccess(true);
-        message.setMsg("开始填写问卷");
+        message.setMsg("获取填写问卷id成功");
         System.out.println(message);
         return message;
     }
