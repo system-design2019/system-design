@@ -1,21 +1,20 @@
 package xyz.timoney.swsad.bean.questionnaire;
 
-import java.util.ArrayList;
 import java.util.List;
-public class QuesResult {
-    //联合主键
+
+public class QuesResult_temp {
     private int quesID;
     private int userID;
 
-    private List<String> tiankong;
-    private List<Integer> xuanze;
+    private String tiankong;
+    private String xuanze;
 
-    public QuesResult()
+    public QuesResult_temp()
     {
         quesID=0;
         userID=0;
-        tiankong=new ArrayList<String>();
-        xuanze=new ArrayList<Integer>();
+        tiankong="#";
+        xuanze="#";
     }
 
     public int getQuesID() {
@@ -34,19 +33,19 @@ public class QuesResult {
         this.userID = userID;
     }
 
-    public List<String> getTiankong() {
+    public String getTiankong() {
         return tiankong;
     }
 
-    public void setTiankong(List<String> tiankong) {
+    public void setTiankong(String tiankong) {
         this.tiankong = tiankong;
     }
 
-    public List<Integer> getXuanze() {
+    public String getXuanze() {
         return xuanze;
     }
 
-    public void setXuanze(List<Integer> xuanze) {
+    public void setXuanze(String xuanze) {
         this.xuanze = xuanze;
     }
 }

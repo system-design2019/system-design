@@ -25,6 +25,12 @@
         values (${xuanID},${quesID},${mode}, "${title}",${choose},"${choices}",${fill})
     </insert>
 
+    <!--提交一个问卷结果-->
+    <insert id="commitResults" parameterType="QuesResult_temp">
+        insert into quesResults (quesID, userID, tiankong, xuanze)
+        values (${quesID},${userID}, "${tiankong}","${xuanze}")
+    </insert>
+
     <!--获取问卷详情-->
     <select id="getQuesByID"  parameterType="int" resultType="questionnaire">
         select * from questionnaire_table where quesID = #{quesID}

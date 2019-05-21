@@ -1,11 +1,13 @@
 package xyz.timoney.swsad.mapper;
 import java.util.List;
 
-import xyz.timoney.swsad.bean.questionnaire.Ques1;
-import xyz.timoney.swsad.bean.questionnaire.Ques2_temp;
-import xyz.timoney.swsad.bean.questionnaire.Infos;
-import xyz.timoney.swsad.bean.questionnaire.Questionnaire;
+import xyz.timoney.swsad.bean.questionnaire.*;
+
 public interface QuestionnaireMapper {
+
+    /*提交一个问卷结果*/
+    boolean commitResults(QuesResult_temp quesResult_temp);
+
     /*初始化表*/
     void questionnaireTableInit();
     /**

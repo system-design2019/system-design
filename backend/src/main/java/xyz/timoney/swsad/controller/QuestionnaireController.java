@@ -601,4 +601,43 @@ public class QuestionnaireController {
     }
 
 
+
+    /*添加问卷的选择题*/
+    @RequestMapping(method = RequestMethod.POST,value = "/commitResult")
+    @CrossOrigin
+    public Message<String> addXuan(@RequestBody QuesResult quesResult)
+    {
+        Message<String> message = new Message<>();
+
+        QuesResult_temp quesResult_temp = new QuesResult_temp();
+        System.out.println(quesResult);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            quesResult_temp.setQuesID(quesResult.getQuesID());
+            quesResult_temp.setUserID(quesResult.getUserID());
+            List<String> te = quesResult.getTiankong();
+            String re = String.join("$",te);
+            List<Integer> te1 = quesResult.getXuanze();
+            List<String> te2 = new ArrayList<>();
+            for(int i=0;i<te1.size();i++)
+            {
+                te2.add(te1.get(i).toString());
+            }
+            String re1 = String.join("$",te2);
+            quesResult_temp.setTiankong(re);
+            quesResult_temp.setXuanze(re1);
+            quesMapper.commitResults(quesResult_temp);
+            message.setSuccess(true);
+            message.setMsg("创建成功");
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("创建失败:" + e.getMessage());
+            return message;
+        }
+        return message;
+    }
+
+
 }
