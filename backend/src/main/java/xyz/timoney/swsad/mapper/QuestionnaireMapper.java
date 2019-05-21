@@ -42,6 +42,11 @@ public interface QuestionnaireMapper {
     int addOneFill();
 
     /**
+     * 问卷填写人数建1
+     * */
+    int cancelOneFill();
+
+    /**
      * 通过Id集获取所有的问卷
      * 略难，还没做出来
      *

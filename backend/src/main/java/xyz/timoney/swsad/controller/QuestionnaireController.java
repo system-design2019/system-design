@@ -192,9 +192,16 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
-            //调用接口中的方法去执行xml文件中的SQL语句
+            List<Integer> collecterList = quesCollectUserMapper.getAllCollected(userId);
+            //判断是否重复收藏
+            if(collecterList.contains(userId)){
+                message.setSuccess(false);
+                message.setMsg("收藏问卷失败: 已经收藏了此问卷");
+                System.out.println(message);
+                return message;
+            }
+            //添加记录
             quesCollectUserMapper.insert(new QuesCollectUser(quesId, userId));
-
             //获得问卷对象
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             questionnaire = questionnaireMapper.getQuesByID(quesId);
@@ -219,6 +226,58 @@ public class QuestionnaireController {
 
 
     /**
+     *
+     *  取消收藏某个问卷
+     * @param userCookieKey 用户cookie
+     * @param quesId 问卷id
+     * @return*/
+    @RequestMapping(method = RequestMethod.DELETE,value = "/questionnaires/{id}/collect")
+    @CrossOrigin
+    public Message<String> questionnaireCollectCancel(@CookieValue("user") String userCookieKey, @PathVariable("id") int quesId)
+    {
+        /*
+        验证用户身份
+        */
+        System.out.println("\nDELETE /questionnaires/" + quesId + "/collect" + "\n");
+        Message<String> message = new Message<>();
+        int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        //修改数据库
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+            //得到映射器
+            QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
+            List<Integer> collecterList = quesCollectUserMapper.getAlsCollector(quesId);
+            //判断是否没有收藏过
+            if(!collecterList.contains(userId)){
+                message.setSuccess(false);
+                message.setMsg("取消收藏问卷失败: 没有收藏过此问卷");
+                System.out.println(message);
+                return message;
+            }
+            //删除记录
+            quesCollectUserMapper.delete(new QuesCollectUser(quesId, userId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("取消收藏问卷失败: 出现异常");
+            System.out.println(message);
+            return message;
+        }
+        //同步缓存中的用户
+        for(User u : User.cacheList){
+            if(u.getId() == userId){
+                u.getCollected().removeIf(ques -> ques.getQuesID() == quesId);
+            }
+        }
+        message.setSuccess(true);
+        message.setMsg("取消收藏问卷成功");
+        System.out.println(message);
+        return message;
+    }
+
+    /**
      * @param userCookieKey 用户cookie
      * @return 用户收藏所有问卷的集合
      */
@@ -239,7 +298,7 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
-            //调用接口中的方法去执行xml文件中的SQL语句
+            //获取收藏者列表
             List<Integer> list = quesCollectUserMapper.getAllCollected(userId);
             message.setData(list);
         } catch (Exception e) {
@@ -280,7 +339,15 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //获得问卷填写者列表
             QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
-            fillerCount = quesFillUserMapper.getAllFiller(quesId).size();
+            List<Integer> fillerList = quesFillUserMapper.getAllFiller(quesId);
+            //判断是否重复填写
+            if(fillerList.contains(userId)){
+                message.setSuccess(false);
+                message.setMsg("填写问卷失败: 已经填写了此问卷");
+                System.out.println(message);
+                return message;
+            }
+            fillerCount = fillerList.size();
             //获取问卷详情
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             questionnaire = questionnaireMapper.getQuesByID(quesId);
@@ -302,6 +369,7 @@ public class QuestionnaireController {
                 quesFillUserMapper.insert(new QuesFillUser(quesId, userId));
                 //获得问卷本身
                 QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+                //attend加一
                 int affect = questionnaireMapper.addOneFill();
                 System.out.println("Affect : " + affect);
             } catch (Exception e) {
@@ -312,7 +380,7 @@ public class QuestionnaireController {
                 return message;
             }
 
-            //同步通知发送到缓存中的用户
+            //同步缓存中的用户
             for(User u : User.cacheList){
                 if(u.getId() == userId){
                     u.getFilled().add(questionnaire);
@@ -328,6 +396,60 @@ public class QuestionnaireController {
          * */
         message.setSuccess(false);
         message.setMsg("填写问卷失败: 人数已满");
+        System.out.println(message);
+        return message;
+    }
+
+    /**
+     * 放弃填写某个问卷
+     * */
+    @RequestMapping(method = RequestMethod.DELETE,value = "/questionnaires/{id}/fill")
+    @CrossOrigin
+    public Message<String> questionnaireFillCancel(@CookieValue("user") String userCookieKey, @PathVariable("id") int quesId)
+    {
+        /*
+        验证用户身份
+        */
+        System.out.println("\nDELETE /questionnaires/"+ quesId + "/fill" + "\n");
+        Message<String> message = new Message<>();
+        int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        //修改数据库
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+            //获得问卷填写者列表
+            QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
+            List<Integer> fillerList = quesFillUserMapper.getAllFiller(quesId);
+            //判断是否没有填写过
+            if(!fillerList.contains(userId)){
+                message.setSuccess(false);
+                message.setMsg("取消填写问卷失败: 没有填写过此问卷");
+                System.out.println(message);
+                return message;
+            }
+            //删除记录
+            quesFillUserMapper.delete(new QuesFillUser(quesId, userId));
+            //attend减1
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            int affect = questionnaireMapper.cancelOneFill();
+            System.out.println("Affect : " + affect);
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("取消填写问卷失败: 获取问卷出现异常");
+            System.out.println(message);
+            return message;
+        }
+
+        //同步缓存中的用户
+        for(User u : User.cacheList){
+            if(u.getId() == userId){
+                u.getFilled().removeIf(ques -> ques.getQuesID() == quesId);
+            }
+        }
+        message.setSuccess(true);
+        message.setMsg("已取消填写问卷");
         System.out.println(message);
         return message;
     }

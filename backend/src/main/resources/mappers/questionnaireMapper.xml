@@ -42,6 +42,14 @@
         where attend &lt; total
     </update>
 
+    <!--Janking: 问卷参与者减一(前提，参与人数大于0)-->
+    <update id="cancelOneFill">
+        update questionnaire_table
+        set attend = attend - 1
+        where attend  &gt; 0
+    </update>
+
+
     <!--Janking: Bug未解决!通过问卷id的列表获取问卷的列表，降序，也就是时间最近排在最前面-->
     <select id="getAllQuesByIdListDateDesc">
         select * from questionnaire_table where quesID in
