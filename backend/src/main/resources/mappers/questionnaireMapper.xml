@@ -76,4 +76,19 @@
     <select id="getCount" resultType="int">
       select COUNT(*) from questionnaire_table;
     </select>
+
+    <!--获取标题-->
+    <select id="getTitleByID" parameterType="int" resultType="String">
+      select title from questionnaire_table where quesID = #{quesID};
+    </select>
+
+    <!--获取填空题-->
+    <select id="getQues1s" parameterType="int" resultType="Ques1">
+      select * from tiankong where quesID = #{quesID};
+    </select>
+
+    <!--获取选择题-->
+    <select id="getQues2s" parameterType="int" resultType="Ques2_temp">
+      select * from xuanze where quesID = #{quesID};
+    </select>
 </mapper>

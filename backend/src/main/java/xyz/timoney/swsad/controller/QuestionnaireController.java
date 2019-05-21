@@ -4,8 +4,10 @@ import xyz.timoney.swsad.bean.*;
 import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
 import xyz.timoney.swsad.bean.quesUser.QuesFillUser;
 import xyz.timoney.swsad.bean.questionnaire.*;
+import xyz.timoney.swsad.bean.questionnaire.QuesContent;
 import xyz.timoney.swsad.bean.user.User;
 import xyz.timoney.swsad.bean.user.UserState;
+import xyz.timoney.swsad.bean.questionnaire.QuesContent;
 import xyz.timoney.swsad.mapper.QuesCollectUserMapper;
 import xyz.timoney.swsad.mapper.QuesFillUserMapper;
 import xyz.timoney.swsad.mapper.QuestionnaireMapper;
@@ -14,6 +16,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -82,16 +86,59 @@ public class QuestionnaireController {
     /*获取问卷内容，即题目等*/
     @RequestMapping(method = RequestMethod.GET,value = "/getQuesCont/{quesID}")
     @CrossOrigin
-    public Message<String> getQueseCont(@PathVariable int quesID){
-        Message<String> message = new Message<>();
-        String theQuesCont;
+    public Message<QuesContent> getQueseCont(@PathVariable int quesID){
+        Message<QuesContent> message = new Message<>();
+        QuesContent quesCont= new QuesContent();
         //获取一个连接
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
-            theQuesCont = quesMapper.getQuesCont(quesID);
-            message.setData(theQuesCont);
+            //获取title
+            String title = quesMapper.getTitleByID(quesID);
+            //获取选择题，此处有bug
+            List<Ques2_temp> ques2s_temp=new ArrayList<>();
+            ques2s_temp=quesMapper.getQues2s(quesID);
+
+
+            List<Ques2> ques2s= new ArrayList<>();
+            for(int i=0;i<ques2s_temp.size();i++)
+            {
+                Ques2 te = new Ques2();
+                te.setXuanID(ques2s_temp.get(i).getXuanID());
+                te.setQuesID(ques2s_temp.get(i).getQuesID());
+                te.setMode(ques2s_temp.get(i).getMode());
+                te.setTitle(ques2s_temp.get(i).getTitle());
+                te.setChoose(ques2s_temp.get(i).getChoose());
+                te.setFill(ques2s_temp.get(i).isFill());
+
+                String cho=new String();
+                List<String> choices = new ArrayList<>();
+                cho=ques2s_temp.get(i).getChoices();
+                //必须要注意转义
+                String [] choic=cho.split("\\$");
+                choices.add(choic[0]);
+                choices.add(choic[1]);
+                choices.add(choic[2]);
+                choices.add(choic[3]);
+                te.setChoices(choices);
+
+                ques2s.add(te);
+            }
+
+
+            //获取填空题
+            List<Ques1> ques1s = quesMapper.getQues1s(quesID);
+            //计算number
+            int num = ques1s.size()+ques2s.size();
+
+            quesCont.setQuesID(num);
+            quesCont.setNumber(num);
+            quesCont.setTitle(title);
+            quesCont.setQues1(ques1s);
+            quesCont.setQues2(ques2s);
+
+            message.setData(quesCont);
             message.setSuccess(true);
             message.setMsg("获取成功");
             //要提交后才会生效

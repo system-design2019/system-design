@@ -21,6 +21,15 @@ public interface QuestionnaireMapper {
     /*插入选择题*/
     boolean insertXuan(Ques2_temp ques2_temp);
 
+    /*根据ID获取标题*/
+    String getTitleByID(int quesID);
+
+    /*根据ID获取填空题*/
+    List<Ques1> getQues1s(int quesID);
+
+    /*根据ID获取temp选择题*/
+    List<Ques2_temp> getQues2s(int quesID);
+
     /*获取所有正在进行问卷*/
     List<Questionnaire> getAllQues();
 
