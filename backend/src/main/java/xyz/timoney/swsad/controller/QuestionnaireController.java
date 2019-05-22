@@ -1,6 +1,7 @@
 package xyz.timoney.swsad.controller;
 
 import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 import xyz.timoney.swsad.bean.*;
 import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
 import xyz.timoney.swsad.bean.quesUser.QuesFillUser;
@@ -206,7 +207,14 @@ public class QuestionnaireController {
         if(!message.isSuccess()){
             return message;
         }
-
+        /*
+        * cookie不一致
+        * */
+        if(ques.getQuesID() != userId){
+            message.setSuccess(false);
+            message.setMsg("创建失败: 问卷发布账号与当前账号不一致" );
+            return message;
+        }
         System.out.println(ques);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
@@ -682,6 +690,9 @@ public class QuestionnaireController {
     @CrossOrigin
     public Message<String> addTian(@RequestBody List<Ques1> tians)
     {
+        /**
+         * @TODO 权限认证和cookie不一致
+         * */
         Message<String> message = new Message<>();
         System.out.println(tians);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
@@ -708,6 +719,9 @@ public class QuestionnaireController {
     @CrossOrigin
     public Message<String> addXuan(@RequestBody List<Ques2> xuans)
     {
+        /**
+         * @TODO 权限认证和cookie不一致
+         * */
         Message<String> message = new Message<>();
         System.out.println(xuans);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
@@ -738,16 +752,30 @@ public class QuestionnaireController {
     }
 
 
-
     /**
-     * 添加问卷的选择题
+     * 提交问卷答案
      * */
     @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/commit")
     @CrossOrigin
-    public Message<String> addXuan(@RequestBody QuesResult quesResult)
+    public Message<String> commitResult(@CookieValue("user") String userCookieKey, @RequestBody QuesResult quesResult)
     {
+        /*
+        验证用户身份
+        */
+        System.out.println("\nPUT /questionnaires/commit\n");
         Message<String> message = new Message<>();
-
+        int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        /*
+        * cookie不一致
+        * */
+        if(userId!=quesResult.getUserID()){
+            message.setSuccess(false);
+            message.setMsg("提交答案失败: 提交账号与当前账号不一致" );
+            return message;
+        }
         QuesResult_temp quesResult_temp = new QuesResult_temp();
         System.out.println(quesResult);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
@@ -777,6 +805,7 @@ public class QuestionnaireController {
         }
         return message;
     }
+
 
 
 }
