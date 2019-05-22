@@ -25,8 +25,9 @@
             title="提示"
             v-model="alert"
             :styles="{top: '20px'}"
-            @on-ok="back">
+            >
             <p>此时返回系统不会保存已经填写的内容。确认返回？</p>
+            <button @click="back">确认</button>
         </Modal>
     </div>
 </template>
@@ -74,7 +75,7 @@ export default {
             this.$refs[name].resetFields();
         },
         back(){
-            let id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
+            this.$store.commit('Ques/createQues/CLEAR')
             this.$router.go(-1)
         },
         nextStep: function(data){

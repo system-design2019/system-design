@@ -19,6 +19,22 @@ export async function login (username, password, mode) {
     else
         data = {"email": username,"password": password}
     let response = await service.post('/login', data)
+    
+    // fetch("http://172.26.70.9:8080/login", {
+    //     type:"cors",
+    //     credentials:"include",
+    //     method: "post",
+    //     headers: {  
+    //         "Content-Type": "application/json;charset=UTF-8"
+    //       },
+    //     body: JSON.stringify(data)
+    // })
+    // .then(response => {
+    //     response.text().then(res => {
+    //         console.log(res)
+    //     })
+    // })
+    
     console.log('response:'+JSON.stringify(response))
     return response.data
 }
@@ -40,7 +56,7 @@ export async function userRegister (username, password, mode) {
         data = {"phone": username,"password": password}
     else
         data = {"email": username,"password": password}
-    let response = await axios.post('/register', data)
+    let response = await service.post('/register', data)
     console.log(response.data)
     return response.data
 }

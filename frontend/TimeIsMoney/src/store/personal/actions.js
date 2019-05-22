@@ -23,7 +23,7 @@ export default {
         })
     },
     [GET_ALERTS] ({commit}, id) {
-        personalAPI.getAlerts(id).then((response)=>{
+        personalAPI.getAlerts().then((response)=>{
             commit(mutations.SET_RECEIVE, response)
         })
     },

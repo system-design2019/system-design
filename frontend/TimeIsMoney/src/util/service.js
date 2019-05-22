@@ -2,7 +2,8 @@ import axios from 'axios'
 
 // 创建axios实例
 const service = axios.create({
-    baseURL: 'http://api.timoney.xyz', // node环境的不同，对应不同的baseURL
+    // baseURL: 'http://172.26.70.9:8080', 
+    baseURL: 'http://api.timoney.xyz',
     timeout: 5000, // 请求的超时时间
     method: 'get',
     headers: {
@@ -34,8 +35,13 @@ service.interceptors.request.use(
 
 // response拦截器
 service.interceptors.response.use(
-    response => {
-        // 数据响应之后，要做的业务
+    response => { <<
+        << << < HEAD
+            // 数据响应之后，要做的业务
+            ===
+            === =
+            console.log('响应头：' + JSON.stringify(response)) >>>
+            >>> > 7 b17bc6d0dd13445da1a6c0cd1934301c1531f10
         return response
     },
     error => {

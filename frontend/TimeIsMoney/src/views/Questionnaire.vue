@@ -1,5 +1,5 @@
 <template>
-    <div class="qShow">
+    <div>
         <div style="height: 350px">
             <div style="width: 43%; float: left; height:350px; background: #52BDF0">
                 <img src="./../../static/ques/create.jpg" style="float: right; height: 300px; margin-top: 25px"></img>
@@ -77,7 +77,7 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
     #grad {
         background: linear-gradient(to right, #52BDF0 , rgb(102,255,255));
     }
