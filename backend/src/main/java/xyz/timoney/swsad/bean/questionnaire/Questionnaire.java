@@ -1,6 +1,18 @@
 package xyz.timoney.swsad.bean.questionnaire;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Questionnaire {
+    /**
+     * 缓存用户发布的问卷ID
+     */
+    public static Map<Integer, List<Integer>> cacheListId = new HashMap<>();
+    /**
+     * 缓存用户发布的问卷
+     */
+    public static Map<Integer, List<Questionnaire>> cacheList = new HashMap<>();
     private int quesID;
     private String title;
     private String detail;

@@ -16,9 +16,9 @@ public interface QuesCollectUserMapper {
     /**
      * 获取指定用户收藏的所有问卷id
      * */
-    List<Integer> getAllCollected(int userId);
+    List<Integer> getAllCollectedId(int userId);
     /**
      * 获取指定问卷所有的收藏者id
      * */
-    List<Integer> getAlsCollector(int quesId);
+    List<Integer> getAlsCollectorId(int quesId);
 }

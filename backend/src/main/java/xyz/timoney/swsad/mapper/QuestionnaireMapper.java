@@ -52,6 +52,11 @@ public interface QuestionnaireMapper {
     List<Questionnaire> getAllPublished(int userId);
 
     /**
+     * 获取用户发布的所有问卷ID
+     * */
+    List<Integer> getAllPublishedId(int userId);
+
+    /**
      * 问卷填写人数加1
      * */
     int addOneFill();

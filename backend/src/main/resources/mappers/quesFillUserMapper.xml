@@ -28,12 +28,12 @@
         where quesId = #{quesId} and userId = #{userId}
     </delete>
     <!--获取指定用户填写的所有问卷-->
-    <select id="getAllFilled" parameterType="int" resultType="int">
+    <select id="getAllFilledId" parameterType="int" resultType="int">
         select quesId from ques_fill_user_table
         where userId = #{userId}
     </select>
     <!--获取指定问卷所有的填写者-->
-    <select id="getAllFiller" resultType="int">
+    <select id="getAllFillerId" resultType="int">
         select userId from ques_fill_user_table
         where quesId = #{quesId}
     </select>
