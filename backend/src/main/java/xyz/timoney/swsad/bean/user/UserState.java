@@ -10,6 +10,8 @@ public class UserState {
     //已认证过的用户
     public static List<UserState> cookieList = new ArrayList<>();
     public static <T>  int verifyCookie (String userCookieKey, Message<T> message){
+        if(message == null)
+            message = new Message<>();
         if(userCookieKey==null || userCookieKey.isEmpty()){
             message.setSuccess(false);
             message.setMsg("cookie为空");
