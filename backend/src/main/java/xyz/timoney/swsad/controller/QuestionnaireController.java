@@ -1,5 +1,6 @@
 package xyz.timoney.swsad.controller;
 
+import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
 import xyz.timoney.swsad.bean.*;
 import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
 import xyz.timoney.swsad.bean.quesUser.QuesFillUser;
@@ -171,10 +172,9 @@ public class QuestionnaireController {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             listQues = quesMapper.getAllQues();
-            for(int i=0; i<listQues.size();i++)
-            {
-                Infos temp=quesMapper.getInfo(listQues.get(i).getQuesID());
-                listQues.get(i).setInfos(temp);
+            for (Questionnaire listQue : listQues) {
+                Infos temp = quesMapper.getInfo(listQue.getQuesID());
+                listQue.setInfos(temp);
             }
             message.setData(listQues);
             message.setSuccess(true);
@@ -196,12 +196,17 @@ public class QuestionnaireController {
      * */
     @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/publish")
     @CrossOrigin
-    public Message<String> createQues(@RequestBody Questionnaire ques)
+    public Message<String> createQues(@CookieValue("user") String userCookieKey, @RequestBody Questionnaire ques)
     {
         /*
-        @TODO  验证用户身份
+        验证用户身份
         */
         Message<String> message = new Message<>();
+        final int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+
         System.out.println(ques);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
@@ -216,8 +221,25 @@ public class QuestionnaireController {
             return message;
         }
         /*
-        @TODO  更新缓存
+        更新问卷id缓存
         */
+        if(Questionnaire.cacheListId.containsKey(userId)){
+            Questionnaire.cacheListId.get(userId).add(ques.getQuesID());
+        }else {
+            List<Integer> list = new ArrayList<>();
+            list.add(ques.getQuesID());
+            Questionnaire.cacheListId.put(userId, list);
+        }
+        /*
+        更新问卷缓存
+        */
+        if(Questionnaire.cacheList.containsKey(userId)){
+            Questionnaire.cacheList.get(userId).add(ques);
+        }else {
+            List<Questionnaire> list = new ArrayList<>();
+            list.add(ques);
+            Questionnaire.cacheList.put(userId, list);
+        }
         return message;
     }
 
