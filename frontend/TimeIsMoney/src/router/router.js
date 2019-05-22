@@ -34,12 +34,12 @@ const routers = [{
             {
                 path: 'questionnaire',
                 name: 'questionnaire',
-                component: (resolve) => require(['../views/Questionnaire.vue'], resolve)
+                component: (resolve) => require(['../views/Questionnaire.vue'], resolve),
             },
             {
                 path: 'questionnaire/createQuestionnaire', //check the user's receiveBox
                 name:'createQuestionnaire',
-                component: (resolve) => require(['../views/CreateQues.vue'], resolve)
+                component: (resolve) => require(['../views/CreateQues.vue'], resolve),
             },
             {
                 path: 'questionnaire/filling', //check the user's receiveBox

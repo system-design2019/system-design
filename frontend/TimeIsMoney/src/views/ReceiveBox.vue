@@ -65,10 +65,8 @@ import {mapState} from 'vuex'
             }
         },
         created(){
-            let userid = JSON.parse(window.sessionStorage.getItem('LogInfo')).userid
-            this.$store.dispatch('Personal/GET_ALERTS', userid)
-            // console.log(this.alerts)
-            // console.log(this.$store.state.Personal.mailReceive)
+            console.log(document.cookie)
+            this.$store.dispatch('Personal/GET_ALERTS')
         }
     }
 </script>

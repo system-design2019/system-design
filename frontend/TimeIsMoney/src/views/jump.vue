@@ -108,8 +108,14 @@ export default {
         },
         A() {
             setTimeout(this.disapper, 2500); //记得加this。否则会找不到元素/方法
-            if(window.sessionStorage.getItem('LogInfo')){
-                this.logged = JSON.parse(window.sessionStorage.getItem('LogInfo')).log
+            console.log(this.$cookies.get('User'))
+            if(this.$cookies.get('User')){
+                var obj = {
+                    "log": true,
+                    "userID": ''
+                }
+                window.sessionStorage.setItem('LogInfo', JSON.stringify(obj))
+                this.logged = true
             }
             else{
                 var obj = {
@@ -124,8 +130,7 @@ export default {
         disapper() {
             this.$refs.moveout.style.display = "none"; //html元素中插入ref钩子，然后就可以在js中调用 
             this.$refs.showon.style.display = "block";
-        }
-
+        },
     },
     components: { signCom }
 }

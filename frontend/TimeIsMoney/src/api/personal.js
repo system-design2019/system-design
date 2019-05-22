@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import service from './../util/service.js'
 /**
  * Get the personal informatin by userid
  * @param {int} id the id of the target user
@@ -39,24 +39,25 @@ export async function getStarring (id) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getAlerts (id) {
-    // let response = await axios.get('/', id)
-    // return response.data
-    let data = [{
-        time:'2019.2.3',
-        title: 'aaaaa',
-        content: 'fdsafdsafdsafd',
-        status: 'error',
-        type: 1
-    },
-    {
-        time:'2019.2.3',
-        title: 'aaaaa',
-        content: 'fdsafdsafdsafd',
-        status: 'error',
-        type: 1
-    }]
-    return data
+export async function getAlerts () {
+    let response = await service.get('/notifications/all')
+    console.log(JSON.stringify(response))
+    return response.data
+    // let data = [{
+    //     time:'2019.2.3',
+    //     title: 'aaaaa',
+    //     content: 'fdsafdsafdsafd',
+    //     status: 'error',
+    //     type: 1
+    // },
+    // {
+    //     time:'2019.2.3',
+    //     title: 'aaaaa',
+    //     content: 'fdsafdsafdsafd',
+    //     status: 'error',
+    //     type: 1
+    // }]
+    // return data
 }
 
 /**

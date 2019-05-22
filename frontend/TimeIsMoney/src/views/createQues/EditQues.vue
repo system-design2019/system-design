@@ -58,15 +58,17 @@ import { Ques } from '../../store/questionnaire/index.js'
 export default {
     data() {
         return {
-            newTitle:'',
+            title: '',
             curr: 0,
             pos: 0,
-            title:'',
-            questions:[
-                {mode: 1, title:'试试', fill:false},
-                {mode: 2, title:'试试', maxchoose:1,choices:['选项1', '选项2'], fill:false}
-            ]
+            // questions:[{mode: 1, order: 1, title:'试试', fill:false}]
         }
+    },
+    computed:mapState('Ques/createQues', {
+        formContent: 'formContent',
+        questions: 'questions'
+    }),
+    mounted(){
     },
     methods: {
         addQues(mode){
@@ -75,6 +77,7 @@ export default {
             if(mode === 1){
                 let data = {
                     mode: trans,
+                    order: 0,
                     title: title,
                     fill: false
                 };
@@ -83,6 +86,7 @@ export default {
             else {
                 let data = {
                     mode: trans,
+                    order: 0,
                     title: title,
                     maxchoose:1,
                     choices:['选项1', '选项2'],
@@ -111,7 +115,7 @@ export default {
         changeOrder(){
             let temp = this.questions[this.curr]
             let t = this.curr
-            this.curr = pos-1
+            this.curr = this.pos-1
             this.questions.splice(t,1)
             if(this.pos === 1){
                 this.questions.unshift(temp)
@@ -134,12 +138,24 @@ export default {
             this.questions.splice(temp,1)
         },
         goahead: function(){
-            let data = {
+           
+           var data = {
                 title: this.title,
                 number: this.questions.length,
-                questions: this.questions
+                fillings:[],
+                chooses: []
+            }
+             for(var i = 0; i < this.questions.length; ++i){
+                this.questions[i].order = i+1
+                if(this.questions[i].mode === 1){
+                    data.fillings.push(this.questions[i])
+                }
+                else if(this.questions[i].mode === 2){
+                    data.chooses.push(this.questions[i])
+                }
             }
             this.$store.commit('Ques/createQues/SET_CONTENT', data)
+            // console.log('data'+JSON.stringify(data))
             this.$emit('changeStep', 1)
         }
     },

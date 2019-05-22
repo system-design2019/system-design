@@ -1,37 +1,37 @@
-<style>
-    .upper {
-    margin-bottom: 5px;
-    float:right;
-}
-.allQN{
-  margin-top: 5px;
-  clear:both;
-
-  .info{
-    margin-right: 15px;
-    margin-bottom: 2px;
-  }
-  
-  .someInfo{
-    float:right;
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;      
-  }
-}
-
-</style>
 <template>
-    <div class="qShow">
-        此页面暂未开放，敬请期待
-        <task style="margin: 0 15%"></task>
+  <div>
+    <div style="height: 350px">
+        <div id="grad"  style="width: 57%; float: left; height:350px; padding-right: 6%;display: flex;align-items:Center;">
+            <div class="showPage" style="min-height: 150px; width: 70%; position: absolute; right: 100px">
+                <p style="width: 100%"><span style="font-size: 33px; font-weight:100; color: #fff">跑腿互助</span> <span style="font-size: 20px; font-weight:100;  color: #fff">Errand</span></p>
+                <p style="font-size: 20px; color: #fff; width: 100%;margin-top: 20px; font-weight:100; ">互助互利，不费事不费力，不方便的时候为你解决小麻烦！</p>
+                <Button type="info" style="margin-top: 30px; " @click="create()">发布跑腿</Button>
+            </div>
+        </div>
+        <div style="width: 43%; float: right; height:350px; background: #FF4B3C">
+            <img src="./../../static/run/create.png" style="float: leftt; height: 300px; margin-top: 25px"></img>
+        </div> 
     </div>
+    <div style="margin: 30px 13%">
+        <Col span='8'>
+            <run style="margin: 0 5%"></run>
+        </Col>
+        <Col span='8'>
+            <run style="margin: 0 5%"></run>
+        </Col>
+        <Col span='8'>
+            <run style="margin: 0 5%"></run>
+        </Col>
+      
+    </div>
+        
+  </div>
 </template>
 <script>
-import task from './components/Task.vue'
+import run from './components/Run.vue'
 export default {
     components:{
-        task
+        run
     }
 //     data() {
 //         return {
@@ -50,3 +50,33 @@ export default {
 //     }
 }
 </script>
+<style scoped>
+#grad {
+    background: linear-gradient(to right, #FF6699 , #FF4B3C);
+}
+.showPage {
+    .ivu-btn-info {
+        color: #fff;
+        background-color: rgba(255,255,255,0)!important;
+        border-color: #fff!important;
+    }
+    .ivu-btn-info span{
+        font-size: 24px!important;
+    }
+    .ivu-btn-info:hover {
+        color: #FF6699!important;
+        background-color: #FF6699;
+        border-color: #FF6699!important;
+    }
+    .ivu-btn{
+        border-radius: 30px!important;
+        background: rgba(255,255,255,0)!important;
+        width: 180px;
+        height: 50px;
+    }
+    .ivu-btn:hover{
+        border-radius: 30px!important;
+        background: #fff!important;
+    }
+}
+</style>

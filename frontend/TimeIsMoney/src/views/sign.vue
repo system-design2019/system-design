@@ -91,6 +91,115 @@
         
     </div>
 </template>
+<script>
+import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
+export default {    
+    props: ['signInFromJump', 'signInFromMain', 'signUpFromMain'],
+    data() {
+        return {
+            signIn: false,
+            signUp: false,
+            info: {username: "", password: "", mode:""},
+            wrong: false,
+            alert: ''
+        }
+    },
+    methods: {
+        changeToSignUp() {
+            this.signIn = false;
+            this.signUp = true;
+        },
+        changeToSignIn() {
+            this.signUp = false;
+            this.signIn = true;
+        },
+        doSignUp(){
+            if(this.checkValid(this.info.username) !== 'invalid'){
+                this.info.mode = this.checkValid(this.info.username)
+                this.$store.dispatch('SIGN_UP', this.info).then(
+                    (response) => {
+                        console.log('response')
+                        console.log(response)
+                        if(response['success']){
+                            this.wrong = false
+                            this.changeToSignIn()
+                        }
+                        else{
+                            this.wrong = true;
+                            this.alert = response['msg']
+                        }
+                    }
+                )
+            }
+            
+        },
+        doSignIn(){
+            if(this.checkValid(this.info.username) !== 'invalid'){
+                this.info.mode = this.checkValid(this.info.username)
+                this.$store.dispatch('SIGN_IN', this.info).then(
+                    (response) => {
+                        if(response['success']){
+                            this.$emit("SignSuccess", true)
+                            this.signIn = false
+                            let data = {
+                                log: true,
+                                userID: 1
+                            }
+                            window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
+                            this.$router.push({
+                                path:'/main',
+                                name: 'main',
+                            })
+                            this.wrong = false
+                            console.log(this.$cookies.get('User'))
+                        }
+                        else{
+                            // console.log('??????????')
+                            this.wrong = true;
+                            this.alert = response['msg']
+                        }
+                    }
+                )
+            }
+            
+            
+        },
+        checkValid(username){
+            if(this.info.usernmae === '' || this.info.password === ''){
+                this.wrong = true
+                this.alert = '密码或用户名不能为空'
+                return 'invalid'
+            }
+            else {
+                let email=/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
+                let phone=/^1[34578]\d{9}$/
+                if(phone.test(username)){
+                    return 'phone'
+                }
+                else if(email.test(username)){
+                    return 'email'
+                }
+                else{
+                    this.wrong = true
+                    this.alert = '无效的用户名'
+                    return 'invalid'
+                }
+            }
+        }
+    },
+    watch: {
+        signInFromJump: function(signIn, oldsignIn) {
+            this.signUp = false;
+            this.signIn = true;
+        },
+        signInFromMain: function(signIn, oldsignIn) {
+            this.signUp = false;
+            this.signIn = true;
+        }
+    }
+}
+</script>
 <style>
 #logoN {
     font-size: 20px;
@@ -175,115 +284,6 @@
     border-radius: 30px;
 }
 </style>
-<script>
-import { mapState } from 'vuex'
-import { mapGetters } from 'vuex'
-export default {    
-    props: ['signInFromJump', 'signInFromMain', 'signUpFromMain'],
-    data() {
-        return {
-            signIn: false,
-            signUp: false,
-            info: {username: "", password: "", mode:""},
-            wrong: false,
-            alert: ''
-        }
-    },
-    methods: {
-        changeToSignUp() {
-            this.signIn = false;
-            this.signUp = true;
-        },
-        changeToSignIn() {
-            this.signUp = false;
-            this.signIn = true;
-        },
-        doSignUp(){
-            if(this.checkValid(this.info.username) !== 'invalid'){
-                this.info.mode = this.checkValid(this.info.username)
-                this.$store.dispatch('SIGN_UP', this.info).then(
-                    (response) => {
-                        console.log('response')
-                        console.log(response)
-                        if(response['success']){
-                            this.wrong = false
-                            this.changeToSignIn()
-                        }
-                        else{
-                            this.wrong = true;
-                            this.alert = response['msg']
-                        }
-                    }
-                )
-            }
-            
-        },
-        doSignIn(){
-            if(this.checkValid(this.info.username) !== 'invalid'){
-                this.info.mode = this.checkValid(this.info.username)
-                this.$store.dispatch('SIGN_IN', this.info).then(
-                    (response) => {
-                        if(response['success']){
-                            this.$emit("SignSuccess", true)
-                            this.signIn = false
-                            let data = {
-                                log: true,
-                                userID: 1
-                            }
-                            window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
-                            this.$router.push({
-                                path:'/main',
-                                name: 'main',
-                            })
-                            this.wrong = false
-                        }
-                        else{
-                            // console.log('??????????')
-                            this.wrong = true;
-                            this.alert = response['msg']
-                        }
-                    }
-                )
-            }
-            
-            
-        },
-        checkValid(username){
-            if(this.info.usernmae === '' || this.info.password === ''){
-                this.wrong = true
-                this.alert = '密码或用户名不能为空'
-                return 'invalid'
-            }
-            else {
-                let email=/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
-                let phone=/^1[34578]\d{9}$/
-                if(phone.test(username)){
-                    return 'phone'
-                }
-                else if(email.test(username)){
-                    return 'email'
-                }
-                else{
-                    this.wrong = true
-                    this.alert = '无效的用户名'
-                    return 'invalid'
-                }
-            }
-        }
-    },
-    watch: {
-        signInFromJump: function(signIn, oldsignIn) {
-            this.signUp = false;
-            this.signIn = true;
-        },
-        signInFromMain: function(signIn, oldsignIn) {
-            this.signUp = false;
-            this.signIn = true;
-        }
-    }
-}
-</script>
-
 <!--<style>
 #logoN {
     font-size: 20px;
