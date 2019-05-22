@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import service from './../util/service.js'
 /**
  * Get the personal informatin by userid
  * @param {int} id the id of the target user

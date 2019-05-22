@@ -26,11 +26,9 @@ const Ques = {
             namespaced: true,
             state: {
                 formValidate: {
-                    title: '1111',
                     detail: '',
                     command:'',
                     reward: 0,
-                    // gender: '',
                     quantity: 0,
                     info:[],
                     startdate: '',
@@ -38,16 +36,18 @@ const Ques = {
                     enddate: '',
                     endtime: '',
                     number:  0
-                    // desc: ''
                 },
                 formContent:{
                     title:'aaaaaaaa',
                     number: 2,
-                    questions:[
-                        {mode: 1, title:'试试', fill:false},
-                        {mode: 2, title:'试试', choose:1, choices:['选项1', '选项2'], fill:false}
+                    fillings:[
+                        {mode: 1, order: 1, title:'试试', fill:false}
+                    ],
+                    chooses:[
+                        {mode: 2, order: 2, title:'试试', choose:1, choices:['选项1', '选项2'], fill:false}
                     ]
-                }
+                },
+                questions:[{mode: 1, order: 1, title:'试试', fill:false}, {mode: 2, order: 2, title:'试试', choose:1, choices:['选项1', '选项2'], fill:false}]
             },
             actions:{
                 
@@ -61,6 +61,30 @@ const Ques = {
                 },
                 SET_CONTENT (state, content){
                     state.formContent = content
+                },
+                CLEAR(state){
+                    state.formContent = {
+                        title:'aaaaaaaa',
+                        number: 2,
+                        fillings:[
+                            {mode: 1, order: 1, title:'试试', fill:false},
+                        ],
+                        chooses:[
+                            {mode: 2, order: 2, title:'试试', choose:1, choices:['选项1', '选项2'], fill:false}
+                        ]
+                    }
+                    state.formValidate = {
+                        detail: '',
+                        command:'',
+                        reward: 0,
+                        quantity: 0,
+                        info:[],
+                        startdate: '',
+                        starttime: '',
+                        enddate: '',
+                        endtime: '',
+                        number:  0
+                    }
                 }
             }
         },
