@@ -9,7 +9,7 @@
 
     <!--插入一个问卷-->
     <insert id="insert" parameterType="questionnaire">
-        insert into quesTable (quesID, title, detail, publisher, reward,total, attend, startTime, endTime, command,status,cont_title,number)
+        insert into questionnaire_table (quesID, title, detail, publisher, reward,total, attend, startTime, endTime, command,status,cont_title,number)
         values (${quesID},"${title}", "${detail}","${publisher}", ${reward},${Infos.getTotal()},${Infos.getAttend()},"${Infos.getStartTime()}","${Infos.getEndTime()}", "${command}","${status}","${cont_title}",${number})
     </insert>
 
@@ -25,20 +25,40 @@
         values (${xuanID},${quesID},${mode}, "${title}",${choose},"${choices}",${fill})
     </insert>
 
+    <!--提交一个问卷结果-->
+    <insert id="commitResults" parameterType="QuesResult_temp">
+        insert into quesResults (quesID, userID, tiankong, xuanze)
+        values (${quesID},${userID}, "${tiankong}","${xuanze}")
+    </insert>
+
     <!--获取问卷详情-->
     <select id="getQuesByID"  parameterType="int" resultType="questionnaire">
-        select * from quesTable where quesID = #{quesID}
+        select * from questionnaire_table where quesID = #{quesID}
     </select>
 
     <!--Janking: 获取用户发布的所有问卷，降序，也就是时间最近排在最前面-->
     <select id="getAllPublished"  resultType="questionnaire" parameterType="int">
-        select * from quesTable where publisher = #{userId} order by startTime DESC
+        select * from questionnaire_table where publisher = #{userId} order by startTime DESC
     </select>
+
+    <!--Janking: 问卷参与者加一(前提，参与人数小于限制人数)-->
+    <update id="addOneFill">
+        update questionnaire_table
+        set attend = attend + 1
+        where attend &lt; total
+    </update>
+
+    <!--Janking: 问卷参与者减一(前提，参与人数大于0)-->
+    <update id="cancelOneFill">
+        update questionnaire_table
+        set attend = attend - 1
+        where attend  &gt; 0
+    </update>
 
 
     <!--Janking: Bug未解决!通过问卷id的列表获取问卷的列表，降序，也就是时间最近排在最前面-->
     <select id="getAllQuesByIdListDateDesc">
-        select * from quesTable where quesID in
+        select * from questionnaire_table where quesID in
         <foreach item="item" collection="list" separator="," open="(" close=")" index="index">
          #{item}
         </foreach>
@@ -46,20 +66,35 @@
 
     <!--获取问卷内容-->
     <select id="getQuesCont"  parameterType="int" resultType="String">
-        select detail from quesTable where quesID = #{quesID}
+        select detail from questionnaire_table where quesID = #{quesID}
     </select>
 
 
     <select id="getInfo"  parameterType="int" resultType="infos">
-        select * from quesTable where quesID = #{quesID}
+        select * from questionnaire_table where quesID = #{quesID}
     </select>
 
     <!--获取所有正在进行的问卷-->
     <select id="getAllQues"  resultType="questionnaire">
-        select * from quesTable where status = "not done"
+        select * from questionnaire_table where status = "not done"
     </select>
 
     <select id="getCount" resultType="int">
-      select COUNT(*) from quesTable;
+      select COUNT(*) from questionnaire_table;
+    </select>
+
+    <!--获取标题-->
+    <select id="getTitleByID" parameterType="int" resultType="String">
+      select title from questionnaire_table where quesID = #{quesID};
+    </select>
+
+    <!--获取填空题-->
+    <select id="getQues1s" parameterType="int" resultType="Ques1">
+      select * from tiankong where quesID = #{quesID};
+    </select>
+
+    <!--获取选择题-->
+    <select id="getQues2s" parameterType="int" resultType="Ques2_temp">
+      select * from xuanze where quesID = #{quesID};
     </select>
 </mapper>

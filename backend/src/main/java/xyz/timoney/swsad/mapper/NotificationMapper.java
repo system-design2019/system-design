@@ -1,6 +1,6 @@
 package xyz.timoney.swsad.mapper;
 
-import xyz.timoney.swsad.bean.Notification;
+import xyz.timoney.swsad.bean.user.Notification;
 
 import java.util.List;
 

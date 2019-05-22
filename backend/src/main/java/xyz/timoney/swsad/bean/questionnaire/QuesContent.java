@@ -1,9 +1,9 @@
-package xyz.timoney.swsad.bean;
+package xyz.timoney.swsad.bean.questionnaire;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class quesContent {
+public class QuesContent {
     private int quesID;
     private String title;
     private int number;
@@ -11,14 +11,14 @@ public class quesContent {
     private List<Ques1> ques1;
     private List<Ques2> ques2;
 
-    public quesContent()
+    public QuesContent()
     {
         quesID=0;
         title="wenti";
         //最少要有两个问题
         number=2;
-        ques1=new ArrayList<Ques1>();
-        ques2=new ArrayList<Ques2>();
+        ques1= new ArrayList<>();
+        ques2= new ArrayList<>();
     }
 
     public int getQuesID() {

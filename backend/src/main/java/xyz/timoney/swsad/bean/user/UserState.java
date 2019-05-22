@@ -1,14 +1,9 @@
-package xyz.timoney.swsad.bean;
+package xyz.timoney.swsad.bean.user;
 
-import org.apache.ibatis.session.SqlSession;
-import xyz.timoney.swsad.mapper.NotificationMapper;
-import xyz.timoney.swsad.mapper.QuestionnaireMapper;
-import xyz.timoney.swsad.mapper.UserMapper;
+import xyz.timoney.swsad.bean.Message;
+import xyz.timoney.swsad.bean.Util;
 
-import javax.servlet.http.Cookie;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 //存储cookie类
 public class UserState {
@@ -29,7 +24,7 @@ public class UserState {
                 System.out.println("--------Verify-------");
                 System.out.println(us);
                 System.out.println("--------Verify-------");
-                if(us.getValidTime() >= new Date().getTime()){
+                if(us.getValidTime() >= System.currentTimeMillis()){
                     //时间有效
                     message.setSuccess(true);
                     message.setMsg("身份校验成功");

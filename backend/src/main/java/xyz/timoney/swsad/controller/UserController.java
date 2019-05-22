@@ -1,8 +1,12 @@
 package xyz.timoney.swsad.controller;
 
-import com.google.gson.Gson;
 import xyz.timoney.swsad.bean.*;
+import xyz.timoney.swsad.bean.questionnaire.Questionnaire;
+import xyz.timoney.swsad.bean.user.Notification;
+import xyz.timoney.swsad.bean.user.User;
+import xyz.timoney.swsad.bean.user.UserState;
 import xyz.timoney.swsad.mapper.*;
+import xyz.timoney.swsad.service.JwtHelper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -16,8 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
-
-import static xyz.timoney.swsad.bean.UserState.verifyCookie;
 
 
 @RestController
@@ -148,6 +150,7 @@ public class UserController {
     /**
      * 登录：判断用户名和密码是否一致
      * 一致返回cookie凭证
+     * 同时返回token
      * 不一致返回null
      * */
     @RequestMapping(method = RequestMethod.POST,value = "/login")
@@ -217,18 +220,27 @@ public class UserController {
             if(user.getPassword().equals(loginUser.getPassword())){
                 message.setMsg("登录成功");
                 message.setSuccess(true);
-                //message.setData(user);
-                //add cookie
+                //添加token
+                message.setData(JwtHelper.createJWT(String.valueOf(user.getId())));
+                //随机生成cookie
                 String cookieKey = Util.getUUID();
                 Cookie cookie = new Cookie("user", cookieKey);
                 //有效期一天
                 UserState userState = new UserState(user.getId(), cookieKey, Util.getCurrentDateLong() + 24*60*60*1000);
                 UserState.cookieList.add(userState);
-                cookie.setPath(request.getContextPath());
                 cookie.setMaxAge(80000);
-                //解决js获取不到的问题
-                cookie.setHttpOnly(false);
+                cookie.setPath("/");
+                //cookie.setDomain(".timoney.xyz");
+                //跨域问题
+                //response.setHeader("Access-Control-Allow-Origin", "localhost");
+                response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, If-Modified-Since");
+                response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+                //这个是要前端设置
+                //response.addHeader("Access-Control-Allow-Credentials", "true");
+
                 response.addCookie(cookie);
+                //测试使用
+                response.addHeader("User",cookieKey);
                 System.out.println("cookies:" + cookie.getValue());
                 return message;
             }
@@ -241,7 +253,9 @@ public class UserController {
 
     }
 
+
     /**
+     * 使用cookie
      * 获取用户信息，需要有cookie认证
      * */
     @RequestMapping(method = RequestMethod.GET,value = "/user")
@@ -249,7 +263,7 @@ public class UserController {
     public Message<User> getUser(@CookieValue("user") String userCookieKey){
         System.out.println("\nGET /user\n");
         Message<User> message = new Message<>();
-        int userId = UserState.verifyCookie(userCookieKey, message);
+        final int userId = UserState.verifyCookie(userCookieKey, message);
         if(!message.isSuccess()){
             return message;
         }
@@ -280,10 +294,10 @@ public class UserController {
                 return message;
             }
             //获取发布问卷列表,按时间逆序
-            List<questionnaire> publishedList = questionnaireMapper.getAllPublished(userId);
+            List<Questionnaire> publishedList = questionnaireMapper.getAllPublished(userId);
             //获取填写问卷列表
             List<Integer> quesFilledIdList = quesFillUserMapper.getAllFilled(userId);
-            List<questionnaire> quesFilledList = new ArrayList<>();
+            List<Questionnaire> quesFilledList = new ArrayList<>();
             for (int i : quesFilledIdList) {
                 quesFilledList.add(questionnaireMapper.getQuesByID(i));
             }
@@ -291,7 +305,90 @@ public class UserController {
             quesFilledList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
             //获取收藏问卷列表
             List<Integer> quesCollectedIdList = quesCollectUserMapper.getAllCollected(userId);
-            List<questionnaire> quesCollectedList = new ArrayList<>();
+            List<Questionnaire> quesCollectedList = new ArrayList<>();
+            for (int i : quesCollectedIdList) {
+                quesCollectedList.add(questionnaireMapper.getQuesByID(i));
+            }
+            //还不知道排序情况，预想降序排列
+            quesCollectedList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
+            user.setPublished(publishedList);
+            user.setFilled(quesFilledList);
+            user.setCollected(quesCollectedList);
+            //加到缓存中去，避免每次都查询数据库
+            User.cacheList.add(user);
+            //一次性提交
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("获取用户信息失败: 出现异常");
+            System.out.println(message);
+            return message;
+        }
+        message.setSuccess(false);
+        message.setMsg("获取用户信息成功: 来自数据库");
+        message.setData(user);
+        System.out.println(message);
+        return message;
+    }
+
+
+    /**
+     * 使用token
+     * 获取用户信息，需要有token认证
+     * */
+    @RequestMapping(method = RequestMethod.GET,value = "/user/token")
+    @CrossOrigin
+    public Message<User> getUserByToken(HttpServletRequest request){
+        System.out.println("\nGET /user/token\n");
+        Message<User> message = new Message<>();
+        //得到请求头信息authorization信息
+        //去掉bearer
+        final String authHeader = request.getHeader("Authorization").substring(7);
+        int userId = Integer.parseInt(JwtHelper.parseJWT(authHeader, message));
+        if(!message.isSuccess()){
+            return message;
+        }
+
+        //先看缓存中是否有
+        for(User u : User.cacheList){
+            if(u.getId() == userId){
+                message.setSuccess(false);
+                message.setMsg("获取用户信息成功: 来自缓存");
+                message.setData(u);
+                System.out.println(message);
+                return message;
+            }
+        }
+        User user;
+        //时间有效
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
+            QuesCollectUserMapper quesCollectUserMapper = sqlSession.getMapper(QuesCollectUserMapper.class);
+            //获取用户基本信息
+            user = userMapper.getById(userId);
+            //用户不存在
+            if(user ==null){
+                message.setSuccess(false);
+                message.setMsg("获取用户信息失败: 该用户不存在");
+                System.out.println(message);
+                return message;
+            }
+            //获取发布问卷列表,按时间逆序
+            List<Questionnaire> publishedList = questionnaireMapper.getAllPublished(userId);
+            //获取填写问卷列表
+            List<Integer> quesFilledIdList = quesFillUserMapper.getAllFilled(userId);
+            List<Questionnaire> quesFilledList = new ArrayList<>();
+            for (int i : quesFilledIdList) {
+                quesFilledList.add(questionnaireMapper.getQuesByID(i));
+            }
+            //还不知道排序情况，预想降序排列
+            quesFilledList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
+            //获取收藏问卷列表
+            List<Integer> quesCollectedIdList = quesCollectUserMapper.getAllCollected(userId);
+            List<Questionnaire> quesCollectedList = new ArrayList<>();
             for (int i : quesCollectedIdList) {
                 quesCollectedList.add(questionnaireMapper.getQuesByID(i));
             }

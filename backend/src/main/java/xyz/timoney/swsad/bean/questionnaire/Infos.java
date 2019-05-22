@@ -1,12 +1,12 @@
-package xyz.timoney.swsad.bean;
+package xyz.timoney.swsad.bean.questionnaire;
 
-public class infos {
+public class Infos {
     private int total;
     private int attend;
     private String startTime;
     private String endTime;
 
-    public infos(){
+    public Infos(){
         total=0;
         attend=0;
         startTime="2019-5-19";

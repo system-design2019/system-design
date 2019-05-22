@@ -6,8 +6,8 @@ import service from './../util/service.js'
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getPersonalInfo (id) {
-    let response = await axios.get('/allques', id)
+export async function getPersonalInfo(id) {
+    let response = await axios.get('/user')
     return response.data
 }
 
@@ -17,7 +17,7 @@ export async function getPersonalInfo (id) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getAttending (id) {
+export async function getAttending(id) {
     let response = await axios.get('/allques', id)
     return response.data
 }
@@ -28,7 +28,7 @@ export async function getAttending (id) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getStarring (id) {
+export async function getStarring(id) {
     let response = await axios.get('/allques', id)
     return response.data
 }
@@ -39,25 +39,25 @@ export async function getStarring (id) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getAlerts () {
-    let response = await service.get('/notifications/all')
-    console.log(JSON.stringify(response))
-    return response.data
-    // let data = [{
-    //     time:'2019.2.3',
-    //     title: 'aaaaa',
-    //     content: 'fdsafdsafdsafd',
-    //     status: 'error',
-    //     type: 1
-    // },
-    // {
-    //     time:'2019.2.3',
-    //     title: 'aaaaa',
-    //     content: 'fdsafdsafdsafd',
-    //     status: 'error',
-    //     type: 1
-    // }]
-    // return data
+export async function getAlerts(id) {
+    // let response = await axios.get('/', id)
+    // return response.data
+    let data = [{
+            time: '2019.2.3',
+            title: 'aaaaa',
+            content: 'fdsafdsafdsafd',
+            status: 'error',
+            type: 1
+        },
+        {
+            time: '2019.2.3',
+            title: 'aaaaa',
+            content: 'fdsafdsafdsafd',
+            status: 'error',
+            type: 1
+        }
+    ]
+    return data
 }
 
 /**
@@ -66,7 +66,7 @@ export async function getAlerts () {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function changeAlertStatusById (id) {
+export async function changeAlertStatusById(id) {
     let response = axios.post('/', id)
     return response.data
     return data
@@ -78,7 +78,7 @@ export async function changeAlertStatusById (id) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function deleteAllAlerts (id) {
+export async function deleteAllAlerts(id) {
     let response = await axios.delete('/', id)
     return response.data
 }

@@ -1,18 +1,15 @@
 package xyz.timoney.swsad.controller;
 
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 import xyz.timoney.swsad.bean.Message;
-import xyz.timoney.swsad.bean.Notification;
-import xyz.timoney.swsad.bean.User;
-import xyz.timoney.swsad.bean.UserState;
+import xyz.timoney.swsad.bean.user.Notification;
+import xyz.timoney.swsad.bean.user.UserState;
 import xyz.timoney.swsad.mapper.NotificationMapper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -53,6 +50,7 @@ public class NotificationController {
             message.setSuccess(true);
             message.setData(Notification.cacheList.get(userId));
             message.setMsg("已获取" + message.getData().size() + "条通知: 来自缓存");
+            return message;
         }
         List<Notification> list;
         //获取一个连接,自动提交
@@ -268,8 +266,9 @@ public class NotificationController {
                     continue;
                 }
                 for(Notification originNotice : Notification.cacheList.get(userId)){
-                    if(originNotice.getId() == newNotification.getId())
+                    if(originNotice.getId() == newNotification.getId()){
                         originNotice.setHasRead(newNotification.isHasRead());
+                    }
                 }
             }
         }
@@ -301,10 +300,11 @@ public class NotificationController {
             //得到映射器
             NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
             //修改通知的已读未读状态，仅此而已
-            if (hasRead)
+            if (hasRead) {
                 notificationMapper.setReadAllTrue(userId);
-            else
+            } else {
                 notificationMapper.setReadAllFalse(userId);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);

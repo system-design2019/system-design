@@ -13,24 +13,24 @@ const service = axios.create({
 })
 
 // 发送请求前处理request的数据
-axios.defaults.transformRequest = [function (data) {
-  let newData = ''
-  for (let k in data) {
-    newData += encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) + '&'
-  }
-  return newData
+axios.defaults.transformRequest = [function(data) {
+    let newData = ''
+    for (let k in data) {
+        newData += encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) + '&'
+    }
+    return newData
 }]
 
 // request拦截器
 service.interceptors.request.use(
-  config => {
-    // 发送请求之前，要做的业务
-    return config
-  },
-  error => {
-    // 错误处理代码
-    return Promise.reject(error)
-  }
+    config => {
+        // 发送请求之前，要做的业务
+        return config
+    },
+    error => {
+        // 错误处理代码
+        return Promise.reject(error)
+    }
 )
 
 // response拦截器
