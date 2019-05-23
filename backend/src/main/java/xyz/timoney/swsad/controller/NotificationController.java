@@ -149,15 +149,17 @@ public class NotificationController {
             return message;
         }
         int successCount = 0;
-        for(Notification notification : notifications){
-            if(userId != notification.getToId()){
-                message.setData("部分通知无权删除");
-                continue;
-            }
+        for(Notification n : notifications){
             //获取一个连接,自动提交
             try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
                 //得到映射器
                 NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
+                //判断权限
+                Notification notification = notificationMapper.getNotificationById(n.getId());
+                if(userId != notification.getToId()){
+                    message.setData("部分通知无权删除");
+                    continue;
+                }
                 //删除给定ID通知
                 notificationMapper.delete(notification.getId());
             } catch (Exception e) {
@@ -237,15 +239,17 @@ public class NotificationController {
             return message;
         }
         int successCount = 0;
-        for(Notification notification : notifications){
-            if(userId != notification.getToId()){
-                message.setData("部分通知无权修改状态");
-                continue;
-            }
+        for(Notification n : notifications){
             //获取一个连接,自动提交
             try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
                 //得到映射器
                 NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
+                //判断权限
+                Notification notification = notificationMapper.getNotificationById(n.getId());
+                if(userId != notification.getToId()){
+                    message.setData("部分通知无权修改状态");
+                    continue;
+                }
                 //修改通知的已读未读状态，仅此而已
                 notificationMapper.setRead(notification.getId(), notification.isHasRead());
             } catch (Exception e) {

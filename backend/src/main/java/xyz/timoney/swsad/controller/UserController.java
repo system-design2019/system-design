@@ -27,7 +27,6 @@ import java.util.*;
 
 
 @RestController
-@EnableAutoConfiguration
 public class UserController {
 
     private static SqlSessionFactory sqlSessionFactory;
@@ -482,7 +481,7 @@ public class UserController {
             return message;
         }
         //先看缓存中是否有
-        if(Questionnaire.cacheList.containsKey(userId)){
+        if(QuesFillUser.cacheList.containsKey(userId)){
             message.setSuccess(false);
             message.setMsg("获取用户全部填写问卷成功: 来自缓存");
             message.setData(QuesFillUser.cacheList.get(userId));
@@ -548,7 +547,7 @@ public class UserController {
             return message;
         }
         //先看缓存中是否有
-        if(Questionnaire.cacheList.containsKey(userId)){
+        if(QuesCollectUser.cacheList.containsKey(userId)){
             message.setSuccess(false);
             message.setMsg("获取用户全部收藏问卷成功: 来自缓存");
             message.setData(QuesCollectUser.cacheList.get(userId));

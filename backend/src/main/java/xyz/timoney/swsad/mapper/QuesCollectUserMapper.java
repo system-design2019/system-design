@@ -20,5 +20,5 @@ public interface QuesCollectUserMapper {
     /**
      * 获取指定问卷所有的收藏者id
      * */
-    List<Integer> getAlsCollectorId(int quesId);
+    List<Integer> getAllCollectorId(int quesId);
 }

@@ -276,6 +276,7 @@ public class QuestionnaireController {
             message.setMsg("获取发布问卷id成功: 来自缓存");
             message.setData(Questionnaire.cacheListId.get(userId));
             System.out.println(message);
+            return message;
         }
         //查找数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
@@ -326,6 +327,16 @@ public class QuestionnaireController {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
             List<Integer> collecterList = quesCollectUserMapper.getAllCollectedId(userId);
+            //获得问卷对象
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            questionnaire = questionnaireMapper.getQuesByID(quesId);
+            //判断问卷是否存在
+            if(questionnaire == null){
+                message.setSuccess(false);
+                message.setMsg("收藏问卷失败: 该问卷不存在");
+                System.out.println(message);
+                return message;
+            }
             //判断是否重复收藏
             if(collecterList.contains(userId)){
                 message.setSuccess(false);
@@ -335,9 +346,6 @@ public class QuestionnaireController {
             }
             //添加记录
             quesCollectUserMapper.insert(new QuesCollectUser(quesId, userId));
-            //获得问卷对象
-            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            questionnaire = questionnaireMapper.getQuesByID(quesId);
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
@@ -393,7 +401,7 @@ public class QuestionnaireController {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            List<Integer> collecterList = quesCollectUserMapper.getAlsCollectorId(quesId);
+            List<Integer> collecterList = quesCollectUserMapper.getAllCollectorId(quesId);
             //判断是否没有收藏过
             if(!collecterList.contains(userId)){
                 message.setSuccess(false);
@@ -451,6 +459,7 @@ public class QuestionnaireController {
             message.setMsg("获取收藏问卷id成功: 来自缓存");
             message.setData(QuesCollectUser.cacheListId.get(userId));
             System.out.println(message);
+            return message;
         }
         //查找数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
@@ -497,6 +506,16 @@ public class QuestionnaireController {
         int fillerCount;
         //修改数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+            //获取问卷详情
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            questionnaire = questionnaireMapper.getQuesByID(quesId);
+            //判断问卷是否存在
+            if(questionnaire == null){
+                message.setSuccess(false);
+                message.setMsg("填写问卷失败: 该问卷不存在");
+                System.out.println(message);
+                return message;
+            }
             //获得问卷填写者列表
             QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
             List<Integer> fillerList = quesFillUserMapper.getAllFillerId(quesId);
@@ -508,9 +527,6 @@ public class QuestionnaireController {
                 return message;
             }
             fillerCount = fillerList.size();
-            //获取问卷详情
-            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            questionnaire = questionnaireMapper.getQuesByID(quesId);
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
@@ -534,6 +550,8 @@ public class QuestionnaireController {
                  * */
                 //attend加一
                 int affect = questionnaireMapper.addOneFill();
+                //人数加一
+                questionnaire.getInfos().setAttend(questionnaire.getInfos().getAttend() + 1);
                 System.out.println("Affect : " + affect);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -657,6 +675,7 @@ public class QuestionnaireController {
             message.setMsg("获取填写问卷id成功: 来自缓存");
             message.setData(QuesFillUser.cacheListId.get(userId));
             System.out.println(message);
+            return message;
         }
         //修改数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {

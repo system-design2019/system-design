@@ -1,19 +1,19 @@
 package xyz.timoney.swsad.controller;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
+import xyz.timoney.swsad.Exception.MyException;
 import xyz.timoney.swsad.bean.Message;
 
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@EnableAutoConfiguration
 public class Controller {
 
     //如果方法上的RequestMapping没有value，则此方法默认被父路径调用
     //默认回调
     @RequestMapping
     @CrossOrigin
-    private Message<String> index(HttpServletResponse httpServletResponse){
+    private Message<String> index(HttpServletResponse httpServletResponse)throws MyException{
         Message<String> message = new Message<>();
         message.setSuccess(false);
         message.setMsg("请求无效");

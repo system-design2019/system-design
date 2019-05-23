@@ -57,6 +57,12 @@
         set hasRead = false
         where toId=#{toId}
     </update>
+    <!--通过id获取通知-->
+    <select id="getNotificationById" parameterType="int" resultType="Notification" >
+        select * from notification_table
+        where id = #{notificationId}
+    </select>
+
     <!--获取某个用户所有通知-->
     <select id="getAllNotifications" parameterType="int" resultType="Notification" >
         select * from notification_table

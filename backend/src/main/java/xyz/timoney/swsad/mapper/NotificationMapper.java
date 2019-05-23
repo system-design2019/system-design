@@ -24,6 +24,7 @@ public interface NotificationMapper {
     /*全部设置未读*/
     int setReadAllFalse(int toId);
 
+    Notification getNotificationById(int notificationId);
     //获取用户的所有通知
     List<Notification> getAllNotifications(int userId);
 }
