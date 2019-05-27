@@ -3,6 +3,8 @@ import * as quesAPI from './../../api/question.js'
 
 export const GET_QUESLIST = 'GET_QUESLIST'
 export const GET_COLLECT_QUESLIST = 'GET_COLLECT_QUESLIST'
+export const GET_ATTEND_QUESLIST = 'GET_ATTEND_QUESLIST'
+export const GET_PUBLISH_QUESLIST = 'GET_PUBLISH_QUESLIST'
 export const GET_DETAIL = 'GET_DETAIL'
 export const CREATE_QUES = 'CREATE_QUES'
 export const CHANGE_COLLECT = 'CHANGE_COLLECT'
@@ -21,6 +23,24 @@ export default {
     quesAPI.getCollectQuesList().then((info) => {
         if(info.success){
           commit(mutations.SET_COLLECT_QUESLIST, info.data)
+        }
+        // console.error(JSON.stringify(info))
+      }
+    ) 
+  },
+  [GET_ATTEND_QUESLIST] ({commit}) {
+    quesAPI.getAttendQuesList().then((info) => {
+        if(info.success){
+          commit(mutations.SET_ATTEND_QUESLIST, info.data)
+        }
+        // console.error(JSON.stringify(info))
+      }
+    ) 
+  },
+  [GET_PUBLISH_QUESLIST] ({commit}) {
+    quesAPI.getPublishQuesList().then((info) => {
+        if(info.success){
+          commit(mutations.SET_PUBLISH_QUESLIST, info.data)
         }
         // console.error(JSON.stringify(info))
       }

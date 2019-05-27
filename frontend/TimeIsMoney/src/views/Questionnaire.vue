@@ -53,8 +53,7 @@ export default {
     },
     computed: mapState('Ques', {
         quesList: 'quesList',
-        detailContent: 'quesDetail',
-        collctQuesList: 'collectQuesList'
+        detailContent: 'quesDetail'
     }),
     methods: {
         handleSelectAll(status) {
@@ -70,14 +69,15 @@ export default {
         getDetail(id) {
             this.$store.dispatch('Ques/GET_DETAIL', id)
             this.detailModel = !this.detailModel
-        },
-        
+        }
         
     },
     mounted() {
         this.$store.dispatch('Ques/GET_QUESLIST')
         this.$store.dispatch('Ques/GET_COLLECT_QUESLIST')
-        console.log(this.collectQuesList)
+        this.$store.dispatch('Ques/GET_ATTEND_QUESLIST')
+        this.$store.dispatch('Ques/GET_PUBLISH_QUESLIST')
+        // console.log(this.collectQuesList)
     }
 }
 </script>
