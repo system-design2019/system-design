@@ -2,14 +2,14 @@ import axios from 'axios'
 
 // 创建axios实例
 const service = axios.create({
-  // baseURL: 'http://172.26.70.9:8080', 
-  baseURL: 'http://api.timoney.xyz', 
-  timeout: 5000, // 请求的超时时间
-  method: 'get',
-  headers: {  
-    "Content-Type": "application/json;charset=UTF-8"
-  },
-  withCredentials: true // 允许携带cookie
+    // baseURL: 'http://172.26.70.9:8080', 
+    baseURL: 'http://api.timoney.xyz',
+    timeout: 5000, // 请求的超时时间
+    method: 'get',
+    headers: {
+        "Content-Type": "application/json;charset=UTF-8"
+    },
+    withCredentials: true // 允许携带cookie
 })
 
 // 发送请求前处理request的数据

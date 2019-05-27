@@ -1,5 +1,6 @@
 package xyz.timoney.swsad.controller;
 
+import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
 import xyz.timoney.swsad.bean.*;
 import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
 import xyz.timoney.swsad.bean.quesUser.QuesFillUser;
@@ -52,8 +53,10 @@ public class QuestionnaireController {
         }
     }
 
-    /*获取问卷详情*/
-    @RequestMapping(method = RequestMethod.GET,value = "/getQues/{quesID}")
+    /**
+     * 获取问卷详情
+     * */
+    @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/{quesID}")
     @CrossOrigin
     public Message<Questionnaire> getQueseByID(@PathVariable int quesID){
         Message<Questionnaire> message = new Message<>();
@@ -83,8 +86,10 @@ public class QuestionnaireController {
     }
 
 
-    /*获取问卷内容，即题目等*/
-    @RequestMapping(method = RequestMethod.GET,value = "/getQuesCont/{quesID}")
+    /**
+     * 获取问卷内容，即题目等
+     * */
+    @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/content/{quesID}")
     @CrossOrigin
     public Message<QuesContent> getQueseCont(@PathVariable int quesID){
         Message<QuesContent> message = new Message<>();
@@ -153,8 +158,10 @@ public class QuestionnaireController {
         return message;
     }
 
-    /*获取所有正在进行的问卷*/
-    @RequestMapping(method = RequestMethod.GET,value = "/allques")
+    /**
+     * 获取所有正在进行的问卷
+     * */
+    @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/proceed/all")
     @CrossOrigin
     public Message<List<Questionnaire>> getQueses(){
         Message<List<Questionnaire>> message = new Message<>();
@@ -165,10 +172,9 @@ public class QuestionnaireController {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             listQues = quesMapper.getAllQues();
-            for(int i=0; i<listQues.size();i++)
-            {
-                Infos temp=quesMapper.getInfo(listQues.get(i).getQuesID());
-                listQues.get(i).setInfos(temp);
+            for (Questionnaire listQue : listQues) {
+                Infos temp = quesMapper.getInfo(listQue.getQuesID());
+                listQue.setInfos(temp);
             }
             message.setData(listQues);
             message.setSuccess(true);
@@ -185,16 +191,22 @@ public class QuestionnaireController {
         return message;
     }
 
-    /*插入一个问卷*/
-    /*并且更新缓存中的用户创建表的List*/
-    @RequestMapping(method = RequestMethod.POST,value = "/createques")
+    /**
+     * 发布一个问卷
+     * */
+    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/publish")
     @CrossOrigin
-    public Message<String> createQues(@RequestBody Questionnaire ques)
+    public Message<String> createQues(@CookieValue("user") String userCookieKey, @RequestBody Questionnaire ques)
     {
         /*
-        @TODO  验证用户身份
+        验证用户身份
         */
         Message<String> message = new Message<>();
+        final int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+
         System.out.println(ques);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
@@ -209,11 +221,77 @@ public class QuestionnaireController {
             return message;
         }
         /*
-        @TODO  更新缓存
+        更新问卷id缓存
         */
+        if(Questionnaire.cacheListId.containsKey(userId)){
+            Questionnaire.cacheListId.get(userId).add(ques.getQuesID());
+        }else {
+            List<Integer> list = new ArrayList<>();
+            list.add(ques.getQuesID());
+            Questionnaire.cacheListId.put(userId, list);
+        }
+        /*
+        更新问卷缓存
+        */
+        if(Questionnaire.cacheList.containsKey(userId)){
+            Questionnaire.cacheList.get(userId).add(ques);
+        }else {
+            List<Questionnaire> list = new ArrayList<>();
+            list.add(ques);
+            Questionnaire.cacheList.put(userId, list);
+        }
         return message;
     }
 
+    /**
+     * @param userCookieKey 用户cookie
+     * @return 用户发布所有问卷的ID集合
+     */
+    @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/publish/all")
+    @CrossOrigin
+    public Message<List<Integer>> questionnairePublishList(@CookieValue("user") String userCookieKey)
+    {
+        /*
+        验证用户身份
+        */
+        System.out.println("\nGET /questionnaires/publish/all"  + "\n");
+        Message<List<Integer>> message = new Message<>();
+        int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        /*
+        查看缓存
+        */
+        if(Questionnaire.cacheListId.containsKey(userId)){
+            message.setSuccess(true);
+            message.setMsg("获取发布问卷id成功: 来自缓存");
+            message.setData(Questionnaire.cacheListId.get(userId));
+            System.out.println(message);
+        }
+        //查找数据库
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+            //得到映射器
+            QuestionnaireMapper questionnaireMapper =  sqlSession.getMapper(QuestionnaireMapper.class);
+            //获取发布的问卷ID
+            List<Integer> list = questionnaireMapper.getAllPublishedId(userId);
+            message.setData(list);
+            /**
+             * 增加缓存
+             * */
+            Questionnaire.cacheListId.put(userId,list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("获取发布问卷id失败: 出现异常");
+            System.out.println(message);
+            return message;
+        }
+        message.setSuccess(true);
+        message.setMsg("获取发布问卷id成功: 来自数据库");
+        System.out.println(message);
+        return message;
+    }
 
     /**
      *
@@ -239,7 +317,7 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
-            List<Integer> collecterList = quesCollectUserMapper.getAllCollected(userId);
+            List<Integer> collecterList = quesCollectUserMapper.getAllCollectedId(userId);
             //判断是否重复收藏
             if(collecterList.contains(userId)){
                 message.setSuccess(false);
@@ -259,11 +337,21 @@ public class QuestionnaireController {
             System.out.println(message);
             return message;
         }
-        //同步通知发送到缓存中的用户
-        for(User u : User.cacheList){
-            if(u.getId() == userId){
-                u.getCollected().add(questionnaire);
-            }
+        //同步发送到缓存中的用户收藏id列表
+        if(QuesCollectUser.cacheListId.containsKey(userId)){
+            QuesCollectUser.cacheListId.get(userId).add(quesId);
+        }else{
+            List<Integer> list = new ArrayList<>();
+            list.add(quesId);
+            QuesCollectUser.cacheListId.put(userId, list);
+        }
+        //同步发送到缓存中的用户收藏列表
+        if(QuesCollectUser.cacheList.containsKey(userId)){
+            QuesCollectUser.cacheList.get(userId).add(questionnaire);
+        }else{
+            List<Questionnaire> list = new ArrayList<>();
+            list.add(questionnaire);
+            QuesCollectUser.cacheList.put(userId, list);
         }
         message.setSuccess(true);
         message.setMsg("收藏问卷成功");
@@ -291,11 +379,13 @@ public class QuestionnaireController {
         if(!message.isSuccess()){
             return message;
         }
+        Questionnaire questionnaire;
         //修改数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
-            List<Integer> collecterList = quesCollectUserMapper.getAlsCollector(quesId);
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            List<Integer> collecterList = quesCollectUserMapper.getAlsCollectorId(quesId);
             //判断是否没有收藏过
             if(!collecterList.contains(userId)){
                 message.setSuccess(false);
@@ -303,6 +393,7 @@ public class QuestionnaireController {
                 System.out.println(message);
                 return message;
             }
+            questionnaire = questionnaireMapper.getQuesByID(quesId);
             //删除记录
             quesCollectUserMapper.delete(new QuesCollectUser(quesId, userId));
         } catch (Exception e) {
@@ -312,11 +403,14 @@ public class QuestionnaireController {
             System.out.println(message);
             return message;
         }
-        //同步缓存中的用户
-        for(User u : User.cacheList){
-            if(u.getId() == userId){
-                u.getCollected().removeIf(ques -> ques.getQuesID() == quesId);
-            }
+        //同步发送到缓存中的用户收藏id列表
+        if(QuesCollectUser.cacheListId.containsKey(userId)){
+            //不知道会不会remove错
+            QuesCollectUser.cacheListId.get(userId).remove((Integer)quesId);
+        }
+        //同步发送到缓存中的用户收藏列表
+        if(QuesCollectUser.cacheList.containsKey(userId)){
+            QuesCollectUser.cacheList.get(userId).remove(questionnaire);
         }
         message.setSuccess(true);
         message.setMsg("取消收藏问卷成功");
@@ -326,7 +420,7 @@ public class QuestionnaireController {
 
     /**
      * @param userCookieKey 用户cookie
-     * @return 用户收藏所有问卷的集合
+     * @return 用户收藏所有问卷的ID集合
      */
     @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/collect/all")
     @CrossOrigin
@@ -341,13 +435,26 @@ public class QuestionnaireController {
         if(!message.isSuccess()){
             return message;
         }
-        //修改数据库
+        /*
+         查找缓存
+         */
+        if(QuesCollectUser.cacheListId.containsKey(userId)){
+            message.setSuccess(true);
+            message.setMsg("获取收藏问卷id成功: 来自缓存");
+            message.setData(QuesCollectUser.cacheListId.get(userId));
+            System.out.println(message);
+        }
+        //查找数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
             //获取收藏者列表
-            List<Integer> list = quesCollectUserMapper.getAllCollected(userId);
+            List<Integer> list = quesCollectUserMapper.getAllCollectedId(userId);
             message.setData(list);
+            /**
+             * 增加缓存
+             * */
+            QuesCollectUser.cacheListId.put(userId, list);
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
@@ -355,11 +462,9 @@ public class QuestionnaireController {
             System.out.println(message);
             return message;
         }
-        /**
-         * @TODO 增加缓存
-         * */
+
         message.setSuccess(true);
-        message.setMsg("获取收藏问卷id成功");
+        message.setMsg("获取收藏问卷id成功: 来自数据库");
         System.out.println(message);
         return message;
     }
@@ -386,7 +491,7 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //获得问卷填写者列表
             QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
-            List<Integer> fillerList = quesFillUserMapper.getAllFiller(quesId);
+            List<Integer> fillerList = quesFillUserMapper.getAllFillerId(quesId);
             //判断是否重复填写
             if(fillerList.contains(userId)){
                 message.setSuccess(false);
@@ -414,8 +519,11 @@ public class QuestionnaireController {
                 //新加一条参与的记录
                 QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
                 quesFillUserMapper.insert(new QuesFillUser(quesId, userId));
-                //获得问卷本身
+                //获得问卷mapper
                 QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+                /**
+                 * 测试
+                 * */
                 //attend加一
                 int affect = questionnaireMapper.addOneFill();
                 System.out.println("Affect : " + affect);
@@ -427,11 +535,21 @@ public class QuestionnaireController {
                 return message;
             }
 
-            //同步缓存中的用户
-            for(User u : User.cacheList){
-                if(u.getId() == userId){
-                    u.getFilled().add(questionnaire);
-                }
+            //同步发送到缓存中的用户填写id列表
+            if(QuesFillUser.cacheListId.containsKey(userId)){
+                QuesFillUser.cacheListId.get(userId).add(quesId);
+            }else{
+                List<Integer> list = new ArrayList<>();
+                list.add(quesId);
+                QuesFillUser.cacheListId.put(userId, list);
+            }
+            //同步发送到缓存中的用户填写列表
+            if(QuesFillUser.cacheList.containsKey(userId)){
+                QuesFillUser.cacheList.get(userId).add(questionnaire);
+            }else{
+                List<Questionnaire> list = new ArrayList<>();
+                list.add(questionnaire);
+                QuesFillUser.cacheList.put(userId, list);
             }
             message.setSuccess(true);
             message.setMsg("开始填写问卷");
@@ -463,11 +581,12 @@ public class QuestionnaireController {
         if(!message.isSuccess()){
             return message;
         }
+        Questionnaire questionnaire;
         //修改数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //获得问卷填写者列表
             QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
-            List<Integer> fillerList = quesFillUserMapper.getAllFiller(quesId);
+            List<Integer> fillerList = quesFillUserMapper.getAllFillerId(quesId);
             //判断是否没有填写过
             if(!fillerList.contains(userId)){
                 message.setSuccess(false);
@@ -479,7 +598,11 @@ public class QuestionnaireController {
             quesFillUserMapper.delete(new QuesFillUser(quesId, userId));
             //attend减1
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            questionnaire = questionnaireMapper.getQuesByID(quesId);
             int affect = questionnaireMapper.cancelOneFill();
+            /**
+             * 测试
+             * */
             System.out.println("Affect : " + affect);
         } catch (Exception e) {
             e.printStackTrace();
@@ -488,12 +611,14 @@ public class QuestionnaireController {
             System.out.println(message);
             return message;
         }
-
-        //同步缓存中的用户
-        for(User u : User.cacheList){
-            if(u.getId() == userId){
-                u.getFilled().removeIf(ques -> ques.getQuesID() == quesId);
-            }
+        //同步发送到缓存中的用户收藏id列表
+        if(QuesFillUser.cacheListId.containsKey(userId)){
+            //不知道会不会remove错
+            QuesFillUser.cacheListId.get(userId).remove((Integer)quesId);
+        }
+        //同步发送到缓存中的用户收藏列表
+        if(QuesFillUser.cacheList.containsKey(userId)){
+            QuesFillUser.cacheList.get(userId).remove(questionnaire);
         }
         message.setSuccess(true);
         message.setMsg("已取消填写问卷");
@@ -504,7 +629,7 @@ public class QuestionnaireController {
     /**
      * 用户填写的所有问卷id
      * @param userCookieKey 用户cookie
-     * @return 用户填写所有问卷的集合
+     * @return 用户填写所有问卷的ID集合
      */
     @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/fill/all")
     @CrossOrigin
@@ -519,13 +644,23 @@ public class QuestionnaireController {
         if(!message.isSuccess()){
             return message;
         }
+        if(QuesFillUser.cacheListId.containsKey(userId)){
+            message.setSuccess(true);
+            message.setMsg("获取填写问卷id成功: 来自缓存");
+            message.setData(QuesFillUser.cacheListId.get(userId));
+            System.out.println(message);
+        }
         //修改数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
             QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
-            List<Integer> list = quesFillUserMapper.getAllFilled(userId);
+            List<Integer> list = quesFillUserMapper.getAllFilledId(userId);
             message.setData(list);
+            /**
+             * 增加缓存
+             * */
+            QuesFillUser.cacheListId.put(userId, list);
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
@@ -533,17 +668,17 @@ public class QuestionnaireController {
             System.out.println(message);
             return message;
         }
-        /**
-         * @TODO 增加缓存
-         * */
+
         message.setSuccess(true);
-        message.setMsg("获取填写问卷id成功");
+        message.setMsg("获取填写问卷id成功: 来自数据库");
         System.out.println(message);
         return message;
     }
 
-    /*添加问卷的填空题*/
-    @RequestMapping(method = RequestMethod.POST,value = "/addtian")
+    /**
+     * 添加问卷的填空题
+     * */
+    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/tian")
     @CrossOrigin
     public Message<String> addTian(@RequestBody List<Ques1> tians)
     {
@@ -566,8 +701,10 @@ public class QuestionnaireController {
         return message;
     }
 
-    /*添加问卷的选择题*/
-    @RequestMapping(method = RequestMethod.POST,value = "/addxuan")
+    /**
+     * 添加问卷的选择题
+     * */
+    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/xuan")
     @CrossOrigin
     public Message<String> addXuan(@RequestBody List<Ques2> xuans)
     {
@@ -602,8 +739,10 @@ public class QuestionnaireController {
 
 
 
-    /*添加问卷的选择题*/
-    @RequestMapping(method = RequestMethod.POST,value = "/commitResult")
+    /**
+     * 添加问卷的选择题
+     * */
+    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/commit")
     @CrossOrigin
     public Message<String> addXuan(@RequestBody QuesResult quesResult)
     {

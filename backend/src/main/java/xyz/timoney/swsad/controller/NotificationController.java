@@ -37,7 +37,7 @@ public class NotificationController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/notifications/all")
     @CrossOrigin
-    public Message<List<Notification>> sendNotification(@CookieValue("user") String userCookieKey) {
+    public Message<List<Notification>> getAllNotification(@CookieValue("user") String userCookieKey) {
         System.out.println("\nGET /notifications/all\n");
         Message<List<Notification>> message = new Message<>();
         int userId = UserState.verifyCookie(userCookieKey, message);
@@ -192,7 +192,7 @@ public class NotificationController {
      */
     @RequestMapping(method = RequestMethod.DELETE, value = "/notifications/all")
     @CrossOrigin
-    public Message<String> deleteNotification(@CookieValue("user") String userCookieKey) {
+    public Message<String> deleteAllNotification(@CookieValue("user") String userCookieKey) {
         System.out.println("\nDELETE /notifications/all\n");
         Message<String> message = new Message<>();
         int userId = UserState.verifyCookie(userCookieKey, message);
@@ -288,7 +288,7 @@ public class NotificationController {
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/notifications/all/{read}")
     @CrossOrigin
-    public Message<String> readNotification(@CookieValue("user") String userCookieKey,@PathVariable("read") boolean hasRead) {
+    public Message<String> readAllNotification(@CookieValue("user") String userCookieKey,@PathVariable("read") boolean hasRead) {
         System.out.println("\nPUT /notifications/all  " + hasRead + "\n");
         Message<String> message = new Message<>();
         int userId = UserState.verifyCookie(userCookieKey, message);

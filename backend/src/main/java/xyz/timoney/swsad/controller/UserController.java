@@ -1,6 +1,9 @@
 package xyz.timoney.swsad.controller;
 
+import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
 import xyz.timoney.swsad.bean.*;
+import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
+import xyz.timoney.swsad.bean.quesUser.QuesFillUser;
 import xyz.timoney.swsad.bean.questionnaire.Questionnaire;
 import xyz.timoney.swsad.bean.user.Notification;
 import xyz.timoney.swsad.bean.user.User;
@@ -15,6 +18,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -234,6 +238,7 @@ public class UserController {
                 //跨域问题
                 //response.setHeader("Access-Control-Allow-Origin", "localhost");
                 response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, If-Modified-Since");
+                response.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
                 response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
                 //这个是要前端设置
                 //response.addHeader("Access-Control-Allow-Credentials", "true");
@@ -293,27 +298,36 @@ public class UserController {
                 System.out.println(message);
                 return message;
             }
-            //获取发布问卷列表,按时间逆序
+            /**
+            * 获取发布问卷列表,按时间逆序
+            *//*
             List<Questionnaire> publishedList = questionnaireMapper.getAllPublished(userId);
-            //获取填写问卷列表
-            List<Integer> quesFilledIdList = quesFillUserMapper.getAllFilled(userId);
+            *//**
+             * 获取填写问卷列表
+             *//*
+            List<Integer> quesFilledIdList = quesFillUserMapper.getAllFilledId(userId);
             List<Questionnaire> quesFilledList = new ArrayList<>();
             for (int i : quesFilledIdList) {
                 quesFilledList.add(questionnaireMapper.getQuesByID(i));
             }
             //还不知道排序情况，预想降序排列
             quesFilledList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
-            //获取收藏问卷列表
-            List<Integer> quesCollectedIdList = quesCollectUserMapper.getAllCollected(userId);
+            *//**
+             * 获取收藏问卷列表
+             * *//*
+            List<Integer> quesCollectedIdList = quesCollectUserMapper.getAllCollectedId(userId);
             List<Questionnaire> quesCollectedList = new ArrayList<>();
             for (int i : quesCollectedIdList) {
                 quesCollectedList.add(questionnaireMapper.getQuesByID(i));
             }
             //还不知道排序情况，预想降序排列
             quesCollectedList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
+            *//**
+             * 设置为用户属性，并且缓存
+             * *//*
             user.setPublished(publishedList);
             user.setFilled(quesFilledList);
-            user.setCollected(quesCollectedList);
+            user.setCollected(quesCollectedList);*/
             //加到缓存中去，避免每次都查询数据库
             User.cacheList.add(user);
             //一次性提交
@@ -376,27 +390,6 @@ public class UserController {
                 System.out.println(message);
                 return message;
             }
-            //获取发布问卷列表,按时间逆序
-            List<Questionnaire> publishedList = questionnaireMapper.getAllPublished(userId);
-            //获取填写问卷列表
-            List<Integer> quesFilledIdList = quesFillUserMapper.getAllFilled(userId);
-            List<Questionnaire> quesFilledList = new ArrayList<>();
-            for (int i : quesFilledIdList) {
-                quesFilledList.add(questionnaireMapper.getQuesByID(i));
-            }
-            //还不知道排序情况，预想降序排列
-            quesFilledList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
-            //获取收藏问卷列表
-            List<Integer> quesCollectedIdList = quesCollectUserMapper.getAllCollected(userId);
-            List<Questionnaire> quesCollectedList = new ArrayList<>();
-            for (int i : quesCollectedIdList) {
-                quesCollectedList.add(questionnaireMapper.getQuesByID(i));
-            }
-            //还不知道排序情况，预想降序排列
-            quesCollectedList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
-            user.setPublished(publishedList);
-            user.setFilled(quesFilledList);
-            user.setCollected(quesCollectedList);
             //加到缓存中去，避免每次都查询数据库
             User.cacheList.add(user);
             //一次性提交
@@ -413,6 +406,198 @@ public class UserController {
             message.setData(user);
             System.out.println(message);
             return message;
+    }
+
+
+    /**
+     * @param userCookieKey 用户cookie
+     * @return 用户发布的所有问卷
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/user/publish/all")
+    @CrossOrigin
+    public Message<List<Questionnaire>> getUserAllPublishQuestionnaire(@CookieValue("user") String userCookieKey){
+        System.out.println("\nGET /user/publish/all\n");
+        Message<List<Questionnaire>> message = new Message<>();
+        final int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        //先看缓存中是否有
+        if(Questionnaire.cacheList.containsKey(userId)){
+            message.setSuccess(false);
+            message.setMsg("获取用户全部发布问卷成功: 来自缓存");
+            message.setData(Questionnaire.cacheList.get(userId));
+            System.out.println(message);
+            return message;
+        }
+        List<Questionnaire> publishedList;
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //获取用户基本信息
+            User user = userMapper.getById(userId);
+            //用户不存在
+            if(user ==null){
+                message.setSuccess(false);
+                message.setMsg("获取用户全部发布问卷失败: 该用户不存在");
+                System.out.println(message);
+                return message;
+            }
+            /**
+             * 获取发布问卷列表,按时间逆序
+             */
+            List<Integer> publishedIdList = questionnaireMapper.getAllPublishedId(userId);
+            publishedList = questionnaireMapper.getAllPublished(userId);
+            //把ID和问卷都
+            // 加到缓存中去，避免每次都查询数据库
+            Questionnaire.cacheList.put(userId, publishedList);
+            Questionnaire.cacheListId.put(userId, publishedIdList);
+            //一次性提交
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("获取用户全部发布问卷失败: 出现异常");
+            System.out.println(message);
+            return message;
+        }
+        message.setSuccess(false);
+        message.setMsg("获取用户全部发布问卷成功: 来自数据库");
+        message.setData(publishedList);
+        System.out.println(message);
+        return message;
+    }
+
+    /**
+     * @param userCookieKey 用户cookie
+     * @return 用户填写的所有问卷
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/user/fill/all")
+    @CrossOrigin
+    public Message<List<Questionnaire>> getUserAllFillQuestionnaire(@CookieValue("user") String userCookieKey){
+        System.out.println("\nGET /user/fill/all\n");
+        Message<List<Questionnaire>> message = new Message<>();
+        final int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        //先看缓存中是否有
+        if(Questionnaire.cacheList.containsKey(userId)){
+            message.setSuccess(false);
+            message.setMsg("获取用户全部填写问卷成功: 来自缓存");
+            message.setData(QuesFillUser.cacheList.get(userId));
+            System.out.println(message);
+            return message;
+        }
+        List<Questionnaire> quesFilledList;
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //获取用户基本信息
+            User user = userMapper.getById(userId);
+            //用户不存在
+            if(user ==null){
+                message.setSuccess(false);
+                message.setMsg("获取用户全部填写问卷失败: 该用户不存在");
+                System.out.println(message);
+                return message;
+            }
+            /**
+             * 获取填写问卷列表,按时间逆序
+             */
+            //获取填写问卷列表
+            List<Integer> quesFilledIdList = quesFillUserMapper.getAllFilledId(userId);
+            quesFilledList = new ArrayList<>();
+            for (int i : quesFilledIdList) {
+                quesFilledList.add(questionnaireMapper.getQuesByID(i));
+            }
+            //还不知道排序情况，预想降序排列
+            quesFilledList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
+            //把id和问卷都
+            //加到缓存中去，避免每次都查询数据库
+            QuesFillUser.cacheList.put(userId,quesFilledList);
+            QuesFillUser.cacheListId.put(userId,quesFilledIdList);
+            //一次性提交
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("获取用户全部填写问卷失败: 出现异常");
+            System.out.println(message);
+            return message;
+        }
+        message.setSuccess(false);
+        message.setMsg("获取用户全部填写问卷成功: 来自数据库");
+        message.setData(quesFilledList);
+        System.out.println(message);
+        return message;
+    }
+
+    /**
+     * @param userCookieKey 用户cookie
+     * @return 用户收藏的所有问卷
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/user/collect/all")
+    @CrossOrigin
+    public Message<List<Questionnaire>> getUserAllCollectQuestionnaire(@CookieValue("user") String userCookieKey){
+        System.out.println("\nGET /user/collect/all\n");
+        Message<List<Questionnaire>> message = new Message<>();
+        final int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        //先看缓存中是否有
+        if(Questionnaire.cacheList.containsKey(userId)){
+            message.setSuccess(false);
+            message.setMsg("获取用户全部收藏问卷成功: 来自缓存");
+            message.setData(QuesCollectUser.cacheList.get(userId));
+            System.out.println(message);
+            return message;
+        }
+        List<Questionnaire> quesCollectedList;
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            QuesCollectUserMapper quesCollectUserMapper = sqlSession.getMapper(QuesCollectUserMapper.class);
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //获取用户基本信息
+            User user = userMapper.getById(userId);
+            //用户不存在
+            if(user ==null){
+                message.setSuccess(false);
+                message.setMsg("获取用户全部收藏问卷失败: 该用户不存在");
+                System.out.println(message);
+                return message;
+            }
+            /**
+             * 获取收藏问卷列表,按时间逆序
+             */
+            //获取收藏问卷列表
+            List<Integer> quesCollectedIdList = quesCollectUserMapper.getAllCollectedId(userId);
+            quesCollectedList = new ArrayList<>();
+            for (int i : quesCollectedIdList) {
+                quesCollectedList.add(questionnaireMapper.getQuesByID(i));
+            }
+            //还不知道排序情况，预想降序排列
+            quesCollectedList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
+            //把id和问卷都
+            //加到缓存中去，避免每次都查询数据库
+            QuesCollectUser.cacheList.put(userId, quesCollectedList);
+            QuesCollectUser.cacheListId.put(userId, quesCollectedIdList);
+            //一次性提交
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("获取用户全部收藏问卷失败: 出现异常");
+            System.out.println(message);
+            return message;
+        }
+        message.setSuccess(false);
+        message.setMsg("获取用户全部收藏问卷成功: 来自数据库");
+        message.setData(quesCollectedList);
+        System.out.println(message);
+        return message;
     }
 
     /**
@@ -491,11 +676,13 @@ public class UserController {
             try {
                 //获取根目录
                 File path = new File(ResourceUtils.getURL("classpath:").getPath());
-                if(!path.exists())
+                if(!path.exists()) {
                     path = new File("");
+                }
                 File upload = new File(path.getAbsolutePath(),"static/images/upload/");
-                if(!upload.exists())
+                if(!upload.exists()) {
                     upload.mkdirs();
+                }
 //在开发测试模式时，得到的地址为：{项目根目录}/target/static/images/upload/
 //在打包成jar正式发布时，得到的地址为：{发布jar包目录}/static/images/upload/
                 System.out.println("--------Upload-------");

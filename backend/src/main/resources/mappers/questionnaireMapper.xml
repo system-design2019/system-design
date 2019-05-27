@@ -41,6 +41,11 @@
         select * from questionnaire_table where publisher = #{userId} order by startTime DESC
     </select>
 
+    <!--Janking: 获取用户发布的所有问卷ID-->
+    <select id="getAllPublishedId"  resultType="int" parameterType="int">
+        select quesID from questionnaire_table where publisher = #{userId}
+    </select>
+
     <!--Janking: 问卷参与者加一(前提，参与人数小于限制人数)-->
     <update id="addOneFill">
         update questionnaire_table

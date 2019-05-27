@@ -16,9 +16,9 @@ public interface QuesFillUserMapper {
     /**
      * 获取指定用户填写的所有问卷id
      * */
-    List<Integer> getAllFilled(int userId);
+    List<Integer> getAllFilledId(int userId);
     /**
      * 获取指定问卷所有的填写者id
      * */
-    List<Integer> getAllFiller(int quesId);
+    List<Integer> getAllFillerId(int quesId);
 }

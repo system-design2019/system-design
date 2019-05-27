@@ -66,13 +66,14 @@ public class User {
 
     /**
      * 问卷资料
+     * 现在不在这里啦
      * */
-    //发布的所有问卷
+/*    //发布的所有问卷
     private List<Questionnaire> published;
     //填写的所有问卷
     private List<Questionnaire> filled;
     //收藏的所有问卷
-    private List<Questionnaire> collected;
+    private List<Questionnaire> collected;*/
 
     /**
      * 通知资料
@@ -103,9 +104,6 @@ public class User {
         weChatPay = null;
         QQ = null;
         credit = 0;
-        published = null;
-        filled = null;
-        collected = null;
         count++;
     }
     public void setId(int id) {
@@ -194,20 +192,6 @@ public class User {
     }
 
 
-    //同步方法
-    public void setCollected(List<Questionnaire> collected) {
-        this.collected = collected;
-    }
-
-    public void setFilled(List<Questionnaire> filled) {
-        this.filled = filled;
-    }
-
-    public void setPublished(List<Questionnaire> published) {
-        this.published = published;
-    }
-
-
     public int getId() {
         return id;
     }
@@ -278,19 +262,6 @@ public class User {
 
     public String getUniversity() {
         return university;
-    }
-
-    //同步方法
-    public List<Questionnaire> getCollected() {
-        return collected;
-    }
-
-    public List<Questionnaire> getFilled() {
-        return filled;
-    }
-
-    public List<Questionnaire> getPublished() {
-        return published;
     }
 
 
