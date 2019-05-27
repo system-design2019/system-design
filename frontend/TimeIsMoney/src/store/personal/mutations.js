@@ -5,20 +5,20 @@ export const SET_STARRING = 'SET_STARRING'
 export const SET_RECEIVE = 'SET_RECEIVE'
 export const CHANGE_STATUS = 'CHANGE_STATUS'
 
-export default{
-    [SET_PER_INFO]  (state, info) {
+export default {
+    [SET_PER_INFO](state, info) {
         state.personalInfo = info
     },
-    [SET_RECEIVE]  (state, info) {
+    [SET_RECEIVE](state, info) {
         state.mailReceive = info
     },
-    [SET_ATTENDING]  (state, info) {
+    [SET_ATTENDING](state, info) {
         state.attending = info
     },
-    [SET_STARRING]  (state, info) {
+    [SET_STARRING](state, info) {
         state.starring = info
     },
-    [CHANGE_STATUS] (state, index) {
+    [CHANGE_STATUS](state, index) {
         state.mailReceive[index].status = 'default'
     }
 }
