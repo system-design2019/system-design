@@ -19,8 +19,9 @@ export default {
     },
     [UPDATE_INFO]({ state, commit }) {
         let data = state.personalInfo;
+        console.log("data in actions:" + data);
         personalAPI.setPersonalInfo(data).then((info) => {
-            commit(mutations.SET_PER_INFO, info.data)
+            commit(mutations.SET_PER_INFO, data)
         })
     },
     [GET_ATTEND]({ commit }, id) {
