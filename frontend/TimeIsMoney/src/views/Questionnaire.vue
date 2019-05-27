@@ -8,7 +8,7 @@
                 <div class="showPage" style="min-height: 150px">
                     <p style="width: 100%"><span style="font-size: 33px; font-weight:100; color: #fff">问卷调查</span> <span style="font-size: 20px; font-weight:100;  color: #fff">Questionnaire</span></p>
                     <p style="font-size: 20px; color: #fff; width: 100%;margin-top: 20px; font-weight:100; ">问卷调查，收集意见，随时随地为你提供最丰富的信息！</p>
-                    <Button type="info" style="margin-top: 30px; " @click="create()">发布问卷</Button>
+                    <Button type="info" style="margin-top: 30px; font-size: 22px" @click="create()">发布问卷</Button>
                 </div>
             </div>
         </div>
