@@ -5,22 +5,29 @@
                 <div >
                     <div style="width: 60%; float:left"><p style="margin:10px 0">您有{{getNumber()}}条未读消息</p></div>
                     <div style="width: 40%; float:right; text-align: right; margin:10px 0">
-                        <a>全部标记为已读</a>
+                        <a @click="changeAllStatus()">全部标记为已读</a>
                         <Divider type="vertical"/>
-                        <a>全部删除</a>
+                        <a @click="deleteAllAlerts()">全部删除</a>
                     </div>
                 </div>
+                <!-- {"id":23,"toId":7,"fromId":11,"date":"2019-05-22 19:50:43","hasRead":false,"title":"测试发送通知10","content":"测试发送通知详情10"} -->
                 <CellGroup style="width: 100%">
-                    <Cell class="alert" v-for="(a, index) in alerts" :key="index" :title="a.title" style="width: 100%" @click.native="changeStatus(index)">
+                    <Cell class="alert" v-for="(a, index) in alerts" :key="index" :title="a.title" style="width: 100%" >
                         <div style="float:left; width: 2%">
-                            <Badge :status="a.status" style="float: left;" />
+                            <Badge :status="getStatus(a.hasRead)" style="float: left;" />
                         </div>
                         <div style="float:right; width: 98%">
-                            <span style="font-size: 25px; font-weight: 700; float: left; width: 85%">
+                            <span style="font-size: 17px; font-weight: 700; float: left; width: 78%">
                                 {{a.title}}
-                                <span style="padding: 0 20px; color: rgb(174,174,174);font-weight: 100;">{{a.content}}</span>
+                                <span style="color: rgb(174,174,174);font-weight: 100;">{{a.content}}</span>
                             </span>
-                            <span style="float:right;width: 10%; text-align: right; margin-right: 20px;color: rgb(174,174,174);">{{a.time}}</span>   
+                            <div style="float:right;width: 20%; text-align: right; margin-right: 20px;">
+                                <span style="float:left;width: 65%; text-align: left;color: rgb(174,174,174);">{{a.date}}</span>
+                                <div style="float:right;width: 35%; text-align: right;">
+                                    <a style="float:left;width: 40%; text-align: left;color: #ce4545;" @click="deleteAlert(index)">删除</a>
+                                    <a style="float:right;width: 60%; text-align: right;color: #ce4545;" @click="changeStatus(index)">{{getAction(a.hasRead)}}</a>
+                                </div>
+                            </div>
                         </div>               
                     </Cell>
                 </CellGroup>
@@ -45,27 +52,50 @@ import {mapState} from 'vuex'
                     path:'/index'
                 })
             },
+            getAction(status){
+                if(status){
+                    return '标为未读'
+                }
+                else{
+                    return '标为已读'
+                }
+            },
             getButtonText(type){
                 if(type === 1){
                     return '标为已读'
                 }
             },
             changeStatus(index){
-                this.$store.commit('Personal/CHANGE_STATUS', index)
+                this.$store.dispatch('Personal/CHANGE_STATUS', index)
             },
             getNumber(){
                 let number = 0
                 // console.log(this.alerts)
                 for(let a in this.alerts){
-                    if(this.alerts[a].status === 'error'){
+                    if(!this.alerts[a].hasRead){
                         number++;
                     }
                 }
                 return number;
+            },
+            changeAllStatus(){
+                this.$store.dispatch('Personal/CHANGE_ALL_STATUS')
+            },
+            getStatus(status){
+                if(status)
+                    return 'default'
+                else{
+                    return 'error'
+                }
+            },
+            deleteAlert(index){
+                this.$store.dispatch('Personal/DELETE_ALERT', index)
+            },
+            deleteAllAlerts(){
+                this.$store.dispatch('Personal/DELETE_ALL_ALERTS')
             }
         },
         created(){
-            console.log(document.cookie)
             this.$store.dispatch('Personal/GET_ALERTS')
         }
     }
