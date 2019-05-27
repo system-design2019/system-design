@@ -5,6 +5,8 @@ export const SET_STARRING = 'SET_STARRING'
 export const SET_RECEIVE = 'SET_RECEIVE'
 export const CHANGE_LOCAL_STATUS = 'CHANGE_LOCAL_STATUS'
 export const DELETE_LOCAL_ALERT = 'DELETE_LOCAL_ALERT'
+export const CHANGE_ALL_LOCAL_STATUS = 'CHANGE_ALL_LOCAL_STATUS'
+export const DELETE_ALL_LOCAL_ALERT = 'DELETE_ALL_LOCAL_ALERT'
 
 export default{
     [SET_PER_INFO]  (state, info) {
@@ -24,8 +26,16 @@ export default{
         state.mailReceive[index].hasRead = !state.mailReceive[index].hasRead
         // console.log("curr mail: "+index+JSON.stringify(state.mailReceive[index]))
     },
-    [DELETE_LOCAL_ALERT] (state, index) {
-        state.mailReceive.split(index, 1)
+    [CHANGE_ALL_LOCAL_STATUS] (state, index) {
+        for(let i = 0; i < state.mailReceive.length; ++i){
+            state.mailReceive[i].hasRead = true
+        }
         // console.log("curr mail: "+index+JSON.stringify(state.mailReceive[index]))
+    },
+    [DELETE_LOCAL_ALERT] (state, index) {
+        state.mailReceive.splice(index, 1)
+    },
+    [DELETE_ALL_LOCAL_ALERT] (state) {
+        state.mailReceive.splice(0, state.mailReceive.length)
     }
 }

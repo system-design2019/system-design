@@ -6,7 +6,9 @@ export const GET_ATTEND = 'GET_ATTEND'
 export const GET_STAR = 'GET_STAR'
 export const GET_ALERTS = 'GET_ALERTS'
 export const CHANGE_STATUS = 'CHANGE_STATUS'
+export const CHANGE_ALL_STATUS = 'CHANGE_ALL_STATUS'
 export const DELETE_ALERT = 'DELETE_ALERT'
+export const DELETE_ALL_ALERTS = 'DELETE_ALL_ALERTS'
 
 export default {
     [GET_INFO] ({commit}, id) {
@@ -45,7 +47,12 @@ export default {
         })
         
     },
-
+    [CHANGE_ALL_STATUS] ({state, commit}) {
+        personalAPI.changeAllAlertStatus().then((response)=>{
+            commit(mutations.CHANGE_ALL_LOCAL_STATUS)
+        })
+        
+    },
     [DELETE_ALERT] ({state, commit}, index) {
         let data = [{
             id: state.mailReceive[index].id,
@@ -55,5 +62,10 @@ export default {
             commit(mutations.DELETE_LOCAL_ALERT, index)
         })
         
+    },
+    [DELETE_ALL_ALERTS] ({state, commit}) {
+        personalAPI.deleteAllAlerts().then((response)=>{
+            commit(mutations.DELETE_ALL_LOCAL_ALERT)
+        })
     }
 }

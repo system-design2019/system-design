@@ -7,7 +7,7 @@
                     <div style="width: 40%; float:right; text-align: right; margin:10px 0">
                         <a @click="changeAllStatus()">全部标记为已读</a>
                         <Divider type="vertical"/>
-                        <a>全部删除</a>
+                        <a @click="deleteAllAlerts()">全部删除</a>
                     </div>
                 </div>
                 <!-- {"id":23,"toId":7,"fromId":11,"date":"2019-05-22 19:50:43","hasRead":false,"title":"测试发送通知10","content":"测试发送通知详情10"} -->
@@ -79,7 +79,7 @@ import {mapState} from 'vuex'
                 return number;
             },
             changeAllStatus(){
-                this.store.dispatch('Personal/')
+                this.$store.dispatch('Personal/CHANGE_ALL_STATUS')
             },
             getStatus(status){
                 if(status)
@@ -90,6 +90,9 @@ import {mapState} from 'vuex'
             },
             deleteAlert(index){
                 this.$store.dispatch('Personal/DELETE_ALERT', index)
+            },
+            deleteAllAlerts(){
+                this.$store.dispatch('Personal/DELETE_ALL_ALERTS')
             }
         },
         created(){

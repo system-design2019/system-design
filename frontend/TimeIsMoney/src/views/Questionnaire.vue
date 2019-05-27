@@ -73,7 +73,7 @@ export default {
         
     },
     mounted(){
-        // this.$store.dispatch('Ques/GET_QUESLIST')
+        this.$store.dispatch('Ques/GET_QUESLIST')
     }
 }
 </script>

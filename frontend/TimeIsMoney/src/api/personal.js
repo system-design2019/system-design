@@ -62,7 +62,7 @@ export async function changeAlertStatusById(data) {
  * Promise will return the data of the questionnaires
  */
 export async function changeAllAlertStatus() {
-    let response = service.put('/notifications/false')
+    let response = service.put('/notifications/all/'+true)
     return response.data
 }
 
@@ -74,8 +74,7 @@ export async function changeAllAlertStatus() {
  * Promise will return the data of the questionnaires
  */
 export async function deleteAlertById(data) {
-    console.log('111')
-    let response = await service.delete('/notifications', data)
+    let response = await service.delete('/notifications', {data: data})
     return response.data
 }
 
