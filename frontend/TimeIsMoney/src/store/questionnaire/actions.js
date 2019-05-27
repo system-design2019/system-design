@@ -5,6 +5,7 @@ export const GET_QUESLIST = 'GET_QUESLIST'
 export const GET_COLLECT_QUESLIST = 'GET_COLLECT_QUESLIST'
 export const GET_DETAIL = 'GET_DETAIL'
 export const CREATE_QUES = 'CREATE_QUES'
+export const CHANGE_COLLECT = 'CHANGE_COLLECT'
 // export const GET_RANKLIST = 'GET_RANKLIST'
 
 export default {
@@ -36,6 +37,19 @@ export default {
     quesAPI.createQues(data).then((info)=>{
       commit(mutations.SET_DETAIL, info)
     })
+  },
+  [CHANGE_COLLECT]({state, commit}, id){
+    if(state.collectQuesList.indexOf(id) != -1){
+      quesAPI.cancelCollectQues(id).then((info)=>{
+        commit(mutations.SET_LOCAL_COLLECTLIST, id)
+      })
+    }
+    else{
+      quesAPI.collectQues(id).then((info)=>{
+        commit(mutations.SET_LOCAL_COLLECTLIST, id)
+      })
+    }
+    
   }
 
 }

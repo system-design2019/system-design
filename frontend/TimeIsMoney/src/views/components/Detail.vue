@@ -79,6 +79,9 @@ export default{
             else{
                 return './../../../static/task/collectFalse.png'
             }
+        },
+        changeCollectStatus(id){
+            this.$store.dispatch('Ques/CHANGE_COLLECT', id)
         }
     },
     computed:mapState( 'Ques', {
