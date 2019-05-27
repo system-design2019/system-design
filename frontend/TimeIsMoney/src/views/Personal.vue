@@ -130,7 +130,7 @@
                         <div class="pInfo">
                             <img src="../images/personal/邮箱.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>邮箱</span>
-                            <input v-model="personDetail.email" type="text" style="margin-left:8px" :disabled="!editable" v-bind:style="styleForText" />
+                            <input v-model="personDetail.email" type="text" style="margin-left:8px" disabled v-bind:style="styleForText" />
                         </div>
                         </Col>
                         <Col span="12">
@@ -145,7 +145,7 @@
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/微信.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span>QQ</span>
+                            <span> Q Q</span>
                             <input v-model="personDetail.qq" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
@@ -162,13 +162,13 @@
                         <div class="pInfo">
                             <img src="../images/personal/手机.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>手机</span>
-                            <input v-model="personDetail.phone" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <input v-model="personDetail.phone" type="text" style="margin-left:8px;" :disabled="true" v-bind:style="styleForText" />
                         </div>
                         </Col>
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/邮箱.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span>微信</span>
+                            <span>微信账号</span>
                             <input v-model="personDetail.wechat" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
