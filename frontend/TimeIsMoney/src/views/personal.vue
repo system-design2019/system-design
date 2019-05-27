@@ -130,7 +130,7 @@
                         <div class="pInfo">
                             <img src="../images/personal/邮箱.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>邮箱</span>
-                            <input v-model="personDetail.email" type="text" style="margin-left:8px" disabled v-bind:style="styleForText" />
+                            <input v-model="personDetail.email" type="text" style="margin-left:8px" :disabled="!editEmail" v-bind:style="styleForText" />
                         </div>
                         </Col>
                         <Col span="12">
@@ -162,14 +162,14 @@
                         <div class="pInfo">
                             <img src="../images/personal/手机.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>手机</span>
-                            <input v-model="personDetail.phone" type="text" style="margin-left:8px;" :disabled="true" v-bind:style="styleForText" />
+                            <input v-model="personDetail.phone" type="text" style="margin-left:8px;" :disabled="!editPhone" v-bind:style="styleForText" />
                         </div>
                         </Col>
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/邮箱.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>微信账号</span>
-                            <input v-model="personDetail.wechat" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <input v-model="personDetail.weChatPay" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                     </Row>
@@ -221,9 +221,10 @@ export default {
             editable: false,
             styleForText: 'border:' + this.borderSize + 'px',
             creditRate: 5,
-            buttonText: "编辑资料"
-            //clientHeight: document.body.clientHeight,
-            //clientWidth: document.body.clientWidth
+            buttonText: "编辑资料",
+            useForSign: 1, //1 means phone and 2 means email
+            editPhone: false,
+            editEmail: false
         }
     },
     computed: mapState('Personal', {
@@ -231,20 +232,34 @@ export default {
     }),
     methods: {
         editInfo() { //修改个人信息
-            // alert(this.editable);
+            // alert(this.editable
+            let emailFormat = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+            let phoneFormat = /^1[34578]\d{9}$/;
+
             this.editable = !this.editable;
             if (this.editable == true) {
                 this.styleForText = 'border:1px solid';
-            } else {
-                this.styleForText = 'border:0px';
-            }
-            if (this.buttonText == "编辑资料") {
                 this.buttonText = "保存资料";
+                /*
+                if (this.personDetail.email[0] == '$') {
+                    alert(this.personDetail.email[0]);
+                    this.editEmail = false;
+                } else if (this.personDetail.phone[0] == '$') {
+                    this.editPhone = false;
+                }
+                */
             } else {
+                this.styleForText = 'border:0px;';
                 this.buttonText = "编辑资料";
-                //console.log(this.personDetail)
+                /*
+                while (!emailFormat.test(this.personDetail.email)) {
+                    //  alert("email的格式非法，请输入正确的email");
+                }
+                while (!phoneFormat.test(this.personDetail.phone)) {
+                    //alert("phone的格式非法，请输入正确的phone");
+                }
+                */
                 this.$store.dispatch('Personal/UPDATE_INFO');
-
             }
         }
     },
