@@ -2,6 +2,7 @@ import * as mutations from './mutations'
 import * as quesAPI from './../../api/question.js'
 
 export const GET_QUESLIST = 'GET_QUESLIST'
+export const GET_COLLECT_QUESLIST = 'GET_COLLECT_QUESLIST'
 export const GET_DETAIL = 'GET_DETAIL'
 export const CREATE_QUES = 'CREATE_QUES'
 // export const GET_RANKLIST = 'GET_RANKLIST'
@@ -12,6 +13,15 @@ export default {
     quesAPI.getQuesList().then((info) => {
         if(info.success)
           commit(mutations.SET_QUESLIST, info.data)
+      }
+    ) 
+  },
+  [GET_COLLECT_QUESLIST] ({commit}) {
+    quesAPI.getCollectQuesList().then((info) => {
+        if(info.success){
+          commit(mutations.SET_COLLECT_QUESLIST, info.data)
+        }
+        // console.error(JSON.stringify(info))
       }
     ) 
   },

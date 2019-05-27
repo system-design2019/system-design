@@ -25,7 +25,7 @@
 </template>
 <script>
 export default{
-    props:['data', 'type', 'mode'],
+    props:['data', 'type', 'mode', 'collect'],
     data(){
         return{
             contents:{
@@ -52,6 +52,14 @@ export default{
             }
             else if(i < 4 ){
                 return true
+            }
+        },
+        ifCollect(id){
+            if(this.collectQuesList.indexOf(id) != -1){
+                return true
+            }
+            else{
+                return false
             }
         }
     },
