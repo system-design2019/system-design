@@ -91,14 +91,14 @@
                         </div>
                     </Row>
                     <Row>
-                        <input type="text" style="font-size:25px;text-align:center;" :disabled="!editable" v-bind:style="styleForText" placeholder="宋主席" />
+                        <input v-model="personDetail.nickname" type="text" style="font-size:25px;text-align:center;" :disabled="!editable" v-bind:style="styleForText" />
                     </Row>
                     <Row>
-                        <span>ID:Suata</span>
+                        <span>ID:{{personDetail.id}}</span>
                     </Row>
                     <Row>
                         <span> 信用： </span>
-                        <Rate disabled="true" v-model="creditRate"> </Rate>
+                        <Rate disabled="true" v-model="personDetail.credit"> </Rate>
                     </Row>
                 </card>
                 </Col>
@@ -114,14 +114,14 @@
                         <div class="pInfo">
                             <img src="../images/personal/性别.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>性别</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" size="small" placeholder="female" />
+                            <input v-model="personDetail.gender" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" size="small" />
                         </div>
                         </Col>
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/学校.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>就读院校</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="中山大学" />
+                            <input v-model="personDetail.university" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                     </Row>
@@ -130,14 +130,14 @@
                         <div class="pInfo">
                             <img src="../images/personal/邮箱.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>邮箱</span>
-                            <input type="text" style="margin-left:8px" :disabled="!editable" v-bind:style="styleForText" placeholder="123456789@qq.com" />
+                            <input v-model="personDetail.email" type="text" style="margin-left:8px" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/年级专业.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>专业年级</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="软件工程16级" />
+                            <input v-model="personDetail.major" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                     </Row>
@@ -145,15 +145,15 @@
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/微信.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span>微信</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="sxt123568" />
+                            <span>QQ</span>
+                            <input v-model="personDetail.qq" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/学号.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>学生卡号</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="16340192" />
+                            <input v-model="personDetail.studentId" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                     </Row>
@@ -162,14 +162,14 @@
                         <div class="pInfo">
                             <img src="../images/personal/手机.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>手机</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="123455678901" />
+                            <input v-model="personDetail.phone" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/邮箱.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span>这里放啥</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <span>微信</span>
+                            <input v-model="personDetail.wechat" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                     </Row>
@@ -208,6 +208,8 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+import { Personal } from '../store/personal/index.js'
 import task from './components/Task.vue'
 export default {
     components: {
@@ -224,19 +226,9 @@ export default {
             //clientWidth: document.body.clientWidth
         }
     },
-    /*
-        mounted() {
-            // 在 DOM 渲染数据时，设置下区域高度为浏览器可视区域高度．
-            this.clientHeight = document.body.clientHeight;
-            this.clientWidth = document.body.clientWidth;
-            // 监听 window 的 resize 事件．在浏览器窗口变化时再设置下区域高度．
-            const _this = this;
-            window.onresize = function temp() {
-                _this.clientHeight = document.body.clientHeight;
-                _this.clientWidth = document.body.clientWidth;
-            };
-           
-        }, */
+    computed: mapState('Personal', {
+        personDetail: 'personalInfo'
+    }),
     methods: {
         editInfo() { //修改个人信息
             // alert(this.editable);
@@ -250,8 +242,14 @@ export default {
                 this.buttonText = "保存资料";
             } else {
                 this.buttonText = "编辑资料";
+                //console.log(this.personDetail)
+                this.$store.dispatch('Personal/UPDATE_INFO');
+
             }
         }
+    },
+    mounted() {
+        this.$store.dispatch('Personal/GET_INFO'); //分发action
     }
 }
 </script>

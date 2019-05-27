@@ -7,24 +7,26 @@ import getters from './getters.js'
 Vue.use(Vuex)
 
 const Personal = {
-    namespaced:true,
+    namespaced: true,
     state: {
-        perosonalInfo:{
-            username: '',
-            userid: 0,
-            sex: 0,
-            email: '',
-            phone: '',
-            wechat: '',
-            university:'',
-            major:'',
-            grade:'',
-            studentid:'',
-            payaccount:''
+        personalInfo: {
+            nickname: 'Yezo',
+            id: 0,
+            gender: 0,
+            email: '123',
+            phone: '123',
+            qq: '123',
+            university: '123',
+            major: '123',
+            grade: '123',
+            studentId: '',
+            payaccount: '',
+            wechat: 'wechat',
+            credit: 3
         },
-        attending:[],
-        starring:[],
-        mailReceive:[]
+        attending: [],
+        starring: [],
+        mailReceive: []
     },
     actions,
     mutations,

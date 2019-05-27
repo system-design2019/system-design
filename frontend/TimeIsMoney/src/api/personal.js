@@ -6,8 +6,15 @@ import service from './../util/service.js'
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getPersonalInfo(id) {
-    let response = await service.get('/user')
+export async function getPersonalInfo() {
+    let response = await service.get('/user') //!!!这里要改动 axios实例名为service
+    //console.log(response)
+    return response.data
+}
+
+export async function setPersonalInfo(data) {
+    console.log("set :" + data)
+    let response = await service.put('/user', data)
     return response.data
 }
 
@@ -40,6 +47,8 @@ export async function getStarring(id) {
  * Promise will return the data of the questionnaires
  */
 export async function getAlerts(id) {
+    // let response = await axios.get('/', id)
+    // return response.data
     let response = await service.get('/notifications/all')
     return response.data
 }
@@ -62,7 +71,7 @@ export async function changeAlertStatusById(data) {
  * Promise will return the data of the questionnaires
  */
 export async function changeAllAlertStatus() {
-    let response = service.put('/notifications/all/'+true)
+    let response = service.put('/notifications/all/' + true)
     return response.data
 }
 
@@ -74,7 +83,7 @@ export async function changeAllAlertStatus() {
  * Promise will return the data of the questionnaires
  */
 export async function deleteAlertById(data) {
-    let response = await service.delete('/notifications', {data: data})
+    let response = await service.delete('/notifications', { data: data })
     return response.data
 }
 
@@ -84,6 +93,7 @@ export async function deleteAlertById(data) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
+
 export async function deleteAllAlerts() {
     let response = await service.delete('/notifications/all')
     return response.data
