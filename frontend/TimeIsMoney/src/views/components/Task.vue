@@ -1,20 +1,20 @@
 <template>
 <div class="task" style="margin: 20px 0;">
     <card  style="padding-left: 10px; border-radius: 15px">
-        <img :src="getStatus(contents.status)" style=" position:absolute; right: 0; top:0" width="60px" height="60px" />
+        <img :src="getIconByStatus(contents.id)" style=" position:absolute; right: 0; top:0" width="60px" height="60px" />
         <Row style="margin-top: 20px">
             <span style="font-size: 23px; font-weight: 700;margin:5px;float:left;">{{contents.title}}</span>
         </Row>
         <Row><span style="font-size:15px;margin:5px;float:left;">{{contents.detail}}</span></Row>
         <Row type="flex" style="margin-top: 10px">
             <div style="float: left; width: 70%">
-                <div v-if="ifShow(i)" v-for="(ele, key, i) in contents.info" style="margin-right: 30px;" class="iconInDy" >
+                <div v-if="ifShow(i)" v-for="(ele, key, i) in contents.info" style="margin-right: 30px;" class="iconInDy vercenter" >
                     <img :src="icon[i]" width="30px" height="30px" />
                     <span style="margin-left: 5px; ">{{ele}}</span>
                 </div>
             </div>
-            <div style="float: right; width: 30%; text-align: right">
-                <div v-if="i>3" v-for="(ele, key, i) in contents.info" style="margin-right: 30px;float: right" class="iconInDy" >
+            <div style="float: right; width: 30%; text-align: right" >
+                <div v-if="i>3" v-for="(ele, key, i) in contents.info" style="margin-right: 30px;float: right" class="iconInDy vercenter" >
                     <img :src="icon[i]" width="30px" height="30px" />
                     <span style="margin-left: 5px; ">{{ele}}</span>
                 </div>
@@ -24,6 +24,8 @@
 </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+import { Ques } from '../../store/questionnaire/index.js'
 export default{
     props:['data', 'type', 'mode', 'collect'],
     data(){
@@ -38,10 +40,17 @@ export default{
         }
     },
     methods:{
-        getStatus(status){
-            if(status === 1){
-                return './../../../static/task/on.png'
+        getIconByStatus(id){
+            if(this.publishQuesList.indexOf(id) != -1){
+                return './../../static/task/reward.png'
             }
+            else if(this.attendQuesList.indexOf(id) != -1){
+                return './../../static/task/run.png'
+            }
+            else{
+                return './../../static/task/on.png'
+            }
+            
         },
         ifShow(i){
             if(i === 1){
@@ -54,17 +63,14 @@ export default{
                 return true
             }
         },
-        ifCollect(id){
-            if(this.collectQuesList.indexOf(id) != -1){
-                return true
-            }
-            else{
-                return false
-            }
-        }
     },
+    computed: mapState('Ques', {
+        attendQuesList: 'attendQuesList',
+        publishQuesList: 'publishQuesList'
+    }),
     mounted(){
         if(typeof(this.data) != 'undefined'){
+            this.contents.id = this.data.quesID
             this.contents.title = this.data.title
             this.contents.detail = this.data.detail
             this.contents.status = this.data.status === 'not done' ? 1 : 0
@@ -90,5 +96,10 @@ export default{
         padding-left: 26px!important;
         padding-top: 0!important;
         padding-bottom: 16px!important;
+    }
+    .vercenter{
+        display: flex!important;
+        justify-content:center!important;
+        align-items:center!important;
     }
 </style>

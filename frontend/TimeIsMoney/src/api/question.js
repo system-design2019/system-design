@@ -22,6 +22,47 @@ export async function getCollectQuesList () {
 }
 
 /**
+ * Get all the questionnaires and show on the index
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function getAttendQuesList () {
+    let response = await service.get('/questionnaires/fill/all')
+    return response.data
+}
+
+/**
+ * Get all the questionnaires and show on the index
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function getPublishQuesList () {
+    let response = await service.get('/questionnaires/publish/all')
+    return response.data
+}
+
+/**
+ * Get all the questionnaires and show on the index
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function collectQues (id) {
+    let response = await service.put('questionnaires/'+id+'/collect')
+    return response.data
+}
+
+/**
+ * Get all the questionnaires and show on the index
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function cancelCollectQues (id) {
+    let response = await service.delete('questionnaires/'+id+'/collect')
+    return response.data
+}
+
+
+/**
  * Get the content of the questionnaire by id
  * @param {int} id  id of the target questionnaire
  * @return {Promise}
