@@ -242,11 +242,13 @@ export default {
                 this.buttonText = "保存资料";
             } else {
                 this.buttonText = "编辑资料";
+                //console.log(this.personDetail)
+                this.$store.dispatch('Personal/UPDATE_INFO');
+
             }
         }
     },
     mounted() {
-        console.log("vuex ok" + JSON.stringify(this.personDetail)); //test
         this.$store.dispatch('Personal/GET_INFO'); //分发action
     }
 }

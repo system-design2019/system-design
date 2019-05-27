@@ -8,7 +8,13 @@ import service from './../util/service.js'
  */
 export async function getPersonalInfo() {
     let response = await service.get('/user') //!!!这里要改动 axios实例名为service
-    console.log(response)
+    //console.log(response)
+    return response.data
+}
+
+export async function setPersonalInfo(data) {
+    console.log("set :" + data)
+    let response = await service.put('/user', data)
     return response.data
 }
 
