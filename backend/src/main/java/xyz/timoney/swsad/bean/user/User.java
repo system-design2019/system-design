@@ -44,7 +44,7 @@ public class User {
     private String major;
     //初始化-1
     //女0，男1
-    private int gender;
+    private String gender;
     //初始化-1
     //范围0~150
     private int age;
@@ -96,10 +96,10 @@ public class User {
         studentId = null;
         grade = -1;
         major = null;
-        gender = -1;
+        gender = "未初始化";
         age = -1;
         nickname = null;
-        face = null;
+        face = "https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=62d46c39067b020818c437b303b099b6/d4628535e5dde7119c3d076aabefce1b9c1661ba.jpg";
         aliPay = null;
         weChatPay = null;
         QQ = null;
@@ -146,7 +146,7 @@ public class User {
         this.grade = grade;
     }
 
-    public void setGender(int gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -224,7 +224,7 @@ public class User {
         return grade;
     }
 
-    public int getGender() {
+    public String getGender() {
         return gender;
     }
 

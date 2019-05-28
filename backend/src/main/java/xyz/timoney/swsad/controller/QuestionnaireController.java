@@ -1,5 +1,6 @@
 package xyz.timoney.swsad.controller;
 
+import com.google.gson.Gson;
 import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
 import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 import xyz.timoney.swsad.bean.*;
@@ -164,7 +165,7 @@ public class QuestionnaireController {
      * */
     @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/proceed/all")
     @CrossOrigin
-    public Message<List<Questionnaire>> getQueses(){
+    public String getQueses(){
         Message<List<Questionnaire>> message = new Message<>();
         List<Questionnaire> listQues;
         //获取一个连接
@@ -173,9 +174,15 @@ public class QuestionnaireController {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             listQues = quesMapper.getAllQues();
+            System.out.println("-----------Ques Info 问题-----------");
+            System.out.println(new Gson().toJson(listQues));
+            System.out.println("-----------Ques Info 问题-----------");
             for (Questionnaire listQue : listQues) {
                 Infos temp = quesMapper.getInfo(listQue.getQuesID());
                 listQue.setInfos(temp);
+                System.out.println("----------------------");
+                System.out.println(new Gson().toJson(temp));
+                System.out.println("----------------------");
             }
             message.setData(listQues);
             message.setSuccess(true);
@@ -189,7 +196,7 @@ public class QuestionnaireController {
         }
         //最后记得关闭连接
 
-        return message;
+        return new Gson().toJson(message);
     }
 
     /**
@@ -284,6 +291,7 @@ public class QuestionnaireController {
             QuestionnaireMapper questionnaireMapper =  sqlSession.getMapper(QuestionnaireMapper.class);
             //获取发布的问卷ID
             List<Integer> list = questionnaireMapper.getAllPublishedId(userId);
+
             message.setData(list);
             /**
              * 增加缓存
@@ -326,7 +334,8 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
-            List<Integer> collecterList = quesCollectUserMapper.getAllCollectedId(userId);
+            //获取该用户收藏的问卷列表
+            List<Integer> collectedList = quesCollectUserMapper.getAllCollectedId(userId);
             //获得问卷对象
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             questionnaire = questionnaireMapper.getQuesByID(quesId);
@@ -337,8 +346,10 @@ public class QuestionnaireController {
                 System.out.println(message);
                 return message;
             }
+            //获取Info
+            questionnaire.setInfos(questionnaireMapper.getInfo(quesId));
             //判断是否重复收藏
-            if(collecterList.contains(userId)){
+            if(collectedList.contains(quesId)){
                 message.setSuccess(false);
                 message.setMsg("收藏问卷失败: 已经收藏了此问卷");
                 System.out.println(message);
@@ -422,11 +433,11 @@ public class QuestionnaireController {
         //同步发送到缓存中的用户收藏id列表
         if(QuesCollectUser.cacheListId.containsKey(userId)){
             //不知道会不会remove错
-            QuesCollectUser.cacheListId.get(userId).remove((Integer)quesId);
+            QuesCollectUser.cacheListId.get(userId).removeIf(quesItemId -> quesItemId == quesId);
         }
         //同步发送到缓存中的用户收藏列表
         if(QuesCollectUser.cacheList.containsKey(userId)){
-            QuesCollectUser.cacheList.get(userId).remove(questionnaire);
+            QuesCollectUser.cacheList.get(userId).removeIf(questionnaireItem -> questionnaireItem.getQuesID()==quesId);
         }
         message.setSuccess(true);
         message.setMsg("取消收藏问卷成功");
@@ -516,6 +527,8 @@ public class QuestionnaireController {
                 System.out.println(message);
                 return message;
             }
+            //获取Info
+            questionnaire.setInfos(questionnaireMapper.getInfo(quesId));
             //获得问卷填写者列表
             QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
             List<Integer> fillerList = quesFillUserMapper.getAllFillerId(quesId);
@@ -537,6 +550,7 @@ public class QuestionnaireController {
         /**
          * 人数是否已满
          * */
+        System.out.println(new Gson().toJson(questionnaire));
         if(questionnaire.getInfos().getTotal() > fillerCount ){
             //修改数据库
             try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
@@ -640,11 +654,11 @@ public class QuestionnaireController {
         //同步发送到缓存中的用户收藏id列表
         if(QuesFillUser.cacheListId.containsKey(userId)){
             //不知道会不会remove错
-            QuesFillUser.cacheListId.get(userId).remove((Integer)quesId);
+            QuesFillUser.cacheListId.get(userId).removeIf(quesItemId -> quesItemId == quesId);
         }
         //同步发送到缓存中的用户收藏列表
         if(QuesFillUser.cacheList.containsKey(userId)){
-            QuesFillUser.cacheList.get(userId).remove(questionnaire);
+            QuesFillUser.cacheList.get(userId).removeIf(questionnaireItem -> questionnaireItem.getQuesID()==quesId);
         }
         message.setSuccess(true);
         message.setMsg("已取消填写问卷");

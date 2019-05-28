@@ -223,8 +223,10 @@ public class UserController {
             if(user.getPassword().equals(loginUser.getPassword())){
                 message.setMsg("登录成功");
                 message.setSuccess(true);
+                //返回用户id
+                message.setData(String.valueOf(user.getId()));
                 //添加token
-                message.setData(JwtHelper.createJWT(String.valueOf(user.getId())));
+                //message.setData(JwtHelper.createJWT(String.valueOf(user.getId())));
                 //随机生成cookie
                 String cookieKey = Util.getUUID();
                 Cookie cookie = new Cookie("user", cookieKey);
@@ -447,6 +449,10 @@ public class UserController {
              */
             List<Integer> publishedIdList = questionnaireMapper.getAllPublishedId(userId);
             publishedList = questionnaireMapper.getAllPublished(userId);
+            //添加Info
+            for(Questionnaire q : publishedList){
+                q.setInfos(questionnaireMapper.getInfo(q.getQuesID()));
+            }
             //把ID和问卷都
             // 加到缓存中去，避免每次都查询数据库
             Questionnaire.cacheList.put(userId, publishedList);
@@ -509,7 +515,9 @@ public class UserController {
             List<Integer> quesFilledIdList = quesFillUserMapper.getAllFilledId(userId);
             quesFilledList = new ArrayList<>();
             for (int i : quesFilledIdList) {
-                quesFilledList.add(questionnaireMapper.getQuesByID(i));
+                Questionnaire q = questionnaireMapper.getQuesByID(i);
+                q.setInfos(questionnaireMapper.getInfo(i));
+                quesFilledList.add(q);
             }
             //还不知道排序情况，预想降序排列
             quesFilledList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));
@@ -575,7 +583,9 @@ public class UserController {
             List<Integer> quesCollectedIdList = quesCollectUserMapper.getAllCollectedId(userId);
             quesCollectedList = new ArrayList<>();
             for (int i : quesCollectedIdList) {
-                quesCollectedList.add(questionnaireMapper.getQuesByID(i));
+                Questionnaire q = questionnaireMapper.getQuesByID(i);
+                q.setInfos(questionnaireMapper.getInfo(i));
+                quesCollectedList.add(q);
             }
             //还不知道排序情况，预想降序排列
             quesCollectedList.sort((o1, o2) -> -o1.getInfos().getStartTime().compareTo(o2.getInfos().getStartTime()));

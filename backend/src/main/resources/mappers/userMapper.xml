@@ -24,7 +24,7 @@
             studentId varchar(40)  null,
             grade     int          null,
             major     varchar(40)  null,
-            gender    int          null,
+            gender    varchar(40)          null,
             age       int          null,
             nickname  varchar(40)  null,
             face      varchar(40)  null,
