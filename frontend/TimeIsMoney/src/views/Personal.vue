@@ -98,7 +98,8 @@
                     </Row>
                     <Row>
                         <span> 信用： </span>
-                        <Rate :disabled="true" v-model="personDetail.credit"> </Rate>
+                        <Rate :disabled="true" show-text allow-half v-model="personDetail.credit"> </Rate>
+                        <span style="color: #f5a623">{{ personDetail.credit }}</span>
                     </Row>
                 </card>
                 </Col>
@@ -229,7 +230,8 @@ export default {
             useForSign: 1, //1 means phone and 2 means email
             editPhone: false,
             editEmail: false,
-            detailModel: false
+            detailModel: false,
+            zeroId: ""
         }
     },
     computed: mapState('Personal', {
@@ -288,6 +290,14 @@ export default {
     mounted() {
         this.$store.dispatch('Personal/GET_INFO'); //分发action
         this.$store.dispatch('Personal/GET_PUBLISH'); //分发action
+
+        //id前面补0   一共5位
+        this.zeroId = (this.personDetail.id).toString();
+        //alert(this.zeroId);
+        for (var len = this.zeroId.length; len < 5; len = this.zeroId.length) {
+            this.zeroId = "0" + this.zeroId;
+        }
+        //alert(this.zeroId);
     }
 }
 </script>
