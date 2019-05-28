@@ -3,6 +3,7 @@ export const SET_PER_INFO = 'SET_PER_INFO'
 export const SET_PUBLISHING = 'SET_PUBLISHING'
 export const SET_ATTENDING = 'SET_ATTENDING'
 export const SET_STARRING = 'SET_STARRING'
+export const SET_DETAIL = 'SET_DETAIL'
 export const SET_RECEIVE = 'SET_RECEIVE'
 export const CHANGE_LOCAL_STATUS = 'CHANGE_LOCAL_STATUS'
 export const DELETE_LOCAL_ALERT = 'DELETE_LOCAL_ALERT'
@@ -19,12 +20,16 @@ export default {
     },
     [SET_PUBLISHING](state, info) {
         state.publishing = info
+        //console.log('publishing:' + JSON.stringify(state.publishing))
     },
     [SET_ATTENDING](state, info) {
         state.attending = info
     },
     [SET_STARRING](state, info) {
         state.starring = info
+    },
+    [SET_DETAIL](state, detail) {
+        state.quesDetail = detail
     },
     [CHANGE_LOCAL_STATUS](state, index) {
         state.mailReceive[index].hasRead = !state.mailReceive[index].hasRead

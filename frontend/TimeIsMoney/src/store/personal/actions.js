@@ -7,6 +7,7 @@ export const GET_PUBLISH = 'GET_PUBLISH'
 export const GET_ATTEND = 'GET_ATTEND'
 export const GET_STAR = 'GET_STAR'
 export const GET_ALERTS = 'GET_ALERTS'
+export const GET_DETAIL = 'GET_DETAIL'
 export const CHANGE_STATUS = 'CHANGE_STATUS'
 export const CHANGE_ALL_STATUS = 'CHANGE_ALL_STATUS'
 export const DELETE_ALERT = 'DELETE_ALERT'
@@ -27,19 +28,26 @@ export default {
     },
     [GET_PUBLISH]({ commit }) {
         personalAPI.getPublishing().then((response) => {
-            commit(mutations.SET_PUBLISHING, response)
+            commit(mutations.SET_PUBLISHING, response.data)
         })
     },
     [GET_ATTEND]({ commit }) {
         personalAPI.getAttending().then((response) => {
-            commit(mutations.SET_ATTENDING, response)
+            commit(mutations.SET_ATTENDING, response.data)
         })
     },
     [GET_STAR]({ commit }) {
         personalAPI.getStarring().then((response) => {
             // console.log('噢噢'+JSON.stringify(response.data))
-            commit(mutations.SET_STARRING, response)
+            commit(mutations.SET_STARRING, response.data)
         })
+    },
+    [GET_DETAIL]({ commit }, id) {
+        // console.log('123456789')
+        quesAPI.getDetail(id).then((info) => {
+            commit(mutations.SET_DETAIL, info.data)
+        })
+        // console.log(data)
     },
     [GET_ALERTS]({ commit }, id) {
         personalAPI.getAlerts().then((response) => {

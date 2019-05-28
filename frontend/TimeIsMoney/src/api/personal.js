@@ -49,6 +49,13 @@ export async function getStarring() {
     return response.data
 }
 
+export async function getDetail(id) {
+    let response = await service.get('/questionnaires/' + id)
+    // console.log(JSON.stringify(response))
+    return response.data
+}
+
+
 /**
  * Get the list of the alert information
  * @param {int} id the id of the target user

@@ -180,31 +180,32 @@
         <div class="personal" style="margin: 0 10%">
             <Tabs value="credit" style="font-size: 20px">
                 <TabPane label="我发布的" name="credit">
-                    <div id="Dynamic">
+                    <div id="Dynamic" v-for="(ques,index) in publishLists">
                         <div>
-                            <span id="dynamicDate" style="font-size:20px;color:red;"> 04.12 </span><span style="font-size:15px;color:gray;">我发布了</span>
+                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.endtime}} </span><span style="font-size:15px;color:gray;">我发布了</span>
                         </div>
-                        <task type="3" mode="0"></task>
+                        <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
                     </div>
                 </TabPane>
                 <TabPane label="我参与的" name="history">
-                    <div id="Dynamic">
+                    <div id="Dynamic" v-for="(ques,index) in attendLists">
                         <div>
-                            <span id="dynamicDate" style="font-size:20px;color:red;"> 04.15 </span><span style="font-size:15px;color:gray;">我参与了</span>
+                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.endtime}} </span><span style="font-size:15px;color:gray;">我参与了</span>
                         </div>
-                        <task type="2" mode="0"></task>
+                        <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
                     </div>
                 </TabPane>
                 <TabPane label="我的收藏" name="collect">
-                    <div id="Dynamic">
+                    <div id="Dynamic" v-for="(ques,index) in collectLists">
                         <div>
-                            <span id="dynamicDate" style="font-size:20px;color:red;"> 04.15 </span><span style="font-size:15px;color:gray;">我参与了</span>
+                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.endtime}} </span><span style="font-size:15px;color:gray;">我收藏了</span>
                         </div>
-                        <task type="1" mode="0"></task>
+                        <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
                     </div>
                 </TabPane>
             </Tabs>
         </div>
+        <detail :detailContent="detailContent" v-show="detailModel" :showDetail="detailModel"></detail>
     </div>
 </template>
 <script>
@@ -227,14 +228,16 @@ export default {
             buttonText: "编辑资料",
             useForSign: 1, //1 means phone and 2 means email
             editPhone: false,
-            editEmail: false
+            editEmail: false,
+            detailModel: false
         }
     },
     computed: mapState('Personal', {
             personDetail: 'personalInfo',
             publishLists: 'publishing',
             attendLists: 'attendingt',
-            collectLists: 'collecting'
+            collectLists: 'collecting',
+            detailContent: 'quesDetail'
         }
         /*
         ,
@@ -276,10 +279,15 @@ export default {
                 */
                 this.$store.dispatch('Personal/UPDATE_INFO');
             }
+        },
+        getDetail(id) {
+            this.$store.dispatch('Ques/GET_DETAIL', id)
+            this.detailModel = !this.detailModel
         }
     },
     mounted() {
         this.$store.dispatch('Personal/GET_INFO'); //分发action
+        this.$store.dispatch('Personal/GET_PUBLISH'); //分发action
     }
 }
 </script>
