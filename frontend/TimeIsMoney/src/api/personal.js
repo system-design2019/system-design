@@ -13,7 +13,7 @@ export async function getPersonalInfo() {
 }
 
 export async function setPersonalInfo(data) {
-    console.log("set :" + data)
+    console.log("setthe Info :" + JSON.stringify(data))
     let response = await service.put('/user', data)
     return response.data
 }

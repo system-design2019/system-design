@@ -216,6 +216,8 @@ import { Personal } from '../store/personal/index.js'
 import { Ques } from '../store/questionnaire/index.js'
 import task from './components/Task.vue'
 import detail from "./components/Detail.vue"
+import service from './../util/service.js'
+
 export default {
     components: {
         task,
@@ -234,7 +236,7 @@ export default {
             detailModel: false,
             zeroId: "",
             userInfo: {
-                avatar: 'https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=62d46c39067b020818c437b303b099b6/d4628535e5dde7119c3d076aabefce1b9c1661ba.jpg'
+                avatar: ""
             }
         }
     },
@@ -273,6 +275,31 @@ export default {
                 }
                 */
             } else {
+                console.log("file" + this.userInfo.avatar);
+
+                let formData = new FormData();
+                formData.append("file", this.userInfo.avatar);
+                var _this = this;
+                let response = service.post('/upload', formData)
+                    .then(function(response) {
+                        //alert(response.data);
+                        console.log("the response:" + JSON.stringify(response));
+                        console.log("the data.data:" + response.data.data);
+                        _this.personDetail.face = response.data.data;
+                        _this.$store.dispatch('Personal/UPDATE_INFO');
+
+                        //window.location.reload();
+                    })
+                    .catch(function(error) {
+                        alert("上传失败");
+                        console.log(error);
+                        // window.location.reload();
+                    });
+
+                console.log("what is this:?" + this.personDetail.face);
+
+                //this.$store.dispatch('Personal/UPDATE_INFO');
+
                 this.styleForText = 'border:0px;';
                 this.buttonText = "编辑资料";
                 /*
@@ -283,7 +310,8 @@ export default {
                     //alert("phone的格式非法，请输入正确的phone");
                 }
                 */
-                this.$store.dispatch('Personal/UPDATE_INFO');
+                //update headimg
+
             }
         },
         getDetail(id) {
@@ -297,20 +325,26 @@ export default {
         handleFile: function(e) {
             let $target = e.target || e.srcElement
             let file = $target.files[0]
+            this.userInfo.avatar = file
             var reader = new FileReader()
             reader.onload = (data) => {
                 let res = data.target || data.srcElement
-                this.userInfo.avatar = res.result
-                //console.log(res)
+                // console.log("before:" + this.personDetail.face);
+                //post
+
+                this.personDetail.face = res.result
+                //this.userInfo.avatar = this.personDetail.face
+                //console.log(this.personDetail.face)
+                //console.log("after:" + this.personDetail.face);
             }
             reader.readAsDataURL(file)
-            //console.log(updateFile)
         }
+
+
     },
     mounted() {
         this.$store.dispatch('Personal/GET_INFO'); //分发action
         this.$store.dispatch('Personal/GET_PUBLISH'); //分发action
-
         //id前面补0   一共5位
         this.zeroId = (this.personDetail.id).toString();
         //alert(this.zeroId);
