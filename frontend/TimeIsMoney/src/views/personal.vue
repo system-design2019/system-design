@@ -87,7 +87,8 @@
                 <card style="height:270px;">
                     <Row>
                         <div id="headBox">
-                            <img id="head" src="../images/hellobg.jpg" alt="正方形的原始图片" width="150px" height="150px" />
+                            <img id="head" :src="userInfo.avatar" alt="头像" width="150px" height="150px" @click.stop="uploadHeadImg" />
+                            <input type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
                         </div>
                     </Row>
                     <Row>
@@ -231,7 +232,10 @@ export default {
             editPhone: false,
             editEmail: false,
             detailModel: false,
-            zeroId: ""
+            zeroId: "",
+            userInfo: {
+                avatar: 'https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=62d46c39067b020818c437b303b099b6/d4628535e5dde7119c3d076aabefce1b9c1661ba.jpg'
+            }
         }
     },
     computed: mapState('Personal', {
@@ -285,6 +289,20 @@ export default {
         getDetail(id) {
             this.$store.dispatch('Ques/GET_DETAIL', id)
             this.detailModel = !this.detailModel
+        },
+        uploadHeadImg: function() {
+            this.$el.querySelector('.hiddenInput').click()
+        },
+        // 将头像显示
+        handleFile: function(e) {
+            let $target = e.target || e.srcElement
+            let file = $target.files[0]
+            var reader = new FileReader()
+            reader.onload = (data) => {
+                let res = data.target || data.srcElement
+                this.userInfo.avatar = res.result
+            }
+            reader.readAsDataURL(file)
         }
     },
     mounted() {
