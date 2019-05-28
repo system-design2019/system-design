@@ -17,7 +17,7 @@ public class Questionnaire {
     private int quesID;
     private String title;
     private String detail;
-    private String publisher;
+    private int publisher;
     private int reward;
     public Infos infos;
     private String command;
@@ -33,7 +33,7 @@ public class Questionnaire {
     {
         quesID=0;
         title="#";
-        publisher="#";
+        publisher=-1;
         detail="#";
         reward=0;
         infos = new Infos();
@@ -77,11 +77,11 @@ public class Questionnaire {
         this.number = number;
     }
 
-    public xyz.timoney.swsad.bean.questionnaire.Infos getInfos() {
+    public Infos getInfos() {
         return infos;
     }
 
-    public void setInfos(xyz.timoney.swsad.bean.questionnaire.Infos infos) {
+    public void setInfos(Infos infos) {
         this.infos = infos;
     }
 
@@ -97,7 +97,7 @@ public class Questionnaire {
         this.detail = detail;
     }
 
-    public void setPublisher(String publisher) {
+    public void setPublisher(int publisher) {
         this.publisher = publisher;
     }
 
@@ -126,7 +126,7 @@ public class Questionnaire {
         return detail;
     }
 
-    public String getPublisher() {
+    public int getPublisher() {
         return publisher;
     }
 

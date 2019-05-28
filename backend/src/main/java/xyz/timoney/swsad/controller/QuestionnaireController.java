@@ -216,11 +216,11 @@ public class QuestionnaireController {
         /*
         * cookie不一致
         * */
-        /*if(ques.getPublisher() != userId){
+        if(ques.getPublisher() != userId){
             message.setSuccess(false);
-            message.setMsg("创建失败: 问卷发布账号与当前账号不一致" );
+            message.setMsg("创建失败: 无权创建其它人的问卷" );
             return message;
-        }*/
+        }
         System.out.println(ques);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
