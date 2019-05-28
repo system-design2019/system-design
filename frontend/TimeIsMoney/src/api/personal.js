@@ -18,14 +18,23 @@ export async function setPersonalInfo(data) {
     return response.data
 }
 
+
+//get the list of the publishing tasks by cookies
+export async function getPublishing() {
+    let response = await service.get('/user/publish/all')
+    return response.data
+}
+
+
+
 /**
- * Get the list of the attending tasks by id
+ * Get the list of the attending tasks by cookies
  * @param {int} id the id of the target user
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getAttending(id) {
-    let response = await service.get('/allques', id)
+export async function getAttending() {
+    let response = await service.get('/user/fill/all')
     return response.data
 }
 
@@ -35,8 +44,8 @@ export async function getAttending(id) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getStarring(id) {
-    let response = await service.get('/allques', id)
+export async function getStarring() {
+    let response = await service.get('user/collect/all')
     return response.data
 }
 

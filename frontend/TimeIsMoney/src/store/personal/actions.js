@@ -2,10 +2,11 @@ import * as mutations from './mutations.js'
 import * as personalAPI from './../../api/personal.js'
 
 export const GET_INFO = 'GET_INFO'
+export const UPDATE_INFO = 'UPDATE_INFO'
+export const GET_PUBLISH = 'GET_PUBLISH'
 export const GET_ATTEND = 'GET_ATTEND'
 export const GET_STAR = 'GET_STAR'
 export const GET_ALERTS = 'GET_ALERTS'
-export const UPDATE_INFO = 'UPDATE_INFO'
 export const CHANGE_STATUS = 'CHANGE_STATUS'
 export const CHANGE_ALL_STATUS = 'CHANGE_ALL_STATUS'
 export const DELETE_ALERT = 'DELETE_ALERT'
@@ -24,13 +25,18 @@ export default {
             commit(mutations.SET_PER_INFO, data)
         })
     },
-    [GET_ATTEND]({ commit }, id) {
-        personalAPI.getAttending(id).then((response) => {
+    [GET_PUBLISH]({ commit }) {
+        personalAPI.getPublishing().then((response) => {
+            commit(mutations.SET_PUBLISHING, response)
+        })
+    },
+    [GET_ATTEND]({ commit }) {
+        personalAPI.getAttending().then((response) => {
             commit(mutations.SET_ATTENDING, response)
         })
     },
-    [GET_STAR]({ commit }, id) {
-        personalAPI.getStarring(id).then((response) => {
+    [GET_STAR]({ commit }) {
+        personalAPI.getStarring().then((response) => {
             // console.log('噢噢'+JSON.stringify(response.data))
             commit(mutations.SET_STARRING, response)
         })

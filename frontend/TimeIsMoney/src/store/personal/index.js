@@ -24,6 +24,7 @@ const Personal = {
             wechat: 'wechat',
             credit: 3
         },
+        publishing: [],
         attending: [],
         starring: [],
         mailReceive: []

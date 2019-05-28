@@ -98,7 +98,7 @@
                     </Row>
                     <Row>
                         <span> 信用： </span>
-                        <Rate disabled="true" v-model="personDetail.credit"> </Rate>
+                        <Rate :disabled="true" v-model="personDetail.credit"> </Rate>
                     </Row>
                 </card>
                 </Col>
@@ -210,10 +210,13 @@
 <script>
 import { mapState } from 'vuex'
 import { Personal } from '../store/personal/index.js'
+import { Ques } from '../store/questionnaire/index.js'
 import task from './components/Task.vue'
+import detail from "./components/Detail.vue"
 export default {
     components: {
-        task
+        task,
+        detail
     },
     data() {
         return {
@@ -228,8 +231,20 @@ export default {
         }
     },
     computed: mapState('Personal', {
-        personDetail: 'personalInfo'
-    }),
+            personDetail: 'personalInfo',
+            publishLists: 'publishing',
+            attendLists: 'attendingt',
+            collectLists: 'collecting'
+        }
+        /*
+        ,
+         ['Ques', {
+            publishLists: 'publishQuesList',
+            attendLists: 'attendQuesList',
+            collectLists: 'collectQuesList'
+        }]
+        */
+    ),
     methods: {
         editInfo() { //修改个人信息
             // alert(this.editable

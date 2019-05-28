@@ -1,5 +1,6 @@
 import Vue from 'vue'
 export const SET_PER_INFO = 'SET_PER_INFO'
+export const SET_PUBLISHING = 'SET_PUBLISHING'
 export const SET_ATTENDING = 'SET_ATTENDING'
 export const SET_STARRING = 'SET_STARRING'
 export const SET_RECEIVE = 'SET_RECEIVE'
@@ -15,6 +16,9 @@ export default {
     [SET_RECEIVE](state, info) {
         state.mailReceive = info
         // console.log('啊啊啊'+JSON.stringify(state.mailReceive))
+    },
+    [SET_PUBLISHING](state, info) {
+        state.publishing = info
     },
     [SET_ATTENDING](state, info) {
         state.attending = info
