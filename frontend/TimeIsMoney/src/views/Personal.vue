@@ -87,8 +87,8 @@
                 <card style="height:270px;">
                     <Row>
                         <div id="headBox">
-                            <img id="head" :src="userInfo.avatar" alt="头像" width="150px" height="150px" @click.stop="uploadHeadImg" />
-                            <input type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
+                            <img id="head" :src="personDetail.face" alt="头像" width="150px" height="150px" @click.stop="uploadHeadImg" />
+                            <input :disabled="!editable" type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
                         </div>
                     </Row>
                     <Row>
@@ -301,8 +301,10 @@ export default {
             reader.onload = (data) => {
                 let res = data.target || data.srcElement
                 this.userInfo.avatar = res.result
+                //console.log(res)
             }
             reader.readAsDataURL(file)
+            //console.log(updateFile)
         }
     },
     mounted() {
