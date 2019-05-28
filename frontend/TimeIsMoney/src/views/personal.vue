@@ -87,18 +87,20 @@
                 <card style="height:270px;">
                     <Row>
                         <div id="headBox">
-                            <img id="head" src="../images/hellobg.jpg" alt="正方形的原始图片" width="150px" height="150px" />
+                            <img id="head" :src="userInfo.avatar" alt="头像" width="150px" height="150px" @click.stop="uploadHeadImg" />
+                            <input type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
                         </div>
                     </Row>
                     <Row>
-                        <input type="text" style="font-size:25px;text-align:center;" :disabled="!editable" v-bind:style="styleForText" placeholder="宋主席" />
+                        <input v-model="personDetail.nickname" type="text" style="font-size:25px;text-align:center;" :disabled="!editable" v-bind:style="styleForText" />
                     </Row>
                     <Row>
-                        <span>ID:Suata</span>
+                        <span>ID:{{personDetail.id}}</span>
                     </Row>
                     <Row>
                         <span> 信用： </span>
-                        <Rate disabled="true" v-model="creditRate"> </Rate>
+                        <Rate :disabled="true" show-text allow-half v-model="personDetail.credit"> </Rate>
+                        <span style="color: #f5a623">{{ personDetail.credit }}</span>
                     </Row>
                 </card>
                 </Col>
@@ -114,14 +116,14 @@
                         <div class="pInfo">
                             <img src="../images/personal/性别.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>性别</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" size="small" placeholder="female" />
+                            <input v-model="personDetail.gender" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" size="small" />
                         </div>
                         </Col>
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/学校.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>就读院校</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="中山大学" />
+                            <input v-model="personDetail.university" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                     </Row>
@@ -130,14 +132,14 @@
                         <div class="pInfo">
                             <img src="../images/personal/邮箱.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>邮箱</span>
-                            <input type="text" style="margin-left:8px" :disabled="!editable" v-bind:style="styleForText" placeholder="123456789@qq.com" />
+                            <input v-model="personDetail.email" type="text" style="margin-left:8px" :disabled="!editEmail" v-bind:style="styleForText" />
                         </div>
                         </Col>
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/年级专业.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>专业年级</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="软件工程16级" />
+                            <input v-model="personDetail.major" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                     </Row>
@@ -145,15 +147,15 @@
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/微信.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span>微信</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="sxt123568" />
+                            <span> Q Q</span>
+                            <input v-model="personDetail.qq" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/学号.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>学生卡号</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="16340192" />
+                            <input v-model="personDetail.studentId" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                     </Row>
@@ -162,14 +164,14 @@
                         <div class="pInfo">
                             <img src="../images/personal/手机.png" width="30px" height="30px" style="margin-right:3px" />
                             <span>手机</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" placeholder="123455678901" />
+                            <input v-model="personDetail.phone" type="text" style="margin-left:8px;" :disabled="!editPhone" v-bind:style="styleForText" />
                         </div>
                         </Col>
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/邮箱.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span>这里放啥</span>
-                            <input type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <span>微信账号</span>
+                            <input v-model="personDetail.weChatPay" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                     </Row>
@@ -180,38 +182,44 @@
         <div class="personal" style="margin: 0 10%">
             <Tabs value="credit" style="font-size: 20px">
                 <TabPane label="我发布的" name="credit">
-                    <div id="Dynamic">
+                    <div id="Dynamic" v-for="(ques,index) in publishLists">
                         <div>
-                            <span id="dynamicDate" style="font-size:20px;color:red;"> 04.12 </span><span style="font-size:15px;color:gray;">我发布了</span>
+                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.endtime}} </span><span style="font-size:15px;color:gray;">我发布了</span>
                         </div>
-                        <task type="3" mode="0"></task>
+                        <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
                     </div>
                 </TabPane>
                 <TabPane label="我参与的" name="history">
-                    <div id="Dynamic">
+                    <div id="Dynamic" v-for="(ques,index) in attendLists">
                         <div>
-                            <span id="dynamicDate" style="font-size:20px;color:red;"> 04.15 </span><span style="font-size:15px;color:gray;">我参与了</span>
+                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.endtime}} </span><span style="font-size:15px;color:gray;">我参与了</span>
                         </div>
-                        <task type="2" mode="0"></task>
+                        <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
                     </div>
                 </TabPane>
                 <TabPane label="我的收藏" name="collect">
-                    <div id="Dynamic">
+                    <div id="Dynamic" v-for="(ques,index) in collectLists">
                         <div>
-                            <span id="dynamicDate" style="font-size:20px;color:red;"> 04.15 </span><span style="font-size:15px;color:gray;">我参与了</span>
+                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.endtime}} </span><span style="font-size:15px;color:gray;">我收藏了</span>
                         </div>
-                        <task type="1" mode="0"></task>
+                        <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
                     </div>
                 </TabPane>
             </Tabs>
         </div>
+        <detail :detailContent="detailContent" v-show="detailModel" :showDetail="detailModel"></detail>
     </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+import { Personal } from '../store/personal/index.js'
+import { Ques } from '../store/questionnaire/index.js'
 import task from './components/Task.vue'
+import detail from "./components/Detail.vue"
 export default {
     components: {
-        task
+        task,
+        detail
     },
     data() {
         return {
@@ -219,39 +227,95 @@ export default {
             editable: false,
             styleForText: 'border:' + this.borderSize + 'px',
             creditRate: 5,
-            buttonText: "编辑资料"
-            //clientHeight: document.body.clientHeight,
-            //clientWidth: document.body.clientWidth
+            buttonText: "编辑资料",
+            useForSign: 1, //1 means phone and 2 means email
+            editPhone: false,
+            editEmail: false,
+            detailModel: false,
+            zeroId: "",
+            userInfo: {
+                avatar: 'https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=62d46c39067b020818c437b303b099b6/d4628535e5dde7119c3d076aabefce1b9c1661ba.jpg'
+            }
         }
     },
-    /*
-        mounted() {
-            // 在 DOM 渲染数据时，设置下区域高度为浏览器可视区域高度．
-            this.clientHeight = document.body.clientHeight;
-            this.clientWidth = document.body.clientWidth;
-            // 监听 window 的 resize 事件．在浏览器窗口变化时再设置下区域高度．
-            const _this = this;
-            window.onresize = function temp() {
-                _this.clientHeight = document.body.clientHeight;
-                _this.clientWidth = document.body.clientWidth;
-            };
-           
-        }, */
+    computed: mapState('Personal', {
+            personDetail: 'personalInfo',
+            publishLists: 'publishing',
+            attendLists: 'attendingt',
+            collectLists: 'collecting',
+            detailContent: 'quesDetail'
+        }
+        /*
+        ,
+         ['Ques', {
+            publishLists: 'publishQuesList',
+            attendLists: 'attendQuesList',
+            collectLists: 'collectQuesList'
+        }]
+        */
+    ),
     methods: {
         editInfo() { //修改个人信息
-            // alert(this.editable);
+            // alert(this.editable
+            let emailFormat = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+            let phoneFormat = /^1[34578]\d{9}$/;
+
             this.editable = !this.editable;
             if (this.editable == true) {
                 this.styleForText = 'border:1px solid';
-            } else {
-                this.styleForText = 'border:0px';
-            }
-            if (this.buttonText == "编辑资料") {
                 this.buttonText = "保存资料";
+                /*
+                if (this.personDetail.email[0] == '$') {
+                    alert(this.personDetail.email[0]);
+                    this.editEmail = false;
+                } else if (this.personDetail.phone[0] == '$') {
+                    this.editPhone = false;
+                }
+                */
             } else {
+                this.styleForText = 'border:0px;';
                 this.buttonText = "编辑资料";
+                /*
+                while (!emailFormat.test(this.personDetail.email)) {
+                    //  alert("email的格式非法，请输入正确的email");
+                }
+                while (!phoneFormat.test(this.personDetail.phone)) {
+                    //alert("phone的格式非法，请输入正确的phone");
+                }
+                */
+                this.$store.dispatch('Personal/UPDATE_INFO');
             }
+        },
+        getDetail(id) {
+            this.$store.dispatch('Ques/GET_DETAIL', id)
+            this.detailModel = !this.detailModel
+        },
+        uploadHeadImg: function() {
+            this.$el.querySelector('.hiddenInput').click()
+        },
+        // 将头像显示
+        handleFile: function(e) {
+            let $target = e.target || e.srcElement
+            let file = $target.files[0]
+            var reader = new FileReader()
+            reader.onload = (data) => {
+                let res = data.target || data.srcElement
+                this.userInfo.avatar = res.result
+            }
+            reader.readAsDataURL(file)
         }
+    },
+    mounted() {
+        this.$store.dispatch('Personal/GET_INFO'); //分发action
+        this.$store.dispatch('Personal/GET_PUBLISH'); //分发action
+
+        //id前面补0   一共5位
+        this.zeroId = (this.personDetail.id).toString();
+        //alert(this.zeroId);
+        for (var len = this.zeroId.length; len < 5; len = this.zeroId.length) {
+            this.zeroId = "0" + this.zeroId;
+        }
+        //alert(this.zeroId);
     }
 }
 </script>

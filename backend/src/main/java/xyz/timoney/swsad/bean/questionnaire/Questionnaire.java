@@ -1,5 +1,6 @@
 package xyz.timoney.swsad.bean.questionnaire;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,10 @@ public class Questionnaire {
     private String status;
     private String cont_title;
     private int number;
+    private List<Ques1> tians;
+    private List<Ques2> xuans;
+
+
 
     public Questionnaire()
     {
@@ -36,8 +41,26 @@ public class Questionnaire {
         status="not done";
         cont_title="#";
         number=2;
+        tians = new ArrayList<>();
+        xuans = new ArrayList<>();
     }
 
+
+    public List<Ques1> getTians() {
+        return tians;
+    }
+
+    public void setTians(List<Ques1> tians) {
+        this.tians = tians;
+    }
+
+    public List<Ques2> getXuans() {
+        return xuans;
+    }
+
+    public void setXuans(List<Ques2> xuans) {
+        this.xuans = xuans;
+    }
     public String getCont_title() {
         return cont_title;
     }

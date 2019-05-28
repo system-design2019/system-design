@@ -2,7 +2,6 @@ package xyz.timoney.swsad.controller;
 
 import com.google.gson.Gson;
 import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 import xyz.timoney.swsad.bean.*;
 import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
 import xyz.timoney.swsad.bean.quesUser.QuesFillUser;
@@ -291,7 +290,6 @@ public class QuestionnaireController {
             QuestionnaireMapper questionnaireMapper =  sqlSession.getMapper(QuestionnaireMapper.class);
             //获取发布的问卷ID
             List<Integer> list = questionnaireMapper.getAllPublishedId(userId);
-
             message.setData(list);
             /**
              * 增加缓存
@@ -349,7 +347,7 @@ public class QuestionnaireController {
             //获取Info
             questionnaire.setInfos(questionnaireMapper.getInfo(quesId));
             //判断是否重复收藏
-            if(collectedList.contains(quesId)){
+            if(collectedList.contains(userId)){
                 message.setSuccess(false);
                 message.setMsg("收藏问卷失败: 已经收藏了此问卷");
                 System.out.println(message);
@@ -412,9 +410,9 @@ public class QuestionnaireController {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            List<Integer> collecterList = quesCollectUserMapper.getAllCollectorId(quesId);
+            List<Integer> collectedList = quesCollectUserMapper.getAllCollectorId(quesId);
             //判断是否没有收藏过
-            if(!collecterList.contains(userId)){
+            if(!collectedList.contains(quesId)){
                 message.setSuccess(false);
                 message.setMsg("取消收藏问卷失败: 没有收藏过此问卷");
                 System.out.println(message);
@@ -723,9 +721,6 @@ public class QuestionnaireController {
     @CrossOrigin
     public Message<String> addTian(@RequestBody List<Ques1> tians)
     {
-        /**
-         * @TODO 权限认证和cookie不一致
-         * */
         Message<String> message = new Message<>();
         System.out.println(tians);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
@@ -752,9 +747,6 @@ public class QuestionnaireController {
     @CrossOrigin
     public Message<String> addXuan(@RequestBody List<Ques2> xuans)
     {
-        /**
-         * @TODO 权限认证和cookie不一致
-         * */
         Message<String> message = new Message<>();
         System.out.println(xuans);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
@@ -785,8 +777,10 @@ public class QuestionnaireController {
     }
 
 
+
     /**
-     * 提交问卷答案
+     * 填写问卷
+     * 回答问卷问题
      * */
     @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/commit")
     @CrossOrigin
@@ -838,7 +832,6 @@ public class QuestionnaireController {
         }
         return message;
     }
-
 
 
 }

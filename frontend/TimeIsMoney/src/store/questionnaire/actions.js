@@ -2,8 +2,12 @@ import * as mutations from './mutations'
 import * as quesAPI from './../../api/question.js'
 
 export const GET_QUESLIST = 'GET_QUESLIST'
+export const GET_COLLECT_QUESLIST = 'GET_COLLECT_QUESLIST'
+export const GET_ATTEND_QUESLIST = 'GET_ATTEND_QUESLIST'
+export const GET_PUBLISH_QUESLIST = 'GET_PUBLISH_QUESLIST'
 export const GET_DETAIL = 'GET_DETAIL'
 export const CREATE_QUES = 'CREATE_QUES'
+export const CHANGE_COLLECT = 'CHANGE_COLLECT'
 // export const GET_RANKLIST = 'GET_RANKLIST'
 
 export default {
@@ -12,6 +16,33 @@ export default {
     quesAPI.getQuesList().then((info) => {
         if(info.success)
           commit(mutations.SET_QUESLIST, info.data)
+      }
+    ) 
+  },
+  [GET_COLLECT_QUESLIST] ({commit}) {
+    quesAPI.getCollectQuesList().then((info) => {
+        if(info.success){
+          commit(mutations.SET_COLLECT_QUESLIST, info.data)
+        }
+        // console.error(JSON.stringify(info))
+      }
+    ) 
+  },
+  [GET_ATTEND_QUESLIST] ({commit}) {
+    quesAPI.getAttendQuesList().then((info) => {
+        if(info.success){
+          commit(mutations.SET_ATTEND_QUESLIST, info.data)
+        }
+        // console.error(JSON.stringify(info))
+      }
+    ) 
+  },
+  [GET_PUBLISH_QUESLIST] ({commit}) {
+    quesAPI.getPublishQuesList().then((info) => {
+        if(info.success){
+          commit(mutations.SET_PUBLISH_QUESLIST, info.data)
+        }
+        // console.error(JSON.stringify(info))
       }
     ) 
   },
@@ -26,6 +57,19 @@ export default {
     quesAPI.createQues(data).then((info)=>{
       commit(mutations.SET_DETAIL, info)
     })
+  },
+  [CHANGE_COLLECT]({state, commit}, id){
+    if(state.collectQuesList.indexOf(id) != -1){
+      quesAPI.cancelCollectQues(id).then((info)=>{
+        commit(mutations.SET_LOCAL_COLLECTLIST, id)
+      })
+    }
+    else{
+      quesAPI.collectQues(id).then((info)=>{
+        commit(mutations.SET_LOCAL_COLLECTLIST, id)
+      })
+    }
+    
   }
 
 }

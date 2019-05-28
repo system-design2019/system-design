@@ -35,13 +35,8 @@ service.interceptors.request.use(
 
 // response拦截器
 service.interceptors.response.use(
-    response => { <<
-        << << < HEAD
-            // 数据响应之后，要做的业务
-            ===
-            === =
-            console.log('响应头：' + JSON.stringify(response)) >>>
-            >>> > 7 b17bc6d0dd13445da1a6c0cd1934301c1531f10
+    response => {
+        console.log(JSON.stringify(response))
         return response
     },
     error => {

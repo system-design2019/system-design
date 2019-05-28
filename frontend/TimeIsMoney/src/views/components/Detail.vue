@@ -16,7 +16,7 @@
             </div>
             <div style="float:right;width: 180px; text-align: right; margin-bottom: 10px">
                 <span class="hint" >{{detailContent.infos.endtime}}</span>
-                <img src="./../../../static/task/collect.png" style="width:30px"></img>
+                <img :src="isCollect(detailContent.quesID)" style="width:30px" @click="changeCollectStatus(detailContent.quesID)"></img>
             </div>
             <Divider class="detail"></Divider>
         </div>
@@ -53,6 +53,8 @@
 </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+import { Ques } from '../../store/questionnaire/index.js'
 export default{
     props:['detailContent', 'showDetail'],
     data(){
@@ -69,10 +71,24 @@ export default{
                 window.sessionStorage.setItem('fillQuesId', id)
                 this.$router.push({name: 'filling'})
             }
+        },
+        isCollect(id){
+            if(this.collectQuesList.indexOf(id) != -1){
+                return './../../../static/task/collectTrue.png'
+            }
+            else{
+                return './../../../static/task/collectFalse.png'
+            }
+        },
+        changeCollectStatus(id){
+            this.$store.dispatch('Ques/CHANGE_COLLECT', id)
         }
     },
+    computed:mapState( 'Ques', {
+        collectQuesList: 'collectQuesList'
+    }),
     mounted(){
-        // console.log("哎呦喂"+JSON.stringify(this.detailContent))
+        console.log(this.collectQuesList)
     },
     watch:{
         showDetail: function(detail, olddetail) {
