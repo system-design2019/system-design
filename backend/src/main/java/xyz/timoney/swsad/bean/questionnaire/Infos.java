@@ -7,7 +7,7 @@ public class Infos {
     private String endTime;
 
     public Infos(){
-        total=0;
+        total=10;
         attend=0;
         startTime="2019-5-19";
         endTime="2019-5-20";

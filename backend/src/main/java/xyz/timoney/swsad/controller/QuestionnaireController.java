@@ -191,6 +191,71 @@ public class QuestionnaireController {
         return message;
     }
 
+
+    /**
+     * 添加问卷的填空题
+     * */
+    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/tian")
+    @CrossOrigin
+    public Message<String> addTian(@RequestBody List<Ques1> tians)
+    {
+        Message<String> message = new Message<>();
+        System.out.println(tians);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            for(int i=0;i<tians.size();i++) {
+                quesMapper.insertTian(tians.get(i));
+            }
+            message.setSuccess(true);
+            message.setMsg("创建成功");
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("创建失败:" + e.getMessage());
+            return message;
+        }
+        return message;
+    }
+
+    /**
+     * 添加问卷的选择题
+     * */
+    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/xuan")
+    @CrossOrigin
+    public Message<String> addXuan(@RequestBody List<Ques2> xuans)
+    {
+        Message<String> message = new Message<>();
+        System.out.println(xuans);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            for(int i=0;i<xuans.size();i++) {
+                Ques2_temp ques2_temp=new Ques2_temp();
+                ques2_temp.setXuanID(xuans.get(i).getXuanID());
+                ques2_temp.setQuesID(xuans.get(i).getQuesID());
+                ques2_temp.setMode(xuans.get(i).getMode());
+                ques2_temp.setTitle(xuans.get(i).getTitle());
+                ques2_temp.setChoose(xuans.get(i).getChoose());
+                ques2_temp.setFill(xuans.get(i).isFill());
+                List<String> te = xuans.get(i).getChoices();
+                String re = String.join("$",te);
+                ques2_temp.setChoices(re);
+                quesMapper.insertXuan(ques2_temp);
+            }
+            message.setSuccess(true);
+            message.setMsg("创建成功");
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("创建失败:" + e.getMessage());
+            return message;
+        }
+        return message;
+    }
+
+
+
     /**
      * 发布一个问卷
      * */
@@ -211,6 +276,29 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             quesMapper.insert(ques);
+            //添加填空
+            List<Ques1> tians=new ArrayList<>();
+            tians=ques.getTians();
+            for(int i=0;i<tians.size();i++) {
+                quesMapper.insertTian(tians.get(i));
+            }
+            //添加选择
+            List<Ques2> xuans=new ArrayList<>();
+            xuans=ques.getXuans();
+            for(int i=0;i<xuans.size();i++) {
+                Ques2_temp ques2_temp=new Ques2_temp();
+                ques2_temp.setXuanID(xuans.get(i).getXuanID());
+                ques2_temp.setQuesID(xuans.get(i).getQuesID());
+                ques2_temp.setMode(xuans.get(i).getMode());
+                ques2_temp.setTitle(xuans.get(i).getTitle());
+                ques2_temp.setChoose(xuans.get(i).getChoose());
+                ques2_temp.setFill(xuans.get(i).isFill());
+                List<String> te = xuans.get(i).getChoices();
+                String re = String.join("$",te);
+                ques2_temp.setChoices(re);
+                quesMapper.insertXuan(ques2_temp);
+            }
+            
             message.setSuccess(true);
             message.setMsg("创建成功");
             sqlSession.commit();
@@ -675,72 +763,13 @@ public class QuestionnaireController {
         return message;
     }
 
-    /**
-     * 添加问卷的填空题
-     * */
-    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/tian")
-    @CrossOrigin
-    public Message<String> addTian(@RequestBody List<Ques1> tians)
-    {
-        Message<String> message = new Message<>();
-        System.out.println(tians);
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            for(int i=0;i<tians.size();i++) {
-                quesMapper.insertTian(tians.get(i));
-            }
-            message.setSuccess(true);
-            message.setMsg("创建成功");
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            message.setSuccess(false);
-            message.setMsg("创建失败:" + e.getMessage());
-            return message;
-        }
-        return message;
-    }
 
-    /**
-     * 添加问卷的选择题
-     * */
-    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/xuan")
-    @CrossOrigin
-    public Message<String> addXuan(@RequestBody List<Ques2> xuans)
-    {
-        Message<String> message = new Message<>();
-        System.out.println(xuans);
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            for(int i=0;i<xuans.size();i++) {
-                Ques2_temp ques2_temp=new Ques2_temp();
-                ques2_temp.setXuanID(xuans.get(i).getXuanID());
-                ques2_temp.setQuesID(xuans.get(i).getQuesID());
-                ques2_temp.setMode(xuans.get(i).getMode());
-                ques2_temp.setTitle(xuans.get(i).getTitle());
-                ques2_temp.setChoose(xuans.get(i).getChoose());
-                ques2_temp.setFill(xuans.get(i).isFill());
-                List<String> te = xuans.get(i).getChoices();
-                String re = String.join("$",te);
-                ques2_temp.setChoices(re);
-                quesMapper.insertXuan(ques2_temp);
-            }
-            message.setSuccess(true);
-            message.setMsg("创建成功");
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            message.setSuccess(false);
-            message.setMsg("创建失败:" + e.getMessage());
-            return message;
-        }
-        return message;
-    }
 
 
 
     /**
-     * 添加问卷的选择题
+     * 填写问卷
+     * 回答问卷问题
      * */
     @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/commit")
     @CrossOrigin
