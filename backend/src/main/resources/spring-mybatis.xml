@@ -13,8 +13,8 @@
     <!--别名，就是将后面那一堆，用User代替-->
     <typeAliases>
         <typeAlias alias="User" type="xyz.timoney.swsad.bean.user.User"/>
-        <typeAlias alias="questionnaire" type="xyz.timoney.swsad.bean.questionnaire.Questionnaire"/>
-        <typeAlias alias="infos" type="xyz.timoney.swsad.bean.questionnaire.Infos"/>
+        <typeAlias alias="Questionnaire" type="xyz.timoney.swsad.bean.questionnaire.Questionnaire"/>
+        <typeAlias alias="Infos" type="xyz.timoney.swsad.bean.questionnaire.Infos"/>
         <typeAlias alias="Ques1" type="xyz.timoney.swsad.bean.questionnaire.Ques1"/>
         <typeAlias alias="Ques2_temp" type="xyz.timoney.swsad.bean.questionnaire.Ques2_temp"/>
         <typeAlias alias="QuesResult_temp" type="xyz.timoney.swsad.bean.questionnaire.QuesResult_temp"/>

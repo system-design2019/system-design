@@ -164,7 +164,7 @@ public class QuestionnaireController {
      * */
     @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/proceed/all")
     @CrossOrigin
-    public String getQueses(){
+    public Message<List<Questionnaire>> getQueses(){
         Message<List<Questionnaire>> message = new Message<>();
         List<Questionnaire> listQues;
         //获取一个连接
@@ -195,7 +195,7 @@ public class QuestionnaireController {
         }
         //最后记得关闭连接
 
-        return new Gson().toJson(message);
+        return message;
     }
 
     /**

@@ -75,7 +75,7 @@
     </select>
 
 
-    <select id="getInfo"  parameterType="int" resultType="infos">
+    <select id="getInfo"  parameterType="int" resultType="Infos">
         select * from questionnaire_table where quesID = #{quesID}
     </select>
 

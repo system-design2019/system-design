@@ -19,7 +19,7 @@ public class Questionnaire {
     private String detail;
     private String publisher;
     private int reward;
-    public Infos Infos;
+    public Infos infos;
     private String command;
     private String status;
     private String cont_title;
@@ -36,7 +36,7 @@ public class Questionnaire {
         publisher="#";
         detail="#";
         reward=0;
-        Infos = new Infos();
+        infos = new Infos();
         command="#";
         status="not done";
         cont_title="#";
@@ -78,11 +78,11 @@ public class Questionnaire {
     }
 
     public xyz.timoney.swsad.bean.questionnaire.Infos getInfos() {
-        return Infos;
+        return infos;
     }
 
     public void setInfos(xyz.timoney.swsad.bean.questionnaire.Infos infos) {
-        Infos = infos;
+        this.infos = infos;
     }
 
     public void setQuesID(int quesID) {
