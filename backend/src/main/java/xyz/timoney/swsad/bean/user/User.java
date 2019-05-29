@@ -16,6 +16,13 @@ public class User {
     public static List<User> cacheList = new ArrayList<>();
 
     /**
+     * 判断是否初始化
+    * */
+    public static boolean isInit(String s){
+        return s != null && !s.isEmpty() && s.charAt(0) != '$';
+    }
+
+    /**
      * 用户数量
      * */
     //目前还没有使用这个字段
@@ -88,7 +95,7 @@ public class User {
 
     public User(){
         String uuid = Util.getUUID();
-        password = "default_password";
+        password = "";
         email = "$"+uuid;
         phone = "$"+uuid;
         name = "$"+uuid;
