@@ -110,7 +110,7 @@ public class QuestionnaireController {
             for(int i=0;i<ques2s_temp.size();i++)
             {
                 Ques2 te = new Ques2();
-                te.setID(ques2s_temp.get(i).getID());
+                te.setXuanID(ques2s_temp.get(i).getXuanID());
                 te.setQuesID(ques2s_temp.get(i).getQuesID());
                 te.setMode(ques2s_temp.get(i).getMode());
                 te.setTitle(ques2s_temp.get(i).getTitle());
@@ -231,7 +231,7 @@ public class QuestionnaireController {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             for(int i=0;i<xuans.size();i++) {
                 Ques2_temp ques2_temp=new Ques2_temp();
-                ques2_temp.setID(xuans.get(i).getID());
+                ques2_temp.setXuanID(xuans.get(i).getXuanID());
                 ques2_temp.setQuesID(xuans.get(i).getQuesID());
                 ques2_temp.setMode(xuans.get(i).getMode());
                 ques2_temp.setTitle(xuans.get(i).getTitle());
@@ -257,7 +257,7 @@ public class QuestionnaireController {
 
 
     /**
-     * 发布一个问卷
+     * 创建一个问卷
      * */
     @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/publish")
     @CrossOrigin
@@ -266,6 +266,7 @@ public class QuestionnaireController {
         /*
         验证用户身份
         */
+
         Message<String> message = new Message<>();
         final int userId = UserState.verifyCookie(userCookieKey, message);
         if(!message.isSuccess()){
@@ -275,20 +276,32 @@ public class QuestionnaireController {
         System.out.println(ques);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //添加问卷主要信息
             quesMapper.insert(ques);
+
             //添加填空
+
             List<Ques1> tians=new ArrayList<>();
             tians=ques.getTians();
             for(int i=0;i<tians.size();i++) {
+                tians.get(i).setQuesID(ques.getQuesID());
+
+            }
+            for(int i=0;i<tians.size();i++) {
+
                 quesMapper.insertTian(tians.get(i));
             }
+
             //添加选择
+
             List<Ques2> xuans=new ArrayList<>();
             xuans=ques.getXuans();
+
+
             for(int i=0;i<xuans.size();i++) {
                 Ques2_temp ques2_temp=new Ques2_temp();
-                ques2_temp.setID(xuans.get(i).getID());
-                ques2_temp.setQuesID(xuans.get(i).getQuesID());
+                ques2_temp.setXuanID(xuans.get(i).getXuanID());
+                ques2_temp.setQuesID(ques.getQuesID());
                 ques2_temp.setMode(xuans.get(i).getMode());
                 ques2_temp.setTitle(xuans.get(i).getTitle());
                 ques2_temp.setChoose(xuans.get(i).getChoose());
@@ -302,12 +315,14 @@ public class QuestionnaireController {
             message.setSuccess(true);
             message.setMsg("创建成功");
             sqlSession.commit();
+
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
             message.setMsg("创建失败:" + e.getMessage());
             return message;
         }
+
         /*
         更新问卷id缓存
         */
