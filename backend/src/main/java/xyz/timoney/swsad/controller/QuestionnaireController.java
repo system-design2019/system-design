@@ -137,7 +137,7 @@ public class QuestionnaireController {
             //计算number
             int num = ques1s.size()+ques2s.size();
 
-            quesCont.setQuesID(num);
+            quesCont.setQuesID(quesID);
             quesCont.setNumber(num);
             quesCont.setTitle(title);
             quesCont.setQues1(ques1s);
@@ -176,6 +176,7 @@ public class QuestionnaireController {
                 Infos temp = quesMapper.getInfo(listQue.getQuesID());
                 listQue.setInfos(temp);
             }
+
             message.setData(listQues);
             message.setSuccess(true);
             message.setMsg("获取成功");
