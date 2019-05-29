@@ -184,7 +184,7 @@
                 <TabPane label="我发布的" name="credit">
                     <div id="Dynamic" v-for="(ques,index) in publishLists">
                         <div>
-                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.endtime}} </span><span style="font-size:15px;color:gray;">我发布了</span>
+                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.infos.startTime}} </span> <span style="font-size:15px;color:gray;">我发布了</span>
                         </div>
                         <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
                     </div>
@@ -192,7 +192,7 @@
                 <TabPane label="我参与的" name="history">
                     <div id="Dynamic" v-for="(ques,index) in attendLists">
                         <div>
-                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.endtime}} </span><span style="font-size:15px;color:gray;">我参与了</span>
+                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.infos.startTime}} </span><span style="font-size:15px;color:gray;">我参与了</span>
                         </div>
                         <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
                     </div>
@@ -200,7 +200,7 @@
                 <TabPane label="我的收藏" name="collect">
                     <div id="Dynamic" v-for="(ques,index) in collectLists">
                         <div>
-                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.endtime}} </span><span style="font-size:15px;color:gray;">我收藏了</span>
+                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.infos.startTime}} </span><span style="font-size:15px;color:gray;">我收藏了</span>
                         </div>
                         <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
                     </div>
@@ -243,8 +243,8 @@ export default {
     computed: mapState('Personal', {
             personDetail: 'personalInfo',
             publishLists: 'publishing',
-            attendLists: 'attendingt',
-            collectLists: 'collecting',
+            attendLists: 'attending',
+            collectLists: 'starring',
             detailContent: 'quesDetail'
         }
         /*
@@ -348,6 +348,9 @@ export default {
     mounted() {
         this.$store.dispatch('Personal/GET_INFO'); //分发action
         this.$store.dispatch('Personal/GET_PUBLISH'); //分发action
+        this.$store.dispatch('Personal/GET_ATTEND'); //分发action
+        this.$store.dispatch('Personal/GET_STAR'); //分发action
+
         //id前面补0   一共5位
         this.zeroId = (this.personDetail.id).toString();
         //alert(this.zeroId);
