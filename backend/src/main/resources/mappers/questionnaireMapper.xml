@@ -10,19 +10,19 @@
     <!--插入一个问卷-->
     <insert id="insert" parameterType="questionnaire">
         insert into questionnaire_table (quesID, title, detail, publisher, reward,total, attend, startTime, endTime, command,status,cont_title,number)
-        values (${quesID},"${title}", "${detail}","${publisher}", ${reward},${Infos.getTotal()},${Infos.getAttend()},"${Infos.getStartTime()}","${Infos.getEndTime()}", "${command}","${status}","${cont_title}",${number})
+        values (${quesID},"${title}", "${detail}",${publisher}, ${reward},${Infos.getTotal()},${Infos.getAttend()},"${Infos.getStartTime()}","${Infos.getEndTime()}", "${command}","${status}","${cont_title}",${number})
     </insert>
 
     <!--插入填空题-->
     <insert id="insertTian" parameterType="Ques1">
         insert into tiankong (tianID, quesID, mode, title, fill)
-        values (${tianID},${quesID},${mode}, "${title}",${fill})
+        values (${ID},${quesID},${mode}, "${title}",${fill})
     </insert>
 
     <!--插入选择题-->
     <insert id="insertXuan" parameterType="Ques2_temp">
         insert into xuanze (xuanID, quesID, mode, title, choose, choices,fill)
-        values (${xuanID},${quesID},${mode}, "${title}",${choose},"${choices}",${fill})
+        values (${ID},${quesID},${mode}, "${title}",${choose},"${choices}",${fill})
     </insert>
 
     <!--提交一个问卷结果-->
@@ -75,7 +75,7 @@
     </select>
 
 
-    <select id="getInfo"  parameterType="int" resultType="Infos">
+    <select id="getInfo"  parameterType="int" resultType="infos">
         select * from questionnaire_table where quesID = #{quesID}
     </select>
 

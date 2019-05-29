@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ques2 {
-    private int xuanID;
+    private int ID;
     private int quesID;
     private int mode;
     private String title;
@@ -14,7 +14,7 @@ public class Ques2 {
 
     public Ques2()
     {
-        xuanID=0;
+        ID=0;
         quesID=0;
         mode=2;
         title="xuanze";
@@ -23,12 +23,12 @@ public class Ques2 {
         fill=false;
     }
 
-    public int getXuanID() {
-        return xuanID;
+    public int getID() {
+        return ID;
     }
 
-    public void setXuanID(int xuanID) {
-        this.xuanID = xuanID;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public int getQuesID() {

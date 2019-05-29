@@ -17,9 +17,9 @@ public class Questionnaire {
     private int quesID;
     private String title;
     private String detail;
-    private String publisher;
+    private int publisher;
     private int reward;
-    public Infos infos;
+    public Infos Infos;
     private String command;
     private String status;
     private String cont_title;
@@ -33,10 +33,10 @@ public class Questionnaire {
     {
         quesID=0;
         title="#";
-        publisher="#";
+        publisher=0;
         detail="#";
         reward=0;
-        infos = new Infos();
+        Infos = new Infos();
         command="#";
         status="not done";
         cont_title="#";
@@ -45,6 +45,13 @@ public class Questionnaire {
         xuans = new ArrayList<>();
     }
 
+    public int getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(int publisher) {
+        this.publisher = publisher;
+    }
 
     public List<Ques1> getTians() {
         return tians;
@@ -78,11 +85,11 @@ public class Questionnaire {
     }
 
     public xyz.timoney.swsad.bean.questionnaire.Infos getInfos() {
-        return infos;
+        return Infos;
     }
 
     public void setInfos(xyz.timoney.swsad.bean.questionnaire.Infos infos) {
-        this.infos = infos;
+        Infos = infos;
     }
 
     public void setQuesID(int quesID) {
@@ -97,9 +104,7 @@ public class Questionnaire {
         this.detail = detail;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
+
 
     public void setReward(int reward) {
         this.reward = reward;
@@ -126,9 +131,7 @@ public class Questionnaire {
         return detail;
     }
 
-    public String getPublisher() {
-        return publisher;
-    }
+
 
     public int getReward() {
         return reward;
