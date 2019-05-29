@@ -28,7 +28,7 @@ public class Util {
     /**
      * 正则表达式：验证手机号
      */
-    public static final String REGEX_MOBILE = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
+    public static final String REGEX_MOBILE = "^1(3|4|5|7|8)\\d{9}$";
 
     /**
      * 正则表达式：验证邮箱

@@ -130,7 +130,7 @@ public class UserController {
             NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
             //只允许注册一个手机号或邮箱号
             User insertUser = new User();
-            if(!StringUtils.isEmpty(user.getEmail())){
+            if(User.isInit(user.getEmail())){
                 if(Util.validEmail(user.getEmail())){
                     insertUser.setEmail(user.getEmail());
                 }else {
@@ -139,7 +139,7 @@ public class UserController {
                     System.out.println(message);
                     return message;
                 }
-            }else if(!StringUtils.isEmpty(user.getPhone())){
+            }else if(User.isInit(user.getPhone())){
                 if(Util.validPhone(user.getPhone())){
                     insertUser.setPhone(user.getPhone());
                 }else {
