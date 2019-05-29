@@ -1,10 +1,9 @@
 <template>
     <div>
         <Modal v-model="signIn" width="600px">
-
             <div id="headImg">
-               <img id="img" src="../images/login.jpg" alt="正方形的原始图片"/>
-               <div style="clear:both"></div>
+                <img id="img" src="../images/login.jpg" alt="正方形的原始图片" />
+                <div style="clear:both"></div>
             </div>
             <div id="rightPart" style="float:right">
                 <div id="headBox2">
@@ -14,22 +13,21 @@
                 </div>
                 <div class="allInput">
                     <span v-if="wrong" style="color: #ce4545">*{{alert}}</span>
-                    <Input v-model="info.username" prefix="ios-contact" placeholder="用户名/手机/邮箱" type="text" style="margin-top:15px"/>
-                    <Input v-model="info.password" prefix="ios-contact" placeholder="密码" type="password" style="margin-top:15px"/>
-                    <Input prefix="ios-contact" placeholder="验证码" style="margin-top:15px"/>
+                    <Input v-model="info.username" prefix="ios-contact" placeholder="用户名/手机/邮箱" type="text" style="margin-top:15px" />
+                    <Input v-model="info.password" prefix="ios-contact" placeholder="密码" type="password" style="margin-top:15px" @keyup.enter.native="doSignIn" />
+                    <Input prefix="ios-contact" placeholder="验证码" style="margin-top:15px" />
                 </div>
                 <div class="allButton">
                     <div style="clear:both"></div>
-                    <Button id="loginBt" size="large" long  @click.native="doSignIn" style="margin-top:15px">登录</Button>
+                    <Button id="loginBt" size="large" long @click.native="doSignIn" style="margin-top:15px">登录</Button>
                     <div class="smallBt">
                         <Button id="findPass" size="small" style="color:#0066cc; border-color:#fff">找回密码</Button>
                         <Button id="signNow" size="small" @click="changeToSignUp" style="color:#0066cc; border-color:#fff">立即注册</Button>
                     </div>
                 </div>
             </div>
-
             <div style="clear:both"></div>
-        <!--
+            <!--
             <div class="allInput">
                 <span v-if="wrong" style="color: #ce4545">*{{alert}}</span>
                 <Input v-model="info.username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
@@ -43,38 +41,34 @@
             <div slot="footer">
                 <Button size="large" long  @click.native="doSignIn">确定</Button>
             </div>-->
-
         </Modal>
-
-
         <Modal v-model="signUp" width="600px">
             <div id="headImg">
-               <img id="img" src="../images/signup.jpg" alt="正方形的原始图片"/>
-               <div style="clear:both"></div>
-            </div>  
-                <!--<div id="headBox2">
+                <img id="img" src="../images/signup.jpg" alt="正方形的原始图片" />
+                <div style="clear:both"></div>
+            </div>
+            <!--<div id="headBox2">
                     <div id="headBox">
                         <img id="head" src="../images/hellobg.jpg" alt="正方形的原始图片" width="150px" height="150px" />
                     </div>
                 </div>-->
             <div id="rightPart" style="float:right;padding-top:70px">
                 <div class="allInput">
-                <span v-if="wrong" style="color: #ce4545">*{{alert}}</span>
-                    <Input v-model="info.username" prefix="ios-contact" placeholder="请输入用户名/手机/邮箱" type="text" style="margin-top:25px"/>
-                    <Input v-model="info.password" prefix="ios-contact" placeholder="请输入密码" type="password" style="margin-top:25px"/>
-                    <Input prefix="ios-contact" placeholder="请输入验证码" style="margin-top:25px"/>
+                    <span v-if="wrong" style="color: #ce4545">*{{alert}}</span>
+                    <Input v-model="info.username" prefix="ios-contact" placeholder="请输入用户名/手机/邮箱" type="text" style="margin-top:25px" />
+                    <Input v-model="info.password" prefix="ios-contact" placeholder="请输入密码" type="password" style="margin-top:25px" @keyup.enter.native="doSignUp" />
+                    <Input prefix="ios-contact" placeholder="请输入验证码" style="margin-top:25px" />
                 </div>
                 <div class="allButton">
                     <div style="clear:both"></div>
                     <Button id="signup" size="large" long @click="doSignUp" style="margin-top:25px">注册</Button>
                     <div class="smallBt">
                         <Button id="signNow" size="small" @click="changeToSignIn" style="color:#0066cc; border-color:#fff">已有账号？</Button>
-                    </div>   
+                    </div>
                 </div>
             </div>
             <div style="clear:both"></div>
-
-    <!--       <div class="allInput">
+            <!--       <div class="allInput">
                 <span v-if="wrong" style="color: #ce4545">*{{alert}}</span>
                 <Input v-model="info.username" prefix="ios-contact" placeholder="请输入用户名" type="text" />
                 <Input v-model="info.password" prefix="ios-contact" placeholder="请输入密码" type="password" />
@@ -86,21 +80,19 @@
             <div slot="footer">
                 <Button size="large" long @click="doSignUp">确定</Button>
             </div>-->
-
         </Modal>
-        
     </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 import { mapGetters } from 'vuex'
-export default {    
+export default {
     props: ['signInFromJump', 'signInFromMain', 'signUpFromMain'],
     data() {
         return {
             signIn: false,
             signUp: false,
-            info: {username: "", password: "", mode:""},
+            info: { username: "", password: "", mode: "" },
             wrong: false,
             alert: ''
         }
@@ -114,32 +106,31 @@ export default {
             this.signUp = false;
             this.signIn = true;
         },
-        doSignUp(){
-            if(this.checkValid(this.info.username) !== 'invalid'){
+        doSignUp() {
+            if (this.checkValid(this.info.username) !== 'invalid') {
                 this.info.mode = this.checkValid(this.info.username)
                 this.$store.dispatch('SIGN_UP', this.info).then(
                     (response) => {
                         console.log('response')
                         console.log(response)
-                        if(response['success']){
+                        if (response['success']) {
                             this.wrong = false
                             this.changeToSignIn()
-                        }
-                        else{
+                        } else {
                             this.wrong = true;
                             this.alert = response['msg']
                         }
                     }
                 )
             }
-            
+
         },
-        doSignIn(){
-            if(this.checkValid(this.info.username) !== 'invalid'){
+        doSignIn() {
+            if (this.checkValid(this.info.username) !== 'invalid') {
                 this.info.mode = this.checkValid(this.info.username)
                 this.$store.dispatch('SIGN_IN', this.info).then(
                     (response) => {
-                        if(response['success']){
+                        if (response['success']) {
                             this.$emit("SignSuccess", true)
                             this.signIn = false
                             let data = {
@@ -148,13 +139,12 @@ export default {
                             }
                             window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
                             this.$router.push({
-                                path:'/main',
+                                path: '/main',
                                 name: 'main',
                             })
                             this.wrong = false
                             console.log(this.$cookies.get('User'))
-                        }
-                        else{
+                        } else {
                             // console.log('??????????')
                             this.wrong = true;
                             this.alert = response['msg']
@@ -162,25 +152,22 @@ export default {
                     }
                 )
             }
-            
-            
+
+
         },
-        checkValid(username){
-            if(this.info.usernmae === '' || this.info.password === ''){
+        checkValid(username) {
+            if (this.info.usernmae === '' || this.info.password === '') {
                 this.wrong = true
                 this.alert = '密码或用户名不能为空'
                 return 'invalid'
-            }
-            else {
-                let email=/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
-                let phone=/^1[34578]\d{9}$/
-                if(phone.test(username)){
+            } else {
+                let email = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
+                let phone = /^1[34578]\d{9}$/
+                if (phone.test(username)) {
                     return 'phone'
-                }
-                else if(email.test(username)){
+                } else if (email.test(username)) {
                     return 'email'
-                }
-                else{
+                } else {
                     this.wrong = true
                     this.alert = '无效的用户名'
                     return 'invalid'
@@ -210,12 +197,14 @@ export default {
     float: right;
     font-size: 20px;
 }
-#headImg{
+
+#headImg {
     width: 50%;
     height: 100%;
     position: relative;
-    float:left;
+    float: left;
 }
+
 #img {
     width: 100%;
     height: 100%;
@@ -236,9 +225,9 @@ export default {
 }
 
 #rightPart {
-    width:50%;
-    padding:15px;
-    position:relative;
+    width: 50%;
+    padding: 15px;
+    position: relative;
 }
 
 #head {
@@ -249,37 +238,44 @@ export default {
     display: block;
     margin: auto;
 }
+
 #loginBt {
-    height:40px;
-    border-radius: 30px; 
-    background:linear-gradient(to right,rgb(206,53,53),rgb(255,51,102));
-    color:#fff
+    height: 40px;
+    border-radius: 30px;
+    background: linear-gradient(to right, rgb(206, 53, 53), rgb(255, 51, 102));
+    color: #fff
 }
 
 #signup {
-    height:40px;
-    margin-top:15px; 
-    border-radius: 30px; 
-    background:linear-gradient(to right,#00cccc,#009966);
-    color:#fff
+    height: 40px;
+    margin-top: 15px;
+    border-radius: 30px;
+    background: linear-gradient(to right, #00cccc, #009966);
+    color: #fff
 }
+
 .allButton {
-    width:100%;
+    width: 100%;
 }
-.smallBt{
-    float:right;
-    margin-top:10px;
+
+.smallBt {
+    float: right;
+    margin-top: 10px;
 }
+
 .ivu-modal-footer {
     display: none;
 }
+
 .ivu-modal-body {
     padding: 1px;
 }
-.ivu-input-prefix{
+
+.ivu-input-prefix {
     display: none;
 }
-.ivu-input.ivu-input-default.ivu-input-with-prefix{
+
+.ivu-input.ivu-input-default.ivu-input-with-prefix {
     height: 40px;
     border-radius: 30px;
 }

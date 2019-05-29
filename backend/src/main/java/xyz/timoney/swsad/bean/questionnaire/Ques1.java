@@ -1,7 +1,7 @@
 package xyz.timoney.swsad.bean.questionnaire;
 
 public class Ques1 {
-    private int tianID;
+    private int ID;
     private int quesID;
     private int mode;
     private String title;
@@ -9,19 +9,19 @@ public class Ques1 {
 
     public Ques1()
     {
-        tianID=0;
+        ID=0;
         quesID=0;
         mode=1;
         title="tiankong";
         fill=false;
     }
 
-    public int getTianID() {
-        return tianID;
+    public int getID() {
+        return ID;
     }
 
-    public void setTianID(int tianID) {
-        this.tianID = tianID;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public int getQuesID() {

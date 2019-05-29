@@ -275,26 +275,29 @@ export default {
                 }
                 */
             } else {
-                console.log("file" + this.userInfo.avatar);
+                //没有选择的时候 avatar = ""  空串
+                if (this.userInfo.avatar != "") {
+                    let formData = new FormData();
+                    formData.append("file", this.userInfo.avatar);
+                    var _this = this;
+                    let response = service.post('/upload', formData)
+                        .then(function(response) {
+                            //alert(response.data);
+                            console.log("the response:" + JSON.stringify(response));
+                            console.log("the data.data:" + response.data.data);
+                            _this.personDetail.face = response.data.data;
+                            _this.$store.dispatch('Personal/UPDATE_INFO');
 
-                let formData = new FormData();
-                formData.append("file", this.userInfo.avatar);
-                var _this = this;
-                let response = service.post('/upload', formData)
-                    .then(function(response) {
-                        //alert(response.data);
-                        console.log("the response:" + JSON.stringify(response));
-                        console.log("the data.data:" + response.data.data);
-                        _this.personDetail.face = response.data.data;
-                        _this.$store.dispatch('Personal/UPDATE_INFO');
-
-                        //window.location.reload();
-                    })
-                    .catch(function(error) {
-                        alert("上传失败");
-                        console.log(error);
-                        // window.location.reload();
-                    });
+                            //window.location.reload();
+                        })
+                        .catch(function(error) {
+                            alert("上传失败");
+                            console.log(error);
+                            // window.location.reload();
+                        });
+                } else {
+                    this.$store.dispatch('Personal/UPDATE_INFO');
+                }
 
                 console.log("what is this:?" + this.personDetail.face);
 
