@@ -473,7 +473,7 @@ public class QuestionnaireController {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            List<Integer> collecterList = quesCollectUserMapper.getAlsCollectorId(quesId);
+            List<Integer> collecterList = quesCollectUserMapper.getAllCollectorId(quesId);
             //判断是否没有收藏过
             if(!collecterList.contains(userId)){
                 message.setSuccess(false);

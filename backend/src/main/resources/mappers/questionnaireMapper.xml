@@ -16,13 +16,13 @@
     <!--插入填空题-->
     <insert id="insertTian" parameterType="Ques1">
         insert into tiankong (tianID, quesID, mode, title, fill)
-        values (${tianID},${quesID},${mode}, "${title}",${fill})
+        values (${ID},${quesID},${mode}, "${title}",${fill})
     </insert>
 
     <!--插入选择题-->
     <insert id="insertXuan" parameterType="Ques2_temp">
         insert into xuanze (xuanID, quesID, mode, title, choose, choices,fill)
-        values (${xuanID},${quesID},${mode}, "${title}",${choose},"${choices}",${fill})
+        values (${ID},${quesID},${mode}, "${title}",${choose},"${choices}",${fill})
     </insert>
 
     <!--提交一个问卷结果-->
