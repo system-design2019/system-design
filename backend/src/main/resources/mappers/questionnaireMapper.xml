@@ -10,7 +10,7 @@
     <!--插入一个问卷-->
     <insert id="insert" parameterType="questionnaire">
         insert into questionnaire_table (quesID, title, detail, publisher, reward,total, attend, startTime, endTime, command,status,cont_title,number)
-        values (${quesID},"${title}", "${detail}",${publisher}, ${reward},${infos.getTotal()},${infos.getAttend()},"$infos.getStartTime()}","${infos.getEndTime()}", "${command}","${status}","${cont_title}",${number})
+        values (${quesID},"${title}", "${detail}",${publisher}, ${reward},${infos.getTotal()},${infos.getAttend()},"${infos.getStartTime()}","${infos.getEndTime()}", "${command}","${status}","${cont_title}",${number})
     </insert>
 
     <!--插入填空题-->

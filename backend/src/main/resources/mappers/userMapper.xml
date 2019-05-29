@@ -27,7 +27,7 @@
             gender    varchar(40)          null,
             age       int          null,
             nickname  varchar(40)  null,
-            face      varchar(40)  null,
+            face      varchar(200)  null,
             weChatPay varchar(40)  null,
             aliPay    varchar(40)  null,
             QQ        varchar(40)  null,
