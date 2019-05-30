@@ -186,7 +186,7 @@
                         <div>
                             <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.infos.startTime}} </span> <span style="font-size:15px;color:gray;">我发布了</span>
                         </div>
-                        <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
+                        <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
                     </div>
                 </TabPane>
                 <TabPane label="我参与的" name="history">
