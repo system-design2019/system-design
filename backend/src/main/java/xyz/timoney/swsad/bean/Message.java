@@ -40,9 +40,9 @@ public class Message<T> {
 
     @Override
     public String toString() {
-        String s = "--------Message-------\n" +
-                "Success: " + success +
-                "Message: " + msg;
+        String s = "\n--------Message-------" +
+                "\nSuccess: " + success +
+                "\nMessage: " + msg;
         if(data!=null )
             s += "\nData: " + data.toString();
         s += "\n--------Message-------";

@@ -115,6 +115,8 @@
 - JDBC连接闲置太旧报错
   <https://blog.csdn.net/huanggang028/article/details/44646387>
 
+- 跨域问题
+  <https://www.jianshu.com/p/552daaf2869c>
 ## 笔记
 
 保存`jar`文件的`ignore`

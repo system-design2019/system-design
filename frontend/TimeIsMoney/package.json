@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "init": "webpack --progress --config webpack.dev.config.js",
-    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --port=8000 --compress --history-api-fallback --config webpack.dev.config.js",
+    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --port=8000 --host 0.0.0.0 --compress --history-api-fallback --config webpack.dev.config.js",
     "build": "webpack --progress --hide-modules --config webpack.prod.config.js"
   },
   "repository": {
@@ -20,6 +20,7 @@
     "iview": "^3.3.3",
     "qs": "^6.7.0",
     "vue": "^2.5.16",
+    "vue-cookies": "^1.5.13",
     "vue-router": "^2.8.1",
     "vuex": "^3.1.0"
   },

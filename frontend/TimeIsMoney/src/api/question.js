@@ -1,15 +1,66 @@
 import axios from 'axios'
-
+import service from './../util/service.js'
 /**
  * Get all the questionnaires and show on the index
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
 export async function getQuesList () {
-    let response = await axios.get('/allques')
+    let response = await service.get('/questionnaires/proceed/all')
+    console.log(JSON.stringify(response.data))
     return response.data
-
 }
+
+/**
+ * Get all the questionnaires and show on the index
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function getCollectQuesList () {
+    let response = await service.get('/questionnaires/collect/all')
+    return response.data
+}
+
+/**
+ * Get all the questionnaires and show on the index
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function getAttendQuesList () {
+    let response = await service.get('/questionnaires/fill/all')
+    return response.data
+}
+
+/**
+ * Get all the questionnaires and show on the index
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function getPublishQuesList () {
+    let response = await service.get('/questionnaires/publish/all')
+    return response.data
+}
+
+/**
+ * Get all the questionnaires and show on the index
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function collectQues (id) {
+    let response = await service.put('questionnaires/'+id+'/collect')
+    return response.data
+}
+
+/**
+ * Get all the questionnaires and show on the index
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function cancelCollectQues (id) {
+    let response = await service.delete('questionnaires/'+id+'/collect')
+    return response.data
+}
+
 
 /**
  * Get the content of the questionnaire by id
@@ -44,7 +95,8 @@ export async function getQuesContent(id){
  * Promise will return the data of the questionnaires
  */
 export async function getDetail (id) {
-    let response = await axios.get('/getQues/'+String(id))
+    let response = await service.get('/questionnaires/'+id)
+    // console.log(JSON.stringify(response))
     return response.data
 }
 
@@ -56,7 +108,7 @@ export async function getDetail (id) {
  * Promise will return the data of the questionnaires
  */
 export async function commitAns (userid, quesid, answer) {
-    let response = await axios.post('/getQues/'+String(quesid), answer)
+    let response = await service.post('/getQues/'+String(quesid), answer)
     // console.log('response:'+JSON.stringify(response))
     return response.data
 }
@@ -67,7 +119,7 @@ export async function commitAns (userid, quesid, answer) {
  * Promise will return the response of the action
  */
 export async function createQues (data) {
-    let response = await axios.post('/createques', data)
-    // console.log('response:'+JSON.stringify(response))
+    console.error('create:'+JSON.stringify(data))
+    let response = await service.post('/createques', data)
     return response.data
 }

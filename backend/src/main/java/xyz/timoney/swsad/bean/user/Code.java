@@ -1,4 +1,4 @@
-package xyz.timoney.swsad.bean;
+package xyz.timoney.swsad.bean.user;
 
 public class Code {
     /**

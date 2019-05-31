@@ -1,21 +1,47 @@
-package xyz.timoney.swsad.bean;
+package xyz.timoney.swsad.bean.user;
 
-import java.util.Random;
+import xyz.timoney.swsad.bean.Util;
+import xyz.timoney.swsad.bean.questionnaire.Questionnaire;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ */
 public class User {
+    /**
+     * 用户的缓存
+     * */
+    public static List<User> cacheList = new ArrayList<>();
 
-    /*用户数量*/
+    /**
+     * 判断是否初始化
+    * */
+    public static boolean isInit(String s){
+        return s != null && !s.isEmpty() && s.charAt(0) != '$';
+    }
+
+    /**
+     * 用户数量
+     * */
+    //目前还没有使用这个字段
     private static int count = 10000;
-    /*登录资料*/
-    //数据库自动生成
+    /**
+     * 登录资料
+     * */
+    //数据库自动生成auto increase
     private int id;
     private String password;
     //邮箱和手机号均唯一，且不为空，初始状态以"$"开头，表示未初始化
     private String email;
     private String phone;
-    /*实名资料*/
+    /**
+     * 实名资料
+     * */
     //用户名 唯一
     private String name;
+    private String university;
     private String studentId;
     //初始化-1
     //本科1 2 3 4 5
@@ -25,35 +51,66 @@ public class User {
     private String major;
     //初始化-1
     //女0，男1
-    private int gender;
+    private String gender;
     //初始化-1
     //范围0~150
     private int age;
-    /*个性资料*/
+    /**
+     * 个性资料
+     * */
     private String nickname;
-    //保存URL
-    /*
+    //头像保存URL
     private String face;
+    //微信号
     private String weChatPay;
+    //支付宝账号
     private String aliPay;
+    //qq号
     private String QQ;
-    private int credit;
-    */
+    //初始 0
+    //信用
+    private double credit;
+
+    /**
+     * 问卷资料
+     * 现在不在这里啦
+     * */
+/*    //发布的所有问卷
+    private List<Questionnaire> published;
+    //填写的所有问卷
+    private List<Questionnaire> filled;
+    //收藏的所有问卷
+    private List<Questionnaire> collected;*/
+
+    /**
+     * 通知资料
+     * 现在不在这里面啦
+     * */
+    //private List<Notification> notifications;
+
     static public void initCount(int c){
         count = c;
     }
+
+
     public User(){
         String uuid = Util.getUUID();
-        password = "default_password";
+        password = "";
         email = "$"+uuid;
         phone = "$"+uuid;
         name = "$"+uuid;
+        university = null;
         studentId = null;
         grade = -1;
         major = null;
-        gender = -1;
+        gender = "未初始化";
         age = -1;
         nickname = null;
+        face = "https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=62d46c39067b020818c437b303b099b6/d4628535e5dde7119c3d076aabefce1b9c1661ba.jpg";
+        aliPay = null;
+        weChatPay = null;
+        QQ = null;
+        credit = 0;
         count++;
     }
     public void setId(int id) {
@@ -96,7 +153,7 @@ public class User {
         this.grade = grade;
     }
 
-    public void setGender(int gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -117,6 +174,32 @@ public class User {
             this.name = name;
     }
 
+    public void setAliPay(String aliPay) {
+        this.aliPay = aliPay;
+    }
+
+    public void setCredit(double credit) {
+        this.credit = credit;
+    }
+
+    public void setFace(String face) {
+
+        this.face = face;
+    }
+
+    public void setQQ(String QQ) {
+        this.QQ = QQ;
+    }
+
+    public void setWeChatPay(String weChatPay) {
+        this.weChatPay = weChatPay;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
+
     public int getId() {
         return id;
     }
@@ -132,16 +215,16 @@ public class User {
     public String getPhone() {
         return phone;
     }
-    public String getStudentId() {
+
+    public synchronized String getStudentId() {
         return studentId;
     }
 
-
-    public String getNickname() {
+    public synchronized String getNickname() {
         return nickname;
     }
 
-    public String getMajor() {
+    public synchronized String getMajor() {
         return major;
     }
 
@@ -149,7 +232,7 @@ public class User {
         return grade;
     }
 
-    public int getGender() {
+    public String getGender() {
         return gender;
     }
 
@@ -164,6 +247,31 @@ public class User {
     public String getName() {
         return name;
     }
+
+    public double getCredit() {
+        return credit;
+    }
+
+    public String getAliPay() {
+        return aliPay;
+    }
+
+    public String getFace() {
+        return face;
+    }
+
+    public String getQQ() {
+        return QQ;
+    }
+
+    public String getWeChatPay() {
+        return weChatPay;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
 
     @Override
     public String toString() {

@@ -12,8 +12,15 @@
     </settings>
     <!--别名，就是将后面那一堆，用User代替-->
     <typeAliases>
-        <typeAlias alias="User" type="xyz.timoney.swsad.bean.User"/>
-        <typeAlias alias="questionnaire" type="xyz.timoney.swsad.bean.questionnaire"/>
+        <typeAlias alias="User" type="xyz.timoney.swsad.bean.user.User"/>
+        <typeAlias alias="Questionnaire" type="xyz.timoney.swsad.bean.questionnaire.Questionnaire"/>
+        <typeAlias alias="Infos" type="xyz.timoney.swsad.bean.questionnaire.Infos"/>
+        <typeAlias alias="Ques1" type="xyz.timoney.swsad.bean.questionnaire.Ques1"/>
+        <typeAlias alias="Ques2_temp" type="xyz.timoney.swsad.bean.questionnaire.Ques2_temp"/>
+        <typeAlias alias="QuesResult_temp" type="xyz.timoney.swsad.bean.questionnaire.QuesResult_temp"/>
+        <typeAlias alias="Notification" type="xyz.timoney.swsad.bean.user.Notification"/>
+        <typeAlias alias="QuesFillUser" type="xyz.timoney.swsad.bean.quesUser.QuesFillUser"/>
+        <typeAlias alias="QuesCollectUser" type="xyz.timoney.swsad.bean.quesUser.QuesCollectUser"/>
     </typeAliases>
     <!--环境配置-->
     <environments default="development">
@@ -35,5 +42,8 @@
     <mappers>
         <mapper resource="mappers/userMapper.xml"/>
         <mapper resource="mappers/questionnaireMapper.xml"/>
+        <mapper resource="mappers/notificationMapper.xml"/>
+        <mapper resource="mappers/quesFillUserMapper.xml"/>
+        <mapper resource="mappers/quesCollectUserMapper.xml"/>
     </mappers>
 </configuration>

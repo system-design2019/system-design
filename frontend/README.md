@@ -27,6 +27,10 @@ iview环境安装
 
 	npm install vue-axios --save
 
+引入vue-cookies
+
+	np install vue-cookies --save
+
 ### 修改样式库
 
 1. 把当前文件夹内的iview.css和node_modules->ivew->dist->styles下ivew.css替换·

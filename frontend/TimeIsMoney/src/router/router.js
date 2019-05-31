@@ -15,13 +15,12 @@ const routers = [{
         component: (resolve) => require(['../views/Sign.vue'], resolve)
     },
     {
-        path: '/', 
+        path: '/',
         component: (resolve) => require(['../views/Main.vue'], resolve),
-        children: [
-            {
+        children: [{
                 path: '/main',
                 name: 'main',
-                redirect: function(to){
+                redirect: function(to) {
                     let id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
                     return 'home'
                 }
@@ -34,16 +33,16 @@ const routers = [{
             {
                 path: 'questionnaire',
                 name: 'questionnaire',
-                component: (resolve) => require(['../views/Questionnaire.vue'], resolve)
+                component: (resolve) => require(['../views/Questionnaire.vue'], resolve),
             },
             {
                 path: 'questionnaire/createQuestionnaire', //check the user's receiveBox
-                name:'createQuestionnaire',
-                component: (resolve) => require(['../views/CreateQues.vue'], resolve)
+                name: 'createQuestionnaire',
+                component: (resolve) => require(['../views/CreateQues.vue'], resolve),
             },
             {
                 path: 'questionnaire/filling', //check the user's receiveBox
-                name:'filling',
+                name: 'filling',
                 component: (resolve) => require(['../views/FillingQues.vue'], resolve)
             },
             {
@@ -58,19 +57,11 @@ const routers = [{
             },
             {
                 path: 'receiveBox', //check the user's receiveBox
-                name:'receiveBox',
+                name: 'receiveBox',
                 component: (resolve) => require(['../views/ReceiveBox.vue'], resolve)
             }
         ]
-    },
-    {
-        path: '/historyCheck', //check the user's history deal
-        meta: {
-            title: "historyCheck"
-        },
-        component: (resolve) => require(['../views/historyCheck.vue'], resolve)
     }
-
 
 
 

@@ -1,16 +1,12 @@
 package xyz.timoney.swsad.controller;
 
-import javafx.scene.paint.PhongMaterial;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
-import xyz.timoney.swsad.bean.Code;
+import xyz.timoney.swsad.bean.user.Code;
 import xyz.timoney.swsad.bean.Message;
 import xyz.timoney.swsad.bean.Util;
 import xyz.timoney.swsad.service.Email;
 import xyz.timoney.swsad.service.SMS;
-
-import java.rmi.server.ExportException;
 
 @RestController
 @EnableAutoConfiguration

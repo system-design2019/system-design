@@ -1,14 +1,14 @@
 <template>
-    <div class="qShow">
+    <div>
         <div style="height: 350px">
             <div style="width: 43%; float: left; height:350px; background: #52BDF0">
                 <img src="./../../static/ques/create.jpg" style="float: right; height: 300px; margin-top: 25px"></img>
             </div>
-            <div id="grad"  style="width: 57%; float: right; height:350px; padding-left: 6%;display: flex;align-items:Center;">
+            <div id="grad" style="width: 57%; float: right; height:350px; padding-left: 6%;display: flex;align-items:Center;">
                 <div class="showPage" style="min-height: 150px">
                     <p style="width: 100%"><span style="font-size: 33px; font-weight:100; color: #fff">问卷调查</span> <span style="font-size: 20px; font-weight:100;  color: #fff">Questionnaire</span></p>
                     <p style="font-size: 20px; color: #fff; width: 100%;margin-top: 20px; font-weight:100; ">问卷调查，收集意见，随时随地为你提供最丰富的信息！</p>
-                    <Button type="info" style="margin-top: 30px; " @click="create()">发布问卷</Button>
+                    <Button type="info" style="margin-top: 30px; font-size: 22px" @click="create()">发布问卷</Button>
                 </div>
             </div>
         </div>
@@ -41,17 +41,17 @@ import { Ques } from '../store/questionnaire/index.js'
 import task from "./components/Task.vue"
 import detail from "./components/Detail.vue"
 export default {
-    components:{
+    components: {
         task,
         detail
     },
     data() {
         return {
-            detailModel: false  
+            detailModel: false
         }
 
     },
-    computed:mapState( 'Ques', {
+    computed: mapState('Ques', {
         quesList: 'quesList',
         detailContent: 'quesDetail'
     }),
@@ -61,72 +61,82 @@ export default {
         },
         create() {
             let info = JSON.parse(window.sessionStorage.getItem('LogInfo'))
-            if(info.log)
-                this.$router.push({name: 'createQuestionnaire'})
+            if (info.log)
+                this.$router.push({ name: 'createQuestionnaire' })
             else
                 this.$Message.warning('您还未登录，请先登录后发布问卷。')
         },
-        getDetail(id){
+        getDetail(id) {
             this.$store.dispatch('Ques/GET_DETAIL', id)
             this.detailModel = !this.detailModel
-        },
+        }
         
     },
-    mounted(){
-         this.$store.dispatch('Ques/GET_QUESLIST')
+    mounted() {
+        this.$store.dispatch('Ques/GET_QUESLIST')
+        this.$store.dispatch('Ques/GET_COLLECT_QUESLIST')
+        this.$store.dispatch('Ques/GET_ATTEND_QUESLIST')
+        this.$store.dispatch('Ques/GET_PUBLISH_QUESLIST')
+        // console.log(this.collectQuesList)
     }
 }
 </script>
-<style>
-    #grad {
-        background: linear-gradient(to right, #52BDF0 , rgb(102,255,255));
-    }
-    .upper {
+<style scoped>
+#grad {
+    background: linear-gradient(to right, #52BDF0, rgb(102, 255, 255));
+}
+
+.upper {
     margin-bottom: 5px;
-    float:right;
+    float: right;
 
 }
-.allQN{
-  margin-top: 5px;
-  clear:both;
 
-  .info{
-    margin-right: 15px;
-    margin-bottom: 2px;
+.allQN {
+    margin-top: 5px;
+    clear: both;
 
-  }
-  
-  .someInfo{
-    float:right;
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;      
-  }
+    .info {
+        margin-right: 15px;
+        margin-bottom: 2px;
+
+    }
+
+    .someInfo {
+        float: right;
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+    }
 }
+
 .showPage {
     .ivu-btn-info {
         color: #fff;
-        background-color: rgba(255,255,255,0)!important;
-        border-color: #fff!important;
+        background-color: rgba(255, 255, 255, 0) !important;
+        border-color: #fff !important;
     }
-    .ivu-btn-info span{
-        font-size: 24px!important;
+
+    .ivu-btn-info span {
+        font-size: 24px !important;
     }
+
     .ivu-btn-info:hover {
-        color: #2db7f5!important;
+        color: #2db7f5 !important;
         background-color: #2db7f5;
-        border-color: #2db7f5!important;
+        border-color: #2db7f5 !important;
     }
-    .ivu-btn{
-        border-radius: 30px!important;
-        background: rgba(255,255,255,0)!important;
+
+    .ivu-btn {
+        border-radius: 30px !important;
+        background: rgba(255, 255, 255, 0) !important;
         width: 180px;
         height: 50px;
     }
-    .ivu-btn:hover{
-        border-radius: 30px!important;
-        background: #fff!important;
+
+    .ivu-btn:hover {
+        border-radius: 30px !important;
+        background: #fff !important;
     }
 }
-
 </style>
