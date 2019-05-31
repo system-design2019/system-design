@@ -142,16 +142,20 @@ export default {
            var data = {
                 title: this.title,
                 number: this.questions.length,
-                fillings:[],
-                chooses: []
+                tians:[],
+                xuans: []
             }
+            var tianid = 0
+            var xuanid = 0
              for(var i = 0; i < this.questions.length; ++i){
                 this.questions[i].order = i+1
                 if(this.questions[i].mode === 1){
-                    data.fillings.push(this.questions[i])
+                    this.questions[i].tianID = ++tianid
+                    data.tians.push(this.questions[i])
                 }
                 else if(this.questions[i].mode === 2){
-                    data.chooses.push(this.questions[i])
+                    this.questions[i].xuanID = ++xuanid
+                    data.xuans.push(this.questions[i])
                 }
             }
             this.$store.commit('Ques/createQues/SET_CONTENT', data)

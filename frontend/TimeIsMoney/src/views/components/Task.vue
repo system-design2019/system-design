@@ -56,10 +56,10 @@ export default {
         },
         ifShow(i) {
             if (i === 1) {
-                if (this.mode === '0')
-                    return true
-                else
+                if (this.mode === '1')
                     return false
+                else
+                    return true
             } else if (i < 4) {
                 return true
             }

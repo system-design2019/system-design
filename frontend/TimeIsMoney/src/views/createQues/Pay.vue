@@ -23,6 +23,8 @@ export default {
     methods: {
         changeStep(step){
             let data = JSON.parse('{"formValidate":'+JSON.stringify(this.formValidate)+',"formContent":'+JSON.stringify(this.formContent)+'}')
+            console.log('data')
+            console.log(data)
             this.$store.dispatch('Ques/CREATE_QUES', data)
             this.$emit('changeStep', step)
         }

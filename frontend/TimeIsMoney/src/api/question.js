@@ -120,6 +120,6 @@ export async function commitAns (userid, quesid, answer) {
  */
 export async function createQues (data) {
     console.error('create:'+JSON.stringify(data))
-    let response = await service.post('/createques', data)
+    let response = await service.post('/questionnaires/publish', data)
     return response.data
 }

@@ -124,6 +124,7 @@ export default {
                         if(response['success']){
                             this.wrong = false
                             this.changeToSignIn()
+                            
                         }
                         else{
                             this.wrong = true;
@@ -153,6 +154,9 @@ export default {
                             })
                             this.wrong = false
                             console.log(this.$cookies.get('User'))
+                            this.$store.dispatch('Ques/GET_COLLECT_QUESLIST')
+                            this.$store.dispatch('Ques/GET_ATTEND_QUESLIST')
+                            this.$store.dispatch('Ques/GET_PUBLISH_QUESLIST')
                         }
                         else{
                             // console.log('??????????')

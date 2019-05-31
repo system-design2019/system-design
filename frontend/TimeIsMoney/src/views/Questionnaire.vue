@@ -74,9 +74,6 @@ export default {
     },
     mounted() {
         this.$store.dispatch('Ques/GET_QUESLIST')
-        this.$store.dispatch('Ques/GET_COLLECT_QUESLIST')
-        this.$store.dispatch('Ques/GET_ATTEND_QUESLIST')
-        this.$store.dispatch('Ques/GET_PUBLISH_QUESLIST')
         // console.log(this.collectQuesList)
     }
 }

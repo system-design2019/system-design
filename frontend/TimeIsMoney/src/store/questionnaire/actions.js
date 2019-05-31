@@ -54,8 +54,26 @@ export default {
     // console.log(data)
   },
   [CREATE_QUES] ({commit}, data) {
-    quesAPI.createQues(data).then((info)=>{
-      commit(mutations.SET_DETAIL, info)
+    let format = {
+      "quesID":3338,
+      "title":data.formContent.title,
+      "detail":data.formValidate.detail,
+      "publisher":7,
+      "reward":data.formValidate.reward,
+      "command":data.formValidate.command,
+      "status":"not done",
+      "number":data.formContent.number,
+      "infos":{
+        "total":data.formValidate.quantity,
+        "attend":0,
+        "startTime":data.formValidate.startdate+' '+data.formValidate.starttime,
+        "endTime":data.formValidate.enddata+' '+data.formValidate.endtime
+      },
+      "tians":data.formContent.tians,
+      "xuans":data.formContent.xuans
+      }
+    quesAPI.createQues(format).then((info)=>{
+      
     })
   },
   [CHANGE_COLLECT]({state, commit}, id){

@@ -63,7 +63,7 @@
                 <Button @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
             </FormItem>
         </Form>
-        <div style="width: 100%; text-align: center; margin-top: 20px">
+        <div style="width: 100%; text-align: center; margin-top: 40px">
             <Button @click="changeStep(-1)" style="margin-right:10px">上一步</Button><Button @click="handleSubmit('formValidate')">下一步</Button>
         </div>
     </div>
@@ -148,6 +148,7 @@ export default {
             this.$refs[name].resetFields();
         },
         changeStep: function(step){
+            // console.log()
             this.$emit('changeStep',step)
         }
     }
