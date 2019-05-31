@@ -1,6 +1,7 @@
 package xyz.timoney.swsad.controller;
 
 import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
+import org.springframework.util.StringUtils;
 import xyz.timoney.swsad.bean.*;
 import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
 import xyz.timoney.swsad.bean.quesUser.QuesFillUser;
@@ -49,10 +50,10 @@ public class UserController {
     /**
      * 重置用户表
      * */
-    @RequestMapping(method = RequestMethod.GET,value = "/users/reset")
+/*  @RequestMapping(method = RequestMethod.DELETE,value = "/users/all")
     @CrossOrigin
     public Message<String> usersTableInit(){
-        System.out.println("\nGET /users/reset\n");
+        System.out.println("\nDELETE /users/all\n");
         Message<String> message = new Message<>();
         //获取一个连接,自动提交
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
@@ -73,7 +74,7 @@ public class UserController {
         message.setMsg("用户表重置成功");
         System.out.println(message);
         return message;
-    }
+    }*/
     /**
      * 获取所有用户
      * */
@@ -127,8 +128,41 @@ public class UserController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
-            userMapper.insert(user);
-            int userId = user.getId();
+            //只允许注册一个手机号或邮箱号
+            User insertUser = new User();
+            if(User.isInit(user.getEmail())){
+                if(Util.validEmail(user.getEmail())){
+                    insertUser.setEmail(user.getEmail());
+                }else {
+                    message.setSuccess(false);
+                    message.setMsg("注册失败: 邮箱无效");
+                    System.out.println(message);
+                    return message;
+                }
+            }else if(User.isInit(user.getPhone())){
+                if(Util.validPhone(user.getPhone())){
+                    insertUser.setPhone(user.getPhone());
+                }else {
+                    message.setSuccess(false);
+                    message.setMsg("注册失败: 手机号无效");
+                    System.out.println(message);
+                    return message;
+                }
+            }else {
+                message.setSuccess(false);
+                message.setMsg("注册失败: 手机号和邮箱必须要填一个");
+                System.out.println(message);
+                return message;
+            }
+            if(StringUtils.isEmpty(user.getPassword())){
+                message.setSuccess(false);
+                message.setMsg("注册失败: 密码必须要填写");
+                System.out.println(message);
+                return message;
+            }
+            insertUser.setPassword(user.getPassword());
+            userMapper.insert(insertUser);
+            int userId = insertUser.getId();
             System.out.println(userId);
             notificationMapper.insert(new Notification(0, userId, "注册后第一条通知", "感谢注册TimeIsMoney，有问题尽管联系我们哦"));
             notificationMapper.insert(new Notification(0, userId, "注册后第二条通知", "请尽快实名认证哦"));
@@ -153,7 +187,7 @@ public class UserController {
     /**
      * 登录：判断用户名和密码是否一致
      * 一致返回cookie凭证
-     * 同时返回token
+     * 同时返回用户id
      * 不一致返回null
      * */
     @RequestMapping(method = RequestMethod.POST,value = "/login")
@@ -246,7 +280,7 @@ public class UserController {
 
                 response.addCookie(cookie);
                 //测试使用
-                response.addHeader("User",cookieKey);
+                //response.addHeader("User",cookieKey);
                 System.out.println("cookies:" + cookie.getValue());
                 return message;
             }
@@ -352,7 +386,7 @@ public class UserController {
      * 使用token
      * 获取用户信息，需要有token认证
      * */
-    @RequestMapping(method = RequestMethod.GET,value = "/user/token")
+    /*@RequestMapping(method = RequestMethod.GET,value = "/user/token")
     @CrossOrigin
     public Message<User> getUserByToken(HttpServletRequest request){
         System.out.println("\nGET /user/token\n");
@@ -407,7 +441,7 @@ public class UserController {
             message.setData(user);
             System.out.println(message);
             return message;
-    }
+    }*/
 
 
     /**
@@ -628,7 +662,13 @@ public class UserController {
             return message;
         }
         if(userId != modifyUser.getId()){
-            message.setMsg("更新用户信息失败：Cookie不一致");
+            message.setMsg("更新用户信息失败: Cookie不一致");
+            return message;
+        }
+        //判断face链接长度
+        if(modifyUser.getFace().length() > 199){
+            message.setSuccess(false);
+            message.setMsg("更新用户信息失败: 头像链接过长");
             return message;
         }
 
@@ -729,7 +769,8 @@ public class UserController {
         return new File(fileName);
     }
 
-    /**删除指定用户
+    /**
+     * 删除指定用户
      * 通过id查找
      * */
     @RequestMapping(method = RequestMethod.DELETE,value = "/user")

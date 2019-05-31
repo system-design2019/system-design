@@ -1,6 +1,5 @@
 package xyz.timoney.swsad.controller;
 
-import com.google.gson.Gson;
 import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
 import xyz.timoney.swsad.bean.*;
 import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
@@ -138,7 +137,7 @@ public class QuestionnaireController {
             //计算number
             int num = ques1s.size()+ques2s.size();
 
-            quesCont.setQuesID(num);
+            quesCont.setQuesID(quesID);
             quesCont.setNumber(num);
             quesCont.setTitle(title);
             quesCont.setQues1(ques1s);
@@ -173,16 +172,11 @@ public class QuestionnaireController {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             listQues = quesMapper.getAllQues();
-            System.out.println("-----------Ques Info 问题-----------");
-            System.out.println(new Gson().toJson(listQues));
-            System.out.println("-----------Ques Info 问题-----------");
             for (Questionnaire listQue : listQues) {
                 Infos temp = quesMapper.getInfo(listQue.getQuesID());
                 listQue.setInfos(temp);
-                System.out.println("----------------------");
-                System.out.println(new Gson().toJson(temp));
-                System.out.println("----------------------");
             }
+
             message.setData(listQues);
             message.setSuccess(true);
             message.setMsg("获取成功");
@@ -198,33 +192,21 @@ public class QuestionnaireController {
         return message;
     }
 
+
     /**
-     * 发布一个问卷
+     * 添加问卷的填空题
      * */
-    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/publish")
+    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/tian")
     @CrossOrigin
-    public Message<String> createQues(@CookieValue("user") String userCookieKey, @RequestBody Questionnaire ques)
+    public Message<String> addTian(@RequestBody List<Ques1> tians)
     {
-        /*
-        验证用户身份
-        */
         Message<String> message = new Message<>();
-        final int userId = UserState.verifyCookie(userCookieKey, message);
-        if(!message.isSuccess()){
-            return message;
-        }
-        /*
-        * cookie不一致
-        * */
-        if(ques.getPublisher() != userId){
-            message.setSuccess(false);
-            message.setMsg("创建失败: 无权创建其它人的问卷" );
-            return message;
-        }
-        System.out.println(ques);
+        System.out.println(tians);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            quesMapper.insert(ques);
+            for(int i=0;i<tians.size();i++) {
+                quesMapper.insertTian(tians.get(i));
+            }
             message.setSuccess(true);
             message.setMsg("创建成功");
             sqlSession.commit();
@@ -234,6 +216,114 @@ public class QuestionnaireController {
             message.setMsg("创建失败:" + e.getMessage());
             return message;
         }
+        return message;
+    }
+
+    /**
+     * 添加问卷的选择题
+     * */
+    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/xuan")
+    @CrossOrigin
+    public Message<String> addXuan(@RequestBody List<Ques2> xuans)
+    {
+        Message<String> message = new Message<>();
+        System.out.println(xuans);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            for(int i=0;i<xuans.size();i++) {
+                Ques2_temp ques2_temp=new Ques2_temp();
+                ques2_temp.setXuanID(xuans.get(i).getXuanID());
+                ques2_temp.setQuesID(xuans.get(i).getQuesID());
+                ques2_temp.setMode(xuans.get(i).getMode());
+                ques2_temp.setTitle(xuans.get(i).getTitle());
+                ques2_temp.setChoose(xuans.get(i).getChoose());
+                ques2_temp.setFill(xuans.get(i).isFill());
+                List<String> te = xuans.get(i).getChoices();
+                String re = String.join("$",te);
+                ques2_temp.setChoices(re);
+                quesMapper.insertXuan(ques2_temp);
+            }
+            message.setSuccess(true);
+            message.setMsg("创建成功");
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("创建失败:" + e.getMessage());
+            return message;
+        }
+        return message;
+    }
+
+
+
+    /**
+     * 创建一个问卷
+     * */
+    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/publish")
+    @CrossOrigin
+    public Message<String> createQues(@CookieValue("user") String userCookieKey, @RequestBody Questionnaire ques)
+    {
+        /*
+        验证用户身份
+        */
+
+        Message<String> message = new Message<>();
+        final int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+
+        System.out.println(ques);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //添加问卷主要信息
+            quesMapper.insert(ques);
+
+            //添加填空
+
+            List<Ques1> tians=new ArrayList<>();
+            tians=ques.getTians();
+            for(int i=0;i<tians.size();i++) {
+                tians.get(i).setQuesID(ques.getQuesID());
+
+            }
+            for(int i=0;i<tians.size();i++) {
+
+                quesMapper.insertTian(tians.get(i));
+            }
+
+            //添加选择
+
+            List<Ques2> xuans=new ArrayList<>();
+            xuans=ques.getXuans();
+
+
+            for(int i=0;i<xuans.size();i++) {
+                Ques2_temp ques2_temp=new Ques2_temp();
+                ques2_temp.setXuanID(xuans.get(i).getXuanID());
+                ques2_temp.setQuesID(ques.getQuesID());
+                ques2_temp.setMode(xuans.get(i).getMode());
+                ques2_temp.setTitle(xuans.get(i).getTitle());
+                ques2_temp.setChoose(xuans.get(i).getChoose());
+                ques2_temp.setFill(xuans.get(i).isFill());
+                List<String> te = xuans.get(i).getChoices();
+                String re = String.join("$",te);
+                ques2_temp.setChoices(re);
+                quesMapper.insertXuan(ques2_temp);
+            }
+
+            message.setSuccess(true);
+            message.setMsg("创建成功");
+            sqlSession.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("创建失败:" + e.getMessage());
+            return message;
+        }
+
         /*
         更新问卷id缓存
         */
@@ -282,7 +372,6 @@ public class QuestionnaireController {
             message.setMsg("获取发布问卷id成功: 来自缓存");
             message.setData(Questionnaire.cacheListId.get(userId));
             System.out.println(message);
-            return message;
         }
         //查找数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
@@ -332,22 +421,9 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
-            //获取该用户收藏的问卷列表
-            List<Integer> collectedList = quesCollectUserMapper.getAllCollectedId(userId);
-            //获得问卷对象
-            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            questionnaire = questionnaireMapper.getQuesByID(quesId);
-            //判断问卷是否存在
-            if(questionnaire == null){
-                message.setSuccess(false);
-                message.setMsg("收藏问卷失败: 该问卷不存在");
-                System.out.println(message);
-                return message;
-            }
-            //获取Info
-            questionnaire.setInfos(questionnaireMapper.getInfo(quesId));
+            List<Integer> collecterList = quesCollectUserMapper.getAllCollectedId(userId);
             //判断是否重复收藏
-            if(collectedList.contains(userId)){
+            if(collecterList.contains(userId)){
                 message.setSuccess(false);
                 message.setMsg("收藏问卷失败: 已经收藏了此问卷");
                 System.out.println(message);
@@ -355,6 +431,9 @@ public class QuestionnaireController {
             }
             //添加记录
             quesCollectUserMapper.insert(new QuesCollectUser(quesId, userId));
+            //获得问卷对象
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            questionnaire = questionnaireMapper.getQuesByID(quesId);
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
@@ -410,9 +489,9 @@ public class QuestionnaireController {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            List<Integer> collectedList = quesCollectUserMapper.getAllCollectorId(quesId);
+            List<Integer> collecterList = quesCollectUserMapper.getAllCollectorId(quesId);
             //判断是否没有收藏过
-            if(!collectedList.contains(quesId)){
+            if(!collecterList.contains(userId)){
                 message.setSuccess(false);
                 message.setMsg("取消收藏问卷失败: 没有收藏过此问卷");
                 System.out.println(message);
@@ -431,11 +510,11 @@ public class QuestionnaireController {
         //同步发送到缓存中的用户收藏id列表
         if(QuesCollectUser.cacheListId.containsKey(userId)){
             //不知道会不会remove错
-            QuesCollectUser.cacheListId.get(userId).removeIf(quesItemId -> quesItemId == quesId);
+            QuesCollectUser.cacheListId.get(userId).remove((Integer)quesId);
         }
         //同步发送到缓存中的用户收藏列表
         if(QuesCollectUser.cacheList.containsKey(userId)){
-            QuesCollectUser.cacheList.get(userId).removeIf(questionnaireItem -> questionnaireItem.getQuesID()==quesId);
+            QuesCollectUser.cacheList.get(userId).remove(questionnaire);
         }
         message.setSuccess(true);
         message.setMsg("取消收藏问卷成功");
@@ -468,7 +547,6 @@ public class QuestionnaireController {
             message.setMsg("获取收藏问卷id成功: 来自缓存");
             message.setData(QuesCollectUser.cacheListId.get(userId));
             System.out.println(message);
-            return message;
         }
         //查找数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
@@ -515,18 +593,6 @@ public class QuestionnaireController {
         int fillerCount;
         //修改数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
-            //获取问卷详情
-            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            questionnaire = questionnaireMapper.getQuesByID(quesId);
-            //判断问卷是否存在
-            if(questionnaire == null){
-                message.setSuccess(false);
-                message.setMsg("填写问卷失败: 该问卷不存在");
-                System.out.println(message);
-                return message;
-            }
-            //获取Info
-            questionnaire.setInfos(questionnaireMapper.getInfo(quesId));
             //获得问卷填写者列表
             QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
             List<Integer> fillerList = quesFillUserMapper.getAllFillerId(quesId);
@@ -538,6 +604,9 @@ public class QuestionnaireController {
                 return message;
             }
             fillerCount = fillerList.size();
+            //获取问卷详情
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            questionnaire = questionnaireMapper.getQuesByID(quesId);
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
@@ -548,7 +617,6 @@ public class QuestionnaireController {
         /**
          * 人数是否已满
          * */
-        System.out.println(new Gson().toJson(questionnaire));
         if(questionnaire.getInfos().getTotal() > fillerCount ){
             //修改数据库
             try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
@@ -562,8 +630,6 @@ public class QuestionnaireController {
                  * */
                 //attend加一
                 int affect = questionnaireMapper.addOneFill();
-                //人数加一
-                questionnaire.getInfos().setAttend(questionnaire.getInfos().getAttend() + 1);
                 System.out.println("Affect : " + affect);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -652,11 +718,11 @@ public class QuestionnaireController {
         //同步发送到缓存中的用户收藏id列表
         if(QuesFillUser.cacheListId.containsKey(userId)){
             //不知道会不会remove错
-            QuesFillUser.cacheListId.get(userId).removeIf(quesItemId -> quesItemId == quesId);
+            QuesFillUser.cacheListId.get(userId).remove((Integer)quesId);
         }
         //同步发送到缓存中的用户收藏列表
         if(QuesFillUser.cacheList.containsKey(userId)){
-            QuesFillUser.cacheList.get(userId).removeIf(questionnaireItem -> questionnaireItem.getQuesID()==quesId);
+            QuesFillUser.cacheList.get(userId).remove(questionnaire);
         }
         message.setSuccess(true);
         message.setMsg("已取消填写问卷");
@@ -687,7 +753,6 @@ public class QuestionnaireController {
             message.setMsg("获取填写问卷id成功: 来自缓存");
             message.setData(QuesFillUser.cacheListId.get(userId));
             System.out.println(message);
-            return message;
         }
         //修改数据库
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
@@ -714,67 +779,7 @@ public class QuestionnaireController {
         return message;
     }
 
-    /**
-     * 添加问卷的填空题
-     * */
-    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/tian")
-    @CrossOrigin
-    public Message<String> addTian(@RequestBody List<Ques1> tians)
-    {
-        Message<String> message = new Message<>();
-        System.out.println(tians);
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            for(int i=0;i<tians.size();i++) {
-                quesMapper.insertTian(tians.get(i));
-            }
-            message.setSuccess(true);
-            message.setMsg("创建成功");
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            message.setSuccess(false);
-            message.setMsg("创建失败:" + e.getMessage());
-            return message;
-        }
-        return message;
-    }
 
-    /**
-     * 添加问卷的选择题
-     * */
-    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/xuan")
-    @CrossOrigin
-    public Message<String> addXuan(@RequestBody List<Ques2> xuans)
-    {
-        Message<String> message = new Message<>();
-        System.out.println(xuans);
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            for(int i=0;i<xuans.size();i++) {
-                Ques2_temp ques2_temp=new Ques2_temp();
-                ques2_temp.setXuanID(xuans.get(i).getXuanID());
-                ques2_temp.setQuesID(xuans.get(i).getQuesID());
-                ques2_temp.setMode(xuans.get(i).getMode());
-                ques2_temp.setTitle(xuans.get(i).getTitle());
-                ques2_temp.setChoose(xuans.get(i).getChoose());
-                ques2_temp.setFill(xuans.get(i).isFill());
-                List<String> te = xuans.get(i).getChoices();
-                String re = String.join("$",te);
-                ques2_temp.setChoices(re);
-                quesMapper.insertXuan(ques2_temp);
-            }
-            message.setSuccess(true);
-            message.setMsg("创建成功");
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            message.setSuccess(false);
-            message.setMsg("创建失败:" + e.getMessage());
-            return message;
-        }
-        return message;
-    }
 
 
 
@@ -784,25 +789,10 @@ public class QuestionnaireController {
      * */
     @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/commit")
     @CrossOrigin
-    public Message<String> commitResult(@CookieValue("user") String userCookieKey, @RequestBody QuesResult quesResult)
+    public Message<String> addXuan(@RequestBody QuesResult quesResult)
     {
-        /*
-        验证用户身份
-        */
-        System.out.println("\nPUT /questionnaires/commit\n");
         Message<String> message = new Message<>();
-        int userId = UserState.verifyCookie(userCookieKey, message);
-        if(!message.isSuccess()){
-            return message;
-        }
-        /*
-        * cookie不一致
-        * */
-        if(userId!=quesResult.getUserID()){
-            message.setSuccess(false);
-            message.setMsg("提交答案失败: 提交账号与当前账号不一致" );
-            return message;
-        }
+
         QuesResult_temp quesResult_temp = new QuesResult_temp();
         System.out.println(quesResult);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {

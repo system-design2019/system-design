@@ -45,10 +45,12 @@
                     <span class="hint" >截止时间 {{detailContent.infos.endTime}}</span>
                 </div>
                 <div style="width: 100%; text-align: center; margin-top: 20px">
-                    <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px" @click="fillIn(detailContent.quesid)">立即填写</Button>
+                <!--    <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px" @click="fillIn(detailContent.quesid)">立即填写</Button>-->
+                <Button id="fill" size="large" @click="fillIn(detailContent.quesid)">立即填写</Button>
                 </div>
             </div>
         </div>
+        <div style="clear:both"></div>
     </Modal>
 </div>
 </template>
@@ -119,9 +121,21 @@ export default{
     /* .ivu-divider-horizontal{
         margin: 0!important;
     } */
-    .d .ivu-modal .ivu-modal-content{
-        height: 520px!important;
-        border-radius: 0!important;
+    #fill {
+        width: 200px;
+        font-size:18px;
+        color: #52bdf0;
+        background-color: #fff!important;
+        border-color: #52bdf0!important;
+        padding: 5px 15px;
+        border-radius: 25px!important;
+
+    }
+    #fill.ivu-btn:hover {
+        color: #fff!important;
+        background-color: #52bdf0!important;
+        background: #52bdf0;
+        border-color: #52bdf0!important;
     }
     .d .ivu-modal .ivu-modal-content .ivu-modal-body{
         padding: 20px!important;

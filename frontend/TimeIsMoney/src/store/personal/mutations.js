@@ -20,7 +20,7 @@ export default {
     },
     [SET_PUBLISHING](state, info) {
         state.publishing = info
-        //console.log('publishing:' + JSON.stringify(state.publishing))
+        console.log('publishing:' + JSON.stringify(state.publishing))
     },
     [SET_ATTENDING](state, info) {
         state.attending = info
