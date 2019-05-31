@@ -26,8 +26,8 @@
                     </div>
                 </Menu>
             </Header>
-            <Content style="padding: '30px 150px'; min-height: 800px;">
-                <router-view></router-view>
+            <Content style="padding: '30px 150px'; min-height: 800px; height: auto; overflow: hidden;">
+                <router-view style="height: auto;"></router-view>
             </Content>
             <signCom :signInFromMain="signInFromMain" @SignSuccess="getSign"></signCom>
             <Footer class="layout-footer-center" style="text-align: center; padding: 50px 20px 24px 20px">
