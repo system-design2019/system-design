@@ -32,8 +32,13 @@ public interface QuestionnaireMapper {
     /*根据ID获取temp选择题*/
     List<Ques2_temp> getQues2s(int quesID);
 
+    /*计算问卷库内的行数*/
+    int CountQuestion();
+
+
     /*获取所有正在进行问卷*/
     List<Questionnaire> getAllQues();
+
 
     /**
      * 获取问卷详情
