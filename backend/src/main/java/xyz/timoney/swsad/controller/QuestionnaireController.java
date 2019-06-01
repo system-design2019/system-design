@@ -279,8 +279,10 @@ public class QuestionnaireController {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
 
             //设置quesID
-            //int count=quesMapper.CountQuestion();
-            //System.out.println(count);
+            int count=quesMapper.CountQuestion();
+            System.out.println(count);
+            count=count+1;
+            ques.setQuesID(count);
 
             //添加问卷主要信息
             quesMapper.insert(ques);

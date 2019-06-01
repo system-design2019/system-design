@@ -38,7 +38,7 @@
 
     <!--计算问卷库行数-->
     <select id="CountQuestion"  resultType="int">
-        select count (*) from questionnaire_table;
+        select count(*) from questionnaire_table
     </select>
 
     <!--Janking: 获取用户发布的所有问卷，降序，也就是时间最近排在最前面-->
