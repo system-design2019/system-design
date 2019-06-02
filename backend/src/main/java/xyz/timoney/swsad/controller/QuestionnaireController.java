@@ -1,5 +1,6 @@
 package xyz.timoney.swsad.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
 import xyz.timoney.swsad.bean.*;
 import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
@@ -18,7 +19,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -101,7 +105,7 @@ public class QuestionnaireController {
             //调用接口中的方法去执行xml文件中的SQL语句
             //获取title
             String title = quesMapper.getTitleByID(quesID);
-            //获取选择题，此处有bug
+            //获取选择题
             List<Ques2_temp> ques2s_temp=new ArrayList<>();
             ques2s_temp=quesMapper.getQues2s(quesID);
 
@@ -159,7 +163,7 @@ public class QuestionnaireController {
     }
 
     /**
-     * 获取所有正在进行的问卷
+     * 获取正在进行的问卷
      * */
     @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/proceed/all")
     @CrossOrigin
@@ -170,8 +174,12 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //当前时间
+            Timestamp current = new Timestamp(new Date().getTime());
+            //System.out.println(current);
             //调用接口中的方法去执行xml文件中的SQL语句
-            listQues = quesMapper.getAllQues();
+
+            listQues = quesMapper.getAllQues(current);
             for (Questionnaire listQue : listQues) {
                 Infos temp = quesMapper.getInfo(listQue.getQuesID());
                 listQue.setInfos(temp);
@@ -192,68 +200,6 @@ public class QuestionnaireController {
         return message;
     }
 
-
-    /**
-     * 添加问卷的填空题
-     * */
-    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/tian")
-    @CrossOrigin
-    public Message<String> addTian(@RequestBody List<Ques1> tians)
-    {
-        Message<String> message = new Message<>();
-        System.out.println(tians);
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            for(int i=0;i<tians.size();i++) {
-                quesMapper.insertTian(tians.get(i));
-            }
-            message.setSuccess(true);
-            message.setMsg("创建成功");
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            message.setSuccess(false);
-            message.setMsg("创建失败:" + e.getMessage());
-            return message;
-        }
-        return message;
-    }
-
-    /**
-     * 添加问卷的选择题
-     * */
-    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/xuan")
-    @CrossOrigin
-    public Message<String> addXuan(@RequestBody List<Ques2> xuans)
-    {
-        Message<String> message = new Message<>();
-        System.out.println(xuans);
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            for(int i=0;i<xuans.size();i++) {
-                Ques2_temp ques2_temp=new Ques2_temp();
-                ques2_temp.setXuanID(xuans.get(i).getXuanID());
-                ques2_temp.setQuesID(xuans.get(i).getQuesID());
-                ques2_temp.setMode(xuans.get(i).getMode());
-                ques2_temp.setTitle(xuans.get(i).getTitle());
-                ques2_temp.setChoose(xuans.get(i).getChoose());
-                ques2_temp.setFill(xuans.get(i).isFill());
-                List<String> te = xuans.get(i).getChoices();
-                String re = String.join("$",te);
-                ques2_temp.setChoices(re);
-                quesMapper.insertXuan(ques2_temp);
-            }
-            message.setSuccess(true);
-            message.setMsg("创建成功");
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            message.setSuccess(false);
-            message.setMsg("创建失败:" + e.getMessage());
-            return message;
-        }
-        return message;
-    }
 
 
 
@@ -280,9 +226,18 @@ public class QuestionnaireController {
 
             //设置quesID
             int count=quesMapper.CountQuestion();
-            System.out.println(count);
+            //System.out.println(count);
             count=count+1;
             ques.setQuesID(count);
+
+            //修改时间格式
+            //SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            //String t1=new String(sp.format(ques.getInfos().getStartTime()));
+            //Timestamp dates = Timestamp.valueOf(sp.format(ques.getInfos().getStartTime()));
+            //System.out.println(dates);
+            //System.out.println(t1);
+            //System.out.println(ques.getInfos().getStartTime());
+            //System.out.println(test);
 
             //添加问卷主要信息
             quesMapper.insert(ques);

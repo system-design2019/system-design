@@ -1,6 +1,8 @@
 package xyz.timoney.swsad.mapper;
+import java.sql.Timestamp;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import xyz.timoney.swsad.bean.questionnaire.*;
 
 public interface QuestionnaireMapper {
@@ -37,7 +39,7 @@ public interface QuestionnaireMapper {
 
 
     /*获取所有正在进行问卷*/
-    List<Questionnaire> getAllQues();
+    List<Questionnaire> getAllQues(@Param("current")Timestamp current);
 
 
     /**

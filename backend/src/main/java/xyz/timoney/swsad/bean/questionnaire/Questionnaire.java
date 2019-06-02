@@ -1,5 +1,9 @@
 package xyz.timoney.swsad.bean.questionnaire;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,8 +32,7 @@ public class Questionnaire {
 
 
 
-    public Questionnaire()
-    {
+    public Questionnaire() throws ParseException {
         quesID=0;
         title="#";
         publisher=0;
@@ -39,8 +42,8 @@ public class Questionnaire {
         command="#";
         status="not done";
         number=2;
-        tians = new ArrayList<>();
-        xuans = new ArrayList<>();
+        tians = new ArrayList<Ques1>();
+        xuans = new ArrayList<Ques2>();
     }
 
     public int getPublisher() {
