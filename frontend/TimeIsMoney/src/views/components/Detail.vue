@@ -46,7 +46,7 @@
                 </div>
                 <div style="width: 100%; text-align: center; margin-top: 20px">
                 <!--    <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px" @click="fillIn(detailContent.quesid)">立即填写</Button>-->
-                <Button id="fill" size="large" @click="fillIn(detailContent.quesid)">立即填写</Button>
+                <Button id="fill" size="large" @click="fillIn(detailContent.quesID)">立即填写</Button>
                 </div>
             </div>
         </div>
@@ -66,6 +66,7 @@ export default{
     },
     methods:{
         fillIn(id){
+            this.detail = false
             let info = JSON.parse(window.sessionStorage.getItem('LogInfo'))
             if(!info.log)
                 this.$Message.warning('您还未登录，请先登录后填写问卷。')
@@ -90,7 +91,7 @@ export default{
         collectQuesList: 'collectQuesList'
     }),
     mounted(){
-        console.log(this.collectQuesList)
+        // console.log(this.collectQuesList)
     },
     watch:{
         showDetail: function(detail, olddetail) {

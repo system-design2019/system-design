@@ -77,7 +77,7 @@ export default {
             if(mode === 1){
                 let data = {
                     mode: trans,
-                    order: 0,
+                    theorder: 0,
                     title: title,
                     fill: false
                 };
@@ -86,7 +86,7 @@ export default {
             else {
                 let data = {
                     mode: trans,
-                    order: 0,
+                    theorder: 0,
                     title: title,
                     maxchoose:1,
                     choices:['选项1', '选项2'],
@@ -148,7 +148,7 @@ export default {
             var tianid = 0
             var xuanid = 0
              for(var i = 0; i < this.questions.length; ++i){
-                this.questions[i].order = i+1
+                this.questions[i].theorder = i+1
                 if(this.questions[i].mode === 1){
                     this.questions[i].tianID = ++tianid
                     data.tians.push(this.questions[i])

@@ -49,10 +49,17 @@ const fillQues = {
             },
             actions:{
                 SET_FILL_QUES({commit}, id){
-                    quesAPI.getQuesContent(id).then((formContent)=>{
-                        commit('SET_QUES_CONTENT', formContent)
-                        commit('SET_QUES_ANSWERS', formContent)
-                        commit('SET_QUES_RULES', formContent)
+                    quesAPI.getQuesContent(id).then((response)=>{
+                        // console.log(formContent)
+                        if(response.success){
+                            commit('SET_QUES_CONTENT', response.formContent)
+                            commit('SET_QUES_ANSWERS', response.formContent)
+                            commit('SET_QUES_RULES', response.formContent)
+                        }
+                        else{
+                            alert("获取失败请稍后重试")
+                        }
+                        
                     })
                     
                 },

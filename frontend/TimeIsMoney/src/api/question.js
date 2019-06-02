@@ -69,24 +69,26 @@ export async function cancelCollectQues (id) {
  * Promise will return the data of the questionnaires
  */
 export async function getQuesContent(id){
-    // let response = await axios.get('/', id)
-    // return response.data
+    let response = await service.get('/questionnaires/content/'+id)
     let data = {
-        success: true,
-        msg: 'yes',
-        data:{
-            formContent:{
-                title:'aaaaaaaa',
-                number: 2,
-                questions:[
-                    {mode: 1, title:'试试', fill:false},
-                    {mode: 2, title:'试试', choose:1, choices:['选项1', '选项2'], fill:false}
-                ]
-            }
+        success: response.data.success,
+        msg: response.data.msg,
+        formContent:{
+            quesID: response.data.data.quesID,
+            title:response.data.data.title,
+            number: response.data.data.number,
+            questions:[]
         }
     }
-    return data.formContent
+    data.formContent.questions = response.data.data.ques1.concat(response.data.data.ques2)
+    data.formContent.questions.sort(sortByThrorder);
+    return data
 }
+
+function sortByThrorder(a,b){
+    return a.theorder-b.theorder;
+};
+
 
 /**
  * Get the detail of the questionnaire
