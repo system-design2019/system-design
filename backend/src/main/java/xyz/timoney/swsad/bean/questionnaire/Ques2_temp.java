@@ -3,6 +3,7 @@ package xyz.timoney.swsad.bean.questionnaire;
 public class Ques2_temp {
     private int xuanID;
     private int quesID;
+    private int theorder;
     private int mode;
     private String title;
     private int choose;
@@ -13,11 +14,20 @@ public class Ques2_temp {
     {
         xuanID=0;
         quesID=0;
+        theorder=0;
         mode=2;
         title="xuanze";
         choose=1;
         choices="#";
         fill=false;
+    }
+
+    public int getTheorder() {
+        return theorder;
+    }
+
+    public void setTheorder(int theorder) {
+        this.theorder = theorder;
     }
 
     public int getXuanID() {

@@ -22,7 +22,6 @@ public class Questionnaire {
     public Infos Infos;
     private String command;
     private String status;
-    private String cont_title;
     private int number;
     private List<Ques1> tians;
     private List<Ques2> xuans;
@@ -39,7 +38,6 @@ public class Questionnaire {
         Infos = new Infos();
         command="#";
         status="not done";
-        cont_title="#";
         number=2;
         tians = new ArrayList<>();
         xuans = new ArrayList<>();
@@ -68,13 +66,7 @@ public class Questionnaire {
     public void setXuans(List<Ques2> xuans) {
         this.xuans = xuans;
     }
-    public String getCont_title() {
-        return cont_title;
-    }
 
-    public void setCont_title(String cont_title) {
-        this.cont_title = cont_title;
-    }
 
     public int getNumber() {
         return number;

@@ -277,6 +277,13 @@ public class QuestionnaireController {
         System.out.println(ques);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+
+            //设置quesID
+            int count=quesMapper.CountQuestion();
+            System.out.println(count);
+            count=count+1;
+            ques.setQuesID(count);
+
             //添加问卷主要信息
             quesMapper.insert(ques);
 
@@ -303,6 +310,7 @@ public class QuestionnaireController {
                 Ques2_temp ques2_temp=new Ques2_temp();
                 ques2_temp.setXuanID(xuans.get(i).getXuanID());
                 ques2_temp.setQuesID(ques.getQuesID());
+                ques2_temp.setTheorder((xuans.get(i).getTheorder()));
                 ques2_temp.setMode(xuans.get(i).getMode());
                 ques2_temp.setTitle(xuans.get(i).getTitle());
                 ques2_temp.setChoose(xuans.get(i).getChoose());
