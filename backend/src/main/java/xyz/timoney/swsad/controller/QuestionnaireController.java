@@ -13,6 +13,7 @@ import xyz.timoney.swsad.bean.questionnaire.QuesContent;
 import xyz.timoney.swsad.mapper.QuesCollectUserMapper;
 import xyz.timoney.swsad.mapper.QuesFillUserMapper;
 import xyz.timoney.swsad.mapper.QuestionnaireMapper;
+import xyz.timoney.swsad.mapper.UserMapper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -167,13 +168,16 @@ public class QuestionnaireController {
      * */
     @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/proceed/all")
     @CrossOrigin
-    public Message<List<Questionnaire>> getQueses(){
-        Message<List<Questionnaire>> message = new Message<>();
+    public Message<List<Questionnaire_temp>> getQueses(){
+        Message<List<Questionnaire_temp>> message = new Message<>();
         List<Questionnaire> listQues;
+        List<Questionnaire_temp> listQues1=new ArrayList<>();
         //获取一个连接
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //用户的映射器
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             //当前时间
             Timestamp current = new Timestamp(new Date().getTime());
             //System.out.println(current);
@@ -185,7 +189,27 @@ public class QuestionnaireController {
                 listQue.setInfos(temp);
             }
 
-            message.setData(listQues);
+            //发布者的名字问题
+            for (Questionnaire listQue : listQues) {
+                Questionnaire_temp temp1=new Questionnaire_temp();
+                temp1.setQuesID(listQue.getQuesID());
+                temp1.setTitle(listQue.getTitle());
+                temp1.setDetail(listQue.getDetail());
+                temp1.setReward(listQue.getReward());
+                temp1.setCommand(listQue.getCommand());
+                temp1.setStatus(listQue.getStatus());
+                temp1.setNumber(listQue.getNumber());
+                temp1.setInfos(listQue.getInfos());
+                //id转名字
+                int theID=listQue.getPublisher();
+                User publish = new User();
+                publish=userMapper.getById(theID);
+                temp1.setPublisherName(publish.getName());
+                //System.out.println(publish.getName());
+                listQues1.add(temp1);
+            }
+
+            message.setData(listQues1);
             message.setSuccess(true);
             message.setMsg("获取成功");
             //要提交后才会生效
