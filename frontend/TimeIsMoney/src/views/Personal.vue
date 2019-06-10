@@ -340,15 +340,6 @@ export default {
 
                 this.styleForText = 'border:0px;';
                 this.buttonText = "编辑资料";
-                /*
-                while (!emailFormat.test(this.personDetail.email)) {
-                    //  alert("email的格式非法，请输入正确的email");
-                }
-                while (!phoneFormat.test(this.personDetail.phone)) {
-                    //alert("phone的格式非法，请输入正确的phone");
-                }
-                */
-                //update headimg
 
             }
         },
