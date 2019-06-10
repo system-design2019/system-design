@@ -253,7 +253,8 @@ export default {
             zeroId: "",
             userInfo: {
                 avatar: ""
-            }
+            },
+            SignByPhone: false
         }
     },
     computed: mapState('Personal', {
@@ -282,16 +283,34 @@ export default {
             if (this.editable == true) {
                 this.styleForText = 'border:1px solid';
                 this.buttonText = "保存资料";
-                /*
                 if (this.personDetail.email[0] == '$') {
-                    alert(this.personDetail.email[0]);
-                    this.editEmail = false;
-                } else if (this.personDetail.phone[0] == '$') {
-                    this.editPhone = false;
+                    //alert(this.personDetail.email[0]);
+                    this.editEmail = true;
+                    this.SignByPhone = false;
+                    alert("邮箱只能修改一次，修改后不能再在本页面被修改，请谨慎输入正确的邮箱!");
+
                 }
-                */
+                if (this.personDetail.phone[0] == '$') {
+                    this.editPhone = true;
+                    this.SignByPhone = true;
+                    alert("手机号只能修改一次，修改后不能再在本页面被修改，请谨慎输入正确的手机号!");
+                }
             } else {
+                if (this.SignByPhone) {
+                    if (!phoneFormat.test(this.personDetail.phone)) {
+                        alert("手机号格式错误");
+                        this.personDetail.phone = "$";
+                    }
+                } else {
+                    if (!emailFormat.test(this.personDetail.email)) {
+                        alert("邮箱格式错误");
+                        this.personDetail.email = "$";
+                    }
+                }
                 //没有选择的时候 avatar = ""  空串
+                this.editEmail = false;
+                this.editPhone = false;
+
                 if (this.userInfo.avatar != "") {
                     let formData = new FormData();
                     formData.append("file", this.userInfo.avatar);
