@@ -127,10 +127,15 @@ public class QuestionnaireController {
                 cho=ques2s_temp.get(i).getChoices();
                 //必须要注意转义
                 String [] choic=cho.split("\\$");
+                for(int j=0;j<choic.length;j++)
+                {
+                    choices.add(choic[j]);
+                }
+                /*不一定只有四个选择
                 choices.add(choic[0]);
                 choices.add(choic[1]);
                 choices.add(choic[2]);
-                choices.add(choic[3]);
+                choices.add(choic[3]);*/
                 te.setChoices(choices);
 
                 ques2s.add(te);
@@ -189,12 +194,18 @@ public class QuestionnaireController {
                 listQue.setInfos(temp);
             }
 
+            for (Questionnaire listQue : listQues)
+            {
+                System.out.println(listQue.getQuesID());
+            }
             //发布者的名字问题
             for (Questionnaire listQue : listQues) {
                 Questionnaire_temp temp1=new Questionnaire_temp();
                 temp1.setQuesID(listQue.getQuesID());
+                System.out.println(listQue.getQuesID());
                 temp1.setTitle(listQue.getTitle());
                 temp1.setDetail(listQue.getDetail());
+                System.out.println(listQue.getDetail());
                 temp1.setReward(listQue.getReward());
                 temp1.setCommand(listQue.getCommand());
                 temp1.setStatus(listQue.getStatus());
@@ -253,15 +264,6 @@ public class QuestionnaireController {
             //System.out.println(count);
             count=count+1;
             ques.setQuesID(count);
-
-            //修改时间格式
-            //SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            //String t1=new String(sp.format(ques.getInfos().getStartTime()));
-            //Timestamp dates = Timestamp.valueOf(sp.format(ques.getInfos().getStartTime()));
-            //System.out.println(dates);
-            //System.out.println(t1);
-            //System.out.println(ques.getInfos().getStartTime());
-            //System.out.println(test);
 
             //添加问卷主要信息
             quesMapper.insert(ques);
