@@ -31,12 +31,23 @@ public interface QuestionnaireMapper {
     /*根据ID获取填空题*/
     List<Ques1> getQues1s(int quesID);
 
+    /*根据ID删除问卷库问卷*/
+    void deleteQuesByID(@Param("quesID")int quesID);
+
+    /*根据ID删除选择库问卷*/
+    void deleteXuanByID(@Param("quesID")int quesID);
+
+    /*根据ID删除填空库问卷*/
+    void deleteTianByID(@Param("quesID")int quesID);
+
     /*根据ID获取temp选择题*/
     List<Ques2_temp> getQues2s(int quesID);
 
     /*计算问卷库内的行数*/
     int CountQuestion();
 
+    /*查询问卷号最大的ID*/
+    int queryMaxID();
 
     /*获取所有正在进行问卷*/
     List<Questionnaire> getAllQues(@Param("current")Timestamp current);

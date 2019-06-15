@@ -1,7 +1,9 @@
 package xyz.timoney.swsad.bean.questionnaire;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
+import xyz.timoney.swsad.bean.questionnaire.Infos;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -79,11 +81,12 @@ public class Questionnaire {
         this.number = number;
     }
 
-    public xyz.timoney.swsad.bean.questionnaire.Infos getInfos() {
+    @JsonProperty("Infos")
+    public Infos getInfos() {
         return Infos;
     }
 
-    public void setInfos(xyz.timoney.swsad.bean.questionnaire.Infos infos) {
+    public void setInfos(Infos infos) {
         Infos = infos;
     }
 

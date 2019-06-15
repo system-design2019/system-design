@@ -41,6 +41,26 @@
         select count(*) from questionnaire_table
     </select>
 
+    <!--查询最大的问卷ID-->
+    <select id="queryMaxID"  resultType="int">
+        select max(quesID) from questionnaire_table
+    </select>
+
+    <!--删除问卷 问卷库-->
+    <delete id="deleteQuesByID"  parameterType="int">
+        delete from questionnaire_table where quesID = ${quesID}
+    </delete>
+
+    <!--删除问卷 选择库-->
+    <delete id="deleteXuanByID"  parameterType="int">
+        delete from xuanze where quesID = ${quesID}
+    </delete>
+
+    <!--删除问卷 填空库-->
+    <delete id="deleteTianByID"  parameterType="int">
+        delete from tiankong where quesID = ${quesID}
+    </delete>
+
     <!--Janking: 获取用户发布的所有问卷，降序，也就是时间最近排在最前面-->
     <select id="getAllPublished"  resultType="questionnaire" parameterType="int">
         select * from questionnaire_table where publisher = #{userId} order by startTime DESC

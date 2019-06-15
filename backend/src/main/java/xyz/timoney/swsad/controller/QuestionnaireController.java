@@ -59,6 +59,38 @@ public class QuestionnaireController {
     }
 
     /**
+     * 根据ID删除问卷
+     * */
+    @RequestMapping(method = RequestMethod.GET,value = "/deleteQues/{quesID}")
+    @CrossOrigin
+    public Message<String> deleteQueseByID(@PathVariable int quesID){
+        Message<String> message = new Message<>();
+        Questionnaire theQues;
+        //获取一个连接
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            //得到映射器
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            quesMapper.deleteQuesByID(quesID);
+            quesMapper.deleteTianByID(quesID);
+            quesMapper.deleteXuanByID(quesID);
+
+            message.setData("success delete");
+            message.setSuccess(true);
+            message.setMsg("获取成功");
+            //要提交后才会生效
+            sqlSession.commit();
+        } catch (Exception e) {
+            message.setData(null);
+            message.setSuccess(false);
+            message.setMsg("获取失败:" + e.getMessage());
+        }
+        //最后记得关闭连接
+        System.out.println(message);
+        return message;
+    }
+
+    /**
      * 获取问卷详情
      * */
     @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/{quesID}")
@@ -194,10 +226,6 @@ public class QuestionnaireController {
                 listQue.setInfos(temp);
             }
 
-            for (Questionnaire listQue : listQues)
-            {
-                System.out.println(listQue.getQuesID());
-            }
             //发布者的名字问题
             for (Questionnaire listQue : listQues) {
                 Questionnaire_temp temp1=new Questionnaire_temp();
@@ -259,11 +287,23 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
 
-            //设置quesID
+            //设置quesID 自动设置
             int count=quesMapper.CountQuestion();
             //System.out.println(count);
-            count=count+1;
-            ques.setQuesID(count);
+            if(count == 0)
+            {
+                ques.setQuesID(1);
+            }else {
+                int maxID=quesMapper.queryMaxID();
+                if(count == maxID)
+                {
+                    ques.setQuesID(count+1);
+                }else
+                {
+                    ques.setQuesID(maxID+1);
+                }
+            }
+
 
             //添加问卷主要信息
             quesMapper.insert(ques);
