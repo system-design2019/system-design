@@ -61,6 +61,11 @@
         delete from tiankong where quesID = ${quesID}
     </delete>
 
+    <!--删除问卷 答案库-->
+    <delete id="deleteAnsByID"  parameterType="int">
+        delete from quesResults where quesID = ${quesID}
+    </delete>
+
     <!--关闭问卷-->
     <update id="closeQuesByID">
         update questionnaire_table set endTime=#{timeNow} where quesID = #{quesID}

@@ -107,6 +107,7 @@ public class QuestionnaireController {
             quesMapper.deleteQuesByID(quesID);
             quesMapper.deleteTianByID(quesID);
             quesMapper.deleteXuanByID(quesID);
+            quesMapper.deleteAnsByID(quesID);
 
             message.setData("success delete");
             message.setSuccess(true);
