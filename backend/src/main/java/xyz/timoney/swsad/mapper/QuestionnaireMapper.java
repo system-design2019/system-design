@@ -40,6 +40,13 @@ public interface QuestionnaireMapper {
     /*根据ID删除填空库问卷*/
     void deleteTianByID(@Param("quesID")int quesID);
 
+
+    /*根据ID关闭问卷*/
+    void closeQuesByID(@Param("quesID")int quesID, @Param("timeNow")Timestamp timeNow);
+
+    /*查看答案*/
+    QuesResult_temp queryAns(@Param("quesID")int quesID,@Param("userID")int userID);
+
     /*根据ID获取temp选择题*/
     List<Ques2_temp> getQues2s(int quesID);
 

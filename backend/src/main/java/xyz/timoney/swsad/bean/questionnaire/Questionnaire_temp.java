@@ -67,7 +67,7 @@ public class Questionnaire_temp {
         this.reward = reward;
     }
 
-    @JsonProperty("Infos")
+
     public Infos getInfos() {
         return Infos;
     }
