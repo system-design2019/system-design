@@ -346,7 +346,7 @@ public class QuestionnaireController {
         } catch (Exception e) {
             message.setData(null);
             message.setSuccess(false);
-            message.setMsg("获取失败:" + e.getMessage());
+            message.setMsg("获取失败:可能是该用户不存在" + e.getMessage());
         }
         //最后记得关闭连接
 
