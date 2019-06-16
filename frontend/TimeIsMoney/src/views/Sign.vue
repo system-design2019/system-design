@@ -15,7 +15,10 @@
                     <span v-if="wrong" style="color: #ce4545">*{{alert}}</span>
                     <Input v-model="info.username" prefix="ios-contact" placeholder="用户名/手机/邮箱" type="text" style="margin-top:15px" />
                     <Input v-model="info.password" prefix="ios-contact" placeholder="密码" type="password" style="margin-top:15px" @keyup.enter.native="doSignIn" />
-                    <Input prefix="ios-contact" placeholder="验证码" style="margin-top:15px" />
+                    <div>
+                        <Input v-model="checkNum" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:15px;width:150px;" @keyup.enter.native="doSignIn" />
+                        <s-identify :identifyCode="identifyCode" @click.native="refreshCode" style="margin-top:15px;float:right;"></s-identify>
+                    </div>
                 </div>
                 <div class="allButton">
                     <div style="clear:both"></div>
@@ -57,7 +60,10 @@
                     <span v-if="wrong" style="color: #ce4545">*{{alert}}</span>
                     <Input v-model="info.username" prefix="ios-contact" placeholder="请输入用户名/手机/邮箱" type="text" style="margin-top:25px" />
                     <Input v-model="info.password" prefix="ios-contact" placeholder="请输入密码" type="password" style="margin-top:25px" @keyup.enter.native="doSignUp" />
-                    <Input prefix="ios-contact" placeholder="请输入验证码" style="margin-top:25px" />
+                    <div>
+                        <Input v-model="checkNum" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:25px;width:150px;" @keyup.enter.native="doSignUp" />
+                        <s-identify :identifyCode="identifyCode" @click.native="refreshCode" style="margin-top:25px;float:right;"></s-identify>
+                    </div>
                 </div>
                 <div class="allButton">
                     <div style="clear:both"></div>
@@ -84,27 +90,60 @@
     </div>
 </template>
 <script>
+import SIdentify from "./components/Identify"
 import { mapState } from 'vuex'
 import { mapGetters } from 'vuex'
 export default {
     props: ['signInFromJump', 'signInFromMain', 'signUpFromMain'],
+    components: { SIdentify },
     data() {
         return {
             signIn: false,
             signUp: false,
             info: { username: "", password: "", mode: "" },
             wrong: false,
-            alert: ''
+            alert: '',
+            identifyCode: "",
+            identifyCodes: "1234567890",
+            checkNum: ""
         }
     },
+    mounted() {
+        this.identifyCode = "";
+        this.makeCode(this.indentifyCodes, 4);
+    },
     methods: {
+        randomNum(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        },
+        refreshCode() {
+            this.identifyCode = "";
+            this.makeCode(this.identifyCodes, 4);
+        },
+        makeCode(o, l) {
+            for (let i = 0; i < l; i++) {
+                this.identifyCode += this.identifyCodes[
+                    this.randomNum(0, this.identifyCodes.length)
+                ];
+            }
+        },
         changeToSignUp() {
             this.signIn = false;
             this.signUp = true;
+            this.info.username = "";
+            this.info.password = "";
+            this.checkNum = "";
         },
         changeToSignIn() {
             this.signUp = false;
             this.signIn = true;
+            this.info.username = "";
+            this.info.password = "";
+            this.checkNum = "";
+        },
+        test() {
+            if (this.checkNum == this.identifyCode)
+                alert("Yes");
         },
         doSignUp() {
             if (this.checkValid(this.info.username) !== 'invalid') {
@@ -123,6 +162,7 @@ export default {
                     }
                 )
             }
+            this.refreshCode();
 
         },
         doSignIn() {
@@ -147,8 +187,7 @@ export default {
                             this.$store.dispatch('Ques/GET_COLLECT_QUESLIST')
                             this.$store.dispatch('Ques/GET_ATTEND_QUESLIST')
                             this.$store.dispatch('Ques/GET_PUBLISH_QUESLIST')
-                        }
-                        else{
+                        } else {
                             // console.log('??????????')
                             this.wrong = true;
                             this.alert = response['msg']
@@ -160,7 +199,12 @@ export default {
 
         },
         checkValid(username) {
-            if (this.info.usernmae === '' || this.info.password === '') {
+            if (this.checkNum != this.identifyCode) {
+                this.wrong = true
+                this.alert = '验证码错误'
+                return 'invalid'
+            }
+            if (this.info.username === '' || this.info.password === '') {
                 this.wrong = true
                 this.alert = '密码或用户名不能为空'
                 return 'invalid'
