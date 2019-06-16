@@ -17,7 +17,7 @@
                 <Row>
                     <Col span="6">
                         <FormItem prop="startdate">
-                            <DatePicker type="date" placeholder="选择日期" v-model="formValidate.startdate" ></DatePicker>
+                            <DatePicker type="date" placeholder="选择日期" v-model="formValidate.startdate"></DatePicker>
                         </FormItem>
                     </Col>
                     <Col span="6">
@@ -138,7 +138,6 @@ export default {
                     this.$store.commit('Ques/createQues/SET_VALIDATE', this.formValidate)
                     // this.$Message.success('发布成功!');
                     // this.$router.push('questionnaire');
-                    console.log("shezhi: "+JSON.stringify(this.formValidate))
                     this.$emit('changeStep',1)
                 } else {
                     this.$Message.error('设置失败！请完善信息后再次尝试');

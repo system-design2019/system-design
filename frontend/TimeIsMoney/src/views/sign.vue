@@ -135,7 +135,7 @@ export default {
                             this.signIn = false
                             let data = {
                                 log: true,
-                                userID: 1
+                                userID: response.data
                             }
                             window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
                             this.$router.push({

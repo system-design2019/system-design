@@ -121,7 +121,7 @@ export async function commitAns (userid, quesid, answer) {
  * Promise will return the response of the action
  */
 export async function createQues (data) {
-    console.error('create:'+JSON.stringify(data))
+    console.log("创建问卷："+JSON.stringify(data))
     let response = await service.post('/questionnaires/publish', data)
     return response.data
 }

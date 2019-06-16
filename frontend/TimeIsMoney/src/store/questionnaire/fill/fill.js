@@ -40,7 +40,7 @@ const fillQues = {
                         else{
                             rules[key] = [
                                 { required: formContent.questions[i].fill, type: 'array', min:1, message: 'Choose at least one option', trigger: 'blur' },
-                                { type: 'array', max: formContent.questions[i].maxchoose, message: 'You can choose '+String(formContent.questions[i].maxchoose)+'at most', trigger: 'blur' }
+                                { type: 'array', max: formContent.questions[i].choose, message: 'You can choose '+String(formContent.questions[i].choose)+'at most', trigger: 'blur' }
                             ]
                         }
                     }
@@ -64,7 +64,21 @@ const fillQues = {
                     
                 },
                 POST_QUES(userid, quesid, answer){
-                    quesAPI.commitAns(userid, quesid, answer).then((response) => {
+                    let data = {
+                        quesID: quesid,
+                        userID: userid,
+                        tiankong: [],
+                        xuanze: []
+                    }
+                    for(let i = 0; i < answer.length; ++i){
+                        if(typeof(answer[i]) == 'string'){
+                            data.tiankong.push(answer[i])
+                        }
+                        else{
+                            data.xuanze.push(answer[i].join(','))
+                        }
+                    }
+                    quesAPI.commitAns(data).then((response) => {
                         if(!response.success){
                             console.log('wrong')
                         }
