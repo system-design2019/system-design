@@ -320,10 +320,10 @@ public class QuestionnaireController {
             for (Questionnaire listQue : listQues) {
                 Questionnaire_temp temp1=new Questionnaire_temp();
                 temp1.setQuesID(listQue.getQuesID());
-                System.out.println(listQue.getQuesID());
+                //System.out.println(listQue.getQuesID());
                 temp1.setTitle(listQue.getTitle());
                 temp1.setDetail(listQue.getDetail());
-                System.out.println(listQue.getDetail());
+                //System.out.println(listQue.getDetail());
                 temp1.setReward(listQue.getReward());
                 temp1.setCommand(listQue.getCommand());
                 temp1.setStatus(listQue.getStatus());

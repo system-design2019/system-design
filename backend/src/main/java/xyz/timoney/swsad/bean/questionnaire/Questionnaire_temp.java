@@ -4,6 +4,7 @@ import xyz.timoney.swsad.bean.questionnaire.Infos;
 
 import java.text.ParseException;
 
+//获取正在进行的问卷
 public class Questionnaire_temp {
     private int quesID;
     private String title;
@@ -67,7 +68,7 @@ public class Questionnaire_temp {
         this.reward = reward;
     }
 
-
+    @JsonProperty("Infos")
     public Infos getInfos() {
         return Infos;
     }
