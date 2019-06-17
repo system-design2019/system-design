@@ -31,6 +31,9 @@ public interface QuestionnaireMapper {
     /*根据ID获取填空题*/
     List<Ques1> getQues1s(int quesID);
 
+    /*根据ID获取所有参与者*/
+    List<Integer> getUsersByID(@Param("quesID")int quesID);
+
     /*根据ID删除问卷库问卷*/
     void deleteQuesByID(@Param("quesID")int quesID);
 

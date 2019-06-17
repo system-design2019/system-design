@@ -1,10 +1,13 @@
 package xyz.timoney.swsad.bean.questionnaire;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class QuesResult_temp {
     private int quesID;
     private int userID;
+    private Timestamp createTime;
 
     private String tiankong;
     private String xuanze;
@@ -15,7 +18,17 @@ public class QuesResult_temp {
         userID=0;
         tiankong="#";
         xuanze="#";
+        createTime= new Timestamp(new Date().getTime());
     }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
+
 
     public int getQuesID() {
         return quesID;

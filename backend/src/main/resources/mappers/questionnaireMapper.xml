@@ -25,15 +25,20 @@
         values (${xuanID},${quesID},${theorder},${mode}, "${title}",${choose},"${choices}",${fill})
     </insert>
 
-    <!--提交一个问卷结果-->
+    <!--填写一个问卷答案-->
     <insert id="commitResults" parameterType="QuesResult_temp">
-        insert into quesResults (quesID, userID, tiankong, xuanze)
-        values (${quesID},${userID}, "${tiankong}","${xuanze}")
+        insert into quesResults (quesID, userID, createTime,tiankong, xuanze)
+        values (${quesID},${userID}, "${createTime}","${tiankong}","${xuanze}")
     </insert>
 
     <!--获取问卷详情-->
     <select id="getQuesByID"  parameterType="int" resultType="questionnaire">
         select * from questionnaire_table where quesID = #{quesID}
+    </select>
+
+    <!--获取参与者-->
+    <select id="getUsersByID"  parameterType="int" resultType="Integer">
+        select userID from quesResults where quesID = #{quesID}
     </select>
 
     <!--计算问卷库行数-->

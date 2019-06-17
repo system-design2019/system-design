@@ -177,7 +177,7 @@ public class QuestionnaireController {
             String tian=new String();
             List<String> tians = new ArrayList<>();
             String xuan=new String();
-            List<Integer> xuans = new ArrayList<>();
+            List<String> xuans = new ArrayList<>();
             tian=temp.getTiankong();
             xuan=temp.getXuanze();
             String [] tians1 = tian.split("\\$");
@@ -190,12 +190,14 @@ public class QuestionnaireController {
             {
                 if(xuans1[i] != null)
                 {
-                    xuans.add(Integer.valueOf(xuans1[i]));
+                    xuans.add(xuans1[i]);
                 }
             }
             quesResult.setTiankong(tians);
             quesResult.setXuanze(xuans);
             //必须要注意转义
+
+            quesResult.setCreateTime(temp.getCreateTime());
 
 
             message.setData(quesResult);
@@ -243,6 +245,7 @@ public class QuestionnaireController {
                 te.setTitle(ques2s_temp.get(i).getTitle());
                 te.setChoose(ques2s_temp.get(i).getChoose());
                 te.setFill(ques2s_temp.get(i).isFill());
+                te.setTheorder(ques2s_temp.get(i).getTheorder());
 
                 String cho=new String();
                 List<String> choices = new ArrayList<>();
@@ -287,6 +290,47 @@ public class QuestionnaireController {
         }
         //最后记得关闭连接
 
+        return message;
+    }
+
+    /**
+     * 根据问卷ID获取参与者名字
+     * */
+    @RequestMapping(method = RequestMethod.GET,value = "/getUsers/{quesID}")
+    @CrossOrigin
+    public Message<List<User_temp>> getUsersByID(@PathVariable int quesID){
+        Message<List<User_temp>> message = new Message<>();
+        List<User_temp> users_temp=new ArrayList<>();
+        //获取一个连接
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            //得到映射器
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+            //调用接口中的方法去执行xml文件中的SQL语句
+            List<Integer> users=quesMapper.getUsersByID(quesID);
+            for(int i=0;i<users.size();i++)
+            {
+                User publish = new User();
+                publish=userMapper.getById(users.get(i));
+                User_temp temp = new User_temp();
+                temp.setUserID(users.get(i));
+                temp.setUserName(publish.getName());
+                users_temp.add(temp);
+            }
+
+            message.setData(users_temp);
+            message.setSuccess(true);
+            message.setMsg("获取成功");
+            //要提交后才会生效
+            sqlSession.commit();
+        } catch (Exception e) {
+            message.setData(null);
+            message.setSuccess(false);
+            message.setMsg("获取失败:可能是用户列表没有某个用户" + e.getMessage());
+        }
+        //最后记得关闭连接
+        System.out.println(message);
         return message;
     }
 
@@ -931,7 +975,7 @@ public class QuestionnaireController {
                 quesResult_temp.setUserID(quesResult.getUserID());
                 List<String> te = quesResult.getTiankong();
                 String re = String.join("$",te);
-                List<Integer> te1 = quesResult.getXuanze();
+                List<String> te1 = quesResult.getXuanze();
                 List<String> te2 = new ArrayList<>();
                 for(int i=0;i<te1.size();i++)
                 {
@@ -940,6 +984,7 @@ public class QuestionnaireController {
                 String re1 = String.join("$",te2);
                 quesResult_temp.setTiankong(re);
                 quesResult_temp.setXuanze(re1);
+                quesResult_temp.setCreateTime(quesResult.getCreateTime());
                 quesMapper.commitResults(quesResult_temp);
                 message.setMsg("创建成功");
             }else
