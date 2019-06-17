@@ -405,7 +405,7 @@ public class QuestionnaireController {
 
 
     /**
-     * 创建一个问卷
+     * 发布一个问卷
      * */
     @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/publish")
     @CrossOrigin

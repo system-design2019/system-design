@@ -46,5 +46,6 @@
         <mapper resource="mappers/notificationMapper.xml"/>
         <mapper resource="mappers/quesFillUserMapper.xml"/>
         <mapper resource="mappers/quesCollectUserMapper.xml"/>
+        <mapper resource="mappers/errandsMapper.xml"/>
     </mappers>
 </configuration>

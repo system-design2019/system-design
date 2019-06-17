@@ -14,7 +14,9 @@ public class SwsadApplication {
                 UserController.class,
                 QuestionnaireController.class,
                 NotificationController.class,
-                VerifyCodeController.class};
+                VerifyCodeController.class,
+                ErrandsController.class
+        };
 
         SpringApplication.run(objects, args);
     }
