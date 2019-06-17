@@ -22,6 +22,7 @@
         <typeAlias alias="QuesFillUser" type="xyz.timoney.swsad.bean.quesUser.QuesFillUser"/>
         <typeAlias alias="QuesCollectUser" type="xyz.timoney.swsad.bean.quesUser.QuesCollectUser"/>
         <typeAlias alias="Timestamp" type="java.sql.Timestamp"/>
+        <typeAlias alias="Errands" type="xyz.timoney.swsad.bean.errands.Errands"/>
     </typeAliases>
     <!--环境配置-->
     <environments default="development">

@@ -2,23 +2,21 @@ package xyz.timoney.swsad.bean.errands;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
-public class Errands {
-
+public class Errands_temp {
     private int errandsID;
     private boolean status;
     private String title;
     private Timestamp time;
     private String place;
     private String event;
-    private int publisher;
+    private String publisher;
     private int reward;
     private int deposit;
     private int total;
     private int attend;
 
-    public Errands()
+    public Errands_temp()
     {
         errandsID=0;
         status=false;
@@ -26,7 +24,7 @@ public class Errands {
         time=new Timestamp(new Date().getTime());
         place="tushuguan";
         event="bangwodadaima";
-        publisher=12;
+        publisher="zcq";
         reward=0;
         deposit=0;
         total=0;
@@ -81,11 +79,11 @@ public class Errands {
         this.event = event;
     }
 
-    public int getPublisher() {
+    public String getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(int publisher) {
+    public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
 
