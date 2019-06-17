@@ -8,6 +8,8 @@ export const GET_ATTEND_QUESLIST = 'GET_ATTEND_QUESLIST'
 export const GET_PUBLISH_QUESLIST = 'GET_PUBLISH_QUESLIST'
 export const GET_DETAIL = 'GET_DETAIL'
 export const CREATE_QUES = 'CREATE_QUES'
+export const CLOSE_QUES = 'CLOSE_QUES'
+export const DELETE_QUES = 'DELETE_QUES'
 export const CHANGE_COLLECT = 'CHANGE_COLLECT'
 // export const GET_RANKLIST = 'GET_RANKLIST'
 
@@ -89,11 +91,11 @@ export default {
     let format = {
       "title":data.formContent.title,
       "detail":data.formValidate.detail,
-      "publisher":7,
+      "publisher":JSON.parse(window.sessionStorage.getItem('LogInfo')).userID,
       "reward":data.formValidate.reward,
       "command":data.formValidate.command,
       "number":data.formContent.number,
-      "infos":{
+      "Infos":{
         "total":data.formValidate.quantity,
         "attend":0,
         "createTime":currentdate,
@@ -121,7 +123,16 @@ export default {
         commit(mutations.SET_LOCAL_COLLECTLIST, id)
       })
     }
-    
+  },
+  [CLOSE_QUES]({state,commit}, data){
+    quesAPI.closeQues(data.id).then((info)=>{
+      commit(mutations.DELETE_QUES_BY_INDEX, data.index)
+    })
+  },
+  [DELETE_QUES]({state,commit}, data){
+    quesAPI.deleteQues(data.id).then((info)=>{
+      commit(mutations.DELETE_QUES_BY_INDEX, data.index)
+    })
   }
 
 }

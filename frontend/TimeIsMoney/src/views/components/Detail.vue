@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div style="float:right;width: 180px; text-align: right; margin-bottom: 10px">
-                <span class="hint" >{{detailContent.infos.endtime}}</span>
+                <!-- <span class="hint" >{{detailContent.Infos.endTime}}</span> -->
                 <img :src="isCollect(detailContent.quesID)" style="width:30px" @click="changeCollectStatus(detailContent.quesID)"></img>
             </div>
             <Divider class="detail"></Divider>
@@ -34,20 +34,32 @@
                 </div>
                 <div style="width: 100%;">
                     <img src="./../../../static/task/peopleNum.png" style="width:30px"></img>
-                    <span class="hint" >招募人数 {{detailContent.infos.total}}人 已有{{detailContent.infos.attend}}人参加</span>
+                    <span class="hint" >招募人数 {{detailContent.Infos.total}}人 已有{{detailContent.Infos.attend}}人参加</span>
                 </div>
                 <div style="width: 100%;">
                     <img src="./../../../static/task/startTime.png" style="width:30px"></img>
-                    <span class="hint" >开始时间 {{detailContent.infos.startTime}}</span>
+                    <span class="hint" >开始时间 {{detailContent.Infos.startTime}}</span>
                 </div>
                 <div style="width: 100%;">
                     <img src="./../../../static/task/startTime.png" style="width:30px"></img>
-                    <span class="hint" >截止时间 {{detailContent.infos.endTime}}</span>
+                    <span class="hint" >截止时间 {{detailContent.Infos.endTime}}</span>
                 </div>
-                <div style="width: 100%; text-align: center; margin-top: 20px">
+                <div v-if="getStatus(this.detailContent.publisher)" style="width: 100%; text-align: center; margin-top: 20px">
                 <!--    <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px" @click="fillIn(detailContent.quesid)">立即填写</Button>-->
-                <Button id="fill" size="large" @click="fillIn(detailContent.quesID)">立即填写</Button>
+                    <Button id="fill" size="large" @click="fillIn(detailContent.quesID)">立即填写</Button>
                 </div>
+                <div v-else style="width: 100%; text-align: center; margin-top: 20px">
+                <!--    <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px" @click="fillIn(detailContent.quesid)">立即填写</Button>-->
+                    <div>
+                        <Button id="check" size="large" @click="checkAns(detailContent.quesID)">查看填写情况</Button>
+                    </div>
+                    <div>
+                        <a id="close" size="large" @click="closeQues(detailContent.quesID)">关闭问卷</a>
+                        <a id="delete" size="large" @click="deleteQues(detailContent.quesID)">删除问卷</a>
+                    </div>
+                    
+                </div>
+                
             </div>
         </div>
         <div style="clear:both"></div>
@@ -58,10 +70,11 @@
 import { mapState } from 'vuex'
 import { Ques } from '../../store/questionnaire/index.js'
 export default{
-    props:['detailContent', 'showDetail'],
+    props:['detailContent', 'showDetail', 'index'],
     data(){
         return {
-            detail: false
+            detail: false,
+            own: false
         }
     },
     methods:{
@@ -71,9 +84,36 @@ export default{
             if(!info.log)
                 this.$Message.warning('您还未登录，请先登录后填写问卷。')
             else{
-                window.sessionStorage.setItem('fillQuesId', id)
-                this.$router.push({name: 'filling'})
+                if(this.detailContent.Infos.total == this.detailContent.Infos.attend){
+                    this.$Message.warning('此问卷名额已满，请选择其他问卷')
+                }
+                else{
+                    window.sessionStorage.setItem('fillQuesId', id)
+                    this.$router.push({name: 'filling'})
+                }
             }
+        },
+        checkAns(id){
+            this.detail = false
+            window.sessionStorage.setItem('fillQuesId', id)
+            window.sessionStorage.setItem('fillQuesTitle', this.detailContent.title)
+            this.$router.push({name: 'checkList'})
+        },
+        closeQues(id){
+            this.detail = false
+            let data = {
+                id: id,
+                index: this.index
+            }
+            this.$store.dispatch('Ques/CLOSE_QUES',data)
+        },
+        deleteQues(id){
+            this.detail = false
+            let data = {
+                id: id,
+                index: this.index
+            }
+            this.$store.dispatch('Ques/DELETE_QUES',data)
         },
         isCollect(id){
             if(this.collectQuesList.indexOf(id) != -1){
@@ -85,13 +125,21 @@ export default{
         },
         changeCollectStatus(id){
             this.$store.dispatch('Ques/CHANGE_COLLECT', id)
+        },
+        getStatus(id){
+            if(this.detailContent.publisher == JSON.parse(window.sessionStorage.getItem('LogInfo')).userID){
+                return false
+            }
+            else{
+                return true
+            }
         }
     },
     computed:mapState( 'Ques', {
         collectQuesList: 'collectQuesList'
     }),
     mounted(){
-        // console.log(this.collectQuesList)
+        console.error(this.key)
     },
     watch:{
         showDetail: function(detail, olddetail) {

@@ -2,6 +2,19 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as quesAPI from './../../../api/question.js'
 
+function getTime(){
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1<10? "0"+(date.getMonth() + 1):date.getMonth() + 1;
+    var strDate = date.getDate()<10? "0" + date.getDate():date.getDate();
+    var currentdate = date.getFullYear() + seperator1  + month  + seperator1  + strDate
+        + " "  + date.getHours()  + seperator2  + date.getMinutes()
+        + seperator2 + date.getSeconds();
+    return currentdate
+}
+
+
 Vue.use(Vuex)
 const fillQues = {
             namespaced: true,
@@ -44,13 +57,14 @@ const fillQues = {
                             ]
                         }
                     }
+                    console.error(rules)
                     state.rules = rules
                 }
             },
             actions:{
                 SET_FILL_QUES({commit}, id){
                     quesAPI.getQuesContent(id).then((response)=>{
-                        // console.log(formContent)
+                        // console.error(response)
                         if(response.success){
                             commit('SET_QUES_CONTENT', response.formContent)
                             commit('SET_QUES_ANSWERS', response.formContent)
@@ -63,27 +77,25 @@ const fillQues = {
                     })
                     
                 },
-                POST_QUES(userid, quesid, answer){
-                    let data = {
-                        quesID: quesid,
-                        userID: userid,
+                POST_QUES({commit},data){
+                    let com = {
+                        quesID: data.quesid,
+                        userID: data.userid,
+                        createTime: getTime(),
                         tiankong: [],
                         xuanze: []
                     }
-                    for(let i = 0; i < answer.length; ++i){
-                        if(typeof(answer[i]) == 'string'){
-                            data.tiankong.push(answer[i])
+                    for(var i = 0; i < data.number; ++i){
+                        if(typeof(data.answer['answer'+String(i+1)]) == 'string'){
+                            com.tiankong.push(data.answer['answer'+String(i+1)])
                         }
                         else{
-                            data.xuanze.push(answer[i].join(','))
+                            com.xuanze.push(data.answer['answer'+String(i+1)].join(','))
                         }
                     }
-                    quesAPI.commitAns(data).then((response) => {
-                        if(!response.success){
-                            console.log('wrong')
-                        }
-                    })
-                    return true;
+                    let response = quesAPI.commitAns(com)
+                    return response
+                    
                 }
             },
             getters:{

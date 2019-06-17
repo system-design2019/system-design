@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div style="width: 100%; ">
-                <task v-for="(ques,index) in quesList" :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
+                <task v-for="(ques,index) in quesList" :data="ques" :key="index" :index="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
             </div>
         </div>
         <detail :detailContent="detailContent" v-show="detailModel" :showDetail="detailModel"></detail>

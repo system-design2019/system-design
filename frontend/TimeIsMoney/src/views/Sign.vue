@@ -91,6 +91,7 @@
 </template>
 <script>
 import SIdentify from "./components/Identify"
+import { Personal } from '../store/personal/index.js'
 import { mapState } from 'vuex'
 import { mapGetters } from 'vuex'
 export default {
@@ -108,6 +109,10 @@ export default {
             checkNum: ""
         }
     },
+    computed: mapState('Personal', {
+            personDetail: 'personalInfo',
+        }
+    ),
     mounted() {
         this.identifyCode = "";
         this.makeCode(this.indentifyCodes, 4);
@@ -175,7 +180,8 @@ export default {
                             this.signIn = false
                             let data = {
                                 log: true,
-                                userID: response.data
+                                userID: response.data,
+                                username: "$"
                             }
                             window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
                             this.$router.push({
@@ -183,7 +189,7 @@ export default {
                                 name: 'main',
                             })
                             this.wrong = false
-                            console.log(this.$cookies.get('User'))
+                            // console.log(this.$cookies.get('User'))
                             this.$store.dispatch('Ques/GET_COLLECT_QUESLIST')
                             this.$store.dispatch('Ques/GET_ATTEND_QUESLIST')
                             this.$store.dispatch('Ques/GET_PUBLISH_QUESLIST')
@@ -195,8 +201,14 @@ export default {
                     }
                 )
             }
-
-
+            this.$store.dispatch('Personal/GET_INFO')
+            let data = {
+                log: JSON.parse(window.sessionStorage.getItem('LogInfo')).log,
+                userID: JSON.parse(window.sessionStorage.getItem('LogInfo')).userID,
+                username: this.personDetail.nickname
+            }
+            window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
+            console.error(data)
         },
         checkValid(username) {
             if (this.checkNum != this.identifyCode) {

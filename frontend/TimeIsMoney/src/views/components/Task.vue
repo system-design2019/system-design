@@ -76,13 +76,13 @@ export default {
             this.contents.title = this.data.title
             this.contents.detail = this.data.detail
             this.contents.status = this.data.status === 'not done' ? 1 : 0
-            this.contents.total = this.data.infos.total
-            this.contents.info.publisher = this.data.publisher
+            this.contents.total = this.data.Infos.total
+            this.contents.info.publisher = this.data.publisherName
             this.contents.info.type = this.type === '1' ? '问卷' : '跑腿'
             this.contents.info.time = '0min'
             this.contents.info.reward = this.data.reward
-            this.contents.info.endTime = this.data.infos.endTime
-            this.contents.info.attend = this.mode === 0 ? String(this.data.infos.total) : String(this.data.infos.attend) + '/' + String(this.data.infos.total)
+            this.contents.info.endTime = this.data.Infos.endTime
+            this.contents.info.attend = this.mode === 0 ? String(this.data.Infos.total) : String(this.data.Infos.attend) + '/' + String(this.data.Infos.total)
         }
         // console.log(this.mode)
     }

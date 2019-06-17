@@ -4,6 +4,7 @@ import actions from './actions.js'
 import mutations from './mutations.js'
 import getters from './getters.js'
 import fillQues from './fill/fill.js'
+import checkQues from './check/check.js'
 
 Vue.use(Vuex)
 
@@ -50,7 +51,7 @@ const Ques = {
                         {mode: 2, theorder: 2, title:'试试', choose:1, choices:['选项1', '选项2'], fill:false}
                     ]
                 },
-                questions:[{mode: 1, theorder: 1, tianid: 1, title:'试试', fill:false}, {mode: 2, theorder: 2, title:'试试', xuanid: 1, choose:1, choices:['选项1', '选项2'], fill:false}]
+                questions:[{mode: 1, theorder: 1, tianID: 1, title:'试试', fill:false}, {mode: 2, theorder: 2, title:'试试', xuanID: 1, choose:1, choices:['选项1', '选项2'], fill:false}]
             },
             actions:{
                 
@@ -91,7 +92,8 @@ const Ques = {
                 }
             }
         },
-        fillQues
+        fillQues,
+        checkQues
     }
 }
 
