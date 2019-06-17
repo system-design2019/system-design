@@ -31,6 +31,9 @@ public interface QuestionnaireMapper {
     /*根据ID获取填空题*/
     List<Ques1> getQues1s(int quesID);
 
+    /*根据ID获取所有参与者*/
+    List<Integer> getUsersByID(@Param("quesID")int quesID);
+
     /*根据ID删除问卷库问卷*/
     void deleteQuesByID(@Param("quesID")int quesID);
 
@@ -46,6 +49,9 @@ public interface QuestionnaireMapper {
 
     /*根据ID关闭问卷*/
     void closeQuesByID(@Param("quesID")int quesID, @Param("timeNow")Timestamp timeNow);
+
+    /*根据两个id获取创建时间*/
+    Timestamp getCreateTime(@Param("quesID")int quesID,@Param("userID")int userID);
 
     /*查看答案*/
     QuesResult_temp queryAns(@Param("quesID")int quesID,@Param("userID")int userID);

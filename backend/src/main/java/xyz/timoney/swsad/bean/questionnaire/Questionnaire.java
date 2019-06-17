@@ -81,7 +81,7 @@ public class Questionnaire {
         this.number = number;
     }
 
-
+    @JsonProperty("Infos")
     public Infos getInfos() {
         return Infos;
     }
