@@ -28,6 +28,7 @@ import java.util.*;
 
 
 @RestController
+@EnableAutoConfiguration
 public class UserController {
 
     private static SqlSessionFactory sqlSessionFactory;

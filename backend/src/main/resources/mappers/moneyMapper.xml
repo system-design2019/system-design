@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.timoney.swsad.mapper.MoneyMapper">
+
+    <!--id对应接口中的方法，名字要一样，parameterType是方法的参数类型，
+    resultType是查询返回的类型，需要注意的是，这里的SQL语句后面不能加分号，变量不能加引号-->
+    <!--删除表-->
+    <update id="moneyTableDrop" >
+        drop table money_table
+    </update>
+    <!--初始化表-->
+    <update id="moneyTableInit" >
+        create table if not exists money_table
+        (
+            id          bigint(32) auto_increment
+                primary key,
+            userId      bigint(32),
+            time        DATETIME   not null,
+            info        VARCHAR(200),
+            payType     int,
+            money       double
+        )ENGINE=InnoDB DEFAULT CHARSET=utf8
+    </update>
+
+
+</mapper>
