@@ -316,6 +316,10 @@ public class QuestionnaireController {
                 User_temp temp = new User_temp();
                 temp.setUserID(users.get(i));
                 temp.setUserName(publish.getName());
+                //更新时间
+                Timestamp createTime = new Timestamp(new Date().getTime());
+                createTime=quesMapper.getCreateTime(quesID,users.get(i));
+                temp.setCreateTime(createTime);
                 users_temp.add(temp);
             }
 

@@ -76,6 +76,11 @@
         update questionnaire_table set endTime=#{timeNow} where quesID = #{quesID}
     </update>
 
+    <!--根据两个id获取创建时间-->
+    <select id="getCreateTime" resultType="Timestamp">
+        select createTime from quesResults where quesID = #{quesID} and userID = #{userID}
+    </select>
+
     <!--查看问卷答案-->
     <select id="queryAns" resultType="QuesResult_temp">
         select * from quesResults where quesID=#{quesID} and userID = #{userID}

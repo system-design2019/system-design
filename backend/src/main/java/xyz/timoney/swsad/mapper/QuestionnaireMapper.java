@@ -50,6 +50,9 @@ public interface QuestionnaireMapper {
     /*根据ID关闭问卷*/
     void closeQuesByID(@Param("quesID")int quesID, @Param("timeNow")Timestamp timeNow);
 
+    /*根据两个id获取创建时间*/
+    Timestamp getCreateTime(@Param("quesID")int quesID,@Param("userID")int userID);
+
     /*查看答案*/
     QuesResult_temp queryAns(@Param("quesID")int quesID,@Param("userID")int userID);
 
