@@ -222,6 +222,7 @@ public class ErrandsController {
             ErrandsMapper erraMapper = sqlSession.getMapper(ErrandsMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             erraMapper.participate(errandsID,userID);
+            erraMapper.addPart(errandsID);
 
             message.setData("success participate");
             message.setSuccess(true);
@@ -252,9 +253,10 @@ public class ErrandsController {
             //调用接口中的方法去执行xml文件中的SQL语句
             Errands erra;
             erra = erraMapper.getErraByID(errandsID);
+            //必须是发布者才可以确认
             if(userID == erra.getPublisher())
             {
-                erraMapper.setStauts(errandsID);
+                erraMapper.setStatus(errandsID);
                 Timestamp timeNow=new Timestamp(new Date().getTime());
                 erraMapper.closeErraByID(errandsID,timeNow);
                 message.setData("success confirmation");
