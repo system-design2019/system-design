@@ -42,8 +42,8 @@
 
     <!--记录参与者-->
     <insert id="participate" >
-        insert into errandsAttend(errandsID, userID)
-        values (${errandsID},${userID})
+        insert into errandsAttend(errandsID, userID, partTime)
+        values (${errandsID},${userID},"${partTime}")
     </insert>
 
     <!--根据ID获取跑腿-->
@@ -60,5 +60,15 @@
     <update id="addPart">
         update errands_table set attend = attend+1 where errandsID = #{errandsID}
     </update>
+
+    <!--根据ID获取参与者-->
+    <select id="getPartsByID"  parameterType="int" resultType="Participant">
+        select * from errandsAttend where errandsID = ${errandsID}
+    </select>
+
+    <!--根据userID获取所有参与跑腿-->
+    <select id="allPartErra"  parameterType="int" resultType="int">
+        select errandsID from errandsAttend where userID = ${userID}
+    </select>
 
 </mapper>
