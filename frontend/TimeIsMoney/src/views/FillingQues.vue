@@ -6,8 +6,8 @@
             <Card v-for="(q, index) in form.questions" :key="index" style="margin: 5px 0; padding: 30px 10px 10px 10px" >
                 <FormItem  :label="q.title" :prop="getKey(index)">
                     <Input v-if="q.mode === 1" v-model="answers['answer'+String(index+1)]"></Input>
-                    <CheckboxGroup v-if="q.mode === 2" v-model="answers['answer'+String(index+1)]">
-                        <Checkbox v-for="(c, index_c) in form.questions[1].choices" :label="c" :key="index_c" style="width: 100%;"></Checkbox>
+                    <CheckboxGroup v-else-if="q.mode === 2" v-model="answers['answer'+String(index+1)]">
+                        <Checkbox v-for="(c, index_c) in form.questions[index].choices" :label="c" :key="index_c" style="width: 100%;"></Checkbox>
                     </CheckboxGroup>
                 </FormItem>
             </Card>
@@ -31,18 +31,25 @@ import { Ques } from '../store/questionnaire/index.js'
                 return 'answer' + String(index+1)
             },
             handleSubmit(name){
+                
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        let userid = JSON.parse(window.sessionStorage.getItem('LogInfo')).userid
-                        let quesid = window.sessionStorage.getItem('fillQuesId')
-                        this.$store.dispatch('Ques/fillQues/POST_QUES',userid, quesid, this.answers).then(
-                            (status) => {
-                                if(status){
+                        let data = {
+                            userid: JSON.parse(window.sessionStorage.getItem('LogInfo')).userID,
+                            quesid: window.sessionStorage.getItem('fillQuesId'),
+                            number: this.form.questions.length,
+                            answer: this.answers
+                        }
+                        console.log(this.answers)
+                        console.log(data)
+                        this.$store.dispatch('Ques/fillQues/POST_QUES',data).then(
+                            (response) => {
+                                if(response.success){
                                     this.$Message.success('提交成功');
                                     this.$router.push('/questionnaire')
                                 }
                                 else{
-                                    this.$Message.error('Fail!');
+                                    this.$Message.error(response.msg);
                                 }
                             }
                         )

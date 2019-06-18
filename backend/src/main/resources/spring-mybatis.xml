@@ -21,6 +21,8 @@
         <typeAlias alias="Notification" type="xyz.timoney.swsad.bean.user.Notification"/>
         <typeAlias alias="QuesFillUser" type="xyz.timoney.swsad.bean.quesUser.QuesFillUser"/>
         <typeAlias alias="QuesCollectUser" type="xyz.timoney.swsad.bean.quesUser.QuesCollectUser"/>
+        <typeAlias alias="Timestamp" type="java.sql.Timestamp"/>
+        <typeAlias alias="Errands" type="xyz.timoney.swsad.bean.errands.Errands"/>
     </typeAliases>
     <!--环境配置-->
     <environments default="development">
@@ -45,5 +47,6 @@
         <mapper resource="mappers/notificationMapper.xml"/>
         <mapper resource="mappers/quesFillUserMapper.xml"/>
         <mapper resource="mappers/quesCollectUserMapper.xml"/>
+        <mapper resource="mappers/errandsMapper.xml"/>
     </mappers>
 </configuration>

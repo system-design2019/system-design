@@ -75,7 +75,8 @@ export default {
     }),
     methods: mapActions('Home', {
         GET_RANKLIST: 'GET_RANKLIST',
-        GET_ADVERTISES: 'GET_ADVERTISES'
+        GET_ADVERTISES: 'GET_ADVERTISES',
+         
     }),
     mounted () {
         this.GET_RANKLIST()

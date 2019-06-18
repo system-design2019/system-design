@@ -1,5 +1,11 @@
 package xyz.timoney.swsad.bean.questionnaire;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.format.annotation.DateTimeFormat;
+import xyz.timoney.swsad.bean.questionnaire.Infos;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,15 +28,13 @@ public class Questionnaire {
     public Infos Infos;
     private String command;
     private String status;
-    private String cont_title;
     private int number;
     private List<Ques1> tians;
     private List<Ques2> xuans;
 
 
 
-    public Questionnaire()
-    {
+    public Questionnaire() throws ParseException {
         quesID=0;
         title="#";
         publisher=0;
@@ -39,10 +43,9 @@ public class Questionnaire {
         Infos = new Infos();
         command="#";
         status="not done";
-        cont_title="#";
         number=2;
-        tians = new ArrayList<>();
-        xuans = new ArrayList<>();
+        tians = new ArrayList<Ques1>();
+        xuans = new ArrayList<Ques2>();
     }
 
     public int getPublisher() {
@@ -68,13 +71,7 @@ public class Questionnaire {
     public void setXuans(List<Ques2> xuans) {
         this.xuans = xuans;
     }
-    public String getCont_title() {
-        return cont_title;
-    }
 
-    public void setCont_title(String cont_title) {
-        this.cont_title = cont_title;
-    }
 
     public int getNumber() {
         return number;
@@ -84,11 +81,12 @@ public class Questionnaire {
         this.number = number;
     }
 
-    public xyz.timoney.swsad.bean.questionnaire.Infos getInfos() {
+    @JsonProperty("Infos")
+    public Infos getInfos() {
         return Infos;
     }
 
-    public void setInfos(xyz.timoney.swsad.bean.questionnaire.Infos infos) {
+    public void setInfos(Infos infos) {
         Infos = infos;
     }
 

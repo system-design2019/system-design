@@ -1,6 +1,8 @@
 package xyz.timoney.swsad.mapper;
+import java.sql.Timestamp;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import xyz.timoney.swsad.bean.questionnaire.*;
 
 public interface QuestionnaireMapper {
@@ -29,11 +31,43 @@ public interface QuestionnaireMapper {
     /*根据ID获取填空题*/
     List<Ques1> getQues1s(int quesID);
 
+    /*根据ID获取所有参与者*/
+    List<Integer> getUsersByID(@Param("quesID")int quesID);
+
+    /*根据ID删除问卷库问卷*/
+    void deleteQuesByID(@Param("quesID")int quesID);
+
+    /*根据ID删除选择库问卷*/
+    void deleteXuanByID(@Param("quesID")int quesID);
+
+    /*根据ID删除填空库问卷*/
+    void deleteTianByID(@Param("quesID")int quesID);
+
+    /*根据ID删除答案库问卷*/
+    void deleteAnsByID(@Param("quesID")int quesID);
+
+
+    /*根据ID关闭问卷*/
+    void closeQuesByID(@Param("quesID")int quesID, @Param("timeNow")Timestamp timeNow);
+
+    /*根据两个id获取创建时间*/
+    Timestamp getCreateTime(@Param("quesID")int quesID,@Param("userID")int userID);
+
+    /*查看答案*/
+    QuesResult_temp queryAns(@Param("quesID")int quesID,@Param("userID")int userID);
+
     /*根据ID获取temp选择题*/
     List<Ques2_temp> getQues2s(int quesID);
 
+    /*计算问卷库内的行数*/
+    int CountQuestion();
+
+    /*查询问卷号最大的ID*/
+    int queryMaxID();
+
     /*获取所有正在进行问卷*/
-    List<Questionnaire> getAllQues();
+    List<Questionnaire> getAllQues(@Param("current")Timestamp current);
+
 
     /**
      * 获取问卷详情

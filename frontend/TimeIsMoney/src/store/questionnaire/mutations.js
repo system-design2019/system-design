@@ -4,7 +4,7 @@ export const SET_ATTEND_QUESLIST = 'SET_ATTEND_QUESLIST'
 export const SET_PUBLISH_QUESLIST = 'SET_PUBLISH_QUESLIST'
 export const SET_DETAIL = 'SET_DETAIL'
 export const SET_LOCAL_COLLECTLIST = 'SET_LOCAL_COLLECTLIST'
-
+export const DELETE_QUES_BY_INDEX = 'DELETE_QUES_BY_INDEX'
 export default{
     [SET_QUESLIST] (state, list) {
         state.quesList = list
@@ -32,5 +32,9 @@ export default{
         else{
             state.collectQuesList.push(id)
         }
-    }
+    },
+    [DELETE_QUES_BY_INDEX](state, index){
+        state.quesList.splice(index, 1)
+    },
+
 }

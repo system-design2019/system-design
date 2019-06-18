@@ -36,6 +36,11 @@ const routers = [{
                 component: (resolve) => require(['../views/Questionnaire.vue'], resolve),
             },
             {
+                path: 'checkList',
+                name: 'checkList',
+                component: (resolve) => require(['../views/CheckList.vue'], resolve),
+            },
+            {
                 path: 'questionnaire/createQuestionnaire', //check the user's receiveBox
                 name: 'createQuestionnaire',
                 component: (resolve) => require(['../views/CreateQues.vue'], resolve),
@@ -49,6 +54,11 @@ const routers = [{
                 path: 'favor',
                 name: 'favor',
                 component: (resolve) => require(['../views/RunFavor.vue'], resolve)
+            },
+            {
+                path: 'favor/createFavor',
+                name: 'createFavor',
+                component: (resolve) => require(['../views/CreateFavor.vue'], resolve),
             },
             {
                 path: 'personal', //personal page

@@ -2,6 +2,19 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as quesAPI from './../../../api/question.js'
 
+function getTime(){
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1<10? "0"+(date.getMonth() + 1):date.getMonth() + 1;
+    var strDate = date.getDate()<10? "0" + date.getDate():date.getDate();
+    var currentdate = date.getFullYear() + seperator1  + month  + seperator1  + strDate
+        + " "  + date.getHours()  + seperator2  + date.getMinutes()
+        + seperator2 + date.getSeconds();
+    return currentdate
+}
+
+
 Vue.use(Vuex)
 const fillQues = {
             namespaced: true,
@@ -40,29 +53,49 @@ const fillQues = {
                         else{
                             rules[key] = [
                                 { required: formContent.questions[i].fill, type: 'array', min:1, message: 'Choose at least one option', trigger: 'blur' },
-                                { type: 'array', max: formContent.questions[i].maxchoose, message: 'You can choose '+String(formContent.questions[i].maxchoose)+'at most', trigger: 'blur' }
+                                { type: 'array', max: formContent.questions[i].choose, message: 'You can choose '+String(formContent.questions[i].choose)+'at most', trigger: 'blur' }
                             ]
                         }
                     }
+                    console.error(rules)
                     state.rules = rules
                 }
             },
             actions:{
                 SET_FILL_QUES({commit}, id){
-                    quesAPI.getQuesContent(id).then((formContent)=>{
-                        commit('SET_QUES_CONTENT', formContent)
-                        commit('SET_QUES_ANSWERS', formContent)
-                        commit('SET_QUES_RULES', formContent)
+                    quesAPI.getQuesContent(id).then((response)=>{
+                        // console.error(response)
+                        if(response.success){
+                            commit('SET_QUES_CONTENT', response.formContent)
+                            commit('SET_QUES_ANSWERS', response.formContent)
+                            commit('SET_QUES_RULES', response.formContent)
+                        }
+                        else{
+                            alert("获取失败请稍后重试")
+                        }
+                        
                     })
                     
                 },
-                POST_QUES(userid, quesid, answer){
-                    quesAPI.commitAns(userid, quesid, answer).then((response) => {
-                        if(!response.success){
-                            console.log('wrong')
+                POST_QUES({commit},data){
+                    let com = {
+                        quesID: data.quesid,
+                        userID: data.userid,
+                        createTime: getTime(),
+                        tiankong: [],
+                        xuanze: []
+                    }
+                    for(var i = 0; i < data.number; ++i){
+                        if(typeof(data.answer['answer'+String(i+1)]) == 'string'){
+                            com.tiankong.push(data.answer['answer'+String(i+1)])
                         }
-                    })
-                    return true;
+                        else{
+                            com.xuanze.push(data.answer['answer'+String(i+1)].join(','))
+                        }
+                    }
+                    let response = quesAPI.commitAns(com)
+                    return response
+                    
                 }
             },
             getters:{

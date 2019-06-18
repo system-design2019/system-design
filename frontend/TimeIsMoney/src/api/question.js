@@ -7,7 +7,7 @@ import service from './../util/service.js'
  */
 export async function getQuesList () {
     let response = await service.get('/questionnaires/proceed/all')
-    console.log(JSON.stringify(response.data))
+    // console.log(JSON.stringify(response.data))
     return response.data
 }
 
@@ -69,24 +69,27 @@ export async function cancelCollectQues (id) {
  * Promise will return the data of the questionnaires
  */
 export async function getQuesContent(id){
-    // let response = await axios.get('/', id)
-    // return response.data
+    let response = await service.get('/questionnaires/content/'+id)
     let data = {
-        success: true,
-        msg: 'yes',
-        data:{
-            formContent:{
-                title:'aaaaaaaa',
-                number: 2,
-                questions:[
-                    {mode: 1, title:'试试', fill:false},
-                    {mode: 2, title:'试试', choose:1, choices:['选项1', '选项2'], fill:false}
-                ]
-            }
+        success: response.data.success,
+        msg: response.data.msg,
+        formContent:{
+            quesID: response.data.data.quesID,
+            title:response.data.data.title,
+            number: response.data.data.number,
+            questions:[]
         }
     }
-    return data.formContent
+    data.formContent.questions = response.data.data.ques1.concat(response.data.data.ques2)
+    data.formContent.questions.sort(sortByThrorder);
+    // console.error(data)
+    return data
 }
+
+function sortByThrorder(a,b){
+    return a.theorder-b.theorder;
+};
+
 
 /**
  * Get the detail of the questionnaire
@@ -101,15 +104,40 @@ export async function getDetail (id) {
 }
 
 /**
+ * Get the detail of the questionnaire
+ * @param {int}  id  id of questionnaire
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function getAnsListByQuesId (quesid) {
+    console.error('当前id'+quesid)
+    let response = await service.get('/getUsers/'+quesid)
+    // console.log(JSON.stringify(response))
+    return response.data
+}
+
+/**
+ * Get the detail of the questionnaire
+ * @param {int}  quesid  id of questionnaire
+ * @param {int}  userid  id of questionnaire
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function getAnsByQUId (quesid, userid) {
+    let response = await service.get('/Answer/'+quesid+'/'+userid)
+    // console.log(JSON.stringify(response))
+    return response.data
+}
+
+/**
  * Commit the content of the questionaire
  * @param {int}  id  id of questionnaire
  * @param {string}  answer  id of questionnaire
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function commitAns (userid, quesid, answer) {
-    let response = await service.post('/getQues/'+String(quesid), answer)
-    // console.log('response:'+JSON.stringify(response))
+export async function commitAns (answer) {
+    let response = await service.post('/questionnaires/commit', answer)
     return response.data
 }
 
@@ -119,7 +147,28 @@ export async function commitAns (userid, quesid, answer) {
  * Promise will return the response of the action
  */
 export async function createQues (data) {
-    console.error('create:'+JSON.stringify(data))
-    let response = await service.post('/createques', data)
+    // console.log("创建问卷："+JSON.stringify(data))
+    let response = await service.post('/questionnaires/publish', data)
+    return response.data
+}
+
+/**
+ * Create a new questionnaire
+ * @return {Promise}
+ * Promise will return the response of the action
+ */
+export async function closeQues (quesid) {
+    // console.log("创建问卷："+JSON.stringify(data))
+    let response = await service.get('/closeQues/'+quesid)
+    return response.data
+}
+/**
+ * Create a new questionnaire
+ * @return {Promise}
+ * Promise will return the response of the action
+ */
+export async function deleteQues (quesid) {
+    // console.log("创建问卷："+JSON.stringify(data))
+    let response = await service.get('/deleteQues/'+quesid)
     return response.data
 }

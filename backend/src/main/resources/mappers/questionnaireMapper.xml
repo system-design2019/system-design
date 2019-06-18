@@ -7,33 +7,83 @@
 
 
 
-    <!--插入一个问卷-->
+    <!--发布一个问卷-->
     <insert id="insert" parameterType="questionnaire">
-        insert into questionnaire_table (quesID, title, detail, publisher, reward,total, attend, startTime, endTime, command,status,cont_title,number)
-        values (${quesID},"${title}", "${detail}",${publisher}, ${reward},${Infos.getTotal()},${Infos.getAttend()},"${Infos.getStartTime()}","${Infos.getEndTime()}", "${command}","${status}","${cont_title}",${number})
+        insert into questionnaire_table (quesID, title, detail, publisher, reward, total, attend, createTime, startTime, endTime, command,status,number)
+        values (${quesID},"${title}", "${detail}",${publisher}, ${reward}, ${Infos.getTotal()},${Infos.getAttend()},"${Infos.getCreateTime()}","${Infos.getStartTime()}","${Infos.getEndTime()}", "${command}", "${status}", ${number})
     </insert>
 
     <!--插入填空题-->
     <insert id="insertTian" parameterType="Ques1">
-        insert into tiankong (tianID, quesID, mode, title, fill)
-        values (${tianID},${quesID},${mode}, "${title}",${fill})
+        insert into tiankong (tianID, quesID, theorder, mode, title, fill)
+        values (${tianID},${quesID},${theorder},${mode}, "${title}",${fill})
     </insert>
 
     <!--插入选择题-->
     <insert id="insertXuan" parameterType="Ques2_temp">
-        insert into xuanze (xuanID, quesID, mode, title, choose, choices,fill)
-        values (${xuanID},${quesID},${mode}, "${title}",${choose},"${choices}",${fill})
+        insert into xuanze (xuanID, quesID, theorder, mode, title, choose, choices,fill)
+        values (${xuanID},${quesID},${theorder},${mode}, "${title}",${choose},"${choices}",${fill})
     </insert>
 
-    <!--提交一个问卷结果-->
+    <!--填写一个问卷答案-->
     <insert id="commitResults" parameterType="QuesResult_temp">
-        insert into quesResults (quesID, userID, tiankong, xuanze)
-        values (${quesID},${userID}, "${tiankong}","${xuanze}")
+        insert into quesResults (quesID, userID, createTime,tiankong, xuanze)
+        values (${quesID},${userID}, "${createTime}","${tiankong}","${xuanze}")
     </insert>
 
     <!--获取问卷详情-->
     <select id="getQuesByID"  parameterType="int" resultType="questionnaire">
         select * from questionnaire_table where quesID = #{quesID}
+    </select>
+
+    <!--获取参与者-->
+    <select id="getUsersByID"  parameterType="int" resultType="Integer">
+        select userID from quesResults where quesID = #{quesID}
+    </select>
+
+    <!--计算问卷库行数-->
+    <select id="CountQuestion"  resultType="int">
+        select count(*) from questionnaire_table
+    </select>
+
+    <!--查询最大的问卷ID-->
+    <select id="queryMaxID"  resultType="int">
+        select max(quesID) from questionnaire_table
+    </select>
+
+    <!--删除问卷 问卷库-->
+    <delete id="deleteQuesByID"  parameterType="int">
+        delete from questionnaire_table where quesID = ${quesID}
+    </delete>
+
+    <!--删除问卷 选择库-->
+    <delete id="deleteXuanByID"  parameterType="int">
+        delete from xuanze where quesID = ${quesID}
+    </delete>
+
+    <!--删除问卷 填空库-->
+    <delete id="deleteTianByID"  parameterType="int">
+        delete from tiankong where quesID = ${quesID}
+    </delete>
+
+    <!--删除问卷 答案库-->
+    <delete id="deleteAnsByID"  parameterType="int">
+        delete from quesResults where quesID = ${quesID}
+    </delete>
+
+    <!--关闭问卷-->
+    <update id="closeQuesByID">
+        update questionnaire_table set endTime=#{timeNow} where quesID = #{quesID}
+    </update>
+
+    <!--根据两个id获取创建时间-->
+    <select id="getCreateTime" resultType="Timestamp">
+        select createTime from quesResults where quesID = #{quesID} and userID = #{userID}
+    </select>
+
+    <!--查看问卷答案-->
+    <select id="queryAns" resultType="QuesResult_temp">
+        select * from quesResults where quesID=#{quesID} and userID = #{userID}
     </select>
 
     <!--Janking: 获取用户发布的所有问卷，降序，也就是时间最近排在最前面-->
@@ -80,8 +130,8 @@
     </select>
 
     <!--获取所有正在进行的问卷-->
-    <select id="getAllQues"  resultType="questionnaire">
-        select * from questionnaire_table where status = "not done"
+    <select id="getAllQues" parameterType="java.sql.Timestamp" resultType="questionnaire">
+        select * from questionnaire_table where endTime > "${current}"
     </select>
 
     <select id="getCount" resultType="int">

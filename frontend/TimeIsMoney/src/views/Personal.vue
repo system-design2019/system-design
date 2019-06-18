@@ -49,6 +49,10 @@
 
     }
 
+    .ivu-tabs-content,.ivu-tabs-content-animated{
+        height:450px;
+    }
+
     Row {
         margin: 30px;
     }
@@ -182,27 +186,39 @@
         <div class="personal" style="margin: 0 10%">
             <Tabs value="credit" style="font-size: 20px">
                 <TabPane label="我发布的" name="credit">
-                    <div id="Dynamic" v-for="(ques,index) in publishLists">
-                        <div>
-                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.infos.startTime}} </span> <span style="font-size:15px;color:gray;">我发布了</span>
-                        </div>
-                        <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
+                    <div>
+                        <Scroll height="450">
+                            <div id="Dynamic" v-for="(ques,index) in publishLists">
+                                <div>
+                                    <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.Infos.startTime}} </span> <span style="font-size:15px;color:gray;">我发布了</span>
+                                </div>
+                                <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
+                            </div>
+                        </Scroll>
                     </div>
                 </TabPane>
                 <TabPane label="我参与的" name="history">
-                    <div id="Dynamic" v-for="(ques,index) in attendLists">
-                        <div>
-                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.infos.startTime}} </span><span style="font-size:15px;color:gray;">我参与了</span>
-                        </div>
-                        <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
+                    <div>
+                        <Scroll height="450">
+                            <div id="Dynamic" v-for="(ques,index) in attendLists">
+                                <div>
+                                    <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.Infos.startTime}} </span><span style="font-size:15px;color:gray;">我参与了</span>
+                                </div>
+                                <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
+                            </div>
+                        </Scroll>
                     </div>
                 </TabPane>
                 <TabPane label="我的收藏" name="collect">
-                    <div id="Dynamic" v-for="(ques,index) in collectLists">
-                        <div>
-                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.infos.startTime}} </span><span style="font-size:15px;color:gray;">我收藏了</span>
-                        </div>
-                        <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
+                    <div>
+                        <Scroll height="450">
+                            <div id="Dynamic" v-for="(ques,index) in collectLists">
+                                <div>
+                                    <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.Infos.startTime}} </span><span style="font-size:15px;color:gray;">我收藏了</span>
+                                </div>
+                                <task :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
+                            </div>
+                        </Scroll>
                     </div>
                 </TabPane>
             </Tabs>
@@ -237,7 +253,8 @@ export default {
             zeroId: "",
             userInfo: {
                 avatar: ""
-            }
+            },
+            SignByPhone: false
         }
     },
     computed: mapState('Personal', {
@@ -266,16 +283,34 @@ export default {
             if (this.editable == true) {
                 this.styleForText = 'border:1px solid';
                 this.buttonText = "保存资料";
-                /*
                 if (this.personDetail.email[0] == '$') {
-                    alert(this.personDetail.email[0]);
-                    this.editEmail = false;
-                } else if (this.personDetail.phone[0] == '$') {
-                    this.editPhone = false;
+                    //alert(this.personDetail.email[0]);
+                    this.editEmail = true;
+                    this.SignByPhone = false;
+                    alert("邮箱只能修改一次，修改后不能再在本页面被修改，请谨慎输入正确的邮箱!");
+
                 }
-                */
+                if (this.personDetail.phone[0] == '$') {
+                    this.editPhone = true;
+                    this.SignByPhone = true;
+                    alert("手机号只能修改一次，修改后不能再在本页面被修改，请谨慎输入正确的手机号!");
+                }
             } else {
+                if (this.SignByPhone) {
+                    if (!phoneFormat.test(this.personDetail.phone)) {
+                        alert("手机号格式错误");
+                        this.personDetail.phone = "$";
+                    }
+                } else {
+                    if (!emailFormat.test(this.personDetail.email)) {
+                        alert("邮箱格式错误");
+                        this.personDetail.email = "$";
+                    }
+                }
                 //没有选择的时候 avatar = ""  空串
+                this.editEmail = false;
+                this.editPhone = false;
+
                 if (this.userInfo.avatar != "") {
                     let formData = new FormData();
                     formData.append("file", this.userInfo.avatar);
@@ -305,15 +340,6 @@ export default {
 
                 this.styleForText = 'border:0px;';
                 this.buttonText = "编辑资料";
-                /*
-                while (!emailFormat.test(this.personDetail.email)) {
-                    //  alert("email的格式非法，请输入正确的email");
-                }
-                while (!phoneFormat.test(this.personDetail.phone)) {
-                    //alert("phone的格式非法，请输入正确的phone");
-                }
-                */
-                //update headimg
 
             }
         },

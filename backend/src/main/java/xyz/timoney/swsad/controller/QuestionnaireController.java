@@ -1,5 +1,6 @@
 package xyz.timoney.swsad.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
 import xyz.timoney.swsad.bean.*;
 import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
@@ -12,13 +13,17 @@ import xyz.timoney.swsad.bean.questionnaire.QuesContent;
 import xyz.timoney.swsad.mapper.QuesCollectUserMapper;
 import xyz.timoney.swsad.mapper.QuesFillUserMapper;
 import xyz.timoney.swsad.mapper.QuestionnaireMapper;
+import xyz.timoney.swsad.mapper.UserMapper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -51,6 +56,72 @@ public class QuestionnaireController {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 根据ID关闭问卷
+     * */
+    @RequestMapping(method = RequestMethod.GET,value = "/closeQues/{quesID}")
+    @CrossOrigin
+    public Message<String> closeQueseByID(@PathVariable int quesID){
+        Message<String> message = new Message<>();
+        Questionnaire theQues;
+        //获取一个连接
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            //得到映射器
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            Timestamp timeNow=new Timestamp(new Date().getTime());
+
+            quesMapper.closeQuesByID(quesID,timeNow);
+
+
+            message.setData("success close");
+            message.setSuccess(true);
+            message.setMsg("获取成功");
+            //要提交后才会生效
+            sqlSession.commit();
+        } catch (Exception e) {
+            message.setData(null);
+            message.setSuccess(false);
+            message.setMsg("获取失败:" + e.getMessage());
+        }
+        //最后记得关闭连接
+        System.out.println(message);
+        return message;
+    }
+
+    /**
+     * 根据ID删除问卷
+     * */
+    @RequestMapping(method = RequestMethod.GET,value = "/deleteQues/{quesID}")
+    @CrossOrigin
+    public Message<String> deleteQueseByID(@PathVariable int quesID){
+        Message<String> message = new Message<>();
+        Questionnaire theQues;
+        //获取一个连接
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            //得到映射器
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            quesMapper.deleteQuesByID(quesID);
+            quesMapper.deleteTianByID(quesID);
+            quesMapper.deleteXuanByID(quesID);
+            quesMapper.deleteAnsByID(quesID);
+
+            message.setData("success delete");
+            message.setSuccess(true);
+            message.setMsg("获取成功");
+            //要提交后才会生效
+            sqlSession.commit();
+        } catch (Exception e) {
+            message.setData(null);
+            message.setSuccess(false);
+            message.setMsg("获取失败:" + e.getMessage());
+        }
+        //最后记得关闭连接
+        System.out.println(message);
+        return message;
     }
 
     /**
@@ -87,6 +158,64 @@ public class QuestionnaireController {
 
 
     /**
+     * 查看问卷答案
+     * */
+    @RequestMapping(method = RequestMethod.GET,value = "/Answer/{quesID}/{userID}")
+    @CrossOrigin
+    public Message<QuesResult> queryAnswer(@PathVariable int quesID,@PathVariable int userID){
+        Message<QuesResult> message = new Message<>();
+        QuesResult quesResult=new QuesResult();
+        //获取一个连接
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            //得到映射器
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            QuesResult_temp temp=quesMapper.queryAns(quesID,userID);
+            quesResult.setQuesID(quesID);
+            quesResult.setUserID(userID);
+
+            String tian=new String();
+            List<String> tians = new ArrayList<>();
+            String xuan=new String();
+            List<String> xuans = new ArrayList<>();
+            tian=temp.getTiankong();
+            xuan=temp.getXuanze();
+            String [] tians1 = tian.split("\\$");
+            String [] xuans1 = xuan.split("\\$");
+            for(int i=0;i<tians1.length;i++)
+            {
+                tians.add(tians1[i]);
+            }
+            for(int i=0;i<xuans1.length;i++)
+            {
+                if(xuans1[i] != null)
+                {
+                    xuans.add(xuans1[i]);
+                }
+            }
+            quesResult.setTiankong(tians);
+            quesResult.setXuanze(xuans);
+            //必须要注意转义
+
+            quesResult.setCreateTime(temp.getCreateTime());
+
+
+            message.setData(quesResult);
+            message.setSuccess(true);
+            message.setMsg("获取成功");
+            //要提交后才会生效
+            sqlSession.commit();
+        } catch (Exception e) {
+            message.setData(null);
+            message.setSuccess(false);
+            message.setMsg("获取失败:" + e.getMessage());
+        }
+        //最后记得关闭连接
+        System.out.println(message);
+        return message;
+    }
+
+    /**
      * 获取问卷内容，即题目等
      * */
     @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/content/{quesID}")
@@ -101,7 +230,7 @@ public class QuestionnaireController {
             //调用接口中的方法去执行xml文件中的SQL语句
             //获取title
             String title = quesMapper.getTitleByID(quesID);
-            //获取选择题，此处有bug
+            //获取选择题
             List<Ques2_temp> ques2s_temp=new ArrayList<>();
             ques2s_temp=quesMapper.getQues2s(quesID);
 
@@ -116,16 +245,22 @@ public class QuestionnaireController {
                 te.setTitle(ques2s_temp.get(i).getTitle());
                 te.setChoose(ques2s_temp.get(i).getChoose());
                 te.setFill(ques2s_temp.get(i).isFill());
+                te.setTheorder(ques2s_temp.get(i).getTheorder());
 
                 String cho=new String();
                 List<String> choices = new ArrayList<>();
                 cho=ques2s_temp.get(i).getChoices();
                 //必须要注意转义
                 String [] choic=cho.split("\\$");
+                for(int j=0;j<choic.length;j++)
+                {
+                    choices.add(choic[j]);
+                }
+                /*不一定只有四个选择
                 choices.add(choic[0]);
                 choices.add(choic[1]);
                 choices.add(choic[2]);
-                choices.add(choic[3]);
+                choices.add(choic[3]);*/
                 te.setChoices(choices);
 
                 ques2s.add(te);
@@ -159,25 +294,36 @@ public class QuestionnaireController {
     }
 
     /**
-     * 获取所有正在进行的问卷
+     * 根据问卷ID获取参与者名字
      * */
-    @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/proceed/all")
+    @RequestMapping(method = RequestMethod.GET,value = "/getUsers/{quesID}")
     @CrossOrigin
-    public Message<List<Questionnaire>> getQueses(){
-        Message<List<Questionnaire>> message = new Message<>();
-        List<Questionnaire> listQues;
+    public Message<List<User_temp>> getUsersByID(@PathVariable int quesID){
+        Message<List<User_temp>> message = new Message<>();
+        List<User_temp> users_temp=new ArrayList<>();
         //获取一个连接
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
             //调用接口中的方法去执行xml文件中的SQL语句
-            listQues = quesMapper.getAllQues();
-            for (Questionnaire listQue : listQues) {
-                Infos temp = quesMapper.getInfo(listQue.getQuesID());
-                listQue.setInfos(temp);
+            List<Integer> users=quesMapper.getUsersByID(quesID);
+            for(int i=0;i<users.size();i++)
+            {
+                User publish = new User();
+                publish=userMapper.getById(users.get(i));
+                User_temp temp = new User_temp();
+                temp.setUserID(users.get(i));
+                temp.setUserName(publish.getName());
+                //更新时间
+                Timestamp createTime = new Timestamp(new Date().getTime());
+                createTime=quesMapper.getCreateTime(quesID,users.get(i));
+                temp.setCreateTime(createTime);
+                users_temp.add(temp);
             }
 
-            message.setData(listQues);
+            message.setData(users_temp);
             message.setSuccess(true);
             message.setMsg("获取成功");
             //要提交后才会生效
@@ -185,7 +331,70 @@ public class QuestionnaireController {
         } catch (Exception e) {
             message.setData(null);
             message.setSuccess(false);
-            message.setMsg("获取失败:" + e.getMessage());
+            message.setMsg("获取失败:可能是用户列表没有某个用户" + e.getMessage());
+        }
+        //最后记得关闭连接
+        System.out.println(message);
+        return message;
+    }
+
+    /**
+     * 获取正在进行的问卷
+     * */
+    @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/proceed/all")
+    @CrossOrigin
+    public Message<List<Questionnaire_temp>> getQueses(){
+        Message<List<Questionnaire_temp>> message = new Message<>();
+        List<Questionnaire> listQues;
+        List<Questionnaire_temp> listQues1=new ArrayList<>();
+        //获取一个连接
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            //得到映射器
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //用户的映射器
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            //当前时间
+            Timestamp current = new Timestamp(new Date().getTime());
+            //System.out.println(current);
+            //调用接口中的方法去执行xml文件中的SQL语句
+
+            listQues = quesMapper.getAllQues(current);
+            for (Questionnaire listQue : listQues) {
+                Infos temp = quesMapper.getInfo(listQue.getQuesID());
+                listQue.setInfos(temp);
+            }
+
+            //发布者的名字问题
+            for (Questionnaire listQue : listQues) {
+                Questionnaire_temp temp1=new Questionnaire_temp();
+                temp1.setQuesID(listQue.getQuesID());
+                //System.out.println(listQue.getQuesID());
+                temp1.setTitle(listQue.getTitle());
+                temp1.setDetail(listQue.getDetail());
+                //System.out.println(listQue.getDetail());
+                temp1.setReward(listQue.getReward());
+                temp1.setCommand(listQue.getCommand());
+                temp1.setStatus(listQue.getStatus());
+                temp1.setNumber(listQue.getNumber());
+                temp1.setInfos(listQue.getInfos());
+                //id转名字
+                int theID=listQue.getPublisher();
+                User publish = new User();
+                publish=userMapper.getById(theID);
+                temp1.setPublisherName(publish.getName());
+                //System.out.println(publish.getName());
+                listQues1.add(temp1);
+            }
+
+            message.setData(listQues1);
+            message.setSuccess(true);
+            message.setMsg("获取成功");
+            //要提交后才会生效
+            sqlSession.commit();
+        } catch (Exception e) {
+            message.setData(null);
+            message.setSuccess(false);
+            message.setMsg("获取失败:可能是该用户不存在" + e.getMessage());
         }
         //最后记得关闭连接
 
@@ -193,72 +402,10 @@ public class QuestionnaireController {
     }
 
 
-    /**
-     * 添加问卷的填空题
-     * */
-    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/tian")
-    @CrossOrigin
-    public Message<String> addTian(@RequestBody List<Ques1> tians)
-    {
-        Message<String> message = new Message<>();
-        System.out.println(tians);
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            for(int i=0;i<tians.size();i++) {
-                quesMapper.insertTian(tians.get(i));
-            }
-            message.setSuccess(true);
-            message.setMsg("创建成功");
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            message.setSuccess(false);
-            message.setMsg("创建失败:" + e.getMessage());
-            return message;
-        }
-        return message;
-    }
-
-    /**
-     * 添加问卷的选择题
-     * */
-    @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/add/xuan")
-    @CrossOrigin
-    public Message<String> addXuan(@RequestBody List<Ques2> xuans)
-    {
-        Message<String> message = new Message<>();
-        System.out.println(xuans);
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            for(int i=0;i<xuans.size();i++) {
-                Ques2_temp ques2_temp=new Ques2_temp();
-                ques2_temp.setXuanID(xuans.get(i).getXuanID());
-                ques2_temp.setQuesID(xuans.get(i).getQuesID());
-                ques2_temp.setMode(xuans.get(i).getMode());
-                ques2_temp.setTitle(xuans.get(i).getTitle());
-                ques2_temp.setChoose(xuans.get(i).getChoose());
-                ques2_temp.setFill(xuans.get(i).isFill());
-                List<String> te = xuans.get(i).getChoices();
-                String re = String.join("$",te);
-                ques2_temp.setChoices(re);
-                quesMapper.insertXuan(ques2_temp);
-            }
-            message.setSuccess(true);
-            message.setMsg("创建成功");
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            message.setSuccess(false);
-            message.setMsg("创建失败:" + e.getMessage());
-            return message;
-        }
-        return message;
-    }
-
 
 
     /**
-     * 创建一个问卷
+     * 发布一个问卷
      * */
     @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/publish")
     @CrossOrigin
@@ -277,6 +424,25 @@ public class QuestionnaireController {
         System.out.println(ques);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+
+            //设置quesID 自动设置
+            int count=quesMapper.CountQuestion();
+            //System.out.println(count);
+            if(count == 0)
+            {
+                ques.setQuesID(1);
+            }else {
+                int maxID=quesMapper.queryMaxID();
+                if(count == maxID)
+                {
+                    ques.setQuesID(count+1);
+                }else
+                {
+                    ques.setQuesID(maxID+1);
+                }
+            }
+
+
             //添加问卷主要信息
             quesMapper.insert(ques);
 
@@ -303,6 +469,7 @@ public class QuestionnaireController {
                 Ques2_temp ques2_temp=new Ques2_temp();
                 ques2_temp.setXuanID(xuans.get(i).getXuanID());
                 ques2_temp.setQuesID(ques.getQuesID());
+                ques2_temp.setTheorder((xuans.get(i).getTheorder()));
                 ques2_temp.setMode(xuans.get(i).getMode());
                 ques2_temp.setTitle(xuans.get(i).getTitle());
                 ques2_temp.setChoose(xuans.get(i).getChoose());
@@ -797,27 +964,43 @@ public class QuestionnaireController {
         System.out.println(quesResult);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-            quesResult_temp.setQuesID(quesResult.getQuesID());
-            quesResult_temp.setUserID(quesResult.getUserID());
-            List<String> te = quesResult.getTiankong();
-            String re = String.join("$",te);
-            List<Integer> te1 = quesResult.getXuanze();
-            List<String> te2 = new ArrayList<>();
-            for(int i=0;i<te1.size();i++)
+            /*只有正在进行的问卷才能被填写*/
+            int quesID  = quesResult.getQuesID();
+            Infos temp=quesMapper.getInfo(quesID);
+            //问卷结束时间
+            //Timestamp timeEnd = new Timestamp(temp.getEndTime().getTime());
+            Timestamp timeNow=new Timestamp(new Date().getTime());
+
+            //System.out.println(timeNow.before(temp.getEndTime()));
+
+            if(timeNow.before(temp.getEndTime()))
             {
-                te2.add(te1.get(i).toString());
+                quesResult_temp.setQuesID(quesResult.getQuesID());
+                quesResult_temp.setUserID(quesResult.getUserID());
+                List<String> te = quesResult.getTiankong();
+                String re = String.join("$",te);
+                List<String> te1 = quesResult.getXuanze();
+                List<String> te2 = new ArrayList<>();
+                for(int i=0;i<te1.size();i++)
+                {
+                    te2.add(te1.get(i).toString());
+                }
+                String re1 = String.join("$",te2);
+                quesResult_temp.setTiankong(re);
+                quesResult_temp.setXuanze(re1);
+                quesResult_temp.setCreateTime(quesResult.getCreateTime());
+                quesMapper.commitResults(quesResult_temp);
+                message.setMsg("创建成功");
+            }else
+            {
+                message.setMsg("问卷已经关闭！");
             }
-            String re1 = String.join("$",te2);
-            quesResult_temp.setTiankong(re);
-            quesResult_temp.setXuanze(re1);
-            quesMapper.commitResults(quesResult_temp);
             message.setSuccess(true);
-            message.setMsg("创建成功");
             sqlSession.commit();
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
-            message.setMsg("创建失败:" + e.getMessage());
+            message.setMsg("创建失败:你已经填写过此问卷" + e.getMessage());
             return message;
         }
         return message;

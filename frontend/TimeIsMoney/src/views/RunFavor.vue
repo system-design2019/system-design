@@ -5,7 +5,7 @@
             <div class="showPage" style="min-height: 150px; width: 70%; position: absolute; right: 100px">
                 <p style="width: 100%"><span style="font-size: 33px; font-weight:100; color: #fff">跑腿互助</span> <span style="font-size: 20px; font-weight:100;  color: #fff">Errand</span></p>
                 <p style="font-size: 20px; color: #fff; width: 100%;margin-top: 20px; font-weight:100; ">互助互利，不费事不费力，不方便的时候为你解决小麻烦！</p>
-                <Button type="info" style="margin-top: 30px; font-size: 22px" @click="create()">发布跑腿</Button>
+                <Button type="info" style="margin-top: 30px; font-size: 22px" @click="createFavor()">发布跑腿</Button>
             </div>
         </div>
         <div style="width: 43%; float: right; height:350px; background: #FF4B3C">
@@ -32,22 +32,16 @@ import run from './components/Run.vue'
 export default {
     components:{
         run
+    },
+    methods:{
+        createFavor(){
+            let info = JSON.parse(window.sessionStorage.getItem('LogInfo'))
+            if (info.log)
+                this.$router.push({ name: 'createFavor' })
+            else
+                this.$Message.warning('您还未登录，请先登录后发布跑腿。')
+        }
     }
-//     data() {
-//         return {
-//             summary: "songxt TQL",
-//             author: "songxt",
-//             pay: "￥100",
-//             attend: "5/90",
-//             time: "2018-4-13"
-//         }
-
-//     },
-//     methods: {
-//         handleSelectAll(status) {
-//             this.$refs.selection.selectAll(status);
-//         }
-//     }
 }
 </script>
 <style scoped>
