@@ -28,8 +28,7 @@
                             <Button @click="addOption()">添加选项</Button>
                             <Button @click="deleteOption()">移除选项</Button>
                             <div style="margin-top: 10px">
-                                <span>最多可选：</span><InputNumber :max="questions[curr].choices.length" :min="1" v-model="questions[curr].maxchoose"></InputNumber>
-                                <Button @click="changeOrder()">确定</Button>
+                                <span>最多可选：</span><InputNumber :max="questions[curr].choices.length" :min="1" v-model="questions[curr].choose"></InputNumber>
                             </div>
                             <Divider/>
                         </div>

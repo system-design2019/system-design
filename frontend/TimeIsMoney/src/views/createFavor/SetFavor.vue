@@ -8,7 +8,18 @@
                 <Input v-model="formValidate.event" placeholder="输入跑腿任务具体内容"></Input>
             </FormItem>
             <FormItem label="时间" prop="time">
-                <Input v-model="formValidate.time" placeholder="输入跑腿任务标题"></Input>
+                <Row>
+                    <Col span="6">
+                        <FormItem prop="startdate">
+                            <DatePicker type="date" placeholder="选择日期" v-model="formValidate.date" ></DatePicker>
+                        </FormItem>
+                    </Col>
+                    <Col span="6">
+                        <FormItem prop="starttime">
+                            <TimePicker type="time" placeholder="选择时间" v-model="formValidate.time"></TimePicker>
+                        </FormItem>
+                    </Col>
+                </Row>
             </FormItem>
             <FormItem label="地点" prop="place">
                 <Input v-model="formValidate.place" placeholder="输入跑腿任务标题"></Input>
@@ -49,8 +60,11 @@ export default {
                 title: [
                     { required: true, trigger: 'blur' }
                 ],
+                date: [
+                    { required: true, type: 'date', message: 'Please select the date', trigger: 'change' }
+                ],
                 time: [
-                    { required: true, trigger: 'blur' }
+                    { required: true, type: 'string', message: 'Please select time', trigger: 'change' }
                 ],
                 place: [
                     { required: true, trigger: 'blur' }
@@ -59,7 +73,7 @@ export default {
                     { required: true, trigger: 'blur' }
                 ],
                 quantity: [
-                    { required: true, trigger: 'blur' },
+                    { required: false, trigger: 'blur' },
                     { type: 'number', message: '输入必须为整数', trigger: 'change', transform(value) {return Number(value);}}
                 ],
                 deposit: [
@@ -81,6 +95,7 @@ export default {
             },
             formValidate: {
                 title: '1111',
+                date:'',
                 time: '',
                 place:'',
                 event: 0,
@@ -97,7 +112,7 @@ export default {
         handleSubmit (name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
-                    this.$store.commit('Ques/createQues/SET_VALIDATE', this.formValidate)
+                    this.$store.commit('Favor/createFavor/SET_CONTENT', this.formValidate)
                     this.$emit('changeStep',1)
                 } else {
                     this.$Message.error('设置失败！请完善信息后再次尝试');

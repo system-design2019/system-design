@@ -11,10 +11,10 @@ const Favor = {
     namespaced:true,
     state: {
         username: '',
-        favorList:[],
-        collectFavorList:[],
-        attendFavorList:[],
-        publishFavorList:[],
+        errandList:[],
+        errandDetail:{},
+        attendErrandList:[],
+        publishErrandList:[],
     },
     actions,
     mutations,
@@ -25,7 +25,8 @@ const Favor = {
             state: {
                 favorContent:{
                     title: '',
-                    time: '',
+                    date: '',
+                    time:'',
                     place: '',
                     event: '',
                     reward: 0,
@@ -37,15 +38,13 @@ const Favor = {
                 
             },
             mutations:{
-                SET_VALIDATE (state, formValidate){
-                    state.formValidate = formValidate
-                },
                 SET_CONTENT (state, content){
-                    state.formContent = content
+                    state.favorContent = content
                 },
                 CLEAR(state){
                     state.favorContent = {
                         title: '',
+                        date: '',
                         time: '',
                         place: '',
                         event: '',

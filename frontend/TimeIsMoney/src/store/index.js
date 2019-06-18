@@ -5,7 +5,7 @@ import mutations from './mutations.js'
 import getters from './getters.js'
 
 import Ques from './questionnaire/index.js'
-import Run from './runFavor/index'
+import Favor from './runFavor/index'
 import Home from './home/index'
 import Personal from './personal/index'
 
@@ -23,7 +23,7 @@ export default new Vuex.Store({
     getters,
     modules: {
         Ques,
-        Run,
+        Favor,
         Home,
         Personal
     }
