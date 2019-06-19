@@ -1,5 +1,4 @@
 <template>
-<div >
     <Modal v-model="detail" width="800px" class-name="vertical-center-modal d"  :mask-closable="false">
         <img src="./../../../static/ques/detail.png" style="position:relative; float: left; left: -50px; top: -50px; height:500px"></img>
         <p style="font-size:24px; font-weight: 500px;">{{detailContent.title}}</p>
@@ -64,7 +63,6 @@
         </div>
         <div style="clear:both"></div>
     </Modal>
-</div>
 </template>
 <script>
 import { mapState } from 'vuex'
@@ -142,8 +140,9 @@ export default{
         console.error(this.key)
     },
     watch:{
-        showDetail: function(detail, olddetail) {
-            this.detail = true;
+        showDetail: function(newdetail, olddetail) {
+            this.detail = !this.detail;
+            console.error('watch!!!!!!!')
         }
     }
 }

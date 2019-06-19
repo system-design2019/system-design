@@ -17,7 +17,7 @@
             <run style="margin: 0 5%"  :data="e" @click.native="getDetail(e)"></run>
         </Col>      
     </div>
-    <FavorDetail :detail="detailModel"></FavorDetail>
+    <FavorDetail :showDetail="detailModel"></FavorDetail>
   </div>
 </template>
 <script>

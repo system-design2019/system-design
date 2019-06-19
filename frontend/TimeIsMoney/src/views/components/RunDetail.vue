@@ -7,7 +7,7 @@
             <div style="width: 400px; float:left">
                 <div style="width: 50%; float:left; margin-bottom: 10px">
                     <img src="./../../../static/task/publisher.png" style="width:30px"></img>
-                    <span style="font-size: 22px">{{errandDetail.publisher}}</span>
+                    <span style="font-size: 22px">{{errandDetail.publisherName}}</span>
                 </div>
                 <div style="width: 50%; float:right; margin-bottom: 10px">
                     <img src="./../../../static/task/reward.png" style="width:30px"></img>
@@ -66,10 +66,11 @@
 import { mapState } from 'vuex'
 import { Favor } from '../../store/runFavor/index.js'
 export default{
-    props:['detail'],
+    props:['showDetail'],
     data(){
         return {
-            own: false
+            own: false,
+            detail: false,
         }
     },
     methods:{
@@ -99,7 +100,8 @@ export default{
             this.$store.dispatch('Ques/CHANGE_COLLECT', id)
         },*/
         getStatus(id){
-            if(this.errandDetail.publisher == JSON.parse(window.sessionStorage.getItem('LogInfo')).userID){
+            // console.error('ID: '+id+' '+JSON.parse(window.sessionStorage.getItem('LogInfo')).userID)
+            if(id == JSON.parse(window.sessionStorage.getItem('LogInfo')).userID){
                 return false
             }
             else{

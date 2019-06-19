@@ -4,7 +4,8 @@
         <Divider />
         <Form ref="formFill" :model="answers" :rules="rules" :label-width="80" label-position="top">
             <Card v-for="(q, index) in form.questions" :key="index" style="margin: 5px 0; padding: 30px 10px 10px 10px" >
-                <FormItem  :label="q.title" :prop="getKey(index)">
+                <FormItem  :prop="getKey(index)">
+                    <p>{{index+1}}. {{q.title}}</p>
                     <Input v-if="q.mode === 1" v-model="answers['answer'+String(index+1)]"></Input>
                     <CheckboxGroup v-else-if="q.mode === 2" v-model="answers['answer'+String(index+1)]">
                         <Checkbox v-for="(c, index_c) in form.questions[index].choices" :label="c" :key="index_c" style="width: 100%;"></Checkbox>

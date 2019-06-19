@@ -32,7 +32,7 @@
                 <task v-for="(ques,index) in quesList" :data="ques" :key="index" :index="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
             </div>
         </div>
-        <detail :detailContent="detailContent" v-show="detailModel" :showDetail="detailModel"></detail>
+        <detail :detailContent="detailContent" :showDetail="detailModel" ></detail>
     </div>
 </template>
 <script>
@@ -70,7 +70,6 @@ export default {
             this.$store.dispatch('Ques/GET_DETAIL', id)
             this.detailModel = !this.detailModel
         }
-        
     },
     mounted() {
         this.$store.dispatch('Ques/GET_QUESLIST')
