@@ -126,7 +126,6 @@
     background: #ffffff;
     position: relative;
     /*border-radius: 4px;*/
-    overflow: hidden;
 }
 .layout-logo{
     height: 40px;

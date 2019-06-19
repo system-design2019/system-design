@@ -1,15 +1,14 @@
 <template>
-<div >
     <Modal v-model="detail" width="800px" class-name="vertical-center-modal d"  :mask-closable="false">
         <img src="./../../../static/ques/detail.png" style="position:relative; float: left; left: -50px; top: -50px; height:500px"></img>
         <p style="font-size:24px; font-weight: 500px;">{{detailContent.title}}</p>
         <div style="overflow: hidden; width: 400px; height: 7%">
-            <div style="width: 200px; float:left">
-                <div style="width: 100px; float:left; margin-bottom: 10px">
+            <div style="min-width: 200px; max-width: 350px; float:left">
+                <div style="min-width: 100px; max-width: 200px;float:left; margin-bottom: 10px">
                     <img src="./../../../static/task/publisher.png" style="width:30px"></img>
                     <span style="font-size: 22px">{{detailContent.publisher}}</span>
                 </div>
-                <div style="width: 100px; float:right; margin-bottom: 10px">
+                <div style="min-width: 100px; max-width: 150px;float:right; margin-bottom: 10px">
                     <img src="./../../../static/task/reward.png" style="width:30px"></img>
                     <span class="hint" style="font-size: 22px; color: #ce4545">{{detailContent.reward}}</span>
                 </div>
@@ -64,7 +63,6 @@
         </div>
         <div style="clear:both"></div>
     </Modal>
-</div>
 </template>
 <script>
 import { mapState } from 'vuex'
@@ -142,8 +140,9 @@ export default{
         console.error(this.key)
     },
     watch:{
-        showDetail: function(detail, olddetail) {
-            this.detail = true;
+        showDetail: function(newdetail, olddetail) {
+            this.detail = !this.detail;
+            console.error('watch!!!!!!!')
         }
     }
 }

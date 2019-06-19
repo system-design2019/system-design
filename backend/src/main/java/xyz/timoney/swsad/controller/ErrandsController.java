@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import xyz.timoney.swsad.bean.Message;
 import xyz.timoney.swsad.bean.errands.Errands;
 import xyz.timoney.swsad.bean.errands.Errands_temp;
+import xyz.timoney.swsad.bean.errands.Participant;
+import xyz.timoney.swsad.bean.errands.Participant_temp;
 import xyz.timoney.swsad.bean.questionnaire.Infos;
 import xyz.timoney.swsad.bean.questionnaire.Questionnaire;
 import xyz.timoney.swsad.bean.questionnaire.Questionnaire_temp;
@@ -121,11 +123,13 @@ public class ErrandsController {
                 temp.setDeposit(errand.getDeposit());
                 temp.setTotal(errand.getTotal());
                 temp.setAttend(errand.getAttend());
+                temp.setPublisher(errand.getPublisher());
+
                 //id转名字
                 int theID = errand.getPublisher();
                 User publish = new User();
                 publish=userMapper.getById(theID);
-                temp.setPublisher(publish.getName());
+                temp.setPublisherName(publish.getName());
                 //System.out.println(publish.getName());
                 listErra1.add(temp);
             }
@@ -221,7 +225,9 @@ public class ErrandsController {
             //得到映射器
             ErrandsMapper erraMapper = sqlSession.getMapper(ErrandsMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
-            erraMapper.participate(errandsID,userID);
+            Timestamp partTime=new Timestamp(new Date().getTime());
+            erraMapper.participate(errandsID,userID,partTime);
+
             erraMapper.addPart(errandsID);
 
             message.setData("success participate");
@@ -264,6 +270,86 @@ public class ErrandsController {
                 message.setData("you are not publisher!");
             }
 
+            message.setSuccess(true);
+            message.setMsg("获取成功");
+            //要提交后才会生效
+            sqlSession.commit();
+        } catch (Exception e) {
+            message.setData(null);
+            message.setSuccess(false);
+            message.setMsg("获取失败:" + e.getMessage());
+        }
+        //最后记得关闭连接
+        System.out.println(message);
+        return message;
+    }
+
+
+    /**
+     * 根据ID获得参与人列表
+     * */
+    @RequestMapping(method = RequestMethod.GET,value = "/allParticipant/{errandsID}")
+    @CrossOrigin
+    public Message<List<Participant_temp>> getAllPartByID(@PathVariable int errandsID){
+        Message<List<Participant_temp>> message = new Message<>();
+        List<Participant_temp> parts=new ArrayList<>();
+        //获取一个连接
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            //得到映射器
+            ErrandsMapper erraMapper = sqlSession.getMapper(ErrandsMapper.class);
+            //用户的映射器
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            //调用接口中的方法去执行xml文件中的SQL语句
+            List<Participant> parts1 = erraMapper.getPartsByID(errandsID);
+
+            for (Participant part : parts1)
+            {
+                Participant_temp temp = new Participant_temp();
+                temp.setPartTime(part.getPartTime());
+
+                //id转名字
+                int theID = part.getUserID();
+                User publish = new User();
+                publish=userMapper.getById(theID);
+                temp.setPartName(publish.getName());
+
+                parts.add(temp);
+            }
+
+            message.setData(parts);
+            message.setSuccess(true);
+            message.setMsg("获取成功");
+            //要提交后才会生效
+            sqlSession.commit();
+        } catch (Exception e) {
+            message.setData(null);
+            message.setSuccess(false);
+            message.setMsg("获取失败:" + e.getMessage());
+        }
+        //最后记得关闭连接
+        System.out.println(message);
+        return message;
+    }
+
+
+    /**
+     * 获得全部参与跑腿
+     * */
+    @RequestMapping(method = RequestMethod.GET,value = "/allErrand/{userID}")
+    @CrossOrigin
+    public Message<List<Integer>> errandsByUserID(@PathVariable int userID){
+        Message<List<Integer>> message = new Message<>();
+        List<Integer> parts=new ArrayList<>();
+        //获取一个连接
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            //得到映射器
+            ErrandsMapper erraMapper = sqlSession.getMapper(ErrandsMapper.class);
+
+            //调用接口中的方法去执行xml文件中的SQL语句
+            List<Integer> errands = erraMapper.allPartErra(userID);
+
+
+            message.setData(errands);
             message.setSuccess(true);
             message.setMsg("获取成功");
             //要提交后才会生效

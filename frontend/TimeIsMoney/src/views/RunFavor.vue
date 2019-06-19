@@ -13,25 +13,23 @@
         </div> 
     </div>
     <div style="margin: 30px 13%">
-        <Col span='8'>
-            <run style="margin: 0 5%"></run>
-        </Col>
-        <Col span='8'>
-            <run style="margin: 0 5%"></run>
-        </Col>
-        <Col span='8'>
-            <run style="margin: 0 5%"></run>
-        </Col>
-      
+        <Col v-for="(e, index) in errandList" :key="index"span='8'>
+            <run style="margin: 0 5%"  :data="e" @click.native="getDetail(e)"></run>
+        </Col>      
     </div>
-        
+    <FavorDetail :showDetail="detailModel"></FavorDetail>
   </div>
 </template>
 <script>
 import run from './components/Run.vue'
+import FavorDetail from './components/RunDetail.vue'
+import { mapState } from 'vuex'
+import { Favor } from '../store/runFavor/index.js'
+
 export default {
     components:{
-        run
+        run,
+        FavorDetail
     },
     methods:{
         createFavor(){
@@ -40,7 +38,22 @@ export default {
                 this.$router.push({ name: 'createFavor' })
             else
                 this.$Message.warning('您还未登录，请先登录后发布跑腿。')
+        },
+        getDetail(data){
+            this.$store.commit('Favor/SET_DETAIL', data)
+            this.detailModel = !this.detailModel
         }
+    },
+    data(){
+        return{
+            detailModel:false
+        }
+    },
+    computed: mapState('Favor', {
+        errandList: 'errandList'
+    }),
+    mounted() {
+        this.$store.dispatch('Favor/GET_ERRANDLIST')
     }
 }
 </script>

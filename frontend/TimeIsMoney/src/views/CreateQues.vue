@@ -75,6 +75,7 @@ export default {
             this.$refs[name].resetFields();
         },
         back(){
+            this.alert = false
             this.$store.commit('Ques/createQues/CLEAR')
             this.$router.go(-1)
         },
