@@ -1,7 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE configuration
-        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.timoney.swsad.mapper.ErrandsMapper">
+
+    <!--发布一个跑腿-->
+    <insert id="insert" parameterType="Errands">
+        insert into errands_table (errandsID, status,title, time,place,event, publisher, reward,deposit, total, attend)
+        values (${errandsID},${status},"${title}", "${time}","${place}","${event}",${publisher}, ${reward}, ${deposit}, ${total}, ${attend})
+    </insert>
+
+    <!--计算跑腿库行数-->
+    <select id="CountErrands"  resultType="int">
+        select count(*) from errands_table
+    </select>
+
+    <!--查询最大的跑腿ID-->
+    <select id="queryMaxID"  resultType="int">
+        select max(errandsID) from errands_table
+    </select>
+
+    <!--获取所有正在进行的跑腿-->
+    <select id="getAllErra" parameterType="java.sql.Timestamp" resultType="Errands">
+        select * from errands_table where time > "${current}"
+    </select>
+
+    <!--关闭跑腿-->
+    <update id="closeErraByID">
+        update errands_table set time = #{timeNow} where errandsID = #{errandsID}
+    </update>
+
+    <!--删除跑腿 跑腿库-->
+    <delete id="deleteErraByID"  parameterType="int">
+        delete from errands_table where errandsID = ${errandsID}
+    </delete>
+
+    <!--删除参与者库参与者记录-->
+    <delete id="deletePanByID"  parameterType="int">
+        delete from errandsAttend where errandsID = ${errandsID}
+    </delete>
+
+    <!--记录参与者-->
+    <insert id="participate" >
+        insert into errandsAttend(errandsID, userID, partTime)
+        values (${errandsID},${userID},"${partTime}")
+    </insert>
+
+    <!--根据ID获取跑腿-->
+    <select id="getErraByID"  parameterType="int" resultType="Errands">
+        select * from errands_table where errandsID = ${errandsID}
+    </select>
+
+    <!--确认跑腿完成-->
+    <update id="setStatus">
+        update errands_table set status = true where errandsID = #{errandsID}
+    </update>
+
+    <!--参与者数目加1-->
+    <update id="addPart">
+        update errands_table set attend = attend+1 where errandsID = #{errandsID}
+    </update>
+
+    <!--根据ID获取参与者-->
+    <select id="getPartsByID"  parameterType="int" resultType="Participant">
+        select * from errandsAttend where errandsID = ${errandsID}
+    </select>
+
+    <!--根据userID获取所有参与跑腿-->
+    <select id="allPartErra"  parameterType="int" resultType="int">
+        select errandsID from errandsAttend where userID = ${userID}
+    </select>
 
 </mapper>
