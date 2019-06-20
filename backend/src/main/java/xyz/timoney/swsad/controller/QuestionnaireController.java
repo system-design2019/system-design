@@ -129,19 +129,37 @@ public class QuestionnaireController {
      * */
     @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/{quesID}")
     @CrossOrigin
-    public Message<Questionnaire> getQueseByID(@PathVariable int quesID){
-        Message<Questionnaire> message = new Message<>();
+    public Message<Questionnaire_temp> getQueseByID(@PathVariable int quesID){
+        Message<Questionnaire_temp> message = new Message<>();
         Questionnaire theQues;
         //获取一个连接
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            //用户的映射器
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             theQues = quesMapper.getQuesByID(quesID);
             Infos temp=quesMapper.getInfo(theQues.getQuesID());
             theQues.setInfos(temp);
 
-            message.setData(theQues);
+            Questionnaire_temp theQues1=new Questionnaire_temp();
+            theQues1.setQuesID(theQues.getQuesID());
+            theQues1.setTitle(theQues.getTitle());
+            theQues1.setDetail(theQues.getDetail());
+            theQues1.setPublisher(theQues.getPublisher());
+            theQues1.setReward(theQues.getReward());
+            theQues1.setCommand(theQues.getCommand());
+            theQues1.setStatus(theQues.getStatus());
+            theQues1.setNumber(theQues.getNumber());
+
+            //id转名字
+            int theID=theQues.getPublisher();
+            User publish = new User();
+            publish=userMapper.getById(theID);
+            theQues1.setPublisherName(publish.getName());
+
+            message.setData(theQues1);
             message.setSuccess(true);
             message.setMsg("获取成功");
             //要提交后才会生效
@@ -377,6 +395,7 @@ public class QuestionnaireController {
                 temp1.setStatus(listQue.getStatus());
                 temp1.setNumber(listQue.getNumber());
                 temp1.setInfos(listQue.getInfos());
+                temp1.setPublisher(listQue.getPublisher());
                 //id转名字
                 int theID=listQue.getPublisher();
                 User publish = new User();
@@ -741,7 +760,7 @@ public class QuestionnaireController {
     }
 
     /**
-     * 填写某个问卷
+     * 填写某个问卷，弃用
      * */
     @RequestMapping(method = RequestMethod.PUT,value = "/questionnaires/{id}/fill")
     @CrossOrigin
@@ -990,6 +1009,9 @@ public class QuestionnaireController {
                 quesResult_temp.setXuanze(re1);
                 quesResult_temp.setCreateTime(quesResult.getCreateTime());
                 quesMapper.commitResults(quesResult_temp);
+
+                //参与者加一
+                quesMapper.addPart(quesResult.getQuesID());
                 message.setMsg("创建成功");
             }else
             {

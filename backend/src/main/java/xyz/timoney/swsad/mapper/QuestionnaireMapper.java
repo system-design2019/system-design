@@ -46,6 +46,9 @@ public interface QuestionnaireMapper {
     /*根据ID删除答案库问卷*/
     void deleteAnsByID(@Param("quesID")int quesID);
 
+    /*参与问卷，人数加1*/
+    void addPart(@Param("quesID")int quesID);
+
 
     /*根据ID关闭问卷*/
     void closeQuesByID(@Param("quesID")int quesID, @Param("timeNow")Timestamp timeNow);

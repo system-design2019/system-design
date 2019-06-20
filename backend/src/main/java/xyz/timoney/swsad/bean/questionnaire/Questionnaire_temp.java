@@ -9,6 +9,7 @@ public class Questionnaire_temp {
     private int quesID;
     private String title;
     private String detail;
+    private int publisher;
     private String publisherName;
     private int reward;
     public Infos Infos;
@@ -19,6 +20,7 @@ public class Questionnaire_temp {
     public Questionnaire_temp() throws ParseException {
         quesID=0;
         title="#";
+        publisher=0;
         publisherName="zheng";
         detail="#";
         reward=0;
@@ -26,6 +28,14 @@ public class Questionnaire_temp {
         command="#";
         status="not done";
         number=2;
+    }
+
+    public int getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(int publisher) {
+        this.publisher = publisher;
     }
 
     public int getQuesID() {
