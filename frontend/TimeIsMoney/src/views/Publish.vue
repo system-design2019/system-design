@@ -10,7 +10,7 @@
                 </div>
             </div>
         </div>
-        <detail v-show="detailModel" :showDetail="detailModel"></detail>
+        <detail :showDetail="detailModel" :index="index"></detail>
     </div>
 </template>
 <script>
@@ -36,6 +36,7 @@ export default {
     data(){
         return{
             detailModel: false,
+            index: 0
         }
         
     },

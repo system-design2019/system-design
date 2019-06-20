@@ -12,8 +12,5 @@ export default{
     },
     [SET_ATTEND_LIST](state, data){
         state.attendErrandList = data
-    },
-    [DELETE_FAVOR_BY_INDEX](state, index){
-        state.errandList.splice(index, 1)
-    },
+    }
 }

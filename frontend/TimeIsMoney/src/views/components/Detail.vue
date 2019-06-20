@@ -68,7 +68,7 @@
 import { mapState } from 'vuex'
 import { Ques } from '../../store/questionnaire/index.js'
 export default{
-    props:['showDetail', 'index'],
+    props:['showDetail'],
     data(){
         return {
             detail: false,
@@ -87,6 +87,8 @@ export default{
                 }
                 else{
                     window.sessionStorage.setItem('fillQuesId', id)
+                    console.error('publisher:' + this.detailContent.publisher)
+                    window.sessionStorage.setItem('fillQuesUserId', this.detailContent.publisher)
                     this.$router.push({name: 'filling'})
                 }
             }
@@ -104,6 +106,7 @@ export default{
                 index: this.index
             }
             this.$store.dispatch('Ques/CLOSE_QUES',data)
+            this.$emit('refresh', true)
         },
         deleteQues(id){
             this.detail = false
@@ -112,6 +115,7 @@ export default{
                 index: this.index
             }
             this.$store.dispatch('Ques/DELETE_QUES',data)
+            this.$emit('refresh', true)
         },
         isCollect(id){
             if(this.collectQuesList.indexOf(id) != -1){

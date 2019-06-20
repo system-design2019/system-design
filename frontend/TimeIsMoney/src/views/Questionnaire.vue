@@ -29,10 +29,10 @@
                 </div>
             </div>
             <div style="width: 100%; ">
-                <task v-for="(ques,index) in quesList" :data="ques" :key="index" :index="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
+                <task v-for="(ques,index) in quesList" :data="ques" :key="index"  type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
             </div>
         </div>
-        <detail :showDetail="detailModel" ></detail>
+        <detail :showDetail="detailModel" @refresh="refresh"></detail>
     </div>
 </template>
 <script>
@@ -41,13 +41,15 @@ import { Ques } from '../store/questionnaire/index.js'
 import task from "./components/Task.vue"
 import detail from "./components/Detail.vue"
 export default {
+    inject:['reload'],
     components: {
         task,
         detail
     },
     data() {
         return {
-            detailModel: false
+            detailModel: false,
+            index: 0
         }
 
     },
@@ -69,6 +71,11 @@ export default {
         getDetail(id) {
             this.$store.dispatch('Ques/GET_DETAIL', id)
             this.detailModel = !this.detailModel
+        },
+        refresh: function(data){
+            if(data){
+                this.reload()
+            }
         }
     },
     mounted() {

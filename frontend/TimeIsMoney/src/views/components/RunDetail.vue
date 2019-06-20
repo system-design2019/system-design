@@ -92,6 +92,7 @@ export default{
                         console.log('bbb'+info)
                         if(info){
                             this.$Message.success('参与成功')
+                            this.$emit('refresh', true)
                         }
                         else{
                             this.$Message.warning('稍后再试')
@@ -132,22 +133,25 @@ export default{
                 id: id,
                 index: this.index
             }
-            this.$store.dispatch('Favor/CLOSE_ERRAND',data)
+            // this.$store.dispatch('Favor/CLOSE_ERRAND',data)
+            this.$emit('refresh', true)
         },
         deleteErrand(id){
+            console.error(this.index)
             this.detail = false
             let data = {
                 id: id,
                 index: this.index
             }
-            this.$store.dispatch('Favor/DELETE_ERRAND',data)
+            // this.$store.dispatch('Favor/DELETE_ERRAND',data)
+            this.$emit('refresh', true)
         },
     },
     computed:mapState( 'Favor', {
         errandDetail: 'errandDetail'
     }),
     mounted(){
-        // console.error(this.key)
+        
     },
     watch:{
         showDetail: function(detail, olddetail) {

@@ -38,17 +38,11 @@ export default {
     })
   },
   [CLOSE_ERRAND]({commit}, data){
-    errandAPI.closeErrand(data.id).then((info) => {
-      if(info.success)
-        commit(mutations.DELETE_FAVOR_BY_INDEX, data.index)
-    }
-  )},
+    errandAPI.closeErrand(data.id)
+  },
   [DELETE_ERRAND]({commit}, data){
-    errandAPI.deleteErrand(data.id).then((info) => {
-      if(info.success)
-        commit(mutations.DELETE_FAVOR_BY_INDEX, data.index)
-    }
-  )},
+    // errandAPI.deleteErrand(data.id)
+  },
 }
 
 

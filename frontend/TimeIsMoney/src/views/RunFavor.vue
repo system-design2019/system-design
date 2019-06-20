@@ -14,10 +14,10 @@
     </div>
     <div style="margin: 30px 13%">
         <Col v-for="(e, index) in errandList" :key="index"span='8'>
-            <run style="margin: 0 5%"  :data="e" @click.native="getDetail(e)" :index="index"></run>
+            <run style="margin: 0 5%"  :data="e" @click.native="getDetail(e)"></run>
         </Col>      
     </div>
-    <FavorDetail :showDetail="detailModel" ></FavorDetail>
+    <FavorDetail :showDetail="detailModel" @refresh="refresh"></FavorDetail>
   </div>
 </template>
 <script>
@@ -27,6 +27,7 @@ import { mapState } from 'vuex'
 import { Favor } from '../store/runFavor/index.js'
 
 export default {
+    inject:['reload'],
     components:{
         run,
         FavorDetail
@@ -42,11 +43,17 @@ export default {
         getDetail(data){
             this.$store.commit('Favor/SET_DETAIL', data)
             this.detailModel = !this.detailModel
+        },
+        refresh: function(data){
+            if(data){
+                this.reload()
+            }
         }
     },
     data(){
         return{
-            detailModel:false
+            detailModel:false,
+            index: 0
         }
     },
     computed: mapState('Favor', {
