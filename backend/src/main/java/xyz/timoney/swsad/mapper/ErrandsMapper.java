@@ -37,10 +37,10 @@ public interface ErrandsMapper {
     /*根据ID获取跑腿*/
     Errands getErraByID(@Param("errandsID")int errandsID);
 
-    /*确认完成问卷*/
+    /*确认完成跑腿*/
     void setStatus(@Param("errandsID")int errandsID);
 
-    /*参与问卷，人数加1*/
+    /*参与跑腿，人数加1*/
     void addPart(@Param("errandsID")int errandsID);
 
     /*根据ID获得参与者*/
