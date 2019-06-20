@@ -47,6 +47,7 @@ import { Ques } from '../store/questionnaire/index.js'
                             (response) => {
                                 if(response.success){
                                     this.$Message.success('提交成功');
+                                    
                                     this.$router.push('/questionnaire')
                                 }
                                 else{

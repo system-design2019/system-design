@@ -32,7 +32,7 @@
                 <task v-for="(ques,index) in quesList" :data="ques" :key="index" :index="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
             </div>
         </div>
-        <detail :detailContent="detailContent" :showDetail="detailModel" ></detail>
+        <detail :showDetail="detailModel" ></detail>
     </div>
 </template>
 <script>

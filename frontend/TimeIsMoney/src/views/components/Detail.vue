@@ -2,9 +2,9 @@
     <Modal v-model="detail" width="800px" class-name="vertical-center-modal d"  :mask-closable="false">
         <img src="./../../../static/ques/detail.png" style="position:relative; float: left; left: -50px; top: -50px; height:500px"></img>
         <p style="font-size:24px; font-weight: 500px;">{{detailContent.title}}</p>
-        <div style="overflow: hidden; width: 400px; height: 7%">
-            <div style="min-width: 200px; max-width: 350px; float:left">
-                <div style="min-width: 100px; max-width: 200px;float:left; margin-bottom: 10px">
+        <div style="overflow: hidden; width: 400px; height: 7%; margin-top: 10px">
+            <div style="min-width: 200px; max-width: 90%; float:left">
+                <div style="min-width: 100px; max-width: 300px;float:left; margin: 0 10px 10px 0px">
                     <img src="./../../../static/task/publisher.png" style="width:30px"></img>
                     <span style="font-size: 22px">{{detailContent.publisherName}}</span>
                 </div>
@@ -13,7 +13,7 @@
                     <span class="hint" style="font-size: 22px; color: #ce4545">{{detailContent.reward}}</span>
                 </div>
             </div>
-            <div style="float:right;width: 180px; text-align: right; margin-bottom: 10px">
+            <div style="float:right;width: 10%; text-align: right; margin-bottom: 10px">
                 <!-- <span class="hint" >{{detailContent.Infos.endTime}}</span> -->
                 <img :src="isCollect(detailContent.quesID)" style="width:30px" @click="changeCollectStatus(detailContent.quesID)"></img>
             </div>

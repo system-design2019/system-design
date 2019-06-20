@@ -1,18 +1,14 @@
 <template>
     <div>
         <div class="personal" style="margin: 0 10%">
-            <Tabs value="credit" style="font-size: 20px">
-                <TabPane label="我发布的" name="credit">
+            <div>
+                <div v-for="(ques,index) in publishLists">
                     <div>
-                        <div id="Dynamic" v-for="(ques,index) in publishLists">
-                            <div>
-                                <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.Infos.startTime}} </span> <span style="font-size:15px;color:gray;">我发布了</span>
-                            </div>
-                            <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
-                        </div>
+                        <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.Infos.startTime}} </span> <span style="font-size:15px;color:gray;">我发布了</span>
                     </div>
-                </TabPane>
-            </Tabs>
+                    <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
+                </div>
+            </div>
         </div>
         <detail v-show="detailModel" :showDetail="detailModel"></detail>
     </div>

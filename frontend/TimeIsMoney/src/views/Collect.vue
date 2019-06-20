@@ -1,18 +1,11 @@
 <template>
     <div>
         <div class="personal" style="margin: 0 10%">
-            <Tabs value="credit" style="font-size: 20px">
-                <TabPane label="我收藏的" name="credit">
-                    <div>
-                        <div id="Dynamic" v-for="(ques,index) in collectLists">
-                            <div>
-                                <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.Infos.startTime}} </span> <span style="font-size:15px;color:gray;">我收藏了</span>
-                            </div>
-                            <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
-                        </div>
-                    </div>
-                </TabPane>
-            </Tabs>
+            <div>
+                <div v-for="(ques,index) in collectLists">
+                    <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
+                </div>
+            </div>
         </div>
         <detail v-show="detailModel" :showDetail="detailModel"></detail>
     </div>
