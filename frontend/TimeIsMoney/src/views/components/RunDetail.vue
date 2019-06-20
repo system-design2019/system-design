@@ -42,16 +42,16 @@
                 </div>
                 <div v-if="getStatus(this.errandDetail.publisher)" style="width: 100%; text-align: center; margin-top: 20px">
                 <!--    <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px" @click="fillIn(errandDetail.quesid)">立即填写</Button>-->
-                    <Button id="fill" size="large" @click="attend(errandDetail.quesID)">立即参与</Button>
+                    <Button id="fill" size="large" @click="attend(errandDetail.errandsID)">立即参与</Button>
                 </div>
                 <div v-else style="width: 100%; text-align: center; margin-top: 20px">
                 <!--    <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px" @click="fillIn(errandDetail.quesid)">立即填写</Button>-->
                     <div>
-                        <Button id="check" size="large" @click="">查看参与情况</Button>
+                        <Button id="check" size="large" @click="checkAttend(errandDetail.errandsID)">查看参与情况</Button>
                     </div>
                     <div>
-                        <a id="close" size="large" @click="">关闭跑腿</a>
-                        <a id="delete" size="large" @click="">删除跑腿</a>
+                        <a id="close" size="large" @click="closeErrand(errandDetail.errandsID)">关闭跑腿</a>
+                        <a id="delete" size="large" @click="deleteErrand(errandDetail.errandsID)">删除跑腿</a>
                     </div>
                     
                 </div>
@@ -66,7 +66,7 @@
 import { mapState } from 'vuex'
 import { Favor } from '../../store/runFavor/index.js'
 export default{
-    props:['showDetail'],
+    props:['showDetail', 'index'],
     data(){
         return {
             own: false,
@@ -80,11 +80,23 @@ export default{
             if(!info.log)
                 this.$Message.warning('您还未登录，请先登录后参与跑腿。')
             else{
-                if(this.errandDetail.Infos.total == this.errandDetail.Infos.attend){
+                if(this.errandDetail.total == this.errandDetail.attend){
                     this.$Message.warning('此跑腿名额已满，请选择其他跑腿')
                 }
                 else{
-                    /*参与跑腿 */
+                    let data = {
+                        eid: id,
+                        uid: JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
+                    }
+                    this.$store.dispatch('Favor/ATTEND_ERRAND', data).then((info) => {
+                        console.log('bbb'+info)
+                        if(info){
+                            this.$Message.success('参与成功')
+                        }
+                        else{
+                            this.$Message.warning('稍后再试')
+                        }
+                    })
                 }
             }
         },
@@ -107,7 +119,29 @@ export default{
             else{
                 return true
             }
-        }
+        },
+        checkAttend(id){
+            this.detail = false
+            window.sessionStorage.setItem('errandId', id)
+            window.sessionStorage.setItem('errandTitle', this.errandDetail.title)
+            this.$router.push({name: 'checkList', params:{type:'errand'}})
+        },
+        closeErrand(id){
+            this.detail = false
+            let data = {
+                id: id,
+                index: this.index
+            }
+            this.$store.dispatch('Favor/CLOSE_ERRAND',data)
+        },
+        deleteErrand(id){
+            this.detail = false
+            let data = {
+                id: id,
+                index: this.index
+            }
+            this.$store.dispatch('Favor/DELETE_ERRAND',data)
+        },
     },
     computed:mapState( 'Favor', {
         errandDetail: 'errandDetail'

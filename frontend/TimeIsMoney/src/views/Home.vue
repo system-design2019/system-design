@@ -60,7 +60,7 @@ export default {
             tabs: 2,
             setting: {
                 autoplay: true,
-                autoplaySpeed: 2000,
+                autoplaySpeed: 3500,
                 dots: 'inside',
                 radiusDot: false,
                 trigger: 'hover',

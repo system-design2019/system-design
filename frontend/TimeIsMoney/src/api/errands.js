@@ -29,7 +29,7 @@ export async function createErrand (data) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function closeErrand (data) {
+export async function closeErrand (id) {
     let response = await service.get('/closeErra/'+id)
     // console.log(JSON.stringify(response.data))
     return response.data
@@ -41,7 +41,7 @@ export async function closeErrand (data) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function deleteErrand (data) {
+export async function deleteErrand (id) {
     let response = await service.get('/deleteErra/'+id)
     // console.log(JSON.stringify(response.data))
     return response.data
@@ -55,6 +55,7 @@ export async function deleteErrand (data) {
  * Promise will return the data of the questionnaires
  */
 export async function attendErrand (eid, uid) {
+    console.error(eid+" "+uid)
     let response = await service.post('/participate/'+eid+'/'+uid)
     // console.log(JSON.stringify(response.data))
     return response.data
@@ -69,6 +70,18 @@ export async function attendErrand (eid, uid) {
  */
 export async function confirmErrand (eid, uid) {
     let response = await service.post('/confirm/'+eid+'/'+uid)
+    // console.log(JSON.stringify(response.data))
+    return response.data
+}
+
+/**
+ * Get all the questionnaires and show on the index
+ * @param {int} id
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function getAttendUserList (id) {
+    let response = await service.get('/allParticipant/'+id)
     // console.log(JSON.stringify(response.data))
     return response.data
 }

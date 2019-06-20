@@ -14,10 +14,10 @@
     </div>
     <div style="margin: 30px 13%">
         <Col v-for="(e, index) in errandList" :key="index"span='8'>
-            <run style="margin: 0 5%"  :data="e" @click.native="getDetail(e)"></run>
+            <run style="margin: 0 5%"  :data="e" @click.native="getDetail(e)" :index="index"></run>
         </Col>      
     </div>
-    <FavorDetail :showDetail="detailModel"></FavorDetail>
+    <FavorDetail :showDetail="detailModel" ></FavorDetail>
   </div>
 </template>
 <script>

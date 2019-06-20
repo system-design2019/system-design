@@ -22,9 +22,9 @@ export default new Vuex.Store({
     mutations,
     getters,
     modules: {
-        Ques,
-        Favor,
-        Home,
-        Personal
+        Ques:Ques,
+        Favor: Favor,
+        Home: Home,
+        Personal: Personal
     }
 })

@@ -15,7 +15,12 @@
                     <div class="layout-nav" style="float: right; text-align: right" @click.native="changePageByLink(tag.link)">
                         <div v-if="logged">
                         <MenuItem v-for="(tag, index) in navRightTags1" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index+3)" style="float: right" :class="addClass(index+3)">
+                            <Dropdown trigger="click">
                             <Icon :type="tag.icon" size=27></Icon>
+                                <DropdownMenu v-if="index==1" slot="list">
+                                    <DropdownItem v-for="(drop, op) in dropList" style="text-align: center; padding: 10px 5px; font-size: 15px!important;" @click.native="changePageByLink(drop.link, index+3)">{{drop.title}}</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
                             <!-- <span>{{tag.text}}</span> -->
                         </MenuItem>
                         </div>
@@ -57,10 +62,18 @@
                 ],
                 navRightTags1:[
                     {name: "6", icon:"md-exit", text:"个人中心", link: "out"},
-                    {name: "5", icon:"md-person", text:"个人中心", link: "personal"},
+                    {name: "5", icon:"md-person", text:"个人中心", link: "no"},
                     {name: "4", icon:"md-mail", text:"收件箱", link: "receiveBox"}                    
                 ],
                 navRightTags0: {name: "6", icon:"md-person", text:"登录/注册", link: "in"},
+                dropList:[
+                    {name:'personal', title:'我的M币' ,link:'account'},
+                    {name:'personal', title:'我参与的' ,link:'attend'},
+                    {name:'personal', title:'我发布的' ,link:'publish'},
+                    {name:'personal', title:'我收藏的' ,link:'collect'},
+                    {name:'personal', title:'信息管理' ,link:'personal'}
+                    
+                ]
             }
         },
         computed: mapState({
@@ -88,7 +101,7 @@
                     window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
                     this.reload()
                 }
-                else{
+                else if(link !== 'no'){
                     let id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
                     // console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
                     this.$router.push({name:link})

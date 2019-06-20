@@ -6,7 +6,7 @@
             <div style="min-width: 200px; max-width: 350px; float:left">
                 <div style="min-width: 100px; max-width: 200px;float:left; margin-bottom: 10px">
                     <img src="./../../../static/task/publisher.png" style="width:30px"></img>
-                    <span style="font-size: 22px">{{detailContent.publisher}}</span>
+                    <span style="font-size: 22px">{{detailContent.publisherName}}</span>
                 </div>
                 <div style="min-width: 100px; max-width: 150px;float:right; margin-bottom: 10px">
                     <img src="./../../../static/task/reward.png" style="width:30px"></img>
@@ -68,7 +68,7 @@
 import { mapState } from 'vuex'
 import { Ques } from '../../store/questionnaire/index.js'
 export default{
-    props:['detailContent', 'showDetail', 'index'],
+    props:['showDetail', 'index'],
     data(){
         return {
             detail: false,
@@ -95,7 +95,7 @@ export default{
             this.detail = false
             window.sessionStorage.setItem('fillQuesId', id)
             window.sessionStorage.setItem('fillQuesTitle', this.detailContent.title)
-            this.$router.push({name: 'checkList'})
+            this.$router.push({name: 'checkList', params:{type:'questionnaire'}})
         },
         closeQues(id){
             this.detail = false
@@ -134,14 +134,15 @@ export default{
         }
     },
     computed:mapState( 'Ques', {
-        collectQuesList: 'collectQuesList'
+        collectQuesList: 'collectQuesList',
+        detailContent: 'quesDetail'
     }),
     mounted(){
-        console.error(this.key)
+        // console.error(this.key)
     },
     watch:{
         showDetail: function(newdetail, olddetail) {
-            this.detail = !this.detail;
+            this.detail = true;
             console.error('watch!!!!!!!')
         }
     }

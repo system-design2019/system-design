@@ -4,9 +4,9 @@
         <img :src="getStatus(contents.status)" style=" position:absolute; right: 0; top:0" width="100px" height="100px" />
         <img src="./../../../static/run/temp.png" style="width: 100%"></img>
         <Row style="margin-top: 20px; padding-left: 20px">
-            <p style="font-size: 23px; font-weight: 700;margin:5px;float:left;" class="oneline">{{contents.title}}</p>
+            <p style="font-size: 23px; font-weight: 700;padding:0 0;float:left;" class="oneline">{{contents.title}}</p>
         </Row>
-        <Row><p style="font-size:15px;margin:5px; " class="oneline">{{contents.event}}</p></Row>
+        <Row><p style="font-size:15px;padding:10px 40px;" class="oneline">{{contents.event}}</p></Row>
         <Row type="flex" style="margin-top: 5px; padding-left: 20px">
             <Col span="12" v-for="(ele, key, i) in contents.info" class="iconInDy" >
                 <img :src="icon[i]" width="40px" height="40px" />
@@ -45,7 +45,7 @@ export default{
             this.contents.event = this.data.event
             this.contents.total = this.data.total
             this.contents.attend = this.data.attend
-            this.contents.info.publisher = this.data.publisher
+            this.contents.info.publisher = this.data.publisherName
             this.contents.info.time = this.data.time.split(' ')[0]
             this.contents.info.reward = this.data.reward
             this.contents.info.place = this.data.place
