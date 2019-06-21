@@ -19,17 +19,19 @@
             </Carousel>
         </div>
         <div style="height: auto;">
-            <div style="width: 100%; height: 30px; background: #CE5555; margin: 20px 0; border-radius: 10px; text-align: center;">
-                <p style="line-height: 30px;color: #ffffff; text-align: right; margin-right: 20px">猜你喜欢</p>
-            </div>
+        <!--    <div style="width: 100%; height: 50px; background: #ffffff; margin: 20px 0;text-align: center;border-radius:5px;">
+            <p style="line-height: 30px;color: #ce4545; text-align: left; font-size: 20px; margin-top: 15px;">一夜暴富</p>
+                <p style="line-height: 30px;color: #ce4545; text-align: right; font-size: 20px; margin-top: 15px;margin-right: 20px">今日问卷</p>
+            </div>-->
+            <div style="width: 100%; height: 50px;"></div>
             <div style="width: 24%; float: left; margin-left: 1%">
-                <Card style="height: 380px;">
-                    <p slot="title">一夜暴富</p>
+                <Card style="height: 420px; background: #ffffff;">
+                    <p slot="title" style="color: #ce4545; font-size:20px;margin-top:5px;">一夜暴富</p>
                     <ul style="margin-left: 3px">
-                        <li v-for="(item, index) in ranklist" :key="index" style="list-style: none; margin-top: 10px;">
-                            <Icon type="ios-paper"  style="width: 7%;overflow: hidden;"></Icon>
-                            <a href="#" target="_blank" style="width: 65%; overflow: hidden;display:inline-block;word-break: keep-all;white-space: nowrap;text-overflow: ellipsis;">{{ item.name }}</a>
-                            <span  style=" float: right; width: 20%; overflow: hidden;display:inline-block;word-break: keep-all;white-space: nowrap;text-overflow: ellipsis;">{{ item.price }}</span>
+                        <li v-for="(item, index) in ranklist" :key="index" style="list-style: none; margin-top: 15px;">
+                            <Icon type="ios-paper"  style="width: 7%;overflow: hidden;color:#ce4545"></Icon>
+                            <a href="#" target="_blank" style="width: 65%; overflow: hidden;display:inline-block;word-break: keep-all;white-space: nowrap;text-overflow: ellipsis;vertical-align: middle;">{{ item.name }}</a>
+                            <span  style=" float: right; width: 20%;color:#ce4545;overflow: hidden;display:inline-block;word-break: keep-all;white-space: nowrap;text-overflow: ellipsis;">{{ item.price }}</span>
                         </li>
                     </ul>
                 </Card>
@@ -45,6 +47,7 @@
                     <i-col span="8"><img src='../../static/home/show5.jpg' style="width: 100%; height: 163px"></img></i-col>
                 </Row>
             </div>
+            
         </div>
     </div>
 </template>
@@ -84,3 +87,11 @@ export default {
     }
 }
 </script>
+<style scoped>
+a:link{
+    color:#ce4545;
+}
+a:hover{
+    color:blue;
+}
+</style>
