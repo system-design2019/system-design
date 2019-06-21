@@ -71,6 +71,11 @@
         delete from quesResults where quesID = ${quesID}
     </delete>
 
+    <!--参与者数目加1-->
+    <update id="addPart">
+        update questionnaire_table set attend = attend+1 where quesID = #{quesID}
+    </update>
+
     <!--关闭问卷-->
     <update id="closeQuesByID">
         update questionnaire_table set endTime=#{timeNow} where quesID = #{quesID}

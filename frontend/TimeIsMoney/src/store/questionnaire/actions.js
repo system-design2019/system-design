@@ -126,12 +126,18 @@ export default {
   },
   [CLOSE_QUES]({state,commit}, data){
     quesAPI.closeQues(data.id).then((info)=>{
-      commit(mutations.DELETE_QUES_BY_INDEX, data.index)
+      if(data.source == 'ques'){
+        commit(mutations.DELETE_QUES_BY_INDEX, data.index)
+      }
+      
     })
   },
   [DELETE_QUES]({state,commit}, data){
     quesAPI.deleteQues(data.id).then((info)=>{
-      commit(mutations.DELETE_QUES_BY_INDEX, data.index)
+      if(data.source == 'ques'){
+        commit(mutations.DELETE_QUES_BY_INDEX, data.index)
+      }
+      
     })
   }
 

@@ -36,7 +36,7 @@ const routers = [{
                 component: (resolve) => require(['../views/Questionnaire.vue'], resolve),
             },
             {
-                path: 'checkList',
+                path: 'checkList/:type',
                 name: 'checkList',
                 component: (resolve) => require(['../views/CheckList.vue'], resolve),
             },
@@ -64,6 +64,26 @@ const routers = [{
                 path: 'personal', //personal page
                 name: 'personal',
                 component: (resolve) => require(['../views/Personal.vue'], resolve)
+            },
+            {
+                path: 'personal/attend', //personal page
+                name: 'attend',
+                component: (resolve) => require(['../views/Attend.vue'], resolve)
+            },
+            {
+                path: 'personal/publish', //personal page
+                name: 'publish',
+                component: (resolve) => require(['../views/Publish.vue'], resolve)
+            },
+            {
+                path: 'personal/collect', //personal page
+                name: 'collect',
+                component: (resolve) => require(['../views/Collect.vue'], resolve)
+            },
+            {
+                path: 'personal/account', //personal page
+                name: 'account',
+                component: (resolve) => require(['../views/Account.vue'], resolve)
             },
             {
                 path: 'receiveBox', //check the user's receiveBox

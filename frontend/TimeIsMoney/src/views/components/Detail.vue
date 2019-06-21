@@ -1,20 +1,19 @@
 <template>
-<div >
     <Modal v-model="detail" width="800px" class-name="vertical-center-modal d"  :mask-closable="false">
         <img src="./../../../static/ques/detail.png" style="position:relative; float: left; left: -50px; top: -50px; height:500px"></img>
         <p style="font-size:24px; font-weight: 500px;">{{detailContent.title}}</p>
-        <div style="overflow: hidden; width: 400px; height: 7%">
-            <div style="width: 200px; float:left">
-                <div style="width: 100px; float:left; margin-bottom: 10px">
+        <div style="overflow: hidden; width: 400px; height: 7%; margin-top: 10px">
+            <div style="min-width: 200px; max-width: 90%; float:left">
+                <div style="min-width: 100px; max-width: 300px;float:left; margin: 0 10px 10px 0px">
                     <img src="./../../../static/task/publisher.png" style="width:30px"></img>
-                    <span style="font-size: 22px">{{detailContent.publisher}}</span>
+                    <span style="font-size: 22px">{{detailContent.publisherName}}</span>
                 </div>
-                <div style="width: 100px; float:right; margin-bottom: 10px">
+                <div style="min-width: 100px; max-width: 150px;float:right; margin-bottom: 10px">
                     <img src="./../../../static/task/reward.png" style="width:30px"></img>
                     <span class="hint" style="font-size: 22px; color: #ce4545">{{detailContent.reward}}</span>
                 </div>
             </div>
-            <div style="float:right;width: 180px; text-align: right; margin-bottom: 10px">
+            <div style="float:right;width: 10%; text-align: right; margin-bottom: 10px">
                 <!-- <span class="hint" >{{detailContent.Infos.endTime}}</span> -->
                 <img :src="isCollect(detailContent.quesID)" style="width:30px" @click="changeCollectStatus(detailContent.quesID)"></img>
             </div>
@@ -64,13 +63,12 @@
         </div>
         <div style="clear:both"></div>
     </Modal>
-</div>
 </template>
 <script>
 import { mapState } from 'vuex'
 import { Ques } from '../../store/questionnaire/index.js'
 export default{
-    props:['detailContent', 'showDetail', 'index'],
+    props:['showDetail'],
     data(){
         return {
             detail: false,
@@ -89,6 +87,8 @@ export default{
                 }
                 else{
                     window.sessionStorage.setItem('fillQuesId', id)
+                    console.error('publisher:' + this.detailContent.publisher)
+                    window.sessionStorage.setItem('fillQuesUserId', this.detailContent.publisher)
                     this.$router.push({name: 'filling'})
                 }
             }
@@ -97,7 +97,7 @@ export default{
             this.detail = false
             window.sessionStorage.setItem('fillQuesId', id)
             window.sessionStorage.setItem('fillQuesTitle', this.detailContent.title)
-            this.$router.push({name: 'checkList'})
+            this.$router.push({name: 'checkList', params:{type:'questionnaire'}})
         },
         closeQues(id){
             this.detail = false
@@ -106,6 +106,7 @@ export default{
                 index: this.index
             }
             this.$store.dispatch('Ques/CLOSE_QUES',data)
+            this.$emit('refresh', true)
         },
         deleteQues(id){
             this.detail = false
@@ -114,6 +115,7 @@ export default{
                 index: this.index
             }
             this.$store.dispatch('Ques/DELETE_QUES',data)
+            this.$emit('refresh', true)
         },
         isCollect(id){
             if(this.collectQuesList.indexOf(id) != -1){
@@ -136,14 +138,16 @@ export default{
         }
     },
     computed:mapState( 'Ques', {
-        collectQuesList: 'collectQuesList'
+        collectQuesList: 'collectQuesList',
+        detailContent: 'quesDetail'
     }),
     mounted(){
-        console.error(this.key)
+        // console.error(this.key)
     },
     watch:{
-        showDetail: function(detail, olddetail) {
+        showDetail: function(newdetail, olddetail) {
             this.detail = true;
+            console.error('watch!!!!!!!')
         }
     }
 }

@@ -10,7 +10,8 @@ public class Errands_temp {
     private Timestamp time;
     private String place;
     private String event;
-    private String publisher;
+    private int publisher;
+    private String publisherName;
     private int reward;
     private int deposit;
     private int total;
@@ -24,11 +25,20 @@ public class Errands_temp {
         time=new Timestamp(new Date().getTime());
         place="tushuguan";
         event="bangwodadaima";
-        publisher="zcq";
+        publisher=0;
+        publisherName="zcq";
         reward=0;
         deposit=0;
         total=0;
         attend=0;
+    }
+
+    public int getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(int publisher) {
+        this.publisher = publisher;
     }
 
     public boolean isStatus() {
@@ -79,12 +89,12 @@ public class Errands_temp {
         this.event = event;
     }
 
-    public String getPublisher() {
-        return publisher;
+    public String getPublisherName() {
+        return publisherName;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    public void setPublisherName(String publisherName) {
+        this.publisherName = publisherName;
     }
 
     public int getReward() {

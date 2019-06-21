@@ -58,6 +58,7 @@ export default {
             this.$refs[name].resetFields();
         },
         back(){
+            this.alert = false
             this.$store.commit('Favor/createFavor/CLEAR')
             this.$router.go(-1)
         },
