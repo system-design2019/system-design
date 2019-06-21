@@ -40,6 +40,7 @@ import { Ques } from '../store/questionnaire/index.js'
                     quesTitle: this.form.title,
                     type: 'fill'
                 }
+                console.error(window.sessionStorage.getItem('LogInfo'))
                 this.$store.dispatch('MESSAGE', data).then(
                     (response) => {
                         if(response.success){
@@ -70,12 +71,12 @@ import { Ques } from '../store/questionnaire/index.js'
                                         quesTitle: this.form.title,
                                         type: 'fill'
                                     }
-                                    this.$store.dispatch('MESSAGE', data).then(
-                                        (response) => {
-                                            if(response.success){
-                                                console.error('111')
-                                            }
-                                        })
+                                    // this.$store.dispatch('MESSAGE', data).then(
+                                    //     (response) => {
+                                    //         if(response.success){
+                                    //             console.error('111')
+                                    //         }
+                                    //     })
                                     this.$router.push('/questionnaire')
                                 }
                                 else{

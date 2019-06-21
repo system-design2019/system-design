@@ -214,14 +214,16 @@ export default {
                     }
                 )
             }
-            this.$store.dispatch('Personal/GET_INFO')
-            let data = {
-                log: JSON.parse(window.sessionStorage.getItem('LogInfo')).log,
-                userID: JSON.parse(window.sessionStorage.getItem('LogInfo')).userID,
-                username: this.personDetail.nickname
-            }
-            window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
-            console.error(data)
+            this.$store.dispatch('Personal/GET_INFO').then((res) => {
+                let data = {
+                    log: JSON.parse(window.sessionStorage.getItem('LogInfo')).log,
+                    userID: JSON.parse(window.sessionStorage.getItem('LogInfo')).userID,
+                    username: this.personDetail.nickname
+                }
+                window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
+                console.error(data)
+            })
+            
         },
         checkValid(username) {
             if (this.signIn) {
