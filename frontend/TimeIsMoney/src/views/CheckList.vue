@@ -93,7 +93,7 @@ import { Favor } from '../store/runFavor/index.js'
             checkAnsByUserId(userid){
                 this.showAns=!this.showAns
                 let data = {
-                    quesid: this.quesid,
+                    quesid: this.id,
                     userid: userid
                 }
                 this.$store.dispatch('Ques/checkQues/GET_ANS', data)

@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <detail :showDetail="detailModel" :index="index"></detail>
+        <detail :showDetail="detailModel"></detail>
     </div>
 </template>
 <script>
