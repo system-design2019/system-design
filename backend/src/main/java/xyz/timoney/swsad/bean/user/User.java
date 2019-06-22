@@ -67,9 +67,16 @@ public class User {
     private String aliPay;
     //qq号
     private String QQ;
-    //初始 0
+    //初始 4，就是距离满分差一点，但是也差不多
     //信用
     private double credit;
+
+    /**
+     * 财产，闲钱币
+     * 100 timoney = 1 yuan
+     * 开始赠送100闲钱币
+     */
+    private int asset;
 
     /**
      * 问卷资料
@@ -110,7 +117,10 @@ public class User {
         aliPay = null;
         weChatPay = null;
         QQ = null;
-        credit = 0;
+        //初始化为4
+        credit = 4;
+        //赠送100闲钱币
+        asset = 100;
         count++;
     }
     public void setId(int id) {
@@ -272,6 +282,13 @@ public class User {
         return university;
     }
 
+    public int getAsset() {
+        return asset;
+    }
+
+    public void setAsset(int asset) {
+        this.asset = asset;
+    }
 
     @Override
     public String toString() {
@@ -279,6 +296,7 @@ public class User {
         s += "\nPassword: " + password;
         s += "\nEmail: " + email;
         s += "\nPhone: " + phone;
+        s += "\nAsset: " + asset;
         return s;
     }
 }

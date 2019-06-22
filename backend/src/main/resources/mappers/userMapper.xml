@@ -32,6 +32,7 @@
             aliPay    varchar(40)  null,
             QQ        varchar(40)  null,
             credit    double  null,
+            asset     int,
             constraint email unique (email),
             constraint name unique (name),
             constraint phone unique (phone)
@@ -59,10 +60,11 @@
                                wechatpay,
                                alipay,
                                qq,
-                               credit)
+                               credit,
+                               asset)
         values(#{password},#{email}, #{phone},  #{name}, #{university}, #{studentId},
                #{grade}, #{major}, #{gender},  #{age}, #{nickname},#{face},#{weChatPay},#{aliPay},
-               #{QQ},#{credit})
+               #{QQ},#{credit},#{asset})
     </insert>
     <!--获取所有用户-->
     <select id="getUsers"  resultType="User">
@@ -80,6 +82,16 @@
     <select id="getByEmail" parameterType="String" resultType="User">
         select * from user_table where email = #{email}
     </select>
+    <!--获取用户余额-->
+    <select id="getAssetById" parameterType="int" resultType="int">
+        select asset from user_table where id = #{id}
+    </select>
+    <!--修改用户余额-->
+    <update id="changeAssetById">
+        update user_table
+        set asset = asset + #{arg1}
+        where id = #{arg0}
+    </update>
     <!--更新用户资料-->
     <update id="updateUser" parameterType="User">
         update user_table
@@ -100,8 +112,7 @@
             face = #{face},
             wechatpay = #{weChatPay},
             alipay = #{aliPay},
-            qq = #{QQ},
-            credit = #{credit}
+            qq = #{QQ}
         where id = #{id}
     </update>
 

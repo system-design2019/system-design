@@ -15,7 +15,7 @@
                     <div class="layout-nav" style="float: right; text-align: right" @click.native="changePageByLink(tag.link)">
                         <div v-if="logged">
                         <MenuItem v-for="(tag, index) in navRightTags1" :name="tag.name" :key="index" @click.native="changePageByLink(tag.link, index+3)" style="float: right" :class="addClass(index+3)">
-                            <Dropdown trigger="click">
+                            <Dropdown>
                             <Icon :type="tag.icon" size=27></Icon>
                                 <DropdownMenu v-if="index==1" slot="list">
                                     <DropdownItem v-for="(drop, op) in dropList" style="text-align: center; padding: 10px 5px; font-size: 15px!important;" @click.native="changePageByLink(drop.link, index+3)">{{drop.title}}</DropdownItem>

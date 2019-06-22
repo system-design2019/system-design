@@ -28,6 +28,7 @@ import java.util.*;
 
 
 @RestController
+@EnableAutoConfiguration
 public class UserController {
 
     private static SqlSessionFactory sqlSessionFactory;
@@ -128,6 +129,7 @@ public class UserController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
+            MoneyMapper moneyMapper = sqlSession.getMapper(MoneyMapper.class);
             //只允许注册一个手机号或邮箱号
             User insertUser = new User();
             if(User.isInit(user.getEmail())){
@@ -164,8 +166,15 @@ public class UserController {
             userMapper.insert(insertUser);
             int userId = insertUser.getId();
             System.out.println(userId);
-            notificationMapper.insert(new Notification(0, userId, "注册后第一条通知", "感谢注册TimeIsMoney，有问题尽管联系我们哦"));
-            notificationMapper.insert(new Notification(0, userId, "注册后第二条通知", "请尽快实名认证哦"));
+            notificationMapper.insert(new Notification(0, "系统通知",userId,"注册后第一条通知", "感谢注册TimeIsMoney，有问题尽管联系我们哦"));
+            notificationMapper.insert(new Notification(0, "系统通知",userId,"注册后第二条通知", "请尽快实名认证哦"));
+            notificationMapper.insert(new Notification(0, "系统通知",userId,"送福利啦!", "您是尊敬的内测用户,我们给您送了100个闲钱币,开始您的挣闲钱之旅吧!"));
+            /**
+             * 添加余额记录
+             */
+            MoneyRecord moneyRecord = new MoneyRecord(userId, 100 ,new Date(Util.getCurrentDateLong()),
+                    "内测用户福利",true);
+            moneyMapper.insertRecord(moneyRecord);
             message.setSuccess(true);
             message.setMsg("注册成功");
             sqlSession.commit();
@@ -445,6 +454,40 @@ public class UserController {
 
 
     /**
+     * 获取用户的余额记录,按时间降序
+     * @param userCookieKey
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/user/asset/all")
+    @CrossOrigin
+    public Message<List<MoneyRecord>> getUserAllMoneyRecord(@CookieValue("user") String userCookieKey){
+        System.out.println("\nGET /user/asset/all\n");
+        Message<List<MoneyRecord>> message = new Message<>();
+        //检查cookie
+        final int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
+        //获取数据库中记录
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            MoneyMapper moneyMapper = sqlSession.getMapper(MoneyMapper.class);
+            List<MoneyRecord> moneyRecords = moneyMapper.getAllRecordById(userId);
+            message.setMsg("获取交易记录成功");
+            message.setData(moneyRecords);
+            message.setSuccess(true);
+            //一次性提交
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setSuccess(false);
+            message.setMsg("获取交易记录失败:出现异常");
+            message.setData(null);
+            return message;
+        }
+        return message;
+    }
+
+    /**
      * @param userCookieKey 用户cookie
      * @return 用户发布的所有问卷
      */
@@ -550,6 +593,10 @@ public class UserController {
             quesFilledList = new ArrayList<>();
             for (int i : quesFilledIdList) {
                 Questionnaire q = questionnaireMapper.getQuesByID(i);
+                //如果这个问卷不存在，那就去掉它
+                if(q == null){
+                    continue;
+                }
                 q.setInfos(questionnaireMapper.getInfo(i));
                 quesFilledList.add(q);
             }
@@ -618,6 +665,10 @@ public class UserController {
             quesCollectedList = new ArrayList<>();
             for (int i : quesCollectedIdList) {
                 Questionnaire q = questionnaireMapper.getQuesByID(i);
+                //如果这个问卷不存在，那就去掉它
+                if(q == null){
+                    continue;
+                }
                 q.setInfos(questionnaireMapper.getInfo(i));
                 quesCollectedList.add(q);
             }
@@ -688,7 +739,11 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
-            message.setMsg("修改用户信息失败: 出现异常");
+            if (e.getCause() instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException) {
+                message.setMsg("更新用户信息失败: 用户名已存在");
+            } else {
+                message.setMsg("更新用户信息失败: 出现异常");
+            }
             System.out.println(message);
             return message;
         }
@@ -744,7 +799,7 @@ public class UserController {
                         new FileOutputStream(new File(filePath)));
                 message.setSuccess(true);
                 message.setMsg("上传成功");
-                message.setData("http://api.timoney.xyz/static/images/upload/" + fileName);
+                message.setData("http://118.25.215.11/static/images/upload/" + fileName);
                 out.write(file.getBytes());
                 out.flush();
                 out.close();

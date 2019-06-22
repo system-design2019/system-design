@@ -15,6 +15,11 @@ public class Notification {
     //其实用这个就可以代替type了，还能显示是谁发送的
     //后续也可以添加-1表示问卷消息，-2表示跑腿消息
     private int fromId;
+
+    /**
+     * 发送通知的用户名
+     */
+    private String fromName;
     //消息时间
     private Date date;
     //已读 true
@@ -26,8 +31,9 @@ public class Notification {
     private String content;
 
     public Notification(){
-        fromId = 0;
-        toId = 0;
+        fromId = -1;
+        fromName = "未知发件人";
+        toId = -1;
         hasRead = false;
         date = new Date(Util.getCurrentDateLong());
         title = "不知道谁的消息";
@@ -35,8 +41,9 @@ public class Notification {
     }
 
 
-    public Notification(int from, int to, String title, String content){
+    public Notification(int from,String fromName, int to, String title, String content){
         this.fromId = from;
+        this.fromName = fromName;
         this.toId = to;
         this.title = title;
         this.content = content;
@@ -97,5 +104,13 @@ public class Notification {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
     }
 }

@@ -7,6 +7,7 @@ import xyz.timoney.swsad.bean.Message;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@EnableAutoConfiguration
 public class Controller {
 
     //如果方法上的RequestMapping没有value，则此方法默认被父路径调用
