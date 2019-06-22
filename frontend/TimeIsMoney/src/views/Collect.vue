@@ -9,6 +9,8 @@
                         </div> -->
                         <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
                     </div>
+                    <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
+                </div>
             </div>
         </div>
         <detail :showDetail="detailModel" :index="index"></detail>
