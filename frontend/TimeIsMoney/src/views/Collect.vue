@@ -1,13 +1,19 @@
 <template>
     <div>
-        <div class="personal" style="margin: 0 10%">
-            <div>
-                <div v-for="(ques,index) in collectLists">
-                    <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
-                </div>
+        <div style="margin: 0 10%;">
+            <h2 style="font-size:40px; margin-top:20px; color:#CE4747;"> 我收藏的问卷 </h2>
+            <div style="width:100%;margin-top:10px;height:650px;">
+                <Scroll :height="650">
+                    <div v-for="(ques,index) in collectLists">
+                        <div>
+                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.Infos.startTime}} </span> <span style="font-size:15px;color:gray;">我收藏了</span>
+                        </div>
+                        <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
+                    </div>
+                </Scroll>
             </div>
         </div>
-        <detail v-show="detailModel" :showDetail="detailModel"></detail>
+        <detail :showDetail="detailModel" :index="index"></detail>
     </div>
 </template>
 <script>
@@ -24,18 +30,17 @@ export default {
         detail
     },
     computed: mapState('Personal', {
-            personDetail: 'personalInfo',
-            publishLists: 'publishing',
-            attendLists: 'attending',
-            collectLists: 'starring',
-            detailContent: 'quesDetail'
-        } 
-    ),
-    data(){
-        return{
+        personDetail: 'personalInfo',
+        publishLists: 'publishing',
+        attendLists: 'attending',
+        collectLists: 'starring',
+        detailContent: 'quesDetail'
+    }),
+    data() {
+        return {
             detailModel: false,
         }
-        
+
     },
     methods: {
         getDetail(id) {
@@ -49,41 +54,41 @@ export default {
 }
 </script>
 <style>
-    h1 {
-        height: 150px;
+h1 {
+    height: 150px;
 
-        img {
-            height: 100%;
-        }
-    }
-
-    h2 {
-        color: #666;
-        margin-bottom: 200px;
-
-        p {
-            margin: 0 0 50px;
-        }
-    }
-
-    .ivu-row-flex {
+    img {
         height: 100%;
     }
+}
 
-    .ivu-tabs-content,.ivu-tabs-content-animated{
-        height:450px;
+h2 {
+    color: #666;
+    margin-bottom: 200px;
+
+    p {
+        margin: 0 0 50px;
     }
+}
 
-    Row {
-        margin: 30px;
-    }
+.ivu-row-flex {
+    height: 100%;
+}
 
-    .ivu-tabs-nav-container{
-     font-size:30px!important;
-    }
+.ivu-tabs-content,
+.ivu-tabs-content-animated {
+    height: 450px;
+}
 
-    .personal .ivu-tabs-nav-container{
-        font-size: 22px!important;
-    }
+Row {
+    margin: 30px;
+}
 
+.ivu-tabs-nav-container {
+    font-size: 30px !important;
+}
+
+.personal .ivu-tabs-nav-container {
+    font-size: 22px !important;
+}
 </style>
