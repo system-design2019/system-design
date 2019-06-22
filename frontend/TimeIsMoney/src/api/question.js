@@ -124,6 +124,7 @@ export async function getAnsListByQuesId (quesid) {
  * Promise will return the data of the questionnaires
  */
 export async function getAnsByQUId (quesid, userid) {
+    console.error(quesid, userid)
     let response = await service.get('/Answer/'+quesid+'/'+userid)
     // console.log(JSON.stringify(response))
     return response.data

@@ -14,7 +14,7 @@
                 </TabPane>
             </Tabs>
         </div>
-        <detail  v-show="detailModel" :showDetail="detailModel"></detail>
+        <detail  :showDetail="detailModel"></detail>
     </div>
 </template>
 <script>

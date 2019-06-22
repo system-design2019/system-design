@@ -16,16 +16,18 @@ export default{
         return res
     },
     [MESSAGE] ({commit,state}, data){
-        let send = {
+        let send = [{
             toId: data.toId,
             fromId: data.fromId,
             hasRead: false,
             title: '',
             content: ''
-        }
-        if(data.type == 'fill'){
-            send.title = '有人填你的问卷啦！'
-            send.content = '<'+data.fromName+'>已填写问卷'+'《'+data.quesTitle+'》'
+        }]
+        console.log('消息：'+data.type)
+        if(data.type === 'fill'){
+            send[0].title = '有人填你的问卷啦！'
+            send[0].content = '<'+data.fromName+'>已填写问卷'+'《'+data.quesTitle+'》'
+            console.log('消息：'+JSON.stringify(send))
         }
         console.log('消息：'+JSON.stringify(send))
         return sysAPI.sendMessage(send)
