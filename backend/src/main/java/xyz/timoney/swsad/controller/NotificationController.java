@@ -6,10 +6,13 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 import xyz.timoney.swsad.bean.Message;
 import xyz.timoney.swsad.bean.user.Notification;
+import xyz.timoney.swsad.bean.user.User;
 import xyz.timoney.swsad.bean.user.UserState;
 import xyz.timoney.swsad.mapper.NotificationMapper;
+import xyz.timoney.swsad.mapper.UserMapper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.Comparator;
 import java.util.List;
 
@@ -102,6 +105,15 @@ public class NotificationController {
             try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
                 //得到映射器
                 NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
+                UserMapper userMapper  = sqlSession.getMapper(UserMapper.class);
+                User tempUser = userMapper.getById(userId);
+                if(tempUser == null){
+                    message.setData("该用户不存在数据库中");
+                    return message;
+                }
+                //设置通知发送的用户名
+                String userName = tempUser.getName();
+                notification.setFromName(userName);
                 //调用接口中的方法去执行xml文件中的SQL语句
                 notificationMapper.insert(notification);
             } catch (Exception e) {

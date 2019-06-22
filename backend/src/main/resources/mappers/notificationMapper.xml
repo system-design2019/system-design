@@ -15,6 +15,7 @@
                 primary key,
             toId       bigint(32) not null,
             fromId     bigint(32) not null,
+            fromName   CHAR(40)   not null,
             date       DATETIME   not null,
             hasRead    boolean    not null,
             title       CHAR(40)   not null,
@@ -25,11 +26,12 @@
     <insert id="insert" parameterType="Notification" useGeneratedKeys="true" keyProperty="id">
         insert into notification_table(toId,
                                        fromId,
+                                       fromName,
                                        date,
                                        hasRead,
                                        title,
                                        content)
-        values( #{toId},#{fromId},#{date}, #{hasRead},#{title},#{content})
+        values( #{toId},#{fromId},#{fromName},#{date}, #{hasRead},#{title},#{content})
     </insert>
     <!--删除单个通知-->
     <delete id="delete" parameterType="int">

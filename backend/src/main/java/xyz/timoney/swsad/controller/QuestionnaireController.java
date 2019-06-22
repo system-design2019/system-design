@@ -1,27 +1,22 @@
 package xyz.timoney.swsad.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
-import xyz.timoney.swsad.bean.*;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.web.bind.annotation.*;
+import xyz.timoney.swsad.bean.Message;
 import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
 import xyz.timoney.swsad.bean.quesUser.QuesFillUser;
 import xyz.timoney.swsad.bean.questionnaire.*;
-import xyz.timoney.swsad.bean.questionnaire.QuesContent;
 import xyz.timoney.swsad.bean.user.User;
 import xyz.timoney.swsad.bean.user.UserState;
-import xyz.timoney.swsad.bean.questionnaire.QuesContent;
 import xyz.timoney.swsad.mapper.QuesCollectUserMapper;
 import xyz.timoney.swsad.mapper.QuesFillUserMapper;
 import xyz.timoney.swsad.mapper.QuestionnaireMapper;
 import xyz.timoney.swsad.mapper.UserMapper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -96,18 +91,63 @@ public class QuestionnaireController {
      * */
     @RequestMapping(method = RequestMethod.GET,value = "/deleteQues/{quesID}")
     @CrossOrigin
-    public Message<String> deleteQueseByID(@PathVariable int quesID){
+    public Message<String> deleteQueseByID(@CookieValue("user") String userCookieKey,@PathVariable int quesID){
         Message<String> message = new Message<>();
+        /**
+         * 要有权限判断啊！！！
+         */
+        final int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
         Questionnaire theQues;
         //获取一个连接
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
+            QuesCollectUserMapper quesCollectUserMapper  = sqlSession.getMapper(QuesCollectUserMapper.class);
+            Questionnaire questionnaire = quesMapper.getQuesByID(userId);
+            if(questionnaire == null){
+                message.setData("问卷不存在");
+                return message;
+            }
+            if(questionnaire.getPublisher() != userId){
+                message.setData("您没有权限删除此问卷");
+                return message;
+            }
             //调用接口中的方法去执行xml文件中的SQL语句
             quesMapper.deleteQuesByID(quesID);
             quesMapper.deleteTianByID(quesID);
             quesMapper.deleteXuanByID(quesID);
             quesMapper.deleteAnsByID(quesID);
+            /**
+             * 同时要删除缓存吖！！
+             */
+            List<Integer> allCollectorId = quesCollectUserMapper.getAllCollectorId(quesID);
+            //删除用户收藏的缓存列表
+            for(int i : allCollectorId){
+                List<Integer> quesCollectId = QuesCollectUser.cacheListId.get(i);
+                if(quesCollectId != null && !quesCollectId.isEmpty()){
+                    QuesCollectUser.cacheListId.get(i).removeIf(item ->item == quesID);
+                }
+                List<Questionnaire> quesCollect = QuesCollectUser.cacheList.get(i);
+                if(quesCollect != null && !quesCollect.isEmpty()){
+                    QuesCollectUser.cacheList.get(i).removeIf(questionnaireItem -> questionnaireItem.getQuesID() == quesID);
+                }
+            }
+            //删除用用户填写的缓存列表
+            List<Integer> allFillterId = quesFillUserMapper.getAllFillerId(quesID);
+            for(int i : allFillterId){
+                List<Integer> quesFillId  = QuesFillUser.cacheListId.get(i);
+                if(quesFillId  != null && !quesFillId .isEmpty()){
+                    QuesFillUser.cacheListId.get(i).removeIf(item ->item == quesID);
+                }
+                List<Questionnaire> quesFill = QuesFillUser.cacheList.get(i);
+                if(quesFill  != null && !quesFill .isEmpty()){
+                    QuesFillUser.cacheList.get(i).removeIf(questionnaireItem -> questionnaireItem.getQuesID() == quesID);
+                }
+            }
 
             message.setData("success delete");
             message.setSuccess(true);
@@ -738,8 +778,11 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //获取收藏者列表
             List<Integer> list = quesCollectUserMapper.getAllCollectedId(userId);
+            //删除问卷数据库中不存在的
+            list.removeIf(item -> questionnaireMapper.getQuesByID(item) == null);
             message.setData(list);
             /**
              * 增加缓存
@@ -944,8 +987,11 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
             QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             List<Integer> list = quesFillUserMapper.getAllFilledId(userId);
+            //删除问卷数据库中不存在的
+            list.removeIf(item -> questionnaireMapper.getQuesByID(item) == null);
             message.setData(list);
             /**
              * 增加缓存

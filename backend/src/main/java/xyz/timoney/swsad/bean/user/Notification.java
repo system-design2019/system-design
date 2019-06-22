@@ -15,6 +15,11 @@ public class Notification {
     //其实用这个就可以代替type了，还能显示是谁发送的
     //后续也可以添加-1表示问卷消息，-2表示跑腿消息
     private int fromId;
+
+    /**
+     * 发送通知的用户名
+     */
+    private String fromName;
     //消息时间
     private Date date;
     //已读 true
@@ -97,5 +102,13 @@ public class Notification {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
     }
 }

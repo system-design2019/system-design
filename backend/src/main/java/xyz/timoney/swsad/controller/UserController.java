@@ -551,6 +551,10 @@ public class UserController {
             quesFilledList = new ArrayList<>();
             for (int i : quesFilledIdList) {
                 Questionnaire q = questionnaireMapper.getQuesByID(i);
+                //如果这个问卷不存在，那就去掉它
+                if(q == null){
+                    continue;
+                }
                 q.setInfos(questionnaireMapper.getInfo(i));
                 quesFilledList.add(q);
             }
@@ -619,6 +623,10 @@ public class UserController {
             quesCollectedList = new ArrayList<>();
             for (int i : quesCollectedIdList) {
                 Questionnaire q = questionnaireMapper.getQuesByID(i);
+                //如果这个问卷不存在，那就去掉它
+                if(q == null){
+                    continue;
+                }
                 q.setInfos(questionnaireMapper.getInfo(i));
                 quesCollectedList.add(q);
             }
