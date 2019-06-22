@@ -5,7 +5,7 @@ import xyz.timoney.swsad.bean.MoneyRecord;
 import java.util.List;
 
 /**
- * 充值提现记录
+ * 账户余额记录
  */
 public interface MoneyMapper {
     /**
@@ -23,7 +23,7 @@ public interface MoneyMapper {
      * @param moneyRecord
      * @return
      */
-   boolean insertRecord(MoneyRecord moneyRecord);
+   int insertRecord(MoneyRecord moneyRecord);
 
     /**
      * 获取用户的所有交易记录
@@ -35,7 +35,7 @@ public interface MoneyMapper {
     /**
      * 设置交易状态
      */
-   boolean setStatus(boolean status);
+   boolean setStatus(int moneyId, boolean status);
 
     /**
      * @param id 删除交易记录

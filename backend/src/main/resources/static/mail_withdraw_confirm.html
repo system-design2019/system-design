@@ -52,7 +52,7 @@
 
                                         <!-- Compane Name -->
                                         <tr>
-                                            <td style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:16px; color:#FFFFFF; line-height:26px; font-weight: bold;">收款通知系统</td>
+                                            <td style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:16px; color:#FFFFFF; line-height:26px; font-weight: bold;">提现通知系统</td>
                                         </tr>
                                         <!-- end Compane Name -->
 
@@ -79,7 +79,7 @@
 
                                         <!-- title -->
                                         <tr>
-                                            <td align="right" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:38px; color:#3b3b3b; line-height:26px;">支付审核通知</td>
+                                            <td align="right" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:38px; color:#3b3b3b; line-height:26px;">提现审核通知</td>
                                         </tr>
                                         <!-- end title -->
 
@@ -152,7 +152,7 @@
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tbody><tr>
                                             <td width="100%" align="left" valign="top" style="font-size:13px; color:#3b3b3b; line-height:26px; text-transform:uppercase;">
-                                                尊敬的【挣闲钱】管理员您好，您收到了待审核支付确认订单，请您及时处理：
+                                                尊敬的【挣闲钱】管理员您好，您收到了待审核提现确认订单，请您及时处理：
                                             </td>
                                         </tr>
                                     </tbody></table>
@@ -186,7 +186,7 @@
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tbody><tr>
                                             <td width="250" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">用户ID</td>
-                                            <td width="300" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;"><span th:text="${userId}"></span></td>
+                                            <td width="300" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">[userId]</td>
                                         </tr>
                                         </tbody></table>
                                 </td>
@@ -220,7 +220,7 @@
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tbody><tr>
                                             <td width="250" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">用户名</td>
-                                            <td width="300" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;"><span th:text="${userName}"></span></td>
+                                            <td width="300" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">[userName]</td>
                                         </tr>
                                     </tbody></table>
                                 </td>
@@ -253,8 +253,8 @@
                                 <td>
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tbody><tr>
-                                            <td width="250" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">付款金额</td>
-                                            <td width="300" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;"><span th:text="${money}"></span></td>
+                                            <td width="250" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">提现金额</td>
+                                            <td width="300" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">[money]</span></td>
                                         </tr>
                                     </tbody></table>
                                 </td>
@@ -287,8 +287,8 @@
                                 <td>
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tbody><tr>
-                                            <td width="250" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">支付方式</td>
-                                            <td width="300" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;"><span th:text="${payType}"></span></td>
+                                            <td width="250" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">支付宝账号</td>
+                                            <td width="300" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">[aliPay]</td>
                                         </tr>
                                     </tbody></table>
                                 </td>
@@ -321,8 +321,42 @@
                                 <td>
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tbody><tr>
-                                            <td width="250" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">留言</td>
-                                            <td width="300" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;"><span th:text="${info}"></span></td>
+                                            <td width="250" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">微信账号</td>
+                                            <td width="300" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">[weChatPay]</td>
+                                        </tr>
+                                        </tbody></table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="5"></td>
+                            </tr>
+                            </tbody></table>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="5"></td>
+                </tr>
+                </tbody></table>
+        </td>
+    </tr>
+    <!-- end list -->
+
+    <!-- list -->
+    <tr>
+        <td align="center">
+            <table width="600" border="0" cellspacing="0" cellpadding="0">
+                <tbody><tr>
+                    <td align="center" style="border-bottom:1px solid #ecf0f1;">
+                        <table width="550" border="0" cellspacing="0" cellpadding="0">
+                            <tbody><tr>
+                                <td height="15"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tbody><tr>
+                                            <td width="250" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">备注</td>
+                                            <td width="300" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">[info]</span></td>
                                         </tr>
                                     </tbody></table>
                                 </td>
@@ -359,8 +393,8 @@
                                 <td>
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tbody><tr>
-                                            <td width="250" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">支付时间</td>
-                                            <td width="300" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;"><span th:text="${time}"></span></td>
+                                            <td width="250" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">申请时间</td>
+                                            <td width="300" align="left" valign="top" style="font-family: &#39;Open Sans&#39;, Arial, sans-serif; font-size:14px; color:#3b3b3b; line-height:26px;  font-weight: bold;">[time]</span></td>
                                         </tr>
                                     </tbody></table>
                                 </td>
@@ -402,7 +436,7 @@
                 <!-- content -->
                 <tr>
                     <td style="font-size:13px; color:#7f8c8d; line-height:26px;">
-                        请确认后点击以下对应按钮进行审核(2周内有效)：
+                        请务必确认已经给用户转账，然后点击以下对应按钮进行审核(2周内有效)：
                     </td>
                 </tr>
                 <!-- end content -->
@@ -416,7 +450,7 @@
                         <table width="80%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#91c444" class="textbutton" style="border-radius:5px;border-bottom:3px solid #e6e6e6">
                             <tbody><tr>
                                 <td height="40" align="center" style="font-size:16px;color:#FFFFFF;line-height: 28px;padding-left: 15px;padding-right: 15px;">
-                                    <a th:href="${passUrl}">审核通过</a>
+                                    <a href="[passUrl]">我已转账</a>
                                 </td>
                             </tr>
                         </tbody></table>
@@ -434,7 +468,7 @@
                         <table width="80%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#e4ba00" class="textbutton" style="border-radius:5px;border-bottom:3px solid #e6e6e6">
                             <tbody><tr>
                                 <td height="40" align="center" style="font-size:16px;color:#FFFFFF;line-height: 28px;padding-left: 15px;padding-right: 15px;">
-                                    <a th:href="${backUrl}">驳回请求</a>
+                                    <a href="[backUrl]">拒绝提现</a>
                                 </td>
                             </tr>
                         </tbody></table>
