@@ -15,7 +15,7 @@ export default {
     },
     mounted(){
         setTimeout(() => {
-            this.$router.push('/questionnaire')
+            this.$router.push('/favor')
         }, 3000);
     }
 }

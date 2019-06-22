@@ -15,8 +15,8 @@ const Ques = {
         username: '',
         quesList:[],
         quesDetail: {
-            infos:{"招募人数": 90, "填写人数": 5, "发布时间": '2019.5.3 18:00', "截止时间": '2019.5.2.19:00'},
-            quesid: 0, number:0, publisher:'suata', head:'../../static/jump/social.png', title:'大学生心理健康调查', content:'关于大学生心理健康的相关调查，目前比较需要男孩子哦啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', command:'在校大学生', price: 10
+            Infos:{"招募人数": 90, "填写人数": 5, "发布时间": '2019.5.3 18:00', "截止时间": '2019.5.2.19:00'},
+            quesid: 0, number:0, publisherName:'suata', head:'../../static/jump/social.png', title:'大学生心理健康调查', content:'关于大学生心理健康的相关调查，目前比较需要男孩子哦啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', command:'在校大学生', price: 10
         },
         collectQuesList:[],
         attendQuesList:[],
@@ -92,8 +92,8 @@ const Ques = {
                 }
             }
         },
-        fillQues,
-        checkQues
+        fillQues: fillQues,
+        checkQues: checkQues
     }
 }
 

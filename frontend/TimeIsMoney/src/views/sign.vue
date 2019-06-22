@@ -17,7 +17,7 @@
                     <Input v-model="info.password" prefix="ios-contact" placeholder="密码" type="password" style="margin-top:15px" @keyup.enter.native="doSignIn" />
                     <div>
                         <Input v-model="checkNum" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:15px;width:150px;" @keyup.enter.native="doSignIn" />
-                        <s-identify :identifyCode="identifyCode" @click.native="refreshCode" style="margin-top:15px;float:right;"></s-identify>
+<SIdentify :identifyCode="identifyCode2" @click.native="refreshCode" style="margin-top:15px;float:right;"></SIdentify>
                     </div>
                 </div>
                 <div class="allButton">
@@ -61,8 +61,8 @@
                     <Input v-model="info.username" prefix="ios-contact" placeholder="请输入用户名/手机/邮箱" type="text" style="margin-top:25px" />
                     <Input v-model="info.password" prefix="ios-contact" placeholder="请输入密码" type="password" style="margin-top:25px" @keyup.enter.native="doSignUp" />
                     <div>
-                        <Input v-model="checkNum" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:25px;width:150px;" @keyup.enter.native="doSignUp" />
-                        <s-identify :identifyCode="identifyCode" @click.native="refreshCode" style="margin-top:25px;float:right;"></s-identify>
+                        <Input v-model="checkNum1" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:25px;width:150px;" @keyup.enter.native="doSignUp" />
+                        <SIdentify1 :identifyCode1="identifyCode1" @click.native="refreshCode" style="margin-top:25px;float:right;"></SIdentify1>
                     </div>
                 </div>
                 <div class="allButton">
@@ -91,12 +91,13 @@
 </template>
 <script>
 import SIdentify from "./components/Identify"
+import SIdentify1 from "./components/Identify1"
 import { Personal } from '../store/personal/index.js'
 import { mapState } from 'vuex'
 import { mapGetters } from 'vuex'
 export default {
     props: ['signInFromJump', 'signInFromMain', 'signUpFromMain'],
-    components: { SIdentify },
+    components: { SIdentify, SIdentify1 },
     data() {
         return {
             signIn: false,
@@ -104,17 +105,20 @@ export default {
             info: { username: "", password: "", mode: "" },
             wrong: false,
             alert: '',
-            identifyCode: "",
+            identifyCode2: "",
+            identifyCode1: "",
+            //identifyCodes: "1234567890abcdefghijklmnopqrstuvwxyz",
             identifyCodes: "1234567890",
-            checkNum: ""
+            checkNum: "",
+            checkNum1: ""
         }
     },
     computed: mapState('Personal', {
-            personDetail: 'personalInfo',
-        }
-    ),
+        personDetail: 'personalInfo',
+    }),
     mounted() {
-        this.identifyCode = "";
+        this.identifyCode2 = "";
+        this.identifyCode1 = "";
         this.makeCode(this.indentifyCodes, 4);
     },
     methods: {
@@ -122,12 +126,21 @@ export default {
             return Math.floor(Math.random() * (max - min) + min);
         },
         refreshCode() {
-            this.identifyCode = "";
+            this.identifyCode2 = "";
+            this.identifyCode1 = "";
             this.makeCode(this.identifyCodes, 4);
+            //alert(this.signIn)
+            //alert(this.identifyCode2)
+            alert(this.identifyCode1)
         },
         makeCode(o, l) {
             for (let i = 0; i < l; i++) {
-                this.identifyCode += this.identifyCodes[
+                this.identifyCode2 += this.identifyCodes[
+                    this.randomNum(0, this.identifyCodes.length)
+                ];
+            }
+            for (let i = 0; i < l; i++) {
+                this.identifyCode1 += this.identifyCodes[
                     this.randomNum(0, this.identifyCodes.length)
                 ];
             }
@@ -138,6 +151,8 @@ export default {
             this.info.username = "";
             this.info.password = "";
             this.checkNum = "";
+            this.checkNum1 = "";
+            // this.refreshCode();
         },
         changeToSignIn() {
             this.signUp = false;
@@ -145,10 +160,8 @@ export default {
             this.info.username = "";
             this.info.password = "";
             this.checkNum = "";
-        },
-        test() {
-            if (this.checkNum == this.identifyCode)
-                alert("Yes");
+            this.checkNum1 = "";
+            /// this.refreshCode();
         },
         doSignUp() {
             if (this.checkValid(this.info.username) !== 'invalid') {
@@ -201,20 +214,32 @@ export default {
                     }
                 )
             }
-            this.$store.dispatch('Personal/GET_INFO')
-            let data = {
-                log: JSON.parse(window.sessionStorage.getItem('LogInfo')).log,
-                userID: JSON.parse(window.sessionStorage.getItem('LogInfo')).userID,
-                username: this.personDetail.nickname
-            }
-            window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
-            console.error(data)
+            this.$store.dispatch('Personal/GET_INFO').then((res) => {
+                let data = {
+                    log: JSON.parse(window.sessionStorage.getItem('LogInfo')).log,
+                    userID: JSON.parse(window.sessionStorage.getItem('LogInfo')).userID,
+                    username: this.personDetail.nickname
+                }
+                window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
+                console.error(data)
+            })
+            
         },
         checkValid(username) {
-            if (this.checkNum != this.identifyCode) {
-                this.wrong = true
-                this.alert = '验证码错误'
-                return 'invalid'
+            if (this.signIn) {
+                if (this.checkNum != this.identifyCode2) {
+                    this.wrong = true
+                    this.alert = '验证码错误'
+                    this.refreshCode();
+                    return 'invalid'
+                }
+            } else {
+                if (this.checkNum1 != this.identifyCode1) {
+                    this.wrong = true
+                    this.alert = '验证码错误'
+                    this.refreshCode();
+                    return 'invalid'
+                }
             }
             if (this.info.username === '' || this.info.password === '') {
                 this.wrong = true

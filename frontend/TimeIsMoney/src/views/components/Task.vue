@@ -7,13 +7,13 @@
             </Row>
             <Row><span style="font-size:15px;margin:5px;float:left;">{{contents.detail}}</span></Row>
             <Row type="flex" style="margin-top: 10px">
-                <div style="float: left; width: 70%">
+                <div style="float: left; width: 60%">
                     <div v-if="ifShow(i)" v-for="(ele, key, i) in contents.info" style="margin-right: 30px;" class="iconInDy vercenter">
                         <img :src="icon[i]" width="30px" height="30px" />
                         <span style="margin-left: 5px; ">{{ele}}</span>
                     </div>
                 </div>
-                <div style="float: right; width: 30%; text-align: right">
+                <div style="float: right; width: 40%; text-align: right">
                     <div v-if="i>3" v-for="(ele, key, i) in contents.info" style="margin-right: 30px;float: right" class="iconInDy vercenter">
                         <img :src="icon[i]" width="30px" height="30px" />
                         <span style="margin-left: 5px; ">{{ele}}</span>

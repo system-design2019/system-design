@@ -15,7 +15,7 @@ export const DELETE_ALL_ALERTS = 'DELETE_ALL_ALERTS'
 
 export default {
     [GET_INFO]({ commit }) {
-        personalAPI.getPersonalInfo().then((info) => {
+        return personalAPI.getPersonalInfo().then((info) => {
             commit(mutations.SET_PER_INFO, info.data)
         })
     },

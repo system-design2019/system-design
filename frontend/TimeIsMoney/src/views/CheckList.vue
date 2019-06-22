@@ -14,8 +14,8 @@
                     </div>
                 </div>
                 <!-- {"id":23,"toId":7,"fromId":11,"date":"2019-05-22 19:50:43","hasRead":false,"title":"测试发送通知10","content":"测试发送通知详情10"} -->
-                <CellGroup style="width: 100%">
-                    <Cell class="alert" v-for="(a, index) in anslist" :key="index" :title="a.title" style="width: 100%" >
+                <CellGroup v-if="type=='questionnaire'" style="width: 100%">
+                    <Cell class="alert" v-for="(a, index) in anslist" :key="index" style="width: 100%" >
                         <span style="font-size: 17px; font-weight: 700; float: left; width: 78%">
                             {{index+1}}
                             <span style="color: rgb(174,174,174);font-weight: 100;padding-left: 10px">{{a.userName}}</span>
@@ -25,6 +25,20 @@
                             <div style="float:right;width: 10%; text-align: right;">
                                 <a style="text-align: left;color: #ce4545;" @click="checkAnsByUserId(a.userID)">查看答案</a>
                             </div>
+                        </div>           
+                    </Cell>
+                </CellGroup>
+                <CellGroup v-else style="width: 100%">
+                    <Cell class="alert" v-for="(a, index) in attendlist" :key="index" style="width: 100%" >
+                        <span style="font-size: 17px; font-weight: 700; float: left; width: 78%">
+                            {{index+1}}
+                            <span style="color: rgb(174,174,174);font-weight: 100;padding-left: 10px">{{a.partName}}</span>
+                        </span>
+                        <div style="float:right;width: 20%; text-align: right; margin-right: 20px;">
+                            <span style="float:left;width: 86%; text-align: right;color: rgb(174,174,174);">{{a.partTime}}</span>
+                            <!-- <div style="float:right;width: 10%; text-align: right;">
+                                <a style="text-align: left;color: #ce4545;" @click="checkAnsByUserId(a.userID)">查看答案</a>
+                            </div> -->
                         </div>           
                     </Cell>
                 </CellGroup>
@@ -51,19 +65,22 @@
 <script>
 import {mapState} from 'vuex'
 import { Ques } from '../store/questionnaire/index.js'
+import { Favor } from '../store/runFavor/index.js'
     export default {
         data(){
             return{
                 title: '烤肉拌饭',
-                quesid: 1,
+                id: 1,
                 showAns: false,
+                type: 'questionnaire'
             }
         },
-        computed: mapState('Ques/checkQues',{
-            form: 'formContent',
-            answers: 'answers',
-            rules: 'rules',
-            anslist: 'anslist'
+        computed: mapState({
+            form: state => state.Ques.checkQues.formContent,
+            answers: state => state.Ques.checkQues.answers,
+            rules: state => state.Ques.checkQues.rules,
+            anslist: state => state.Ques.checkQues.anslist,
+            attendlist: state => state.Favor.attendErrandList
         }),
         methods:{
             getKey(index){
@@ -83,10 +100,20 @@ import { Ques } from '../store/questionnaire/index.js'
             }
         },
         created: function(){
-            this.quesid = parseInt(window.sessionStorage.getItem('fillQuesId'))
-            this.title = window.sessionStorage.getItem('fillQuesTitle')
-            this.$store.dispatch('Ques/checkQues/GET_QUES', this.quesid)
-            this.$store.dispatch('Ques/checkQues/GET_ANS_LIST', this.quesid)
+            this.type = this.$route.params.type
+            if(this.type == 'questionnaire'){
+                this.id = parseInt(window.sessionStorage.getItem('fillQuesId'))
+                this.title = window.sessionStorage.getItem('fillQuesTitle')
+                this.$store.dispatch('Ques/checkQues/GET_QUES', this.id)
+                this.$store.dispatch('Ques/checkQues/GET_ANS_LIST', this.id)
+            }
+            else{
+                this.id = parseInt(window.sessionStorage.getItem('errandId'))
+                this.title = window.sessionStorage.getItem('errandTitle')
+                this.$store.dispatch('Favor/GET_ATTEND_LIST', this.id)
+            }
+            
+            
             
         }
     }
