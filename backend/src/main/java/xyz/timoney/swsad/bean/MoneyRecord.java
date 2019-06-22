@@ -1,29 +1,55 @@
 package xyz.timoney.swsad.bean;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class MoneyRecord {
+
+    /**
+     * 用户ID
+     */
     private int userId;
+    /**
+     * 用户名
+     */
     private String userName;
-    private double money;
-    private Date time;
+    /**
+     * 金额
+     * 指闲钱币吧
+     * 1 rmb = 100 timoney
+     */
+    private int money;
+    /**
+     * 交易时间
+     */
+    private Date date;
+    /**
+     * 交易信息
+     */
     private String info;
-    private int payType;
+    /**
+     * 交易是否成功的状态
+     */
+    private boolean status;
+
+    public MoneyRecord(int userId, int money, Date date, String info, boolean status){
+        this.userId = userId;
+        this.money = money;
+        this.date = date;
+        this.info = info;
+        this.status = status;
+    };
 
     public int getUserId() {
         return userId;
     }
 
-    public Date getTime() {
-        return time;
+    public Date getDate() {
+        return date;
     }
 
-    public double getMoney() {
+    public int getMoney() {
         return money;
-    }
-
-    public int getPayType() {
-        return payType;
     }
 
     public String getInfo() {
@@ -34,8 +60,8 @@ public class MoneyRecord {
         return userName;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public void setUserId(int userId) {
@@ -46,12 +72,8 @@ public class MoneyRecord {
         this.info = info;
     }
 
-    public void setMoney(double money) {
+    public void setMoney(int money) {
         this.money = money;
-    }
-
-    public void setPayType(int payType) {
-        this.payType = payType;
     }
 
     public void setUserName(String userName) {

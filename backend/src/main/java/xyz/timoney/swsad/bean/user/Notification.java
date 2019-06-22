@@ -31,8 +31,9 @@ public class Notification {
     private String content;
 
     public Notification(){
-        fromId = 0;
-        toId = 0;
+        fromId = -1;
+        fromName = "未知发件人";
+        toId = -1;
         hasRead = false;
         date = new Date(Util.getCurrentDateLong());
         title = "不知道谁的消息";
@@ -40,8 +41,9 @@ public class Notification {
     }
 
 
-    public Notification(int from, int to, String title, String content){
+    public Notification(int from,String fromName, int to, String title, String content){
         this.fromId = from;
+        this.fromName = fromName;
         this.toId = to;
         this.title = title;
         this.content = content;

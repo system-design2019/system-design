@@ -97,7 +97,8 @@ public class NotificationController {
         }
         int successCount = 0;
         for(Notification notification : notifications){
-            if(userId != notification.getFromId()){
+            // == 0表示系统通知
+            if(notification.getFromId() != 0 && userId != notification.getFromId()){
                 message.setData("部分通知无权发送");
                 continue;
             }
@@ -106,14 +107,19 @@ public class NotificationController {
                 //得到映射器
                 NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
                 UserMapper userMapper  = sqlSession.getMapper(UserMapper.class);
-                User tempUser = userMapper.getById(userId);
-                if(tempUser == null){
-                    message.setData("该用户不存在数据库中");
-                    return message;
+                String fromName;
+                if(notification.getFromId() == 0){
+                    fromName = "系统通知";
+                }else {
+                    User tempUser = userMapper.getById(userId);
+                    if(tempUser == null){
+                        message.setData("该用户不存在数据库中");
+                        return message;
+                    }
+                    fromName = tempUser.getName();
                 }
                 //设置通知发送的用户名
-                String userName = tempUser.getName();
-                notification.setFromName(userName);
+                notification.setFromName(fromName);
                 //调用接口中的方法去执行xml文件中的SQL语句
                 notificationMapper.insert(notification);
             } catch (Exception e) {
