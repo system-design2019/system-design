@@ -31,4 +31,19 @@
         order by date desc
     </select>
 
+    <!--添加一条交易记录-->
+    <insert id="insertRecord" parameterType="MoneyRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into money_table(userId,
+                                       date,
+                                       info,
+                                       money,
+                                       status)
+        values( #{userId},#{date},#{info},#{money}, #{status})
+    </insert>
+
+    <update id="setStatus" >
+        update money_table
+        set status = #{arg1}
+        where id = #{arg0}
+    </update>
 </mapper>
