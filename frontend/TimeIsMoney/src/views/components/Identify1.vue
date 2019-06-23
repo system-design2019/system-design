@@ -10,13 +10,13 @@ export default {
     data() {
         return {
             sdisabled: false,
-            time: 5,
+            time: 60,
             btntxt: "获取验证码",
         };
     },
     methods: {
         sendcode() {
-            this.time = 5;
+            this.time = 60;
             this.timer();
         },
         //发送验证码倒计时

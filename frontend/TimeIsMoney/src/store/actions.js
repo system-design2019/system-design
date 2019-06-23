@@ -4,18 +4,19 @@ import * as sysAPI from './../api/system'
 export const SIGN_IN = 'SIGN_IN'
 export const SIGN_UP = 'SIGN_UP'
 export const MESSAGE = 'MESSAGE'
+export const SEND_IDENTIFY = 'SEND_IDENTIFY'
 
-export default{
-    [SIGN_IN] ({commit, state}, info) {
-        let res = userAPI.login(info.username, info.password, info.mode)    
-        return res       
-        
+export default {
+    [SIGN_IN]({ commit, state }, info) {
+        let res = userAPI.login(info.username, info.password, info.mode)
+        return res
+
     },
-    [SIGN_UP] ({commit, state}, info){
+    [SIGN_UP]({ commit, state }, info) {
         let res = userAPI.userRegister(info.username, info.password, info.mode)
         return res
     },
-    [MESSAGE] ({commit,state}, data){
+    [MESSAGE]({ commit, state }, data) {
         let send = [{
             toId: data.toId,
             fromId: data.fromId,
@@ -23,13 +24,17 @@ export default{
             title: '',
             content: ''
         }]
-        console.log('消息：'+data.type)
-        if(data.type === 'fill'){
+        console.log('消息：' + data.type)
+        if (data.type === 'fill') {
             send[0].title = '有人填你的问卷啦！'
-            send[0].content = '<'+data.fromName+'>已填写问卷'+'《'+data.quesTitle+'》'
-            console.log('消息：'+JSON.stringify(send))
+            send[0].content = '<' + data.fromName + '>已填写问卷' + '《' + data.quesTitle + '》'
+            console.log('消息：' + JSON.stringify(send))
         }
-        console.log('消息：'+JSON.stringify(send))
+        console.log('消息：' + JSON.stringify(send))
         return sysAPI.sendMessage(send)
+    },
+    [SEND_IDENTIFY]({ commit, state }, info) {
+        let res = userAPI.sendIndentify(info.username, info.mode)
+        return res
     }
 }

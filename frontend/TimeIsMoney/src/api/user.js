@@ -12,14 +12,14 @@ import qs from 'qs'
  * @return {Promise}
  * Promise will return the json data with success and message 
  */
-export async function login (username, password, mode) {
+export async function login(username, password, mode) {
     let data = {}
-    if(mode === 'phone')
-        data = {"phone": username,"password": password}
+    if (mode === 'phone')
+        data = { "phone": username, "password": password }
     else
-        data = {"email": username,"password": password}
+        data = { "email": username, "password": password }
     let response = await service.post('/login', data)
-    
+
     // fetch("http://172.26.70.9:8080/login", {
     //     type:"cors",
     //     credentials:"include",
@@ -34,8 +34,8 @@ export async function login (username, password, mode) {
     //         console.log(res)
     //     })
     // })
-    
-    console.log('response:'+JSON.stringify(response))
+
+    console.log('response:' + JSON.stringify(response))
     return response.data
 }
 
@@ -50,14 +50,24 @@ export async function login (username, password, mode) {
  * @return {Promise}
  * Promise will return the json data with success and message
  */
-export async function userRegister (username, password, mode) {
+export async function userRegister(username, password, mode) {
     let data = {}
-    if(mode === 'phone')
-        data = {"phone": username,"password": password}
+    if (mode === 'phone')
+        data = { "phone": username, "password": password }
     else
-        data = {"email": username,"password": password}
+        data = { "email": username, "password": password }
     let response = await service.post('/register', data)
     console.log(response.data)
     return response.data
 }
- 
+
+export async function sendIndentify(username, mode) {
+    let data = {}
+    if (mode === 'phone')
+        data = { "phone_or_email": 0, "target": username, "type": 1 }
+    else
+        data = { "phone_or_email": 1, "target": username, "type": 1 }
+    let response = await service.post('/code', data)
+    console.log(response.data)
+    return response.data
+}

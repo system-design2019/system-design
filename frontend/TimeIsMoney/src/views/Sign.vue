@@ -62,7 +62,7 @@
                     <Input v-model="info.password" prefix="ios-contact" placeholder="请输入密码" type="password" style="margin-top:25px" @keyup.enter.native="doSignUp" />
                     <div>
                         <Input v-model="checkNum1" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:25px;width:150px;" @keyup.enter.native="doSignUp" />
-                        <SIdentify1 style="float:right;margin-top:25px;height:40px;"></SIdentify1>
+                        <SIdentify1 style="float:right;margin-top:25px;height:40px;" @click.native="sendCheck"></SIdentify1>
                     </div>
                 </div>
                 <div class="allButton">
@@ -122,6 +122,19 @@ export default {
         this.makeCode(this.indentifyCodes, 4);
     },
     methods: {
+        sendCheck() {
+            //alert("Hi");
+            var userMode = this.checkValid(this.info.username)
+            if (userMode !== 'invalid') {
+                this.info.mode = this.checkValid(this.info.username)
+                this.$store.dispatch('SEND_IDENTIFY', this.info).then(
+                    (response) => {
+                        console.log('response')
+                        console.log(response)
+                    }
+                )
+            }
+        },
         randomNum(min, max) {
             return Math.floor(Math.random() * (max - min) + min);
         },
@@ -230,13 +243,6 @@ export default {
         checkValid(username) {
             if (this.signIn) {
                 if (this.checkNum != this.identifyCode2) {
-                    this.wrong = true
-                    this.alert = '验证码错误'
-                    this.refreshCode();
-                    return 'invalid'
-                }
-            } else {
-                if (this.checkNum1 != this.identifyCode1) {
                     this.wrong = true
                     this.alert = '验证码错误'
                     this.refreshCode();
