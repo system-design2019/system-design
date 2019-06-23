@@ -100,7 +100,7 @@ import {mapState} from 'vuex'
         }
     }
 </script>
-<style scoped lang="less">
+<style lang="less">
     .index{
         width: 100%;
         position: absolute;
