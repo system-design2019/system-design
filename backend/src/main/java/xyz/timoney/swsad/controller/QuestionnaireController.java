@@ -95,6 +95,11 @@ public class QuestionnaireController {
             int reFundAsset = questionnaire.getReward() * (questionnaire.getInfos().getTotal() - questionnaire.getInfos().getAttend());
             userMapper.changeAssetById(userId, reFundAsset);
             /**
+             * 修改缓存
+             */
+            //直接移除缓存，以后访问就会访问数据库了
+            User.cacheList.removeIf(u -> u.getId() == userId);
+            /**
              * 添加记录,单位：闲钱币
              */
             MoneyRecord moneyRecord = new MoneyRecord(userId, reFundAsset,new Date(Util.getCurrentDateLong()),
@@ -184,6 +189,11 @@ public class QuestionnaireController {
              */
             int reFundAsset = questionnaire.getReward() * (questionnaire.getInfos().getTotal() - questionnaire.getInfos().getAttend());
             userMapper.changeAssetById(userId, reFundAsset);
+            /**
+             * 修改缓存
+             */
+            //直接移除缓存，以后访问就会访问数据库了
+            User.cacheList.removeIf(u -> u.getId() == userId);
             /**
              * 添加记录,单位：闲钱币
              */
@@ -597,6 +607,11 @@ public class QuestionnaireController {
              * 减去余额
              */
             userMapper.changeAssetById(userId, -needAsset);
+            /**
+             * 修改缓存
+             */
+            //直接移除缓存，以后访问就会访问数据库了
+            User.cacheList.removeIf(u -> u.getId() == userId);
             /**
              * 添加记录
              */

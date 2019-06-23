@@ -17,7 +17,7 @@
                     <Input v-model="info.password" prefix="ios-contact" placeholder="密码" type="password" style="margin-top:15px" @keyup.enter.native="doSignIn" />
                     <div>
                         <Input v-model="checkNum" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:15px;width:150px;" @keyup.enter.native="doSignIn" />
-<SIdentify :identifyCode="identifyCode2" @click.native="refreshCode" style="margin-top:15px;float:right;"></SIdentify>
+                        <SIdentify :identifyCode="identifyCode2" @click.native="refreshCode" style="margin-top:15px;float:right;"></SIdentify>
                     </div>
                 </div>
                 <div class="allButton">
@@ -61,8 +61,9 @@
                     <Input v-model="info.username" prefix="ios-contact" placeholder="请输入用户名/手机/邮箱" type="text" style="margin-top:25px" />
                     <Input v-model="info.password" prefix="ios-contact" placeholder="请输入密码" type="password" style="margin-top:25px" @keyup.enter.native="doSignUp" />
                     <div>
-                        <Input v-model="checkNum1" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:25px;width:150px;" @keyup.enter.native="doSignUp" />
-                        <SIdentify1 :identifyCode1="identifyCode1" @click.native="refreshCode" style="margin-top:25px;float:right;"></SIdentify1>
+                        <Input v-model="info.inputCode" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:25px;width:150px;" @keyup.enter.native="doSignUp" />
+                        <SIdentify1 style="float:right;margin-top:25px;height:40px;" @click.native="sendIndentify"></SIdentify1>
+                        <Button size="large" long @click="checkIndentify"> 测试用 </Button>
                     </div>
                 </div>
                 <div class="allButton">
@@ -90,8 +91,8 @@
     </div>
 </template>
 <script>
-import SIdentify from "./components/Identify"
-import SIdentify1 from "./components/Identify1"
+import SIdentify from "./components/IdentifyFromLocal"
+import SIdentify1 from "./components/IdentifyFromAPI"
 import { Personal } from '../store/personal/index.js'
 import { mapState } from 'vuex'
 import { mapGetters } from 'vuex'
@@ -102,7 +103,7 @@ export default {
         return {
             signIn: false,
             signUp: false,
-            info: { username: "", password: "", mode: "" },
+            info: { username: "", password: "", mode: "", inputCode: "" },
             wrong: false,
             alert: '',
             identifyCode2: "",
@@ -122,6 +123,61 @@ export default {
         this.makeCode(this.indentifyCodes, 4);
     },
     methods: {
+        //these 2 functions are used in the sign in
+        sendIndentify() {
+            //alert("Hi");
+            var userMode = this.checkValid(this.info.username)
+            if (userMode !== 'invalid') {
+                this.info.mode = this.checkValid(this.info.username)
+                this.$store.dispatch('SEND_IDENTIFY', this.info).then(
+                    (response) => {
+                        console.log('response')
+                        console.log(response)
+                    }
+                )
+            }
+        },
+        checkIndentify() {
+            var userMode = this.checkValid(this.info.username)
+            if (userMode !== 'invalid') {
+                this.info.mode = this.checkValid(this.info.username)
+                this.$store.dispatch('CHECK_IDENTIFY', this.info).then(
+                    (response) => {
+                        console.log(response)
+                        if (response['success']) {
+                            alert("Your verify done!")
+                        }
+                    }
+                )
+            }
+        },
+        //these 2 functions are used in the find the forgot password
+        sendIndentify2() {
+            var userMode = this.checkValid(this.info.username)
+            if (userMode !== 'invalid') {
+                this.info.mode = this.checkValid(this.info.username)
+                this.$store.dispatch('SEND_IDENTIFY2', this.info).then(
+                    (response) => {
+                        console.log('response')
+                        console.log(response)
+                    }
+                )
+            }
+        },
+        checkIndentify2() {
+            var userMode = this.checkValid(this.info.username)
+            if (userMode !== 'invalid') {
+                this.info.mode = this.checkValid(this.info.username)
+                this.$store.dispatch('CHECK_IDENTIFY2', this.info).then(
+                    (response) => {
+                        console.log(response)
+                        if (response['success']) {
+                            alert("Your verify done!")
+                        }
+                    }
+                )
+            }
+        },
         randomNum(min, max) {
             return Math.floor(Math.random() * (max - min) + min);
         },
@@ -131,7 +187,7 @@ export default {
             this.makeCode(this.identifyCodes, 4);
             //alert(this.signIn)
             //alert(this.identifyCode2)
-            alert(this.identifyCode1)
+            // alert(this.identifyCode1)
         },
         makeCode(o, l) {
             for (let i = 0; i < l; i++) {
@@ -164,7 +220,8 @@ export default {
             /// this.refreshCode();
         },
         doSignUp() {
-            if (this.checkValid(this.info.username) !== 'invalid') {
+            var userMode = this.checkValid(this.info.username)
+            if (userMode !== 'invalid') {
                 this.info.mode = this.checkValid(this.info.username)
                 this.$store.dispatch('SIGN_UP', this.info).then(
                     (response) => {
@@ -224,19 +281,12 @@ export default {
                     }
                 )
             }
-            
-            
+
+
         },
         checkValid(username) {
             if (this.signIn) {
                 if (this.checkNum != this.identifyCode2) {
-                    this.wrong = true
-                    this.alert = '验证码错误'
-                    this.refreshCode();
-                    return 'invalid'
-                }
-            } else {
-                if (this.checkNum1 != this.identifyCode1) {
                     this.wrong = true
                     this.alert = '验证码错误'
                     this.refreshCode();
@@ -275,6 +325,14 @@ export default {
 }
 </script>
 <style>
+#sendIndentify {
+    margin-top: 25px;
+    float: right;
+    color: #fff;
+    border-radius: 5px;
+    background-color: #3cb175;
+}
+
 #logoN {
     font-size: 20px;
     color: white;

@@ -48,7 +48,7 @@ public class MoneyController {
         }
         if(userId != moneyRecord.getUserId()){
             message.setSuccess(false);
-            message.setMsg(moneyRecord.getMoney() > 0 ? "充值" : "提现" + "失败: 账号不一致");
+            message.setMsg((moneyRecord.getMoney() > 0 ? "充值" : "提现") + "失败: 账号不一致");
             System.out.println(message);
             return message;
         }
@@ -113,6 +113,9 @@ public class MoneyController {
                 userMapper.changeAssetById(moneyRecord.getUserId(), moneyRecord.getMoney());
                 //确认交易记录
                 moneyMapper.setStatus(moneyRecord.getId(),true);
+                //修改缓存
+                //直接移除缓存，以后访问就会访问数据库了
+                User.cacheList.removeIf(u -> u.getId() == moneyRecord.getUserId());
                 //使链接无效
                 MoneyRecord.confirmLinkMap.remove(confirmKey);
                 message.setSuccess(true);
