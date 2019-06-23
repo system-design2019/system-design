@@ -64,9 +64,9 @@ export async function userRegister(username, password, mode) {
 export async function sendIndentify(username, mode) {
     let data = {}
     if (mode === 'phone')
-        data = { "phone_or_email": 0, "target": username, "type": 1 }
+        data = { "phone_or_email": 0, "target": username, "type": 0 }
     else
-        data = { "phone_or_email": 1, "target": username, "type": 1 }
+        data = { "phone_or_email": 1, "target": username, "type": 0 }
     let response = await service.post('/code', data)
     console.log(response.data)
     return response.data
