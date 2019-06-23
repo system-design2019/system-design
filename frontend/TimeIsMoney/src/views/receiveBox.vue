@@ -17,14 +17,14 @@
                             <Badge :status="getStatus(a.hasRead)" style="float: left;" />
                         </div>
                         <div style="float:right; width: 98%">
-                            <span style="font-size: 17px; font-weight: 700; float: left; width: 78%">
+                            <span style="font-size: 17px; font-weight: 700; float: left; width: 70%">
                                 {{a.title}}
                                 <span style="color: rgb(174,174,174);font-weight: 100;">{{a.content}}</span>
                             </span>
-                            <div style="float:right;width: 20%; text-align: right; margin-right: 20px;">
-                                <span style="float:left;width: 65%; text-align: left;color: rgb(174,174,174);">{{a.date}}</span>
+                            <div style="float:right;width: 28%; text-align: right;">
+                                <span style="float:left;width: 65%; text-align: right;color: rgb(174,174,174);">{{a.date}}</span>
                                 <div style="float:right;width: 35%; text-align: right;">
-                                    <a style="float:left;width: 40%; text-align: left;color: #ce4545;" @click="deleteAlert(index)">删除</a>
+                                    <a style="float:left;width: 40%; text-align: right;color: #ce4545;" @click="deleteAlert(index)">删除</a>
                                     <a style="float:right;width: 60%; text-align: right;color: #ce4545;" @click="changeStatus(index)">{{getAction(a.hasRead)}}</a>
                                 </div>
                             </div>
