@@ -215,7 +215,8 @@ export default {
                             let data = {
                                 log: JSON.parse(window.sessionStorage.getItem('LogInfo')).log,
                                 userID: JSON.parse(window.sessionStorage.getItem('LogInfo')).userID,
-                                username: this.personDetail.nickname
+                                username: this.personDetail.nickname,
+                                money: this.personDetail.asset
                             }
                             window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
                             console.error(data)
