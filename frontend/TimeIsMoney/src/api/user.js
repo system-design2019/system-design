@@ -71,3 +71,14 @@ export async function sendIndentify(username, mode) {
     console.log(response.data)
     return response.data
 }
+
+export async function checkIndentify(username, mode, inputCode) {
+    let data = {}
+    if (mode === 'phone')
+        data = { "phone_or_email": 0, "target": username, "code": inputCode } //code is string
+    else
+        data = { "phone_or_email": 1, "target": username, "code": inputCode }
+    let response = await service.post('/code/verify', data)
+    console.log(response.data)
+    return response.data
+}

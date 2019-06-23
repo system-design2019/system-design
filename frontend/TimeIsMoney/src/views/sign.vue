@@ -61,8 +61,9 @@
                     <Input v-model="info.username" prefix="ios-contact" placeholder="请输入用户名/手机/邮箱" type="text" style="margin-top:25px" />
                     <Input v-model="info.password" prefix="ios-contact" placeholder="请输入密码" type="password" style="margin-top:25px" @keyup.enter.native="doSignUp" />
                     <div>
-                        <Input v-model="checkNum1" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:25px;width:150px;" @keyup.enter.native="doSignUp" />
-                        <SIdentify1 style="float:right;margin-top:25px;height:40px;" @click.native="sendCheck"></SIdentify1>
+                        <Input v-model="info.inputCode" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:25px;width:150px;" @keyup.enter.native="doSignUp" />
+                        <SIdentify1 style="float:right;margin-top:25px;height:40px;" @click.native="sendIndentify"></SIdentify1>
+                        <Button size="large" long @click="checkIndentify"> 测试用 </Button>
                     </div>
                 </div>
                 <div class="allButton">
@@ -102,7 +103,7 @@ export default {
         return {
             signIn: false,
             signUp: false,
-            info: { username: "", password: "", mode: "" },
+            info: { username: "", password: "", mode: "", inputCode: "" },
             wrong: false,
             alert: '',
             identifyCode2: "",
@@ -122,7 +123,7 @@ export default {
         this.makeCode(this.indentifyCodes, 4);
     },
     methods: {
-        sendCheck() {
+        sendIndentify() {
             //alert("Hi");
             var userMode = this.checkValid(this.info.username)
             if (userMode !== 'invalid') {
@@ -131,6 +132,20 @@ export default {
                     (response) => {
                         console.log('response')
                         console.log(response)
+                    }
+                )
+            }
+        },
+        checkIndentify() {
+            var userMode = this.checkValid(this.info.username)
+            if (userMode !== 'invalid') {
+                this.info.mode = this.checkValid(this.info.username)
+                this.$store.dispatch('CHECK_IDENTIFY', this.info).then(
+                    (response) => {
+                        console.log(response)
+                        if (response['success']) {
+                            alert("Your verify done!")
+                        }
                     }
                 )
             }
@@ -281,7 +296,7 @@ export default {
 }
 </script>
 <style>
-#sendCheck {
+#sendIndentify {
     margin-top: 25px;
     float: right;
     color: #fff;

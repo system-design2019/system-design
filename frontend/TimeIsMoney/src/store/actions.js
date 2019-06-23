@@ -5,6 +5,7 @@ export const SIGN_IN = 'SIGN_IN'
 export const SIGN_UP = 'SIGN_UP'
 export const MESSAGE = 'MESSAGE'
 export const SEND_IDENTIFY = 'SEND_IDENTIFY'
+export const CHECK_IDENTIFY = 'CHECK_IDENTIFY'
 
 export default {
     [SIGN_IN]({ commit, state }, info) {
@@ -35,6 +36,10 @@ export default {
     },
     [SEND_IDENTIFY]({ commit, state }, info) {
         let res = userAPI.sendIndentify(info.username, info.mode)
+        return res
+    },
+    [CHECK_IDENTIFY]({ commit, state }, info) {
+        let res = userAPI.checkIndentify(info.username, info.mode, info.inputCode)
         return res
     }
 }
