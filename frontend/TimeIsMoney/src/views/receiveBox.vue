@@ -129,4 +129,7 @@ import {mapState} from 'vuex'
         display: inherit!important;
         width: 100%
     }
+    .ivu-cell-main{
+        display: inline!important;
+    }
 </style>
