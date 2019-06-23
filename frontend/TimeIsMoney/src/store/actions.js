@@ -53,3 +53,4 @@ export default {
         let res = userAPI.checkIndentify2(info.username, info.mode, info.inputCode)
         return res
     }
+}
