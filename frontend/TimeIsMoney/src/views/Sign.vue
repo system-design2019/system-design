@@ -91,8 +91,8 @@
     </div>
 </template>
 <script>
-import SIdentify from "./components/Identify"
-import SIdentify1 from "./components/Identify1"
+import SIdentify from "./components/IdentifyFromLocal"
+import SIdentify1 from "./components/IdentifyFromAPI"
 import { Personal } from '../store/personal/index.js'
 import { mapState } from 'vuex'
 import { mapGetters } from 'vuex'
@@ -123,6 +123,7 @@ export default {
         this.makeCode(this.indentifyCodes, 4);
     },
     methods: {
+        //these 2 functions are used in the sign in
         sendIndentify() {
             //alert("Hi");
             var userMode = this.checkValid(this.info.username)
@@ -141,6 +142,33 @@ export default {
             if (userMode !== 'invalid') {
                 this.info.mode = this.checkValid(this.info.username)
                 this.$store.dispatch('CHECK_IDENTIFY', this.info).then(
+                    (response) => {
+                        console.log(response)
+                        if (response['success']) {
+                            alert("Your verify done!")
+                        }
+                    }
+                )
+            }
+        },
+        //these 2 functions are used in the find the forgot password
+        sendIndentify2() {
+            var userMode = this.checkValid(this.info.username)
+            if (userMode !== 'invalid') {
+                this.info.mode = this.checkValid(this.info.username)
+                this.$store.dispatch('SEND_IDENTIFY2', this.info).then(
+                    (response) => {
+                        console.log('response')
+                        console.log(response)
+                    }
+                )
+            }
+        },
+        checkIndentify2() {
+            var userMode = this.checkValid(this.info.username)
+            if (userMode !== 'invalid') {
+                this.info.mode = this.checkValid(this.info.username)
+                this.$store.dispatch('CHECK_IDENTIFY2', this.info).then(
                     (response) => {
                         console.log(response)
                         if (response['success']) {

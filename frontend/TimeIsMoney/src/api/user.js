@@ -61,6 +61,8 @@ export async function userRegister(username, password, mode) {
     return response.data
 }
 
+
+// use in sign in
 export async function sendIndentify(username, mode) {
     let data = {}
     if (mode === 'phone')
@@ -73,6 +75,30 @@ export async function sendIndentify(username, mode) {
 }
 
 export async function checkIndentify(username, mode, inputCode) {
+    let data = {}
+    if (mode === 'phone')
+        data = { "phone_or_email": 0, "target": username, "code": inputCode } //code is string
+    else
+        data = { "phone_or_email": 1, "target": username, "code": inputCode }
+    let response = await service.post('/code/verify', data)
+    console.log(response.data)
+    return response.data
+}
+
+// use in find pass 
+
+export async function sendIndentify2(username, mode) {
+    let data = {}
+    if (mode === 'phone')
+        data = { "phone_or_email": 0, "target": username, "type": 1 }
+    else
+        data = { "phone_or_email": 1, "target": username, "type": 1 }
+    let response = await service.post('/code', data)
+    console.log(response.data)
+    return response.data
+}
+
+export async function checkIndentify2(username, mode, inputCode) {
     let data = {}
     if (mode === 'phone')
         data = { "phone_or_email": 0, "target": username, "code": inputCode } //code is string
