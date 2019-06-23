@@ -17,7 +17,7 @@
                     <Input v-model="info.password" prefix="ios-contact" placeholder="密码" type="password" style="margin-top:15px" @keyup.enter.native="doSignIn" />
                     <div>
                         <Input v-model="checkNum" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:15px;width:150px;" @keyup.enter.native="doSignIn" />
-<SIdentify :identifyCode="identifyCode2" @click.native="refreshCode" style="margin-top:15px;float:right;"></SIdentify>
+                        <SIdentify :identifyCode="identifyCode2" @click.native="refreshCode" style="margin-top:15px;float:right;"></SIdentify>
                     </div>
                 </div>
                 <div class="allButton">
@@ -62,7 +62,7 @@
                     <Input v-model="info.password" prefix="ios-contact" placeholder="请输入密码" type="password" style="margin-top:25px" @keyup.enter.native="doSignUp" />
                     <div>
                         <Input v-model="checkNum1" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:25px;width:150px;" @keyup.enter.native="doSignUp" />
-                        <SIdentify1 :identifyCode1="identifyCode1" @click.native="refreshCode" style="margin-top:25px;float:right;"></SIdentify1>
+                        <SIdentify1 style="float:right;margin-top:25px;height:40px;"></SIdentify1>
                     </div>
                 </div>
                 <div class="allButton">
@@ -131,7 +131,7 @@ export default {
             this.makeCode(this.identifyCodes, 4);
             //alert(this.signIn)
             //alert(this.identifyCode2)
-            alert(this.identifyCode1)
+            // alert(this.identifyCode1)
         },
         makeCode(o, l) {
             for (let i = 0; i < l; i++) {
@@ -164,7 +164,8 @@ export default {
             /// this.refreshCode();
         },
         doSignUp() {
-            if (this.checkValid(this.info.username) !== 'invalid') {
+            var userMode = this.checkValid(this.info.username)
+            if (userMode !== 'invalid') {
                 this.info.mode = this.checkValid(this.info.username)
                 this.$store.dispatch('SIGN_UP', this.info).then(
                     (response) => {
@@ -223,8 +224,8 @@ export default {
                     }
                 )
             }
-            
-            
+
+
         },
         checkValid(username) {
             if (this.signIn) {
@@ -274,6 +275,14 @@ export default {
 }
 </script>
 <style>
+#sendCheck {
+    margin-top: 25px;
+    float: right;
+    color: #fff;
+    border-radius: 5px;
+    background-color: #3cb175;
+}
+
 #logoN {
     font-size: 20px;
     color: white;
