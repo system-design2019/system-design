@@ -3,12 +3,7 @@
         <div style="margin: 0 10%;">
             <h2 style="font-size:40px; margin-top:20px; color:#CE4747;"> 我收藏的问卷 </h2>
             <div style="width:100%;margin-top:10px;height:650px;">
-                    <div v-for="(ques,index) in collectLists">
-                        <!-- <div>
-                            <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.Infos.createTime}} </span> <span style="font-size:15px;color:gray;">我收藏了</span>
-                        </div> -->
-                        <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
-                    </div>
+                <div v-for="(ques,index) in collectLists">
                     <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
                 </div>
             </div>
