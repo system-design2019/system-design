@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div clas="publishDiv">
         <div style="margin: 0 10%;">
             <h2 style="font-size:40px; margin-top:20px; color:#CE4747;"> 我发布的 </h2>
             <div style="width:100%;margin-top:10px;">

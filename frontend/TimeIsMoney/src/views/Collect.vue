@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="collectDiv">
         <div style="margin: 0 10%;">
             <h2 style="font-size:40px; margin-top:20px; color:#CE4747;"> 我收藏的问卷 </h2>
             <div style="width:100%;margin-top:10px;height:650px;">
