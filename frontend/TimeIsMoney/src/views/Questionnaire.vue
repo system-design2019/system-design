@@ -21,15 +21,15 @@
                             <Icon type="ios-arrow-down"></Icon>
                         </Button>
                         <DropdownMenu slot="list">
-                            <DropdownItem>按发布时间</DropdownItem>
-                            <DropdownItem>按热度</DropdownItem>
-                            <DropdownItem>按酬金</DropdownItem>
+                            <DropdownItem @click.native="sortByCreateTime">按发布时间</DropdownItem>
+                            <DropdownItem @click.native="sortByAttend">按热度</DropdownItem>
+                            <DropdownItem @click.native="sortByReward">按酬金</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </div>
             </div>
             <div style="width: 100%; ">
-                <task v-for="(ques,index) in quesList" :data="ques" :key="index"  type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
+                <task v-for="(ques,index) in currentList" :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
             </div>
         </div>
         <detail :showDetail="detailModel" @refresh="refresh"></detail>
@@ -41,7 +41,7 @@ import { Ques } from '../store/questionnaire/index.js'
 import task from "./components/Task.vue"
 import detail from "./components/Detail.vue"
 export default {
-    inject:['reload'],
+    inject: ['reload'],
     components: {
         task,
         detail
@@ -49,13 +49,20 @@ export default {
     data() {
         return {
             detailModel: false,
-            index: 0
+            index: 0,
+            currentList: this.quesList
+
         }
 
     },
     computed: mapState('Ques', {
         quesList: 'quesList',
-        detailContent: 'quesDetail'
+        detailContent: 'quesDetail',
+        /*  需要setter 和 getter
+        currentList() {
+            return this.currentLists
+        }
+        */
     }),
     methods: {
         handleSelectAll(status) {
@@ -72,10 +79,47 @@ export default {
             this.$store.dispatch('Ques/GET_DETAIL', id)
             this.detailModel = !this.detailModel
         },
-        refresh: function(data){
-            if(data){
+        refresh: function(data) {
+            if (data) {
                 this.reload()
             }
+        },
+        sortBy1key(ary, key1) {
+            return ary.sort(function(a, b) {
+                let x = a[key1]
+                let y = b[key1]
+                return ((x > y) ? -1 : (x < y) ? 1 : 0)
+            })
+        },
+        sortBy2key(ary, key1, key2) {
+            return ary.sort(function(a, b) {
+                let x = a[key1][key2]
+                let y = b[key1][key2]
+                return ((x < y) ? -1 : (x > y) ? 1 : 0)
+            })
+        },
+        sortByCreateTime() {
+            //alert("Hi");
+            console.log(this.quesList)
+            this.currentList = this.sortBy2key(this.quesList, 'Infos', 'createTime')
+            console.log(this.currentList)
+            //this.$forceUpdate()
+        },
+        compare(property) {
+            return function(obj1, obj2) {
+                var value1 = obj1[property];
+                var value2 = obj2[property];
+                return (value2 - value1)
+            }
+        },
+        sortByReward() {
+            //alert("Hi");
+            this.currentList.sort(this.compare('reward'))
+            //this.currentList = this.sortBy1key(this.quesList, 'reward')
+            console.log(this.currentList[0].reward)
+        },
+        sortByHeat() {
+            this.currentList = this.sortBy2key(this.quesList, 'Infos', 'attend') //后面可以考虑用attend/total作为比较直 暂时没有时间写
         }
     },
     mounted() {
@@ -83,6 +127,11 @@ export default {
         this.$store.dispatch('Ques/GET_COLLECT_QUESLIST')
         this.$store.dispatch('Ques/GET_ATTEND_QUESLIST')
         this.$store.dispatch('Ques/GET_PUBLISH_QUESLIST')
+        var _this = this;
+        setTimeout(function() {
+            _this.currentList = _this.quesList
+            // _this.currentList = _this.quesList.sort(_this.compare('reward'))
+        }, 1000)
     }
 }
 </script>
