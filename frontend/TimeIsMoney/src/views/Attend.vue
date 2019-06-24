@@ -2,7 +2,7 @@
     <div class="attendDiv" style="margin: 0 10%;">
         <h2 style="font-size:40px; margin-top:20px; color:#CE4747;"> 我参与的问卷 </h2>
         <div style="width:100%;margin-top:10px;height:650px;">
-            <div v-for="(ques,index) in attendLists">
+            <div v-for="(ques,index) in sortAttended">
                 <!-- <div>
                         <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.Infos.createTime}} </span> <span style="font-size:15px;color:gray;">我参与了</span>
                     </div> -->
@@ -35,6 +35,7 @@ export default {
     data() {
         return {
             detailModel: false,
+            sortAttended: []
         }
 
     },
@@ -42,15 +43,23 @@ export default {
         getDetail(id) {
             this.$store.dispatch('Ques/GET_DETAIL', id)
             this.detailModel = !this.detailModel
+        },
+        sortBykey(ary, key1, key2) {
+            return ary.sort(function(a, b) {
+                let x = a[key1][key2]
+                let y = b[key1][key2]
+                return ((x < y) ? -1 : (x > y) ? 1 : 0)
+            })
         }
     },
     mounted() {
         this.$store.dispatch('Personal/GET_ATTEND'); //分发action
         var _this = this;
         setTimeout(function() {
+            _this.sortAttended = _this.sortBykey(_this.$store.state.Personal.attending, 'Infos', 'createTime');
             console.log(_this.$store.state)
-            console.log(_this.$store.state.Personal.attending)
-        }, 1000)
+            console.log(_this.sortAttended)
+        }, 500)
     }
 
 }
