@@ -3,9 +3,9 @@
         <card style="padding-left: 10px; border-radius: 15px">
             <img :src="getIconByStatus(contents.id)" style=" position:absolute; right: 0; top:0" width="60px" height="60px" />
             <Row style="margin-top: 20px">
-                <span style="font-size: 23px; font-weight: 700;margin:5px;float:left;">{{contents.title}}</span>
+                <span style="font-size: 23px; font-weight: 700;margin:5px;float:left;margin-right:20px;">{{contents.title}}</span>
             </Row>
-            <Row><span style="font-size:15px;margin:5px;float:left;">{{contents.detail}}</span></Row>
+            <Row><span style="font-size:15px;margin:5px;float:left;margin-right:20px;">{{contents.detail}}</span></Row>
             <Row type="flex" style="margin-top: 10px">
                 <div style="float: left; width: 60%">
                     <div v-if="ifShow(i)" v-for="(ele, key, i) in contents.info" style="margin-right: 30px;" class="iconInDy vercenter">
@@ -46,7 +46,7 @@ export default {
     methods: {
         getIconByStatus(id) {
             if (this.publishQuesList.indexOf(id) != -1) {
-                return './../../static/task/reward.png'
+                return './../../static/task/my.png'
             } else if (this.attendQuesList.indexOf(id) != -1) {
                 return './../../static/task/run.png'
             } else {

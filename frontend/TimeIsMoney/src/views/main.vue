@@ -71,7 +71,7 @@
                     {name:'personal', title:'我参与的' ,link:'attend'},
                     {name:'personal', title:'我发布的' ,link:'publish'},
                     {name:'personal', title:'我收藏的' ,link:'collect'},
-                    {name:'personal', title:'信息管理' ,link:'personal'}
+                    {name:'personal', title:'我的资料' ,link:'personal'}
                     
                 ]
             }

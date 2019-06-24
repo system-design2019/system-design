@@ -8,7 +8,7 @@
             <div id="rightPart" style="float:right">
                 <div id="headBox2">
                     <div id="headBox">
-                        <img id="head" src="../images/hellobg.jpg" alt="正方形的原始图片" width="150px" height="150px" />
+                        <img id="head" src="../images/photo.png" alt="正方形的原始图片" width="150px" height="150px" />
                     </div>
                 </div>
                 <div class="allInput">
