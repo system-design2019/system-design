@@ -13,7 +13,7 @@
             </div>
         </div>
         <div style="margin: 30px 15%">
-            <!-- <div style="width: 100%; min-height: 20px;">
+            <div style="width: 100%; min-height: 20px;">
                 <div style="overflow: hidden">
                     <Dropdown style="margin-left: 20px; float: right;" trigger="click">
                         <Button type="primary">
@@ -27,7 +27,7 @@
                         </DropdownMenu>
                     </Dropdown>
                 </div>
-            </div> -->
+            </div>
             <div style="width: 100%; ">
                 <task v-for="(ques,index) in currentList" :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
             </div>
@@ -40,7 +40,6 @@ import { mapState } from 'vuex'
 import { Ques } from '../store/questionnaire/index.js'
 import task from "./components/Task.vue"
 import detail from "./components/Detail.vue"
-import Vue from 'vue';
 export default {
     inject: ['reload'],
     components: {
@@ -103,7 +102,6 @@ export default {
             //alert("Hi");
             console.log(this.quesList)
             this.currentList = this.sortBy2key(this.quesList, 'Infos', 'createTime')
-            
             console.log(this.currentList)
             //this.$forceUpdate()
         },
@@ -116,27 +114,9 @@ export default {
         },
         sortByReward() {
             //alert("Hi");
-            let data = []
             this.currentList.sort(this.compare('reward'))
-            // console.log(this.currentList)
-            // console.log(data)
-            let l = this.currentList.length
-            // for(var i = 0; i < l; ++i){
-            //     data.push(this.currentList[i])
-            // }
-            // this.currentList.length = 0
-            // for(var i = 0; i < l; ++i){
-            //     this.currentList.push(data.splice(0, 1))
-            // }
-            // this.currentList.splice(0,l)
-            
-            // console.log(data)
-            // for(var i = 0; i < l; ++i){
-            //     Vue.set(this.currentList, i, null)
-            // }
-            this.currentList[0].title = '111'
-            console.log(this.currentList)
-            // this.reload()
+            //this.currentList = this.sortBy1key(this.quesList, 'reward')
+            console.log(this.currentList[0].reward)
         },
         sortByHeat() {
             this.currentList = this.sortBy2key(this.quesList, 'Infos', 'attend') //后面可以考虑用attend/total作为比较直 暂时没有时间写
@@ -151,7 +131,7 @@ export default {
         setTimeout(function() {
             _this.currentList = _this.quesList
             // _this.currentList = _this.quesList.sort(_this.compare('reward'))
-        }, 1000)
+        }, 100)
     }
 }
 </script>

@@ -26,7 +26,6 @@ export async function getPublishing() {
 }
 
 
-
 /**
  * Get the list of the attending tasks by cookies
  * @param {int} id the id of the target user
@@ -112,5 +111,45 @@ export async function deleteAlertById(data) {
 
 export async function deleteAllAlerts() {
     let response = await service.delete('/notifications/all')
+    return response.data
+}
+
+
+/**
+ * get all the log of the user's deals 
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+
+export async function getAllDeals() {
+    let response = await service.get('/user/asset/all')
+    return response.data
+}
+
+
+/**
+ * recharge your account
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+export async function rechargeAsset(userId, money, payType) {
+    let data = {}
+    data = { "userid": userId, "money": money, "payType": payType };
+    let response = await service.post('/money', data)
+    console.log(response.data)
+    return response.data
+}
+
+/**
+ * get all the log of the user's deals 
+ * @return {Promise}
+ * Promise will return the data of the questionnaires
+ */
+
+export async function withdrawAsset(userId, money) {
+    let data = {}
+    data = { "userid": userId, "money": money };
+    let response = await service.post('/money', data)
+    console.log(response.data)
     return response.data
 }

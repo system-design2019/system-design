@@ -6,7 +6,7 @@
                 <!-- <div>
                         <span id="dynamicDate" style="font-size:20px;color:red;"> {{ques.Infos.createTime}} </span> <span style="font-size:15px;color:gray;">我参与了</span>
                     </div> -->
-                    <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
+                <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
             </div>
         </div>
         <detail :showDetail="detailModel"></detail>
@@ -46,7 +46,13 @@ export default {
     },
     mounted() {
         this.$store.dispatch('Personal/GET_ATTEND'); //分发action
+        var _this = this;
+        setTimeout(function() {
+            console.log(_this.$store.state)
+            console.log(_this.$store.state.Personal.attending)
+        }, 1000)
     }
+
 }
 </script>
 <style>

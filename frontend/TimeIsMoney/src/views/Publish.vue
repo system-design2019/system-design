@@ -67,7 +67,7 @@ export default {
             console.log(_this.$store.state.Personal.publishing)
             console.log(_this.sortPublished)
             //_this.hey();
-        }, 1000)
+        }, 100)
 
     }
 }
