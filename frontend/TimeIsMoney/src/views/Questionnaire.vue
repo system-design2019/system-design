@@ -131,7 +131,7 @@ export default {
         setTimeout(function() {
             _this.currentList = _this.quesList
             // _this.currentList = _this.quesList.sort(_this.compare('reward'))
-        }, 100)
+        }, 1000)
     }
 }
 </script>
