@@ -123,6 +123,7 @@ export async function deleteAllAlerts() {
 
 export async function getAllDeals() {
     let response = await service.get('/user/asset/all')
+    console.log(response.msg)
     return response.data
 }
 
@@ -136,8 +137,8 @@ export async function rechargeAsset(userId, money, payType) {
     let data = {}
     data = { "userid": userId, "money": money, "payType": payType };
     let response = await service.post('/money', data)
-    console.log(response.data)
-    return response.data
+    //console.log(response.data)
+    return response
 }
 
 /**
@@ -150,6 +151,6 @@ export async function withdrawAsset(userId, money) {
     let data = {}
     data = { "userid": userId, "money": money };
     let response = await service.post('/money', data)
-    console.log(response.data)
-    return response.data
+    //console.log(response.data)
+    return response
 }

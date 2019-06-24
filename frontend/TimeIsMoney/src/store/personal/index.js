@@ -40,7 +40,8 @@ const Personal = {
         publishing: [],
         attending: [],
         starring: [],
-        mailReceive: []
+        mailReceive: [],
+        allDeals: []
     },
     actions,
     mutations,

@@ -48,7 +48,7 @@ export default {
         state.mailReceive.splice(0, state.mailReceive.length)
     },
     [UPDATE_ASSET](state, data) {
-        state.personalInfo.asset = data;
+        state.allDeals = data;
     }
 
 }
