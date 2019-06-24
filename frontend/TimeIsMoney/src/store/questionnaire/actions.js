@@ -125,7 +125,7 @@ export default {
     }
   },
   [CLOSE_QUES]({state,commit}, data){
-    quesAPI.closeQues(data.id).then((info)=>{
+    return quesAPI.closeQues(data.id).then((info)=>{
       if(data.source == 'ques'){
         commit(mutations.DELETE_QUES_BY_INDEX, data.index)
       }
@@ -133,7 +133,7 @@ export default {
     })
   },
   [DELETE_QUES]({state,commit}, data){
-    quesAPI.deleteQues(data.id).then((info)=>{
+    return quesAPI.deleteQues(data.id).then((info)=>{
       if(data.source == 'ques'){
         commit(mutations.DELETE_QUES_BY_INDEX, data.index)
       }

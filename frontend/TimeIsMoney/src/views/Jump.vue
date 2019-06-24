@@ -12,7 +12,7 @@
                 <transition>
                     <div id="showon" ref="showon">
                         <div id="signIn">
-                            <Button v-show="!logged" id="signButton" shape="circle" @click="handleSign" size=large ghost>SignIn</Button>
+                            <Button shape="circle" @click="handleSign" size=large ghost>SignIn</Button>
                         </div>
                         <div class="animated bounce">
                             <div id="logoBox">
@@ -108,23 +108,13 @@ export default {
         },
         A() {
             setTimeout(this.disapper, 2500); //记得加this。否则会找不到元素/方法
-            console.log(this.$cookies.get('User'))
-            if(this.$cookies.get('User')){
-                var obj = {
-                    "log": true,
-                    "userID": ''
-                }
-                window.sessionStorage.setItem('LogInfo', JSON.stringify(obj))
-                this.logged = true
-            }
-            else{
                 var obj = {
                     "log": false,
-                    "userID": ''
+                    "userID": '',
+                    'username': ''
                 }
                 window.sessionStorage.setItem('LogInfo', JSON.stringify(obj))
                 this.logged = false
-            }
             
         },
         disapper() {

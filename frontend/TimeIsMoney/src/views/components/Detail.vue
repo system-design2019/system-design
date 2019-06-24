@@ -1,4 +1,5 @@
 <template>
+<div>
     <Modal v-model="detail" width="800px" class-name="vertical-center-modal d"  :mask-closable="false">
         <img src="./../../../static/ques/detail.png" style="position:relative; float: left; left: -50px; top: -50px; height:500px"></img>
         <p style="font-size:24px; font-weight: 500px;margin-top:15px;">{{detailContent.title}}</p>
@@ -53,8 +54,8 @@
                         <Button id="check" size="large" @click="checkAns(detailContent.quesID)">查看填写情况</Button>
                     </div>
                     <div style="margin-top:5px;float:middle;" >
-                        <a id="close" size="large" style="margin-right:15px"@click="closeQues(detailContent.quesID)">关闭问卷</a>
-                        <a id="delete" size="large" style="margin-left:15px"@click="deleteQues(detailContent.quesID)">删除问卷</a>
+                        <a id="close" size="large" style="margin-right:15px"@click="setInformation(detailContent.quesID, 1)">关闭问卷</a>
+                        <a id="delete" size="large" style="margin-left:15px"@click="setInformation(detailContent.quesID, 2)">删除问卷</a>
                     </div>
                     <div style="clear:both"></div>
                 </div>
@@ -63,6 +64,12 @@
         </div>
         <div style="clear:both"></div>
     </Modal>
+    <Modal
+        v-model="confirm"
+        @on-ok="deal()"
+        <p>{{info}}</p>
+    </Modal>
+</div>
 </template>
 <script>
 import { mapState } from 'vuex'
@@ -72,17 +79,25 @@ export default{
     data(){
         return {
             detail: false,
-            own: false
+            own: false,
+            confirm: false,
+            info: '',
+            id: 0,
+            type: 0
         }
     },
     methods:{
         fillIn(id){
+            
             this.detail = false
             let info = JSON.parse(window.sessionStorage.getItem('LogInfo'))
             if(!info.log)
                 this.$Message.warning('您还未登录，请先登录后填写问卷。')
             else{
-                if(this.detailContent.Infos.total == this.detailContent.Infos.attend){
+                if(this.attendQuesList.indexOf(id) != -1){
+                     this.$Message.warning('您已填写过此问卷，请勿重复填写')
+                }
+                else if(this.detailContent.Infos.total == this.detailContent.Infos.attend){
                     this.$Message.warning('此问卷名额已满，请选择其他问卷')
                 }
                 else{
@@ -99,14 +114,38 @@ export default{
             window.sessionStorage.setItem('fillQuesTitle', this.detailContent.title)
             this.$router.push({name: 'checkList', params:{type:'questionnaire'}})
         },
+        setInformation(i, t){
+            if(t == 1){
+                this.info = '关闭问卷将不会回收到该问卷且无法重新开启，确认关闭问卷？（未使用押金会退回到您的账户）'
+            }
+            else{
+                this.info = '删除问卷将无法到该问卷相关信息，确认删除问卷？（未使用押金会退回到您的账户）'
+
+            }
+            this.id = i
+            this.type = t
+        },
+        deal(){
+            if(this.t == 1){
+                closeQues(this.id)
+            }
+            else{
+                deleteQues(this.id)
+            }
+        },
         closeQues(id){
             this.detail = false
             let data = {
                 id: id,
                 index: this.index
             }
-            this.$store.dispatch('Ques/CLOSE_QUES',data)
-            this.$emit('refresh', true)
+            this.$store.dispatch('Ques/CLOSE_QUES',data).then((info) =>{
+                if(info.success){
+                    this.$Message.success('关闭问卷成功！')
+                    this.$emit('refresh', true)
+                }
+            })
+            
         },
         deleteQues(id){
             this.detail = false
@@ -114,8 +153,12 @@ export default{
                 id: id,
                 index: this.index
             }
-            this.$store.dispatch('Ques/DELETE_QUES',data)
-            this.$emit('refresh', true)
+            this.$store.dispatch('Ques/DELETE_QUES',data).then((info) =>{
+                if(info.success){
+                    this.$Message.success('删除问卷成功！')
+                    this.$emit('refresh', true)
+                }
+            })
         },
         isCollect(id){
             if(this.collectQuesList.indexOf(id) != -1){
@@ -139,6 +182,7 @@ export default{
     },
     computed:mapState( 'Ques', {
         collectQuesList: 'collectQuesList',
+        attendQuesList: 'attendQuesList',
         detailContent: 'quesDetail'
     }),
     mounted(){

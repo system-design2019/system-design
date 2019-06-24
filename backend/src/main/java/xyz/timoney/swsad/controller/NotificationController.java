@@ -6,10 +6,13 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 import xyz.timoney.swsad.bean.Message;
 import xyz.timoney.swsad.bean.user.Notification;
+import xyz.timoney.swsad.bean.user.User;
 import xyz.timoney.swsad.bean.user.UserState;
 import xyz.timoney.swsad.mapper.NotificationMapper;
+import xyz.timoney.swsad.mapper.UserMapper;
 import xyz.timoney.swsad.singleton.SingletonMybatis;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.Comparator;
 import java.util.List;
 
@@ -94,7 +97,8 @@ public class NotificationController {
         }
         int successCount = 0;
         for(Notification notification : notifications){
-            if(userId != notification.getFromId()){
+            // == 0表示系统通知
+            if(notification.getFromId() != 0 && userId != notification.getFromId()){
                 message.setData("部分通知无权发送");
                 continue;
             }
@@ -102,6 +106,20 @@ public class NotificationController {
             try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
                 //得到映射器
                 NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
+                UserMapper userMapper  = sqlSession.getMapper(UserMapper.class);
+                String fromName;
+                if(notification.getFromId() == 0){
+                    fromName = "系统通知";
+                }else {
+                    User tempUser = userMapper.getById(userId);
+                    if(tempUser == null){
+                        message.setData("该用户不存在数据库中");
+                        return message;
+                    }
+                    fromName = tempUser.getName();
+                }
+                //设置通知发送的用户名
+                notification.setFromName(fromName);
                 //调用接口中的方法去执行xml文件中的SQL语句
                 notificationMapper.insert(notification);
             } catch (Exception e) {

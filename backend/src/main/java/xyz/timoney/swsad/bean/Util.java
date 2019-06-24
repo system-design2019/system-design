@@ -95,10 +95,11 @@ public class Util {
     }
     /**
      * 生成随机码
+     * 去掉uuid的-符号
      */
     public static String getUUID(){
-        UUID uuid = UUID.randomUUID();
-        return uuid.toString();
+        String uuid = UUID.randomUUID().toString();
+        return uuid.replace("-","");
     }
 
     /**

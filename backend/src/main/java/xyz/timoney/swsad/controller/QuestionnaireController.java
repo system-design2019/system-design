@@ -1,28 +1,26 @@
 package xyz.timoney.swsad.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
-import xyz.timoney.swsad.bean.*;
-import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
-import xyz.timoney.swsad.bean.quesUser.QuesFillUser;
-import xyz.timoney.swsad.bean.questionnaire.*;
-import xyz.timoney.swsad.bean.questionnaire.QuesContent;
-import xyz.timoney.swsad.bean.user.User;
-import xyz.timoney.swsad.bean.user.UserState;
-import xyz.timoney.swsad.bean.questionnaire.QuesContent;
-import xyz.timoney.swsad.mapper.QuesCollectUserMapper;
-import xyz.timoney.swsad.mapper.QuesFillUserMapper;
-import xyz.timoney.swsad.mapper.QuestionnaireMapper;
-import xyz.timoney.swsad.mapper.UserMapper;
-import xyz.timoney.swsad.singleton.SingletonMybatis;
+import com.google.gson.Gson;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
+import xyz.timoney.swsad.bean.Message;
+import xyz.timoney.swsad.bean.MoneyRecord;
+import xyz.timoney.swsad.bean.Util;
+import xyz.timoney.swsad.bean.quesUser.QuesCollectUser;
+import xyz.timoney.swsad.bean.quesUser.QuesFillUser;
+import xyz.timoney.swsad.bean.questionnaire.*;
+import xyz.timoney.swsad.bean.user.Notification;
+import xyz.timoney.swsad.bean.user.User;
+import xyz.timoney.swsad.bean.user.UserState;
+import xyz.timoney.swsad.mapper.*;
+import xyz.timoney.swsad.singleton.SingletonMybatis;
 
+import javax.jws.soap.SOAPBinding;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +36,7 @@ public class QuestionnaireController {
         try {
             //得到映射器
             QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-
+            questionnaireMapper.questionnaireTableInit();
              //初始化用户填写问卷表格
             QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
             quesFillUserMapper.quesFillUserTableInit();
@@ -63,28 +61,58 @@ public class QuestionnaireController {
      * */
     @RequestMapping(method = RequestMethod.GET,value = "/closeQues/{quesID}")
     @CrossOrigin
-    public Message<String> closeQueseByID(@PathVariable int quesID){
+    public Message<String> closeQueseByID(@CookieValue("user") String userCookieKey, @PathVariable int quesID){
         Message<String> message = new Message<>();
+        /**
+         * 要有权限判断啊！！！
+         */
+        final int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
         Questionnaire theQues;
         //获取一个连接
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            MoneyMapper moneyMapper = sqlSession.getMapper(MoneyMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             Timestamp timeNow=new Timestamp(new Date().getTime());
-
+            Questionnaire questionnaire = quesMapper.getQuesByID(quesID);
+            if(questionnaire == null){
+                message.setData("问卷不存在");
+                return message;
+            }
+            if(questionnaire.getPublisher() != userId){
+                message.setData("您没有权限关闭此问卷");
+                return message;
+            }
             quesMapper.closeQuesByID(quesID,timeNow);
-
-
-            message.setData("success close");
+            /**
+             * 修改余额
+             */
+            int reFundAsset = questionnaire.getReward() * (questionnaire.getInfos().getTotal() - questionnaire.getInfos().getAttend());
+            userMapper.changeAssetById(userId, reFundAsset);
+            /**
+             * 修改缓存
+             */
+            //直接移除缓存，以后访问就会访问数据库了
+            User.cacheList.removeIf(u -> u.getId() == userId);
+            /**
+             * 添加记录,单位：闲钱币
+             */
+            MoneyRecord moneyRecord = new MoneyRecord(userId, reFundAsset,new Date(Util.getCurrentDateLong()),
+                    "关闭《"+ questionnaire.getTitle() +"》问卷退回押金",true);
+            moneyMapper.insertRecord(moneyRecord);
             message.setSuccess(true);
-            message.setMsg("获取成功");
+            message.setMsg("关闭成功");
             //要提交后才会生效
             sqlSession.commit();
         } catch (Exception e) {
             message.setData(null);
             message.setSuccess(false);
-            message.setMsg("获取失败:" + e.getMessage());
+            message.setMsg("关闭失败:" + e.getMessage());
         }
         //最后记得关闭连接
         System.out.println(message);
@@ -96,28 +124,91 @@ public class QuestionnaireController {
      * */
     @RequestMapping(method = RequestMethod.GET,value = "/deleteQues/{quesID}")
     @CrossOrigin
-    public Message<String> deleteQueseByID(@PathVariable int quesID){
+    public Message<String> deleteQueseByID(@CookieValue("user") String userCookieKey,@PathVariable int quesID){
         Message<String> message = new Message<>();
+        /**
+         * 要有权限判断啊！！！
+         */
+        final int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
         Questionnaire theQues;
         //获取一个连接
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //得到映射器
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
+            QuesCollectUserMapper quesCollectUserMapper  = sqlSession.getMapper(QuesCollectUserMapper.class);
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            MoneyMapper moneyMapper = sqlSession.getMapper(MoneyMapper.class);
+            Questionnaire questionnaire = quesMapper.getQuesByID(userId);
+            if(questionnaire == null){
+                message.setData("问卷不存在");
+                return message;
+            }
+            if(questionnaire.getPublisher() != userId){
+                message.setData("您没有权限删除此问卷");
+                return message;
+            }
             //调用接口中的方法去执行xml文件中的SQL语句
             quesMapper.deleteQuesByID(quesID);
             quesMapper.deleteTianByID(quesID);
             quesMapper.deleteXuanByID(quesID);
             quesMapper.deleteAnsByID(quesID);
+            /**
+             * 同时要删除缓存吖！！
+             */
+            List<Integer> allCollectorId = quesCollectUserMapper.getAllCollectorId(quesID);
+            //删除用户收藏的缓存列表
+            //获取该问卷所有的收藏者
+            for(int i : allCollectorId){
+                //删除每个收藏者缓存的问卷id，去掉将要删除的问卷
+                if(QuesCollectUser.cacheListId.containsKey(i)){
+                    QuesCollectUser.cacheListId.get(i).removeIf(item ->item == quesID);
+                }
+                //删除每个收藏者缓存的问卷，去掉将要删除的问卷
+                if(QuesCollectUser.cacheList.containsKey(i)){
+                    QuesCollectUser.cacheList.get(i).removeIf(questionnaireItem -> questionnaireItem.getQuesID() == quesID);
+                }
+            }
+            //删除用用户填写的缓存列表
+            List<Integer> allFillterId = quesFillUserMapper.getAllFillerId(quesID);
+            for(int i : allFillterId){
+                //删除每个填写者缓存的问卷id，去掉将要删除的问卷
+                if(QuesFillUser.cacheListId.containsKey(i)){
+                    QuesFillUser.cacheListId.get(i).removeIf(item ->item == quesID);
+                }
+                //删除每个收藏者缓存的问卷，去掉将要删除的问卷
+                if(QuesFillUser.cacheList.containsKey(i)){
+                    QuesFillUser.cacheList.get(i).removeIf(questionnaireItem -> questionnaireItem.getQuesID() == quesID);
+                }
+            }
+            /**
+             * 修改余额
+             */
+            int reFundAsset = questionnaire.getReward() * (questionnaire.getInfos().getTotal() - questionnaire.getInfos().getAttend());
+            userMapper.changeAssetById(userId, reFundAsset);
+            /**
+             * 修改缓存
+             */
+            //直接移除缓存，以后访问就会访问数据库了
+            User.cacheList.removeIf(u -> u.getId() == userId);
+            /**
+             * 添加记录,单位：闲钱币
+             */
+            MoneyRecord moneyRecord = new MoneyRecord(userId, reFundAsset,new Date(Util.getCurrentDateLong()),
+                    "删除《"+ questionnaire.getTitle() +"》问卷退回押金",true);
+            moneyMapper.insertRecord(moneyRecord);
 
-            message.setData("success delete");
             message.setSuccess(true);
-            message.setMsg("获取成功");
+            message.setMsg("删除成功");
             //要提交后才会生效
             sqlSession.commit();
         } catch (Exception e) {
             message.setData(null);
             message.setSuccess(false);
-            message.setMsg("获取失败:" + e.getMessage());
+            message.setMsg("删除失败:" + e.getMessage());
         }
         //最后记得关闭连接
         System.out.println(message);
@@ -430,7 +521,7 @@ public class QuestionnaireController {
     @CrossOrigin
     public Message<String> createQues(@CookieValue("user") String userCookieKey, @RequestBody Questionnaire ques)
     {
-        /*
+        /**
         验证用户身份
         */
 
@@ -439,11 +530,24 @@ public class QuestionnaireController {
         if(!message.isSuccess()){
             return message;
         }
-
+        /*检查权限*/
+        if(userId != ques.getPublisher()){
+            message.setData("发布问卷失败:没有权限");
+            return message;
+        }
         System.out.println(ques);
+
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
-
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            MoneyMapper moneyMapper = sqlSession.getMapper(MoneyMapper.class);
+            /*检查余额: 单位都是【闲钱币】*/
+            int userAsset = userMapper.getAssetById(userId);
+            int needAsset = ques.getReward() * ques.getInfos().getTotal();
+            if(userAsset < needAsset){
+                message.setData("发布问卷失败:没有足够的闲钱币");
+                return message;
+            }
             //设置quesID 自动设置
             int count=quesMapper.CountQuestion();
             //System.out.println(count);
@@ -499,18 +603,34 @@ public class QuestionnaireController {
                 quesMapper.insertXuan(ques2_temp);
             }
 
+            /**
+             * 减去余额
+             */
+            userMapper.changeAssetById(userId, -needAsset);
+            /**
+             * 修改缓存
+             */
+            //直接移除缓存，以后访问就会访问数据库了
+            User.cacheList.removeIf(u -> u.getId() == userId);
+            /**
+             * 添加记录
+             */
+            MoneyRecord moneyRecord = new MoneyRecord(userId, -needAsset, new Date(Util.getCurrentDateLong()),
+                    "创建《" + ques.getTitle() + "》问卷", true);
+            moneyMapper.insertRecord(moneyRecord);
+
             message.setSuccess(true);
-            message.setMsg("创建成功");
+            message.setMsg("发布成功");
             sqlSession.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
             message.setSuccess(false);
-            message.setMsg("创建失败:" + e.getMessage());
+            message.setMsg("发布失败:" + e.getMessage());
             return message;
         }
 
-        /*
+        /**
         更新问卷id缓存
         */
         if(Questionnaire.cacheListId.containsKey(userId)){
@@ -520,7 +640,7 @@ public class QuestionnaireController {
             list.add(ques.getQuesID());
             Questionnaire.cacheListId.put(userId, list);
         }
-        /*
+        /**
         更新问卷缓存
         */
         if(Questionnaire.cacheList.containsKey(userId)){
@@ -530,6 +650,10 @@ public class QuestionnaireController {
             list.add(ques);
             Questionnaire.cacheList.put(userId, list);
         }
+        System.out.println("----------------这是更新缓存后的发布问卷id列表-----------------");
+        System.out.println(new Gson().toJson(Questionnaire.cacheListId.get(userId)));
+        System.out.println("----------------这是更新缓存后的发布问卷列表-----------------");
+        System.out.println(new Gson().toJson(Questionnaire.cacheList.get(userId)));
         return message;
     }
 
@@ -738,8 +862,11 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
             QuesCollectUserMapper quesCollectUserMapper= sqlSession.getMapper(QuesCollectUserMapper.class);
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //获取收藏者列表
             List<Integer> list = quesCollectUserMapper.getAllCollectedId(userId);
+            //删除问卷数据库中不存在的
+            list.removeIf(item -> questionnaireMapper.getQuesByID(item) == null);
             message.setData(list);
             /**
              * 增加缓存
@@ -760,7 +887,7 @@ public class QuestionnaireController {
     }
 
     /**
-     * 填写某个问卷，弃用
+     * 填写某个问卷
      * */
     @RequestMapping(method = RequestMethod.PUT,value = "/questionnaires/{id}/fill")
     @CrossOrigin
@@ -944,12 +1071,15 @@ public class QuestionnaireController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             //得到映射器
             QuesFillUserMapper quesFillUserMapper = sqlSession.getMapper(QuesFillUserMapper.class);
+            QuestionnaireMapper questionnaireMapper = sqlSession.getMapper(QuestionnaireMapper.class);
             //调用接口中的方法去执行xml文件中的SQL语句
             List<Integer> list = quesFillUserMapper.getAllFilledId(userId);
+            //删除问卷数据库中不存在的
+            list.removeIf(item -> questionnaireMapper.getQuesByID(item) == null);
             message.setData(list);
             /**
              * 增加缓存
-             * */
+             */
             QuesFillUser.cacheListId.put(userId, list);
         } catch (Exception e) {
             e.printStackTrace();
@@ -965,26 +1095,38 @@ public class QuestionnaireController {
         return message;
     }
 
-
-
-
-
     /**
      * 填写问卷
      * 回答问卷问题
      * */
     @RequestMapping(method = RequestMethod.POST,value = "/questionnaires/commit")
     @CrossOrigin
-    public Message<String> addXuan(@RequestBody QuesResult quesResult)
+    public Message<String> addXuan(@CookieValue("user") String userCookieKey, @RequestBody QuesResult quesResult)
     {
         Message<String> message = new Message<>();
-
+        /**
+        * 验证用户身份
+        */
+        System.out.println("\nGET /questionnaires/fill/all"  + "\n");
+        int userId = UserState.verifyCookie(userCookieKey, message);
+        if(!message.isSuccess()){
+            return message;
+        }
         QuesResult_temp quesResult_temp = new QuesResult_temp();
         System.out.println(quesResult);
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+            MoneyMapper moneyMapper = sqlSession.getMapper(MoneyMapper.class);
+            UserMapper userMapper  = sqlSession.getMapper(UserMapper.class);
+            NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
             /*只有正在进行的问卷才能被填写*/
             int quesID  = quesResult.getQuesID();
+            Questionnaire questionnaire = quesMapper.getQuesByID(quesID);
+            if(questionnaire == null){
+                message.setSuccess(false);
+                message.setMsg("问卷不存在");
+                return message;
+            }
             Infos temp=quesMapper.getInfo(quesID);
             //问卷结束时间
             //Timestamp timeEnd = new Timestamp(temp.getEndTime().getTime());
@@ -1013,8 +1155,37 @@ public class QuestionnaireController {
                 //参与者加一
                 quesMapper.addPart(quesResult.getQuesID());
                 message.setMsg("创建成功");
+                /**
+                 * 修改余额
+                 */
+                int newAsset = quesMapper.getQuesByID(quesID).getReward();
+                userMapper.changeAssetById(userId, newAsset);
+                /**
+                 * 添加记录,单位：闲钱币
+                 */
+                MoneyRecord moneyRecord = new MoneyRecord(userId, newAsset,new Date(Util.getCurrentDateLong()),
+                        "填写《"+ questionnaire.getTitle() +"》问卷",true);
+                moneyMapper.insertRecord(moneyRecord);
+                /**
+                 * 发送通知给发布者
+                 */
+                User user = userMapper.getById(userId);
+                Notification notification = new Notification(0, "系统通知",questionnaire.getPublisher(),
+                        "有人填写你的问卷啦！",
+                        "用户 " + user.getName()+ " 填写了你的问卷《"+ questionnaire.getTitle()+"》") ;
+                notificationMapper.insert(notification);
+                /**
+                 * 同步通知发送到缓存中的用户
+                 * */
+                if(Notification.cacheList.containsKey(questionnaire.getPublisher())){
+                    Notification.cacheList.get(questionnaire.getPublisher()).add(notification);
+                    //重新排列，预想降序排列
+                    Notification.cacheList.get(questionnaire.getPublisher())
+                            .sort(Comparator.comparing(Notification::getDate));
+                }
             }else
             {
+                message.setSuccess(false);
                 message.setMsg("问卷已经关闭！");
             }
             message.setSuccess(true);

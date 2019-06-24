@@ -1,7 +1,7 @@
 <template>
     <div style="margin: 20px 15%; min-height: 800px">
         <p style="font-size: 32px; font-weight: 700; text-align: center">{{form.title}}</p>
-        <Button @click="test"> fdafdsaf</Button>
+        <!-- <Button @click="test"> fdafdsaf</Button> -->
         <Divider />
         <Form ref="formFill" :model="answers" :rules="rules" :label-width="80" label-position="top">
             <Card v-for="(q, index) in form.questions" :key="index" style="margin: 5px 0; padding: 30px 10px 10px 10px" >
@@ -32,21 +32,6 @@ import { Ques } from '../store/questionnaire/index.js'
             getKey(index){
                 return 'answer' + String(index+1)
             },
-            test(){
-                let data = {
-                    fromId: parseInt(JSON.parse(window.sessionStorage.getItem('LogInfo')).userID),
-                    fromName: JSON.parse(window.sessionStorage.getItem('LogInfo')).username,
-                    toId: parseInt(window.sessionStorage.getItem('fillQuesUserId')),
-                    quesTitle: this.form.title,
-                    type: 'fill'
-                }
-                this.$store.dispatch('MESSAGE', data).then(
-                    (response) => {
-                        if(response.success){
-                            console.error('111')
-                        }
-                    })
-            },
             handleSubmit(name){
                 
                 this.$refs[name].validate((valid) => {
@@ -63,19 +48,19 @@ import { Ques } from '../store/questionnaire/index.js'
                             (response) => {
                                 if(response.success){
                                     this.$Message.success('提交成功');
-                                    let data = {
-                                        fromId: parseInt(JSON.parse(window.sessionStorage.getItem('LogInfo')).userID),
-                                        fromName: JSON.parse(window.sessionStorage.getItem('LogInfo')).username,
-                                        toId: parseInt(window.sessionStorage.getItem('fillQuesUserId')),
-                                        quesTitle: this.form.title,
-                                        type: 'fill'
-                                    }
-                                    this.$store.dispatch('MESSAGE', data).then(
-                                        (response) => {
-                                            if(response.success){
-                                                console.error('111')
-                                            }
-                                        })
+                                    // let data = {
+                                    //     fromId: parseInt(JSON.parse(window.sessionStorage.getItem('LogInfo')).userID),
+                                    //     fromName: JSON.parse(window.sessionStorage.getItem('LogInfo')).username,
+                                    //     toId: parseInt(window.sessionStorage.getItem('fillQuesUserId')),
+                                    //     quesTitle: this.form.title,
+                                    //     type: 'fill'
+                                    // }
+                                    // this.$store.dispatch('MESSAGE', data).then(
+                                    //     (response) => {
+                                    //         if(response.success){
+                                    //             console.error('111')
+                                    //         }
+                                    //     })
                                     this.$router.push('/questionnaire')
                                 }
                                 else{

@@ -67,9 +67,16 @@ public class User {
     private String aliPay;
     //qq号
     private String QQ;
-    //初始 0
+    //初始 4，就是距离满分差一点，但是也差不多
     //信用
     private double credit;
+
+    /**
+     * 财产，闲钱币
+     * 100 timoney = 1 yuan
+     * 开始赠送100闲钱币
+     */
+    private int asset;
 
     /**
      * 问卷资料
@@ -99,18 +106,21 @@ public class User {
         email = "$"+uuid;
         phone = "$"+uuid;
         name = "$"+uuid;
-        university = null;
-        studentId = null;
+        university = "";
+        studentId = "";
         grade = -1;
-        major = null;
+        major = "";
         gender = "未初始化";
         age = -1;
-        nickname = null;
-        face = "https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=62d46c39067b020818c437b303b099b6/d4628535e5dde7119c3d076aabefce1b9c1661ba.jpg";
-        aliPay = null;
-        weChatPay = null;
-        QQ = null;
-        credit = 0;
+        nickname = "";
+        face = "http://118.25.215.11/static/images/upload/default.png";
+        aliPay = "";
+        weChatPay = "";
+        QQ = "";
+        //初始化为4
+        credit = 4;
+        //赠送100闲钱币
+        asset = 100;
         count++;
     }
     public void setId(int id) {
@@ -123,17 +133,19 @@ public class User {
 
     public void setEmail(String email) {
 
-        if(email == null || email.isEmpty())
+        if(email == null || email.isEmpty()) {
             this.email = "$"+count;
-        else
+        } else {
             this.email = email;
+        }
     }
 
     public void setPhone(String phone) {
-        if(phone == null || phone.isEmpty())
+        if(phone == null || phone.isEmpty()) {
             this.phone = "$"+count;
-        else
+        } else {
             this.phone = phone;
+        }
     }
 
 
@@ -168,10 +180,11 @@ public class User {
 
     public void setName(String name) {
 
-        if(name == null || name.isEmpty())
+        if(name == null || name.isEmpty()) {
             this.name = "$"+count;
-        else
+        } else {
             this.name = name;
+        }
     }
 
     public void setAliPay(String aliPay) {
@@ -272,6 +285,13 @@ public class User {
         return university;
     }
 
+    public int getAsset() {
+        return asset;
+    }
+
+    public void setAsset(int asset) {
+        this.asset = asset;
+    }
 
     @Override
     public String toString() {
@@ -279,6 +299,7 @@ public class User {
         s += "\nPassword: " + password;
         s += "\nEmail: " + email;
         s += "\nPhone: " + phone;
+        s += "\nAsset: " + asset;
         return s;
     }
 }
