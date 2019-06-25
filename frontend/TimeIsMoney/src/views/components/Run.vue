@@ -1,6 +1,6 @@
 <template>
 <div class="run" style="margin: 20px 0;">
-    <card  style=" border-radius: 23px; height: 450px; overflow: hidden">
+    <card  style=" border-radius: 23px; height: 400px; overflow: hidden">
         <img :src="getStatus(contents.status)" style=" position:absolute; right: 0; top:0" width="100px" height="100px" />
         <img src="./../../../static/run/temp.png" style="width: 100%"></img>
         <Row style="margin-top: 20px; padding-left: 20px">
