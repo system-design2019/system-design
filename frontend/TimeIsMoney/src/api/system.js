@@ -9,3 +9,8 @@ export async function sendMessage(data){
     let response = await service.post('/notifications', data)
     return response.data
 }
+
+export async function deleteCache(){
+    let response = await service.delete('/cache')
+    return response.data
+}

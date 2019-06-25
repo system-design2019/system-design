@@ -132,10 +132,8 @@ export default {
                 index: this.index
             }
             this.$store.dispatch('Ques/CLOSE_QUES', data).then((info) => {
-                if (info.success) {
                     this.$Message.success('关闭问卷成功！')
                     this.$emit('refresh', true)
-                }
             })
 
         },
@@ -146,10 +144,8 @@ export default {
                 index: this.index
             }
             this.$store.dispatch('Ques/DELETE_QUES', data).then((info) => {
-                if (info.success) {
                     this.$Message.success('删除问卷成功！')
                     this.$emit('refresh', true)
-                }
             })
         },
         isCollect(id) {
@@ -161,6 +157,7 @@ export default {
         },
         changeCollectStatus(id) {
             this.$store.dispatch('Ques/CHANGE_COLLECT', id)
+            this.$store.dispatch('DELETE_CACHE')
         },
         getStatus(id) {
             if (this.detailContent.publisher == JSON.parse(window.sessionStorage.getItem('LogInfo')).userID) {

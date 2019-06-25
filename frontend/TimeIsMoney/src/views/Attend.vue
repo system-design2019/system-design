@@ -62,13 +62,16 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch('Personal/GET_ATTEND'); //分发action
-        var _this = this;
-        setTimeout(function() {
-            _this.sortAttended = _this.sortBykey(_this.$store.state.Personal.attending, 'Infos', 'createTime');
-            console.log(_this.$store.state)
-            console.log(_this.sortAttended)
-        }, 500)
+        // this.$store.dispatch('DELETE_CACHE').then((info) => {
+            this.$store.dispatch('Personal/GET_ATTEND'); //分发action
+            var _this = this;
+            setTimeout(function() {
+                _this.sortAttended = _this.sortBykey(_this.$store.state.Personal.attending, 'Infos', 'createTime');
+                console.log(_this.$store.state)
+                console.log(_this.sortAttended)
+            }, 500)
+        // })
+        
     }
 
 }

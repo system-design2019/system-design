@@ -59,14 +59,17 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch('Personal/GET_STAR'); //分发action
-        var _this = this;
-        setTimeout(function() { //注意在函数里面再使用this，此时this指向函数
-            _this.sortCollected = _this.sortBykey(_this.$store.state.Personal.starring, 'Infos', 'createTime');
-            console.log(_this.$store.state.Personal.starring)
-            console.log(_this.sortCollected)
-            //_this.hey();
-        }, 1000)
+        // this.$store.dispatch('DELETE_CACHE').then((info) => {
+            this.$store.dispatch('Personal/GET_STAR'); //分发action
+            var _this = this;
+            setTimeout(function() { //注意在函数里面再使用this，此时this指向函数
+                _this.sortCollected = _this.sortBykey(_this.$store.state.Personal.starring, 'Infos', 'createTime');
+                console.log(_this.$store.state.Personal.starring)
+                console.log(_this.sortCollected)
+                //_this.hey();
+            }, 1000)
+        // })
+        
     }
 }
 </script>
