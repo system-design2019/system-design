@@ -1,7 +1,4 @@
 <style>
-body{
-    background:#861616"
-}
     .personCenter{
     width: 100%;
     align-items: center;
@@ -138,7 +135,6 @@ body{
                     </Col>
                 </card>
                 </Col>
-                
                 <Col span="16">
                 <card id="bigPInfo" style="height:600px;white-space:nowrap;right:-3px;">
                     <Row style="margin:15px;">
@@ -196,7 +192,6 @@ body{
                             <input v-model="personDetail.qq" type="text" style="margin-left:8px; font-size:15px;" :disabled="!Ceditable" v-bind:style="styleForCText" />
                         </div>
                         </Col>
-                      
                     </Row>
                     <Row style="margin:10px;">
                         <Col span="12">
