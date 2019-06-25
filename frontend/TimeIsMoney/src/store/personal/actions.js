@@ -104,7 +104,7 @@ export default {
     },
     [GET_ASSET]({ state, commit }) {
         personalAPI.getAllDeals().then((response) => {
-            commit(mutations.UPDATE_INFO, response.data)
+            commit(mutations.UPDATE_ASSET, response.data)
         })
     }
 

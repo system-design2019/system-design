@@ -68,9 +68,15 @@ public class MoneyController {
                     System.out.println(message);
                     return message;
                 }
+                if(user.getAsset() + moneyRecord.getMoney() < 0){
+                    message.setSuccess(false);
+                    message.setMsg("提现失败: 余额不足");
+                    System.out.println(message);
+                    return message;
+                }
             }
             moneyRecord.setDate(new Date(Util.getCurrentDateLong()));
-            moneyRecord.setInfo("充值: " + moneyRecord.getInfo());
+            moneyRecord.setInfo((moneyRecord.getMoney() > 0 ?"充值: " : "提现: " )+ moneyRecord.getInfo());
             moneyRecord.setStatus(false);
             int newMoneyRecordId = moneyMapper.insertRecord(moneyRecord);
             /**
