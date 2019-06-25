@@ -3,10 +3,15 @@
 ## 环境依赖
 
 ## 目录结构
-|-- frontend  
-|-- backend  
-|-- management  
-|-- UIandProto 
+|-- frontend // 前端源代码
+
+|-- backend // 后端源代码
+
+|-- management // 产品原型
+
+|-- UIandProto // UI设计原型
+
+|-- files // 文档制品
 
 ## 看板使用
 ### project简介

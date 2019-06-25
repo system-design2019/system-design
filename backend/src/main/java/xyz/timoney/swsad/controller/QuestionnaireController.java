@@ -1107,7 +1107,7 @@ public class QuestionnaireController {
         /**
         * 验证用户身份
         */
-        System.out.println("\nGET /questionnaires/fill/all"  + "\n");
+        System.out.println("\nGET /questionnaires/commit"  + "\n");
         int userId = UserState.verifyCookie(userCookieKey, message);
         if(!message.isSuccess()){
             return message;
@@ -1183,10 +1183,30 @@ public class QuestionnaireController {
                     Notification.cacheList.get(questionnaire.getPublisher())
                             .sort(Comparator.comparing(Notification::getDate));
                 }
+                /**
+                 * 更新用户资料里
+                 */
+                //同步发送到缓存中的用户填写id列表
+                if(QuesFillUser.cacheListId.containsKey(userId)){
+                    QuesFillUser.cacheListId.get(userId).add(quesResult.getQuesID());
+                }else{
+                    List<Integer> list = new ArrayList<>();
+                    list.add(quesResult.getQuesID());
+                    QuesFillUser.cacheListId.put(userId, list);
+                }
+                //同步发送到缓存中的用户填写列表
+                if(QuesFillUser.cacheList.containsKey(userId)){
+                    QuesFillUser.cacheList.get(userId).add(questionnaire);
+                }else{
+                    List<Questionnaire> list = new ArrayList<>();
+                    list.add(questionnaire);
+                    QuesFillUser.cacheList.put(userId, list);
+                }
             }else
             {
                 message.setSuccess(false);
                 message.setMsg("问卷已经关闭！");
+                return message;
             }
             message.setSuccess(true);
             sqlSession.commit();

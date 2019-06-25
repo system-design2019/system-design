@@ -47,10 +47,10 @@ public class Controller {
         QuesCollectUser.cacheList.clear();
         Questionnaire.cacheListId.clear();
         Questionnaire.cacheList.clear();
+
         Message<String> message = new Message<>();
         message.setMsg("清除缓存成功");
         message.setSuccess(true);
         return message;
     }
-
 }
