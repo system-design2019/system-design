@@ -49,6 +49,7 @@ public class MoneyController {
         if(userId != moneyRecord.getUserId()){
             message.setSuccess(false);
             message.setMsg((moneyRecord.getMoney() > 0 ? "充值" : "提现") + "失败: 账号不一致");
+            System.out.println("userId: " + userId + "\nmoneyRecord.getUserId(): " + moneyRecord.getUserId());
             System.out.println(message);
             return message;
         }
