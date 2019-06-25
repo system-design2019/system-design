@@ -2,7 +2,7 @@
 
 </style>
 <template>
-    <div style="min-height: 800px; margin: 30px 15%">
+    <div style="min-height: 800px; margin: 30px 15%;">
         <div>
             <Carousel autoplay loop v-model="value"
             :autoplay="setting.autoplay"
@@ -47,7 +47,6 @@
                     <i-col span="8"><img src='../../static/home/show5.jpg' style="width: 100%; height: 163px"></img></i-col>
                 </Row>
             </div>
-            
         </div>
     </div>
 </template>

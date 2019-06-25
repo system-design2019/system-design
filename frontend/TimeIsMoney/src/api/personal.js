@@ -133,8 +133,8 @@ export async function getAllDeals() {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function rechargeAsset(paymentAbount) {
-    let response = await service.post('/money', paymentAbount)
+export async function rechargeAsset(paymentAbout) {
+    let response = await service.post('/money', paymentAbout)
     //console.log(response.data)
     return response
 }
@@ -145,10 +145,8 @@ export async function rechargeAsset(paymentAbount) {
  * Promise will return the data of the questionnaires
  */
 
-export async function withdrawAsset(userId, money) {
-    let data = {}
-    data = { "userid": userId, "money": money };
-    let response = await service.post('/money', data)
+export async function withdrawAsset(paymentAbout) {
+    let response = await service.post('/money', paymentAbout)
     //console.log(response.data)
     return response
 }
