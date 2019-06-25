@@ -1,15 +1,15 @@
 <template>
     <div class="collectDiv">
         <div style="width:100%;">
-            <img style="width:100%; height:180px;" src="../images/personal/background.png"/>
+            <img style="width:100%; height:180px;" src="../images/personal/background.png" />
         </div>
         <div style="margin: 0 10%;">
             <div style="margin-bottom:20px;">
                 <h2 style="font-size:25px;color:#CE4747;margin-top:20px; float: left; vertical-align:middle;">我收藏的问卷 </h2>
                 <p style="font-size:20px;color:#CE4747;margin-top:25px; margin-left:10px; float: left; vertical-align:middle;">Collect</p>
-                <div style="clear:both"/>
+                <div style="clear:both" />
             </div>
-            <div style="width:100%;margin-top:10px;height:650px;">
+            <div style="width:100%;margin-top:10px;">
                 <div v-for="(ques,index) in sortCollected">
                     <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
                 </div>
