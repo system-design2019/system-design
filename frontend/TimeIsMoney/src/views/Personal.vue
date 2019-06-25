@@ -141,7 +141,7 @@
                         <Col span="24">
                         <span style="float:left; font-color: black;font-size:18px; font-weight: bold;">基本信息</span>
                         <Button ghost size=small style="float:right;color:blue;font-size:15px;vertical-align:middle;" @click="editBasicInfo">
-                            <span>{{this.buttonText}}</span>
+                            <span>{{this.BbuttonText}}</span>
                         </Button>
                         <div style="height: 1px; width: 100%; background-color: #bebebe; overflow:hidden;"></div>
                         </Col>
@@ -170,7 +170,7 @@
                         <Col span="24">
                         <span style="float:left; font-color: black;font-size:18px; font-weight: bold;">联系信息</span>
                         <Button ghost size=small style="float:right;color:blue;font-size:15px;vertical-align:middle;" @click="editConnectInfo">
-                            <span>{{this.buttonText}}</span>
+                            <span>{{this.CbuttonText}}</span>
                         </Button>
                         <div style="height: 1px; width: 100%; background-color: #bebebe; overflow:hidden;"></div>
                         </Col>
@@ -215,7 +215,7 @@
                         <Col span="24">
                         <span style="float:left; font-color: black;font-size:18px; font-weight: bold;">教育信息</span>
                         <Button ghost size=small style="float:right;color:blue;font-size:15px;vertical-align:middle;" @click="editEduInfo">
-                            <span>{{this.buttonText}}</span>
+                            <span>{{this.EbuttonText}}</span>
                         </Button>
                         <div style="height: 1px; width: 100%; background-color: #bebebe; overflow:hidden;"></div>
                         </Col>
@@ -225,7 +225,7 @@
                         <div class="pInfo">
                             <img src="../images/personal/学校.png" width="20px" height="20px" style="vertical-align:middle;margin-right:3px; margin-left:20px" />
                             <span style="font-size:15px; margin-left:2px;">就读院校</span>
-                            <input v-model="personDetail.university" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForEText" />
+                            <input v-model="personDetail.university" type="text" style="margin-left:8px; font-size:15px;" :disabled="!Eeditable" v-bind:style="styleForEText" />
                         </div>
                         </Col>
                     </Row>
@@ -234,7 +234,7 @@
                         <div class="pInfo">
                             <img src="../images/personal/年级专业.png" width="20px" height="20px" style="vertical-align:middle;margin-right:3px; margin-left:20px" />
                             <span style="font-size:15px; margin-left:2px;">专业年级</span>
-                            <input v-model="personDetail.major" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForEText" />
+                            <input v-model="personDetail.major" type="text" style="margin-left:8px; font-size:15px;" :disabled="!Eeditable" v-bind:style="styleForEText" />
                         </div>
                         </Col>
                     </Row>
@@ -243,7 +243,7 @@
                         <div class="pInfo">
                             <img src="../images/personal/学号.png" width="20px" height="20px" style="vertical-align:middle;margin-right:3px; margin-left:20px" />
                             <span style="font-size:15px; margin-left:2px;">学生卡号</span>
-                            <input v-model="personDetail.studentId" type="text" style="margin-left:8px;font-size:15px;" :disabled="!editable" v-bind:style="styleForEText" />
+                            <input v-model="personDetail.studentId" type="text" style="margin-left:8px;font-size:15px;" :disabled="!Eeditable" v-bind:style="styleForEText" />
                         </div>
                         </Col>
                     </Row>
@@ -277,7 +277,9 @@ export default {
             styleForCText: 'border:' + this.borderSize + 'px',
             styleForBText: 'border:' + this.borderSize + 'px',
             creditRate: 5,
-            buttonText: "编辑",
+            BbuttonText: "编辑",
+            CbuttonText: "编辑",
+            EbuttonText: "编辑",
             useForSign: 1, //1 means phone and 2 means email
             editPhone: false,
             editEmail: false,
@@ -314,7 +316,7 @@ export default {
             this.Ceditable = !this.Ceditable;
             if (this.Ceditable == true) {
                 this.styleForCText = 'border:1px solid';
-                this.buttonText = "保存";
+                this.CbuttonText = "保存";
                 if (this.personDetail.email[0] == '$') {
                     //alert(this.personDetail.email[0]);
                     this.editEmail = true;
@@ -351,14 +353,14 @@ export default {
                 //this.$store.dispatch('Personal/UPDATE_INFO');
 
                 this.styleForCText = 'border:0px;';
-                this.buttonText = "编辑";
+                this.CbuttonText = "编辑";
 
             }
         },
         editBasicInfo() { //修改基础信息
             this.Beditable = !this.Beditable;
             if (this.Beditable == true) {
-                this.buttonText = "保存";
+                this.BbuttonText = "保存";
                 this.styleForBText = 'border:1px solid';
                 //此时进入可编辑的模式，此时所有信息都还没有修改，因此只需要更改样式
             } else {
@@ -389,19 +391,19 @@ export default {
                 console.log(this.personDetail.face) ///???为什么这里没有console到
 
                 this.styleForBText = 'border:0px;';
-                this.buttonText = "编辑";
+                this.BbuttonText = "编辑";
             }
 
         },
         editEduInfo() {
-            this.styleForBText = 'border:1px solid';
+            this.Eeditable = !this.Eeditable;
             if (this.Eeditable == true) {
-                this.buttonText = "保存";
-                this.Eeditable = !this.Eeditable;
+                this.EbuttonText = "保存";
+                this.styleForEText = 'border:1px solid';
             } else {
                 this.$store.dispatch('Personal/UPDATE_INFO');
                 this.styleForEText = 'border:0px;';
-                this.buttonText = "编辑";
+                this.EbuttonText = "编辑";
             }
 
         },
