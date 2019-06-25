@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Questionnaire {
+public class Questionnaire implements Comparable<Questionnaire>{
     /**
      * 缓存用户发布的问卷ID
      */
@@ -34,6 +34,7 @@ public class Questionnaire {
 
 
 
+
     public Questionnaire() throws ParseException {
         quesID=0;
         title="#";
@@ -46,6 +47,12 @@ public class Questionnaire {
         number=2;
         tians = new ArrayList<Ques1>();
         xuans = new ArrayList<Ques2>();
+    }
+
+    @Override
+    public int compareTo(Questionnaire q)
+    {
+        return q.getReward()-this.getReward();
     }
 
     public int getPublisher() {

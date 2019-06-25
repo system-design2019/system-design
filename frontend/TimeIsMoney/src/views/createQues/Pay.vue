@@ -13,7 +13,7 @@ import { Personal } from '../../store/personal/index.js'
 export default {
     data() {
         return {
-            
+
         }
 
     },
@@ -23,7 +23,7 @@ export default {
         personDetail: state => state.Personal.personalInfo
     }),
     methods: {
-        changeStep(step){
+        changeStep(step) {
             this.$store.dispatch('Personal/GET_INFO').then((res) => {
                 let data = {
                     log: JSON.parse(window.sessionStorage.getItem('LogInfo')).log,
@@ -32,22 +32,21 @@ export default {
                     money: this.personDetail.asset
                 }
                 window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
-                console.error(data)
+                //console.error(data)
                 let asset = this.personDetail.asset
-                if(asset >= this.formValidate.reward*this.formValidate.quantity){
-                    let s = '{"formValidate":'+JSON.stringify(this.formValidate)+',"formContent":'+JSON.stringify(this.formContent)+'}'
+                if (asset >= this.formValidate.reward * this.formValidate.quantity) {
+                    let s = '{"formValidate":' + JSON.stringify(this.formValidate) + ',"formContent":' + JSON.stringify(this.formContent) + '}'
                     console.log(s)
                     let ques = JSON.parse(s)
                     // console.log('data')
                     // console.log(data)
                     this.$store.dispatch('Ques/CREATE_QUES', ques)
                     this.$emit('changeStep', step)
-                }
-                else{
+                } else {
                     this.$Message.error('M币不足，请修改后重新发布！')
                 }
             })
-            
+
         }
     }
 }

@@ -8,7 +8,7 @@ export const SEND_IDENTIFY = 'SEND_IDENTIFY'
 export const CHECK_IDENTIFY = 'CHECK_IDENTIFY'
 export const SEND_IDENTIFY2 = 'SEND_IDENTIFY2'
 export const CHECK_IDENTIFY2 = 'CHECK_IDENTIFY2'
-
+export const DELETE_CACHE = 'DELETE_CACHE'
 
 export default {
     [SIGN_IN]({ commit, state }, info) {
@@ -52,5 +52,8 @@ export default {
     [CHECK_IDENTIFY2]({ commit, state }, info) {
         let res = userAPI.checkIndentify2(info.username, info.mode, info.inputCode)
         return res
+    },
+    [DELETE_CACHE]({ commit, state }){
+        return sysAPI.deleteCache()
     }
 }

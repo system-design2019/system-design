@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%">
-        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100" >
+        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
             <FormItem label="简介" prop="detail">
                 <Input v-model="formValidate.detail" placeholder="输入问卷简介"></Input>
             </FormItem>
@@ -16,28 +16,28 @@
             <FormItem label="开始时间">
                 <Row>
                     <Col span="6">
-                        <FormItem prop="startdate">
-                            <DatePicker type="date" placeholder="选择日期" v-model="formValidate.startdate" ></DatePicker>
-                        </FormItem>
+                    <FormItem prop="startdate">
+                        <DatePicker type="date" placeholder="选择日期" v-model="formValidate.startdate"></DatePicker>
+                    </FormItem>
                     </Col>
                     <Col span="6">
-                        <FormItem prop="starttime">
-                            <TimePicker type="time" placeholder="选择时间" v-model="formValidate.starttime"></TimePicker>
-                        </FormItem>
+                    <FormItem prop="starttime">
+                        <TimePicker type="time" placeholder="选择时间" v-model="formValidate.starttime"></TimePicker>
+                    </FormItem>
                     </Col>
                 </Row>
             </FormItem>
             <FormItem label="结束时间">
                 <Row>
                     <Col span="6">
-                        <FormItem prop="enddate">
-                            <DatePicker type="date" placeholder="选择日期" v-model="formValidate.enddate"></DatePicker>
-                        </FormItem>
+                    <FormItem prop="enddate">
+                        <DatePicker type="date" placeholder="选择日期" v-model="formValidate.enddate"></DatePicker>
+                    </FormItem>
                     </Col>
                     <Col span="6">
-                        <FormItem prop="endtime">
-                            <TimePicker type="time" placeholder="选择时间" v-model="formValidate.endtime"></TimePicker>
-                        </FormItem>
+                    <FormItem prop="endtime">
+                        <TimePicker type="time" placeholder="选择时间" v-model="formValidate.endtime"></TimePicker>
+                    </FormItem>
                     </Col>
                 </Row>
             </FormItem>
@@ -58,12 +58,11 @@
             <!-- <FormItem label="Desc" prop="desc">
                 <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
             </FormItem> -->
-
         <!--    <FormItem>
                 <Button @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
             </FormItem>-->
         </Form>
-        <div style="width: 100%; text-align: center; margin-top: 40px">
+        <div style="width: 100%; text-align: center; margin-top: 105px">
             <Button @click="changeStep(-1)" style="margin-right:10px">上一步</Button><Button @click="handleSubmit('formValidate')">下一步</Button>
         </div>
     </div>
@@ -83,11 +82,11 @@ export default {
                 ],
                 quantity: [
                     { required: true, trigger: 'blur' },
-                    { type: 'number', message: '输入必须为整数', trigger: 'change', transform(value) {return Number(value);}}
+                    { type: 'number', message: '输入必须为整数', trigger: 'change', transform(value) { return Number(value); } }
                 ],
                 reward: [
                     { required: true, message: '报酬不能为空', trigger: 'blur' },
-                    { type: 'number', message: '输入必须为整数', trigger: 'blur', transform(value) {return Number(value);}}
+                    { type: 'number', message: '输入必须为整数', trigger: 'blur', transform(value) { return Number(value); } }
                 ],
                 // gender: [
                 //     { required: true, message: 'Please select gender', trigger: 'change' }
@@ -116,41 +115,41 @@ export default {
             formValidate: {
                 title: '1111',
                 detail: '',
-                command:'',
+                command: '',
                 reward: 0,
                 // gender: '',
                 quantity: 0,
-                info:[],
+                info: [],
                 startdate: '',
                 starttime: '',
                 enddate: '',
                 endtime: '',
-                number:  0
+                number: 0
                 // desc: ''
             },
         }
 
     },
     methods: {
-        handleSubmit (name) {
+        handleSubmit(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     this.$store.commit('Ques/createQues/SET_VALIDATE', this.formValidate)
                     // this.$Message.success('发布成功!');
                     // this.$router.push('questionnaire');
-                    console.log("shezhi: "+JSON.stringify(this.formValidate))
-                    this.$emit('changeStep',1)
+                    console.log("shezhi: " + JSON.stringify(this.formValidate))
+                    this.$emit('changeStep', 1)
                 } else {
                     this.$Message.error('设置失败！请完善信息后再次尝试');
                 }
             })
         },
-        handleReset (name) {
+        handleReset(name) {
             this.$refs[name].resetFields();
         },
-        changeStep: function(step){
+        changeStep: function(step) {
             // console.log()
-            this.$emit('changeStep',step)
+            this.$emit('changeStep', step)
         }
     }
 }

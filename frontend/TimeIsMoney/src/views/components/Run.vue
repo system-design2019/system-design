@@ -17,29 +17,33 @@
 </div>
 </template>
 <script>
-export default{
-    props:['data', 'type', 'mode'],
-    data(){
-        return{
-            contents:{
-                id: 123, title: 'chaojichangdepaotuitimu',event: '这里是为了凑格式给上面题目进行的一些解释这里是为了凑格式给上面题目进行的一些解释',total: 100, attend: 100,
-                info: {publisher: 'anonymous',reward: '10',time:'时间',place:'地点'}
+export default {
+    props: ['data', 'type', 'mode'],
+    data() {
+        return {
+            contents: {
+                id: 123,
+                title: 'chaojichangdepaotuitimu',
+                event: '这里是为了凑格式给上面题目进行的一些解释这里是为了凑格式给上面题目进行的一些解释',
+                total: 100,
+                attend: 100,
+                info: { publisher: 'anonymous', reward: '10', time: '时间', place: '地点' }
             },
             showMode: 0,
-            span:[3,3,3,9,3,3],
-            icon:['./../../../static/task/publisher.png','./../../../static/task/reward.png',  './../../../static/task/ques.png', './../../../static/task/time.png', './../../../static/task/date.png', './../../../static/task/attend.png']
+            span: [3, 3, 3, 9, 3, 3],
+            icon: ['./../../../static/task/publisher.png', './../../../static/task/reward.png', './../../../static/task/ques.png', './../../../static/task/time.png', './../../../static/task/date.png', './../../../static/task/attend.png']
         }
     },
-    methods:{
-        getStatus(status){
-            if(status === 1){
+    methods: {
+        getStatus(status) {
+            if (status === 1) {
                 return './../../../static/run/on.png'
             }
             return './../../../static/run/on.png'
         }
     },
-    mounted(){
-        if(typeof(this.data) != 'undefined'){
+    mounted() {
+        if (typeof(this.data) != 'undefined') {
             this.contents.id = this.data.errandsID
             this.contents.title = this.data.title
             this.contents.event = this.data.event
@@ -54,31 +58,33 @@ export default{
 }
 </script>
 <style>
-    .iconInDy{
-        float:left;
-        margin-top:10px;
-    }
-    .run .ivu-card-body {
-        padding-right: 0!important;
-        padding-left: 0px!important;
-        padding-top: 0!important;
-        padding-bottom: 16px!important;
-    }
-    p.oneline{
-        width: 95%; 
-        padding: 0 20px 0 20px;
-        overflow: hidden;
-        display:inline-block;
-        word-break: keep-all;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-    span.oneline{
-        overflow: hidden;
-        display:inline-block;
-        word-break: keep-all;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-    
+.iconInDy {
+    float: left;
+    margin-top: 10px;
+}
+
+.run .ivu-card-body {
+    padding-right: 0 !important;
+    padding-left: 0px !important;
+    padding-top: 0 !important;
+    padding-bottom: 16px !important;
+}
+
+p.oneline {
+    width: 95%;
+    padding: 0 20px 0 20px;
+    overflow: hidden;
+    display: inline-block;
+    word-break: keep-all;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+span.oneline {
+    overflow: hidden;
+    display: inline-block;
+    word-break: keep-all;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 </style>
