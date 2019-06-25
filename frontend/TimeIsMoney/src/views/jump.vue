@@ -12,7 +12,7 @@
                 <transition>
                     <div id="showon" ref="showon">
                         <div id="signIn">
-                            <Button shape="circle" @click="handleSign" size=large ghost>SignIn</Button>
+                            <Button style="float:right; margin:10px;" shape="circle" @click="handleSign" size=large ghost>SignIn</Button>
                         </div>
                         <div class="animated bounce">
                             <div id="logoBox">

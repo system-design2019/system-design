@@ -1,6 +1,7 @@
 package xyz.timoney.swsad.controller;
 
 import com.google.gson.Gson;
+import javafx.print.Collation;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -19,10 +20,7 @@ import xyz.timoney.swsad.singleton.SingletonMybatis;
 
 import javax.jws.soap.SOAPBinding;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @RestController
@@ -243,6 +241,7 @@ public class QuestionnaireController {
             theQues1.setCommand(theQues.getCommand());
             theQues1.setStatus(theQues.getStatus());
             theQues1.setNumber(theQues.getNumber());
+            theQues1.setInfos(temp);
 
             //id转名字
             int theID=theQues.getPublisher();
@@ -497,6 +496,54 @@ public class QuestionnaireController {
             }
 
             message.setData(listQues1);
+            message.setSuccess(true);
+            message.setMsg("获取成功");
+            //要提交后才会生效
+            sqlSession.commit();
+        } catch (Exception e) {
+            message.setData(null);
+            message.setSuccess(false);
+            message.setMsg("获取失败:可能是该用户不存在" + e.getMessage());
+        }
+        //最后记得关闭连接
+
+        return message;
+    }
+
+
+    /**
+     * 获取前十的问卷
+     * */
+    @RequestMapping(method = RequestMethod.GET,value = "/questionnaires/tenQues")
+    @CrossOrigin
+    public Message<List<Questionnaire>> getTenQueses(){
+        Message<List<Questionnaire>> message = new Message<>();
+        List<Questionnaire> listQues;
+
+        //获取一个连接
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            //得到映射器
+            QuestionnaireMapper quesMapper = sqlSession.getMapper(QuestionnaireMapper.class);
+
+            //当前时间
+            Timestamp current = new Timestamp(new Date().getTime());
+            //调用接口中的方法去执行xml文件中的SQL语句
+
+            listQues = quesMapper.getAllQues(current);
+            Collections.sort(listQues);
+            if(listQues.size()>10)
+            {
+                List<Questionnaire> listQues1=new ArrayList<>();
+                for(int i=0;i<10;i++)
+                {
+                    listQues1.add(listQues.get(i));
+                }
+                message.setData(listQues1);
+            }else{
+                message.setData(listQues);
+            }
+
+
             message.setSuccess(true);
             message.setMsg("获取成功");
             //要提交后才会生效

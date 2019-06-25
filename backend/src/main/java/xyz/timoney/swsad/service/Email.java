@@ -105,7 +105,7 @@ public class Email {
             scanner.close();
             htmlBody = htmlBody.replace("[userId]", String.valueOf(user.getId()))
                     .replace("[userName]", user.getName())
-                    .replace("[money]",String.valueOf(-(double)moneyRecord.getMoney() / 100))
+                    .replace("[money]",String.format("%.2f",-((double)moneyRecord.getMoney()) / 100))
                     .replace("[aliPay]",user.getAliPay())
                     .replace("[weChatPay]",user.getWeChatPay())
                     .replace("[time]",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(moneyRecord.getDate()))

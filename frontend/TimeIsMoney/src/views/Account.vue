@@ -1,10 +1,10 @@
 <template>
     <div class="myAccount">
         <div style="margin-top:40px;">
-            <input type='text' @input="handleInput" :value="moneycount" placeholder="enter your price" style="margin-left:30px" />
+            <input type='text' @input="handleInput" :value="moneycount" placeholder="输入需要提现/充值的闲钱币数（1RMB = 100闲钱币）" style="margin-left:30px" />
             <Button @click.native="rechargeAsset">充值</Button>
             <Button @click.native="withdrawAsset">提现</Button>
-            <input v-model="infos" type="text" style="margin-left:30px" placeholder="enter your price" />
+            <input v-model="infos" type="text" style="margin-left:30px" placeholder="输入备注" />
             <Button @click.native="getLog">获取交易记录</Button>
         </div>
         <div id="The log" style="margin-left:30px">
@@ -37,7 +37,11 @@ export default {
             alert("冲他这么多： " + this.moneycount);
         },
         withdrawAsset() {
-            alert("我用户【" + this.personDetail.id + "】充他个一个亿！");
+            let moneyOut = this.moneycount * (-1)
+            let paymentAbout = { "userId": this.personDetail.id, "money": moneyOut, "infos": this.infos };
+            console.log(paymentAbout);
+            this.$store.dispatch("Personal/WITHDRAW_ASSET", paymentAbout);
+            alert("我用户【" + this.personDetail.id + "】提他个一个亿！");
         },
         getLog() {
             this.$store.dispatch('Personal/GET_ASSET');
