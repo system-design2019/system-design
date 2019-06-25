@@ -1,7 +1,4 @@
 <style>
-body{
-    background:#861616"
-}
     .personCenter{
     width: 100%;
     align-items: center;
@@ -96,9 +93,8 @@ body{
 </style>
 <template>
     <div class="personCenter">
-        <Row id="background" >
-            <!--<img style="width:100%; height:180px;" src="../images/personal/background.png"/>-->
-            <div style="width:100%; height:180px;background:#861616"/>
+        <Row id="background">
+            <img style="width:100%; height:180px;" src="../images/personal/background.png" />
         </Row>
         <div class="personInformation">
             <Row id="personInfo">
@@ -108,16 +104,16 @@ body{
                         <Row>
                             <div id="headBox" style="width:150px; height:150px;">
                                 <img id="head" :src="personDetail.face" alt="头像" style="width:150px; height:150px;" @click.stop="uploadHeadImg" />
-                                <input :disabled="!editable" type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
+                                <input :disabled="!Beditable" type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
                             </div>
                         </Row>
                         <Row>
-                             <input v-model="personDetail.nickname" type="text" style="font-size:25px;text-align:center;" :disabled="!editable" v-bind:style="styleForText" />
+                            <input v-model="personDetail.nickname" type="text" style="font-size:25px;text-align:center;width:200px;" :disabled="!Beditable" v-bind:style="styleForBText" />
                         </Row>
                         <Row>
                             <span>ID:{{personDetail.id}}</span>
                         </Row>
-                         <Row  style="margin-top:20px;">
+                        <Row style="margin-top:20px;">
                             <img src="../images/personal/价格.png" style="width:25px;vertical-align: middle;margin-right:5px;"></img>
                             <span style="vertical-align: middle"> M币： </span>
                             <span style="color: #ce4545;vertical-align: middle">{{ personDetail.asset }}</span>
@@ -127,25 +123,24 @@ body{
                             <Rate :disabled="true" show-text allow-half v-model="personDetail.credit"> </Rate>
                             <span style="color: #f5a623">{{ personDetail.credit }}</span>
                         </Row>
-                    </div>    
+                    </div>
                 </card>
                 <card style="height:230px;width:280px;float:right;margin-top:5px;padding-top:20px;">
                     <img src="../images/name.png" style="width: 150px; float:left;"></img>
                     <span style="color: #ce4545; font-weight: bold; font-size: 20px; float: right;position:relative; left: -10px; top: 13px;">联系我们</span>
                     <Col style="margin-left:10px;">
-                        <Row><span style="color: #ce4545; float: left; margin-top:10px;">微信：MBL1228e</span></Row>
-                        <Row><span style="color: #ce4545; float: left; margin-top:5px;">手机：18746615405</span></Row>
-                        <Row><span style="color: #ce4545; float: left; margin-top:5px;">邮箱：1252418308@qq.com </span></Row>
+                    <Row><span style="color: #ce4545; float: left; margin-top:10px;">微信：MBL1228e</span></Row>
+                    <Row><span style="color: #ce4545; float: left; margin-top:5px;">手机：18746615405</span></Row>
+                    <Row><span style="color: #ce4545; float: left; margin-top:5px;">邮箱：1252418308@qq.com </span></Row>
                     </Col>
                 </card>
                 </Col>
-                
                 <Col span="16">
                 <card id="bigPInfo" style="height:600px;white-space:nowrap;right:-3px;">
                     <Row style="margin:15px;">
                         <Col span="24">
                         <span style="float:left; font-color: black;font-size:18px; font-weight: bold;">基本信息</span>
-                        <Button ghost size=small style="float:right;color:blue;font-size:15px;vertical-align:middle;" @click="editInfo">
+                        <Button ghost size=small style="float:right;color:blue;font-size:15px;vertical-align:middle;" @click="editBasicInfo">
                             <span>{{this.buttonText}}</span>
                         </Button>
                         <div style="height: 1px; width: 100%; background-color: #bebebe; overflow:hidden;"></div>
@@ -156,10 +151,10 @@ body{
                         <div class="pInfo">
                             <img src="../images/personal/性别.png" width="25px" height="25px" style="margin-right:3px; vertical-align:middle;" />
                             <span style="font-size:15px;">性别</span>
-                            <input v-model="personDetail.gender" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForText" size="small" />
+                            <input v-model="personDetail.gender" type="text" style="margin-left:8px; font-size:15px;" :disabled="!Beditable" v-bind:style="styleForBText" size="small" />
                         </div>
                         </Col>
-                    <!--    -->
+                        <!--    -->
                     </Row>
                     <Row style="margin:15px;margin-top:1px;">
                         <Col span="12">
@@ -171,11 +166,10 @@ body{
                         </div>
                         </Col>
                     </Row>
-
                     <Row style="margin:15px; margin-top:20px;">
                         <Col span="24">
                         <span style="float:left; font-color: black;font-size:18px; font-weight: bold;">联系信息</span>
-                        <Button ghost size=small style="float:right;color:blue;font-size:15px;vertical-align:middle;" @click="editInfo">
+                        <Button ghost size=small style="float:right;color:blue;font-size:15px;vertical-align:middle;" @click="editConnectInfo">
                             <span>{{this.buttonText}}</span>
                         </Button>
                         <div style="height: 1px; width: 100%; background-color: #bebebe; overflow:hidden;"></div>
@@ -186,7 +180,7 @@ body{
                         <div class="pInfo">
                             <img src="../images/personal/邮箱.png" width="20px" height="20px" style="vertical-align:middle;margin-right:3px; margin-left:5px;" />
                             <span style="font-size:15px;">邮箱</span>
-                            <input v-model="personDetail.email" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editEmail" v-bind:style="styleForText" />
+                            <input v-model="personDetail.email" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editEmail" v-bind:style="styleForCText" />
                         </div>
                         </Col>
                     </Row>
@@ -195,34 +189,32 @@ body{
                         <div class="pInfo">
                             <img src="../images/personal/qq.png" width="30px" height="30px" style="vertical-align:middle; margin-left:8px" />
                             <span style="font-size:15px;"> Q Q</span>
-                            <input v-model="personDetail.qq" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <input v-model="personDetail.qq" type="text" style="margin-left:8px; font-size:15px;" :disabled="!Ceditable" v-bind:style="styleForCText" />
                         </div>
                         </Col>
-                      
                     </Row>
                     <Row style="margin:10px;">
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/手机.png" width="25px" height="25px" style="vertical-align:middle;margin-right:3px; margin-left:8px" />
                             <span style="font-size:15px;">手机</span>
-                            <input v-model="personDetail.phone" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editPhone" v-bind:style="styleForText" />
+                            <input v-model="personDetail.phone" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editPhone" v-bind:style="styleForCText" />
                         </div>
                         </Col>
                     </Row>
-                    <Row style="margin:10px;">  
+                    <Row style="margin:10px;">
                         <Col span="12">
                         <div class="pInfo">
                             <img src="../images/personal/微信.png" width="25px" height="25px" style="vertical-align:middle; margin-left:10px" />
                             <span style="font-size:15px; margin-left:2px;">微信</span>
-                            <input v-model="personDetail.weChatPay" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <input v-model="personDetail.weChatPay" type="text" style="margin-left:8px; font-size:15px;" :disabled="!Ceditable" v-bind:style="styleForCText" />
                         </div>
                         </Col>
                     </Row>
-
                     <Row style="margin:15px; margin-top:20px;">
                         <Col span="24">
                         <span style="float:left; font-color: black;font-size:18px; font-weight: bold;">教育信息</span>
-                        <Button ghost size=small style="float:right;color:blue;font-size:15px;vertical-align:middle;" @click="editInfo">
+                        <Button ghost size=small style="float:right;color:blue;font-size:15px;vertical-align:middle;" @click="editEduInfo">
                             <span>{{this.buttonText}}</span>
                         </Button>
                         <div style="height: 1px; width: 100%; background-color: #bebebe; overflow:hidden;"></div>
@@ -233,7 +225,7 @@ body{
                         <div class="pInfo">
                             <img src="../images/personal/学校.png" width="20px" height="20px" style="vertical-align:middle;margin-right:3px; margin-left:20px" />
                             <span style="font-size:15px; margin-left:2px;">就读院校</span>
-                            <input v-model="personDetail.university" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <input v-model="personDetail.university" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForEText" />
                         </div>
                         </Col>
                     </Row>
@@ -242,7 +234,7 @@ body{
                         <div class="pInfo">
                             <img src="../images/personal/年级专业.png" width="20px" height="20px" style="vertical-align:middle;margin-right:3px; margin-left:20px" />
                             <span style="font-size:15px; margin-left:2px;">专业年级</span>
-                            <input v-model="personDetail.major" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <input v-model="personDetail.major" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForEText" />
                         </div>
                         </Col>
                     </Row>
@@ -251,7 +243,7 @@ body{
                         <div class="pInfo">
                             <img src="../images/personal/学号.png" width="20px" height="20px" style="vertical-align:middle;margin-right:3px; margin-left:20px" />
                             <span style="font-size:15px; margin-left:2px;">学生卡号</span>
-                            <input v-model="personDetail.studentId" type="text" style="margin-left:8px;font-size:15px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <input v-model="personDetail.studentId" type="text" style="margin-left:8px;font-size:15px;" :disabled="!editable" v-bind:style="styleForEText" />
                         </div>
                         </Col>
                     </Row>
@@ -278,7 +270,12 @@ export default {
         return {
             borderSize: 0,
             editable: false,
-            styleForText: 'border:' + this.borderSize + 'px',
+            Beditable: false, //if basic info is editable
+            Ceditable: false, //if collect info is editable
+            Eeditable: false, // if education info is editable
+            styleForEText: 'border:' + this.borderSize + 'px',
+            styleForCText: 'border:' + this.borderSize + 'px',
+            styleForBText: 'border:' + this.borderSize + 'px',
             creditRate: 5,
             buttonText: "编辑",
             useForSign: 1, //1 means phone and 2 means email
@@ -309,14 +306,14 @@ export default {
         */
     ),
     methods: {
-        editInfo() { //修改个人信息
+        editConnectInfo() { //修改联系信息
             // alert(this.editable
             let emailFormat = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
             let phoneFormat = /^1[34578]\d{9}$/;
 
-            this.editable = !this.editable;
-            if (this.editable == true) {
-                this.styleForText = 'border:1px solid';
+            this.Ceditable = !this.Ceditable;
+            if (this.Ceditable == true) {
+                this.styleForCText = 'border:1px solid';
                 this.buttonText = "保存";
                 if (this.personDetail.email[0] == '$') {
                     //alert(this.personDetail.email[0]);
@@ -342,21 +339,41 @@ export default {
                         this.personDetail.email = "$";
                     }
                 }
-                //没有选择的时候 avatar = ""  空串
+
                 this.editEmail = false;
                 this.editPhone = false;
 
+
+                this.$store.dispatch('Personal/UPDATE_INFO');
+
+                console.log("what is this:?" + this.personDetail.face);
+
+                //this.$store.dispatch('Personal/UPDATE_INFO');
+
+                this.styleForCText = 'border:0px;';
+                this.buttonText = "编辑";
+
+            }
+        },
+        editBasicInfo() { //修改基础信息
+            this.Beditable = !this.Beditable;
+            if (this.Beditable == true) {
+                this.buttonText = "保存";
+                this.styleForBText = 'border:1px solid';
+                //此时进入可编辑的模式，此时所有信息都还没有修改，因此只需要更改样式
+            } else {
+                //没有选择的时候 avatar = ""  空串
                 if (this.userInfo.avatar != "") {
                     let formData = new FormData();
                     formData.append("file", this.userInfo.avatar);
                     var _this = this;
                     let response = service.post('/upload', formData)
                         .then(function(response) {
-                            //alert(response.data);
+                            //alert(response.data)
                             console.log("the response:" + JSON.stringify(response));
-                            console.log("the data.data:" + response.data.data);
+                            console.log("the data.data:---" + response.data.data);
                             _this.personDetail.face = response.data.data;
-                            _this.$store.dispatch('Personal/UPDATE_INFO');
+                            _this.$store.dispatch('Personal/UPDATE_INFO'); //update一定要放在这里才成功 放到外面会失败
 
                             //window.location.reload();
                         })
@@ -365,19 +382,30 @@ export default {
                             console.log(error);
                             // window.location.reload();
                         });
+                    //将dispatch 的 update放到这里的时候会更新不成功，赋值的face会被充值         
                 } else {
                     this.$store.dispatch('Personal/UPDATE_INFO');
                 }
+                console.log(this.personDetail.face) ///???为什么这里没有console到
 
-                console.log("what is this:?" + this.personDetail.face);
-
-                //this.$store.dispatch('Personal/UPDATE_INFO');
-
-                this.styleForText = 'border:0px;';
-                this.buttonText = "编辑资料";
-
+                this.styleForBText = 'border:0px;';
+                this.buttonText = "编辑";
             }
+
         },
+        editEduInfo() {
+            this.styleForBText = 'border:1px solid';
+            if (this.Eeditable == true) {
+                this.buttonText = "保存";
+                this.Eeditable = !this.Eeditable;
+            } else {
+                this.$store.dispatch('Personal/UPDATE_INFO');
+                this.styleForEText = 'border:0px;';
+                this.buttonText = "编辑";
+            }
+
+        },
+
         getDetail(id) {
             this.$store.dispatch('Ques/GET_DETAIL', id)
             this.detailModel = !this.detailModel
