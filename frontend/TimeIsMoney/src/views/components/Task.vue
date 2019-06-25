@@ -1,5 +1,5 @@
 <template>
-    <div class="task" style="margin: 20px 0;">
+    <div class="task" style="margin: 15px 0;">
         <card style="padding-left: 10px; border-radius: 15px">
             <img :src="getIconByStatus(contents.id)" style=" position:absolute; right: 0; top:0" width="60px" height="60px" />
             <Row style="margin-top: 20px">
