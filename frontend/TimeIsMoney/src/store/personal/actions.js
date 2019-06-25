@@ -100,7 +100,7 @@ export default {
         return res;
     },
     [WITHDRAW_ASSET]({ state, commit }, paymentAbout) {
-        let res = personalAPI.withdrawAsset(paymentAbout.userId, paymentAbout.money);
+        let res = personalAPI.withdrawAsset(paymentAbout);
         console.log(res);
         return res;
     },
