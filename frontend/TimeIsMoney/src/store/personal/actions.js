@@ -95,16 +95,18 @@ export default {
         })
     },
     [RECHARGE_ASSET]({ state, commit }, paymentAbout) {
-        let res = personalAPI.rechargeAsset(paymentAbout.userId, paymentAbout.money, paymentAbout.payType);
+        let res = personalAPI.rechargeAsset(paymentAbout);
+        console.log(res);
         return res;
     },
     [WITHDRAW_ASSET]({ state, commit }, paymentAbout) {
         let res = personalAPI.withdrawAsset(paymentAbout.userId, paymentAbout.money);
+        console.log(res);
         return res;
     },
     [GET_ASSET]({ state, commit }) {
         personalAPI.getAllDeals().then((response) => {
-            commit(mutations.UPDATE_INFO, response.data)
+            commit(mutations.UPDATE_ASSET, response.data)
         })
     }
 

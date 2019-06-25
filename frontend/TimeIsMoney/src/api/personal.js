@@ -133,10 +133,8 @@ export async function getAllDeals() {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function rechargeAsset(userId, money, payType) {
-    let data = {}
-    data = { "userid": userId, "money": money, "payType": payType };
-    let response = await service.post('/money', data)
+export async function rechargeAsset(paymentAbount) {
+    let response = await service.post('/money', paymentAbount)
     //console.log(response.data)
     return response
 }
