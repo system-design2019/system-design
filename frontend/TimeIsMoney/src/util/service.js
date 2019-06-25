@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // 创建axios实例
 const service = axios.create({
-    // baseURL: 'http://172.26.70.9:8080',
+    //baseURL: 'http://172.26.112.137:8080',
 
     baseURL: 'http://118.25.215.11:8080',
     //baseURL: 'http://api.timoney.xyz',
