@@ -243,6 +243,7 @@ public class QuestionnaireController {
             theQues1.setCommand(theQues.getCommand());
             theQues1.setStatus(theQues.getStatus());
             theQues1.setNumber(theQues.getNumber());
+            theQues1.setInfos(temp);
 
             //id转名字
             int theID=theQues.getPublisher();
