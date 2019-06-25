@@ -115,8 +115,8 @@ export default {
                 this.info = '删除问卷将无法到该问卷相关信息，确认删除问卷？（未使用押金会退回到您的账户）'
 
             }
-            this.idtype = i
-            this. = t
+            this.id = i
+            this.type = t
         },
         deal() {
             if (this.t == 1) {
