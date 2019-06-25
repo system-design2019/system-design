@@ -157,7 +157,7 @@ export default {
         },
         changeCollectStatus(id) {
             this.$store.dispatch('Ques/CHANGE_COLLECT', id)
-            this.$store.dispatch('DELETE_CACHE')
+            // this.$store.dispatch('DELETE_CACHE')
         },
         getStatus(id) {
             if (this.detailContent.publisher == JSON.parse(window.sessionStorage.getItem('LogInfo')).userID) {
