@@ -15,11 +15,11 @@
                 </div>
             </div>
             <div v-if="noQues" style="width:100%;margin-top:20px;">
+                <div style=" text-align: center;">
+                    <img src="../../static/noCollect.png" style="width:500px;" />
+                </div>
                 <div style=" margin:0 auto;width:500px; font-size:25px;text-align:center;">
                     <span style="color:#CE4747;"> 您暂时没有收藏的问卷噢 </span>
-                </div>
-                <div style=" text-align: center;">
-                    <img src="../../static/noCollect.png" style="width:900px;height:500px" />
                 </div>
             </div>
         </div>

@@ -25,7 +25,7 @@
                 <h3 style="margin: 15px 0 5px 0">需交押金</h3>
                 <p class="hint" style="text-indent: 2em; margin: 5px 0 0 0; height: 4%">{{errandDetail.deposit}}</p>
             </div>
-            <div style="margin-top: 30px; width: 50%;position: relative; overflow: hidden; float:left; text-align: left; height: 37%">
+            <div style="margin-top: 30px; width: 100%;position: relative; overflow: hidden; float:left; text-align: left; height: 37%">
                 <div style="width: 100%; overflow: hidden; position: relative">
                     <div style="width: 100%;">
                         <img src="./../../../static/task/peopleNum.png" style="width:30px"></img>
@@ -56,8 +56,9 @@
                 </div>
             </div>
             <div style="clear:both"></div>
-        </Modal>
-    </div>
+            </div>
+    </Modal>
+</div>
 </template>
 <script>
 import { mapState } from 'vuex'
