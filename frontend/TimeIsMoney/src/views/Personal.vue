@@ -1,96 +1,4 @@
-<style>
-    .personCenter{
-    width: 100%;
-    align-items: center;
-    position: absolute;
-}
-    .personInformation{
-    text-align: center;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-}
-.ivu-rate-star-full{
-    margin-right:0px!important;
-    padding:0px;
-}
-.ivu-rate-star-zero{
-    margin-right:0px!important;
-    padding:0px;
-}
-    /* #qInformation{
-    text-align: center;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    } */
 
-    h1 {
-        height: 150px;
-
-        img {
-            height: 100%;
-        }
-    }
-
-    h2 {
-        color: #666;
-        margin-bottom: 200px;
-
-        p {
-            margin: 0 0 50px;
-        }
-    }
-
-    .ivu-row-flex {
-        height: 100%;
-    }
-
-    #personInfo {
-        width: 80%;
-    }
-
-    .pInfo {
-        font-size: 20px;
-        float:left;
-
-    }
-
-    .ivu-tabs-content,.ivu-tabs-content-animated{
-        height:450px;
-    }
-
-    Row {
-        margin: 30px;
-    }
-
-    input{
-        width:60%;
-    }
-
-    input[disabled],input:disabled,input.disabled{  
-    background-color: #fff;  
-    -webkit-text-fill-color:#333;  
-    -webkit-opacity:1;  
-    opacity: 1;  
-    border:0px;
-    } 
-
-    .ivu-tabs-nav-container{
-     font-size:30px!important;
-    }
-
-    .iconInDy{
-        float:left;
-        margin-top:10px;
-    }
-    .personal .ivu-tabs-nav-container{
-        font-size: 22px!important;
-    }
-
-
-</style>
 <template>
     <div class="personCenter">
         <Row id="background">
@@ -452,3 +360,95 @@ export default {
     }
 }
 </script>
+<style>
+    .personCenter{
+    width: 100%;
+    align-items: center;
+    position: absolute;
+}
+    .personInformation{
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+.ivu-rate-star-full{
+    margin-right:0px!important;
+    padding:0px;
+}
+.ivu-rate-star-zero{
+    margin-right:0px!important;
+    padding:0px;
+}
+    /* #qInformation{
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    } */
+
+    h1 {
+        height: 150px;
+
+        img {
+            height: 100%;
+        }
+    }
+
+    h2 {
+        color: #666;
+        margin-bottom: 200px;
+
+        p {
+            margin: 0 0 50px;
+        }
+    }
+
+    .ivu-row-flex {
+        height: 100%;
+    }
+
+    #personInfo {
+        width: 80%;
+    }
+
+    .pInfo {
+        font-size: 20px;
+        float:left;
+
+    }
+
+    .ivu-tabs-content,.ivu-tabs-content-animated{
+        height:450px;
+    }
+
+    Row {
+        margin: 30px;
+    }
+
+    input{
+        width:60%;
+    }
+
+    input[disabled],input:disabled,input.disabled{  
+    background-color: #fff;  
+    -webkit-text-fill-color:#333;  
+    -webkit-opacity:1;  
+    opacity: 1;  
+    border:0px;
+    } 
+
+    .ivu-tabs-nav-container{
+     font-size:30px!important;
+    }
+
+    .iconInDy{
+        float:left;
+        margin-top:10px;
+    }
+    .personal .ivu-tabs-nav-container{
+        font-size: 22px!important;
+    }
+
+</style>

@@ -1,5 +1,6 @@
 
 <template>
+    <div style="width: 100%; background: #ffffff; margin:auto; padding:10px;">
     <div style="margin: 0px 15%;">
         <div style="width: 100%; overflow: hidden; height: 50px; position: relative; margin-top: 20px">
             <div style="width: 5%; float: left">
@@ -22,11 +23,12 @@
         <Modal
             title="提示"
             v-model="alert"
-            :styles="{top: '20px'}"
+            :styles="{top: '100px'}"
             >
-            <p>此时返回系统不会保存已经填写的内容。确认返回？</p>
-            <button @click="back">确认</button>
+            <p style="text-align:center; margin:10px; font-size: 15px;">此时返回系统不会保存已经填写的内容。确认返回？</p>
+            <button @click="back" style="width:100px;font-size: 15px; margin-bottom:20px; margin-left:200px;">确认</button>
         </Modal>
+    </div>
     </div>
 </template>
 <script>

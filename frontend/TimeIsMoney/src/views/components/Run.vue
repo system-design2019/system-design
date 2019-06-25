@@ -1,16 +1,16 @@
 <template>
 <div class="run" style="margin: 20px 0;">
-    <card  style=" border-radius: 23px; height: 400px; overflow: hidden">
+    <card  style=" border-radius: 23px; height: 380px; overflow: hidden; margin-top:20px;">
         <img :src="getStatus(contents.status)" style=" position:absolute; right: 0; top:0" width="100px" height="100px" />
         <img src="./../../../static/run/temp.png" style="width: 100%"></img>
         <Row style="margin-top: 15px; padding-left: 15px">
             <p style="font-size: 20px; font-weight: 700;padding:0 0;float:left;" class="oneline">{{contents.title}}</p>
         </Row>
-        <Row><p style="font-size:15px;padding:10px 40px;" class="oneline">{{contents.event}}</p></Row>
+        <Row><p style="font-size:15px;padding:10px 30px;" class="oneline">{{contents.event}}</p></Row>
         <Row type="flex" style="margin-top: 5px; padding-left: 20px">
             <Col span="12" v-for="(ele, key, i) in contents.info" class="iconInDy" >
-                <img :src="icon[i]" width="40px" height="40px" />
-                <span style="margin-left: 5px;" class="oneline">{{ele}}</span>
+                <img :src="icon[i]" width="30px" height="30px" />
+                <span style="margin-left: 5px;"class="oneline">{{ele}}</span>
             </Col>
         </Row>
     </card>

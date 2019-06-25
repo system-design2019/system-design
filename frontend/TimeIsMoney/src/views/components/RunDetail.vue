@@ -1,10 +1,10 @@
 <template>
-<div >
-    <Modal v-model="detail" width="800px" class-name="vertical-center-modal d"  :mask-closable="false">
-        <img src="./../../../static/run/detail.jpg" style="position:relative; float: left; left: -50px; top: -50px; height:500px"></img>
+<div>
+    <Modal v-model="detail" width="750px" class-name="vertical-center-modal d"  :mask-closable="false">
+        <img src="./../../../static/run/detail.jpg" style="position:relative; float: left; left: -50px; top: -50px; height:450px"></img>
         <p style="font-size:24px; font-weight: 500px;">{{errandDetail.title}}</p>
-        <div style="overflow: hidden; width: 400px; height: 7%;margin-top: 10px">
-            <div style="width: 400px; float:left">
+        <div style="overflow: hidden; width: 350px; height: 7%;margin-top: 10px">
+            <div style="width: 350px; float:left">
                 <div style="width: 50%; float:left; margin-bottom: 10px">
                     <img src="./../../../static/task/publisher.png" style="width:30px"></img>
                     <span style="font-size: 22px">{{errandDetail.publisherName}}</span>

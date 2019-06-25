@@ -1,13 +1,14 @@
 
 <template>
+    <div style="width: 100%; background: #ffffff; margin:auto; padding:10px;">
     <div style="margin: 0px 15%;">
-        <div style="width: 100%; overflow: hidden; height: 50px; position: relative; margin-top: 20px">
+        <div style="width: 100%; overflow: hidden; height: 70px; position: relative; margin-top: 20px; padding-bottom:10px;">
             <div style="width: 5%; float: left">
                 <Icon type="ios-arrow-back" size="24" style="float: left; bottom: 5px" @click="alert=!alert"/>
             </div>
-            <div style="width: 95%; float: right">
+            <div style="width: 95%; float: right; background:#ffffff;">
                 <Steps :current="currentStep">
-                    <Step title="问卷编辑" content="编辑问卷内容"></Step>
+                    <Step title="问卷编辑" content="编辑问卷内容" style="background:#ffffff;"></Step>
                     <Step title="问卷设置" content="设置问卷发布的相关参数"></Step>
                     <Step title="押金支付" content="支付押金"></Step>
                     <Step title="发布成功" content="发布成功"></Step>
@@ -24,11 +25,12 @@
         <Modal
             title="提示"
             v-model="alert"
-            :styles="{top: '20px'}"
+            :styles="{top: '100px'}"
             >
-            <p>此时返回系统不会保存已经填写的内容。确认返回？</p>
-            <button @click="back">确认</button>
+            <p style="text-align:center; margin:10px; font-size: 15px;">此时返回系统不会保存已经填写的内容。确认返回？</p>
+            <button @click="back" style="width:100px;font-size: 15px; margin-bottom:20px; margin-left:200px;">确认</button>
         </Modal>
+    </div>
     </div>
 </template>
 <script>

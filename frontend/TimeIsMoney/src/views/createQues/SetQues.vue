@@ -59,9 +59,9 @@
                 <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
             </FormItem> -->
 
-            <FormItem>
+        <!--    <FormItem>
                 <Button @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
-            </FormItem>
+            </FormItem>-->
         </Form>
         <div style="width: 100%; text-align: center; margin-top: 40px">
             <Button @click="changeStep(-1)" style="margin-right:10px">上一步</Button><Button @click="handleSubmit('formValidate')">下一步</Button>
