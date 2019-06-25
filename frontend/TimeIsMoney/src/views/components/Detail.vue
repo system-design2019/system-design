@@ -54,8 +54,8 @@
                         <Button id="check" size="large" @click="checkAns(detailContent.quesID)">查看填写情况</Button>
                     </div>
                     <div style="margin-top:5px;float:middle;" >
-                        <a id="close" size="large" style="margin-right:15px"@click="setInformation(detailContent.quesID, 1)">关闭问卷</a>
-                        <a id="delete" size="large" style="margin-left:15px"@click="setInformation(detailContent.quesID, 2)">删除问卷</a>
+                        <a id="close" size="large" style="margin-right:15px"@click="closeQues(detailContent.quesID)">关闭问卷</a>
+                        <a id="delete" size="large" style="margin-left:15px"@click="deleteQues(detailContent.quesID, 2)">删除问卷</a>
                     </div>
                     <div style="clear:both"></div>
                 </div>
