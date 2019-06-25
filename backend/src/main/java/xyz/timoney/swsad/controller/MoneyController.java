@@ -70,7 +70,7 @@ public class MoneyController {
                 }
             }
             moneyRecord.setDate(new Date(Util.getCurrentDateLong()));
-            moneyRecord.setInfo("充值: " + moneyRecord.getInfo());
+            moneyRecord.setInfo((moneyRecord.getMoney() > 0 ?"充值: " : "提现: " )+ moneyRecord.getInfo());
             moneyRecord.setStatus(false);
             int newMoneyRecordId = moneyMapper.insertRecord(moneyRecord);
             /**
