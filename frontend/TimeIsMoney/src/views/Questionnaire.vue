@@ -123,7 +123,7 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch('DELETE_CACHE').then((info) => {
+        // this.$store.dispatch('DELETE_CACHE').then((info) => {
             this.$store.dispatch('Ques/GET_QUESLIST')
             this.$store.dispatch('Ques/GET_COLLECT_QUESLIST')
             this.$store.dispatch('Ques/GET_ATTEND_QUESLIST')
@@ -133,8 +133,8 @@ export default {
                 _this.currentList = _this.quesList
                 // _this.currentList = _this.quesList.sort(_this.compare('reward'))
             }, 1000)
-        })
-
+        // })
+        
     }
 }
 </script>
