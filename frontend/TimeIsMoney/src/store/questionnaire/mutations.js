@@ -8,21 +8,26 @@ export const DELETE_QUES_BY_INDEX = 'DELETE_QUES_BY_INDEX'
 export default{
     [SET_QUESLIST] (state, list) {
         state.quesList = list
+        return true
     },
     [SET_COLLECT_QUESLIST] (state, list) {
         state.collectQuesList = list
+        return true
         // console.error(list)
     },
     [SET_PUBLISH_QUESLIST] (state, list) {
         state.publishQuesList = list
+        return true
         // console.error(list)
     },
     [SET_ATTEND_QUESLIST] (state, list) {
         state.attendQuesList = list
+        return true
         // console.error(list)
     },
     [SET_DETAIL] (state, detail){
         state.quesDetail = detail
+        return true
     },
     [SET_LOCAL_COLLECTLIST] (state, id){
         let pos = state.collectQuesList.indexOf(id)
@@ -32,9 +37,11 @@ export default{
         else{
             state.collectQuesList.push(id)
         }
+        return true
     },
     [DELETE_QUES_BY_INDEX](state, index){
         state.quesList.splice(index, 1)
+        return true
     },
 
 }

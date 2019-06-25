@@ -62,6 +62,7 @@ export default {
         }
     },
     mounted() {
+
         this.$store.dispatch('Personal/GET_ATTEND'); //分发action
         var _this = this;
         setTimeout(function() {
@@ -69,6 +70,7 @@ export default {
             console.log(_this.$store.state)
             console.log(_this.sortAttended)
         }, 1000)
+
     }
 
 }

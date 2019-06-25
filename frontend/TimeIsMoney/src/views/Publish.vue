@@ -67,6 +67,7 @@ export default {
         }
     },
     mounted() {
+
         this.$store.dispatch('Personal/GET_PUBLISH'); //分发action
         var _this = this;
         setTimeout(function() { //注意在函数里面再使用this，此时this指向函数
@@ -75,6 +76,7 @@ export default {
             console.log(_this.sortPublished)
             //_this.hey();
         }, 1000)
+
 
     }
 }
