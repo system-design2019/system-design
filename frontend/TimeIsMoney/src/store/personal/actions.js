@@ -12,6 +12,9 @@ export const CHANGE_STATUS = 'CHANGE_STATUS'
 export const CHANGE_ALL_STATUS = 'CHANGE_ALL_STATUS'
 export const DELETE_ALERT = 'DELETE_ALERT'
 export const DELETE_ALL_ALERTS = 'DELETE_ALL_ALERTS'
+export const RECHARGE_ASSET = 'RECHARGE_ASSET'
+export const WITHDRAW_ASSET = 'WITHDRAW_ASSET'
+export const GET_ASSET = 'GET_ASSET'
 
 export default {
     [GET_INFO]({ commit }) {
@@ -90,5 +93,19 @@ export default {
         personalAPI.deleteAllAlerts().then((response) => {
             commit(mutations.DELETE_ALL_LOCAL_ALERT)
         })
+    },
+    [RECHARGE_ASSET]({ state, commit }, paymentAbout) {
+        let res = personalAPI.rechargeAsset(paymentAbout.userId, paymentAbout.money, paymentAbout.payType);
+        return res;
+    },
+    [WITHDRAW_ASSET]({ state, commit }, paymentAbout) {
+        let res = personalAPI.withdrawAsset(paymentAbout.userId, paymentAbout.money);
+        return res;
+    },
+    [GET_ASSET]({ state, commit }) {
+        personalAPI.getAllDeals().then((response) => {
+            commit(mutations.UPDATE_INFO, response.data)
+        })
     }
+
 }

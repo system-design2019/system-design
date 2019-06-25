@@ -1,9 +1,9 @@
 <template>
     <div class="collectDiv">
         <div style="margin: 0 10%;">
-            <h2 style="font-size:40px; margin-top:20px; color:#CE4747;"> 我收藏的问卷 </h2>
+            <h2 style="font-size:40px; margin-top:20px; color:#CE4747;"> 我收藏的 </h2>
             <div style="width:100%;margin-top:10px;height:650px;">
-                <div v-for="(ques,index) in collectLists">
+                <div v-for="(ques,index) in sortCollected">
                     <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
                 </div>
             </div>
@@ -34,6 +34,7 @@ export default {
     data() {
         return {
             detailModel: false,
+            sortCollected: []
         }
 
     },
@@ -41,10 +42,24 @@ export default {
         getDetail(id) {
             this.$store.dispatch('Ques/GET_DETAIL', id)
             this.detailModel = !this.detailModel
+        },
+        sortBykey(ary, key1, key2) {
+            return ary.sort(function(a, b) {
+                let x = a[key1][key2]
+                let y = b[key1][key2]
+                return ((x < y) ? -1 : (x > y) ? 1 : 0)
+            })
         }
     },
     mounted() {
         this.$store.dispatch('Personal/GET_STAR'); //分发action
+        var _this = this;
+        setTimeout(function() { //注意在函数里面再使用this，此时this指向函数
+            _this.sortCollected = _this.sortBykey(_this.$store.state.Personal.starring, 'Infos', 'createTime');
+            console.log(_this.$store.state.Personal.starring)
+            console.log(_this.sortCollected)
+            //_this.hey();
+        }, 1000)
     }
 }
 </script>

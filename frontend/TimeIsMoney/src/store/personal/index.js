@@ -22,7 +22,9 @@ const Personal = {
             studentId: '',
             payaccount: '',
             wechat: 'wechat',
-            credit: 3
+            credit: 3,
+            assst: 0
+
         },
         quesDetail: {
             infos: { "招募人数": 90, "填写人数": 5, "发布时间": '2019.5.3 18:00', "截止时间": '2019.5.2.19:00' },
@@ -38,7 +40,8 @@ const Personal = {
         publishing: [],
         attending: [],
         starring: [],
-        mailReceive: []
+        mailReceive: [],
+        allDeals: []
     },
     actions,
     mutations,
