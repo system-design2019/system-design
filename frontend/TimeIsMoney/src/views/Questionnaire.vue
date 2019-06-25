@@ -13,7 +13,7 @@
             </div>
         </div>
         <div style="margin: 30px 15%">
-            <div style="width: 100%; min-height: 20px;">
+            <!--div style="width: 100%; min-height: 20px;">
                 <div style="overflow: hidden">
                     <Dropdown style="margin-left: 20px; float: right;" trigger="click">
                         <Button type="primary">
@@ -27,7 +27,7 @@
                         </DropdownMenu>
                     </Dropdown>
                 </div>
-            </div>
+            </div-->
             <div style="width: 100%; ">
                 <task v-for="(ques,index) in currentList" :data="ques" :key="index" type="1" mode="1" @click.native="getDetail(ques.quesID)"></task>
             </div>
