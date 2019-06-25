@@ -3,8 +3,8 @@
     <card  style=" border-radius: 23px; height: 400px; overflow: hidden">
         <img :src="getStatus(contents.status)" style=" position:absolute; right: 0; top:0" width="100px" height="100px" />
         <img src="./../../../static/run/temp.png" style="width: 100%"></img>
-        <Row style="margin-top: 20px; padding-left: 20px">
-            <p style="font-size: 23px; font-weight: 700;padding:0 0;float:left;" class="oneline">{{contents.title}}</p>
+        <Row style="margin-top: 15px; padding-left: 15px">
+            <p style="font-size: 20px; font-weight: 700;padding:0 0;float:left;" class="oneline">{{contents.title}}</p>
         </Row>
         <Row><p style="font-size:15px;padding:10px 40px;" class="oneline">{{contents.event}}</p></Row>
         <Row type="flex" style="margin-top: 5px; padding-left: 20px">

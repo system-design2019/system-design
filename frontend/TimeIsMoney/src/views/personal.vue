@@ -1,4 +1,7 @@
 <style>
+body{
+    background:#861616"
+}
     .personCenter{
     width: 100%;
     align-items: center;
@@ -94,7 +97,8 @@
 <template>
     <div class="personCenter">
         <Row id="background" >
-            <img style="width:100%; height:180px;" src="../images/personal/background.png"/>
+            <!--<img style="width:100%; height:180px;" src="../images/personal/background.png"/>-->
+            <div style="width:100%; height:180px;background:#861616"/>
         </Row>
         <div class="personInformation">
             <Row id="personInfo">
