@@ -9,6 +9,7 @@ export const CHANGE_LOCAL_STATUS = 'CHANGE_LOCAL_STATUS'
 export const DELETE_LOCAL_ALERT = 'DELETE_LOCAL_ALERT'
 export const CHANGE_ALL_LOCAL_STATUS = 'CHANGE_ALL_LOCAL_STATUS'
 export const DELETE_ALL_LOCAL_ALERT = 'DELETE_ALL_LOCAL_ALERT'
+export const UPDATE_ASSET = 'UPDATE_ASSET'
 
 export default {
     [SET_PER_INFO](state, info) {
@@ -45,5 +46,9 @@ export default {
     },
     [DELETE_ALL_LOCAL_ALERT](state) {
         state.mailReceive.splice(0, state.mailReceive.length)
+    },
+    [UPDATE_ASSET](state, data) {
+        state.allDeals = data;
     }
+
 }

@@ -1,4 +1,7 @@
 <style>
+body{
+    background:#861616"
+}
     .personCenter{
     width: 100%;
     align-items: center;
@@ -10,6 +13,14 @@
     display: flex;
     justify-content: center;
     margin-bottom: 30px;
+}
+.ivu-rate-star-full{
+    margin-right:0px!important;
+    padding:0px;
+}
+.ivu-rate-star-zero{
+    margin-right:0px!important;
+    padding:0px;
 }
     /* #qInformation{
     text-align: center;
@@ -85,97 +96,162 @@
 </style>
 <template>
     <div class="personCenter">
+        <Row id="background" >
+            <!--<img style="width:100%; height:180px;" src="../images/personal/background.png"/>-->
+            <div style="width:100%; height:180px;background:#861616"/>
+        </Row>
         <div class="personInformation">
             <Row id="personInfo">
                 <Col span="8">
-                <card style="height:270px;">
-                    <Row>
-                        <div id="headBox">
-                            <img id="head" :src="personDetail.face" alt="头像" width="150px" height="150px" @click.stop="uploadHeadImg" />
-                            <input :disabled="!editable" type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
-                        </div>
-                    </Row>
-                    <Row>
-                        <input v-model="personDetail.nickname" type="text" style="font-size:25px;text-align:center;" :disabled="!editable" v-bind:style="styleForText" />
-                    </Row>
-                    <Row>
-                        <span>ID:{{personDetail.id}}</span>
-                    </Row>
-                    <Row>
-                        <span> 信用： </span>
-                        <Rate :disabled="true" show-text allow-half v-model="personDetail.credit"> </Rate>
-                        <span style="color: #f5a623">{{ personDetail.credit }}</span>
-                    </Row>
+                <card style="height:265px;width:280px;float:right;">
+                    <div style="position:relative;top:-100px;">
+                        <Row>
+                            <div id="headBox" style="width:150px; height:150px;">
+                                <img id="head" :src="personDetail.face" alt="头像" style="width:150px; height:150px;" @click.stop="uploadHeadImg" />
+                                <input :disabled="!editable" type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
+                            </div>
+                        </Row>
+                        <Row>
+                             <input v-model="personDetail.nickname" type="text" style="font-size:25px;text-align:center;" :disabled="!editable" v-bind:style="styleForText" />
+                        </Row>
+                        <Row>
+                            <span>ID:{{personDetail.id}}</span>
+                        </Row>
+                         <Row  style="margin-top:20px;">
+                            <img src="../images/personal/价格.png" style="width:25px;vertical-align: middle;margin-right:5px;"></img>
+                            <span style="vertical-align: middle"> M币： </span>
+                            <span style="color: #ce4545;vertical-align: middle">{{ personDetail.asset }}</span>
+                        </Row>
+                        <Row style="margin-top:5px;">
+                            <span> 信用：</span>
+                            <Rate :disabled="true" show-text allow-half v-model="personDetail.credit"> </Rate>
+                            <span style="color: #f5a623">{{ personDetail.credit }}</span>
+                        </Row>
+                    </div>    
+                </card>
+                <card style="height:230px;width:280px;float:right;margin-top:5px;padding-top:20px;">
+                    <img src="../images/name.png" style="width: 150px; float:left;"></img>
+                    <span style="color: #ce4545; font-weight: bold; font-size: 20px; float: right;position:relative; left: -10px; top: 13px;">联系我们</span>
+                    <Col style="margin-left:10px;">
+                        <Row><span style="color: #ce4545; float: left; margin-top:10px;">微信：MBL1228e</span></Row>
+                        <Row><span style="color: #ce4545; float: left; margin-top:5px;">手机：18746615405</span></Row>
+                        <Row><span style="color: #ce4545; float: left; margin-top:5px;">邮箱：1252418308@qq.com </span></Row>
+                    </Col>
                 </card>
                 </Col>
+                
                 <Col span="16">
-                <card id="bigPInfo" style="height:270px;white-space:nowrap;">
-                    <Row>
-                        <Button ghost size=small style="float:right;color:blue;font-size:15px;" @click="editInfo">
+                <card id="bigPInfo" style="height:600px;white-space:nowrap;right:-3px;">
+                    <Row style="margin:15px;">
+                        <Col span="24">
+                        <span style="float:left; font-color: black;font-size:18px; font-weight: bold;">基本信息</span>
+                        <Button ghost size=small style="float:right;color:blue;font-size:15px;vertical-align:middle;" @click="editInfo">
                             <span>{{this.buttonText}}</span>
                         </Button>
+                        <div style="height: 1px; width: 100%; background-color: #bebebe; overflow:hidden;"></div>
+                        </Col>
                     </Row>
                     <Row style="margin:15px;margin-top:1px;">
                         <Col span="12">
                         <div class="pInfo">
-                            <img src="../images/personal/性别.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span>性别</span>
-                            <input v-model="personDetail.gender" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" size="small" />
+                            <img src="../images/personal/性别.png" width="25px" height="25px" style="margin-right:3px; vertical-align:middle;" />
+                            <span style="font-size:15px;">性别</span>
+                            <input v-model="personDetail.gender" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForText" size="small" />
                         </div>
                         </Col>
+                    <!--    -->
+                    </Row>
+                    <Row style="margin:15px;margin-top:1px;">
                         <Col span="12">
                         <div class="pInfo">
-                            <img src="../images/personal/学校.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span>就读院校</span>
-                            <input v-model="personDetail.university" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <img src="../images/personal/头像2.png" width="20px" height="20px" style="margin-left:15px; margin-right:3px; vertical-align:middle;" />
+                            <span style="font-size:15px;">当前id</span>
+                            <span style="vertical-align: middle;font-size:15px;margin-left:8px">{{ personDetail.id }}</span>
+                            <a style="vertical-align: middle;font-size:15px;margin-left:15px">修改密码</a>
                         </div>
                         </Col>
                     </Row>
-                    <Row style="margin:15px;">
-                        <Col span="12">
-                        <div class="pInfo">
-                            <img src="../images/personal/邮箱.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span>邮箱</span>
-                            <input v-model="personDetail.email" type="text" style="margin-left:8px" :disabled="!editEmail" v-bind:style="styleForText" />
-                        </div>
+
+                    <Row style="margin:15px; margin-top:20px;">
+                        <Col span="24">
+                        <span style="float:left; font-color: black;font-size:18px; font-weight: bold;">联系信息</span>
+                        <Button ghost size=small style="float:right;color:blue;font-size:15px;vertical-align:middle;" @click="editInfo">
+                            <span>{{this.buttonText}}</span>
+                        </Button>
+                        <div style="height: 1px; width: 100%; background-color: #bebebe; overflow:hidden;"></div>
                         </Col>
+                    </Row>
+                    <Row style="margin-left:15px;">
                         <Col span="12">
                         <div class="pInfo">
-                            <img src="../images/personal/年级专业.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span>专业年级</span>
-                            <input v-model="personDetail.major" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <img src="../images/personal/邮箱.png" width="20px" height="20px" style="vertical-align:middle;margin-right:3px; margin-left:5px;" />
+                            <span style="font-size:15px;">邮箱</span>
+                            <input v-model="personDetail.email" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editEmail" v-bind:style="styleForText" />
                         </div>
                         </Col>
                     </Row>
-                    <Row style="margin:15px;">
+                    <Row style="margin:10px;">
                         <Col span="12">
                         <div class="pInfo">
-                            <img src="../images/personal/微信.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span> Q Q</span>
-                            <input v-model="personDetail.qq" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <img src="../images/personal/qq.png" width="30px" height="30px" style="vertical-align:middle; margin-left:8px" />
+                            <span style="font-size:15px;"> Q Q</span>
+                            <input v-model="personDetail.qq" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
+                      
+                    </Row>
+                    <Row style="margin:10px;">
                         <Col span="12">
                         <div class="pInfo">
-                            <img src="../images/personal/学号.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span>学生卡号</span>
-                            <input v-model="personDetail.studentId" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <img src="../images/personal/手机.png" width="25px" height="25px" style="vertical-align:middle;margin-right:3px; margin-left:8px" />
+                            <span style="font-size:15px;">手机</span>
+                            <input v-model="personDetail.phone" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editPhone" v-bind:style="styleForText" />
                         </div>
                         </Col>
                     </Row>
-                    <Row style="margin:15px;">
+                    <Row style="margin:10px;">  
                         <Col span="12">
                         <div class="pInfo">
-                            <img src="../images/personal/手机.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span>手机</span>
-                            <input v-model="personDetail.phone" type="text" style="margin-left:8px;" :disabled="!editPhone" v-bind:style="styleForText" />
+                            <img src="../images/personal/微信.png" width="25px" height="25px" style="vertical-align:middle; margin-left:10px" />
+                            <span style="font-size:15px; margin-left:2px;">微信</span>
+                            <input v-model="personDetail.weChatPay" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
+                    </Row>
+
+                    <Row style="margin:15px; margin-top:20px;">
+                        <Col span="24">
+                        <span style="float:left; font-color: black;font-size:18px; font-weight: bold;">教育信息</span>
+                        <Button ghost size=small style="float:right;color:blue;font-size:15px;vertical-align:middle;" @click="editInfo">
+                            <span>{{this.buttonText}}</span>
+                        </Button>
+                        <div style="height: 1px; width: 100%; background-color: #bebebe; overflow:hidden;"></div>
+                        </Col>
+                    </Row>
+                    <Row style="margin:10px;">
                         <Col span="12">
                         <div class="pInfo">
-                            <img src="../images/personal/邮箱.png" width="30px" height="30px" style="margin-right:3px" />
-                            <span>微信账号</span>
-                            <input v-model="personDetail.weChatPay" type="text" style="margin-left:8px;" :disabled="!editable" v-bind:style="styleForText" />
+                            <img src="../images/personal/学校.png" width="20px" height="20px" style="vertical-align:middle;margin-right:3px; margin-left:20px" />
+                            <span style="font-size:15px; margin-left:2px;">就读院校</span>
+                            <input v-model="personDetail.university" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForText" />
+                        </div>
+                        </Col>
+                    </Row>
+                    <Row style="margin:10px;">
+                        <Col span="12">
+                        <div class="pInfo">
+                            <img src="../images/personal/年级专业.png" width="20px" height="20px" style="vertical-align:middle;margin-right:3px; margin-left:20px" />
+                            <span style="font-size:15px; margin-left:2px;">专业年级</span>
+                            <input v-model="personDetail.major" type="text" style="margin-left:8px; font-size:15px;" :disabled="!editable" v-bind:style="styleForText" />
+                        </div>
+                        </Col>
+                    </Row>
+                    <Row style="margin:10px;">
+                        <Col span="12">
+                        <div class="pInfo">
+                            <img src="../images/personal/学号.png" width="20px" height="20px" style="vertical-align:middle;margin-right:3px; margin-left:20px" />
+                            <span style="font-size:15px; margin-left:2px;">学生卡号</span>
+                            <input v-model="personDetail.studentId" type="text" style="margin-left:8px;font-size:15px;" :disabled="!editable" v-bind:style="styleForText" />
                         </div>
                         </Col>
                     </Row>
@@ -204,7 +280,7 @@ export default {
             editable: false,
             styleForText: 'border:' + this.borderSize + 'px',
             creditRate: 5,
-            buttonText: "编辑资料",
+            buttonText: "编辑",
             useForSign: 1, //1 means phone and 2 means email
             editPhone: false,
             editEmail: false,
@@ -241,7 +317,7 @@ export default {
             this.editable = !this.editable;
             if (this.editable == true) {
                 this.styleForText = 'border:1px solid';
-                this.buttonText = "保存资料";
+                this.buttonText = "保存";
                 if (this.personDetail.email[0] == '$') {
                     //alert(this.personDetail.email[0]);
                     this.editEmail = true;

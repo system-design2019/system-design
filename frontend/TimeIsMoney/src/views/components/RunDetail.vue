@@ -1,7 +1,7 @@
 <template>
 <div >
     <Modal v-model="detail" width="800px" class-name="vertical-center-modal d"  :mask-closable="false">
-        <img src="./../../../static/ques/detail.png" style="position:relative; float: left; left: -50px; top: -50px; height:500px"></img>
+        <img src="./../../../static/run/detail.jpg" style="position:relative; float: left; left: -50px; top: -50px; height:500px"></img>
         <p style="font-size:24px; font-weight: 500px;">{{errandDetail.title}}</p>
         <div style="overflow: hidden; width: 400px; height: 7%;margin-top: 10px">
             <div style="width: 400px; float:left">

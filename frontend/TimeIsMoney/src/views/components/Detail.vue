@@ -2,16 +2,16 @@
 <div>
     <Modal v-model="detail" width="800px" class-name="vertical-center-modal d"  :mask-closable="false">
         <img src="./../../../static/ques/detail.png" style="position:relative; float: left; left: -50px; top: -50px; height:500px"></img>
-        <p style="font-size:24px; font-weight: 500px;">{{detailContent.title}}</p>
+        <p style="font-size:24px; font-weight: 500px;margin-top:15px;">{{detailContent.title}}</p>
         <div style="overflow: hidden; width: 400px; height: 7%; margin-top: 10px">
             <div style="min-width: 200px; max-width: 90%; float:left">
                 <div style="min-width: 100px; max-width: 300px;float:left; margin: 0 10px 10px 0px">
-                    <img src="./../../../static/task/publisher.png" style="width:30px"></img>
-                    <span style="font-size: 22px">{{detailContent.publisherName}}</span>
+                    <img src="./../../../static/task/publisher.png" style="width:30px;vertical-align: middle"></img>
+                    <span style="font-size: 22px; vertical-align: middle;">{{detailContent.publisherName}}</span>
                 </div>
                 <div style="min-width: 100px; max-width: 150px;float:right; margin-bottom: 10px">
-                    <img src="./../../../static/task/reward.png" style="width:30px"></img>
-                    <span class="hint" style="font-size: 22px; color: #ce4545">{{detailContent.reward}}</span>
+                    <img src="./../../../static/task/reward.png" style="width:30px;vertical-align: middle"></img>
+                    <span class="hint" style="font-size: 22px; color: #ce4545;vertical-align: middle">{{detailContent.reward}}</span>
                 </div>
             </div>
             <div style="float:right;width: 10%; text-align: right; margin-bottom: 10px">
@@ -21,43 +21,43 @@
             <Divider class="detail"></Divider>
         </div>
         <div>
-            <h3 style="margin: 15px 0 5px 0">简介</h3>
-            <p  class="hint" style="text-indent: 2em; margin: 5px 0 0 0; height: 9%">{{detailContent.detail}}</p>
+            <h3 style="margin: 0px 0 5px 0">简介</h3>
+            <p  class="hint" style="text-indent: 2em; margin: 5px 0 0 0; height: 9%;margin-right:10px;">{{detailContent.detail}}</p>
             <h3 style="margin: 15px 0 5px 0">要求</h3>
-            <p  class="hint" style="text-indent: 2em; margin: 5px 0 0 0; height: 4%">{{detailContent.command}}</p>
+            <p  class="hint" style="text-indent: 2em; margin: 5px 0 0 0; height: 4%;margin-right:10px;">{{detailContent.command}}</p>
         </div>
-        <div style="margin-top: 30px; width: 50%;position: relative; overflow: hidden; float:left; text-align: left; height: 37%">
+        <div style="margin-top: 20px; width: 50%;position: relative; overflow: hidden; float:left; text-align: left; height: 37%">
             <div style="width: 100%; overflow: hidden; position: relative">
-                <div style="width: 100%;">
-                    <img src="./../../../static/task/quesNum.png" style="width:30px"></img>
+                <div style="width: 100%;margin-top:10px;">
+                    <img src="./../../../static/task/quesNum.png" style="width:25px;vertical-align: middle;"></img>
                     <span  class="hint" >题目数量 {{detailContent.number}}</span>
                 </div>
-                <div style="width: 100%;">
-                    <img src="./../../../static/task/peopleNum.png" style="width:30px"></img>
+                <div style="width: 100%;margin-top:10px;">
+                    <img src="./../../../static/task/peopleNum.png" style="width:25px;vertical-align: middle;"></img>
                     <span class="hint" >招募人数 {{detailContent.Infos.total}}人 已有{{detailContent.Infos.attend}}人参加</span>
                 </div>
-                <div style="width: 100%;">
-                    <img src="./../../../static/task/startTime.png" style="width:30px"></img>
+                <div style="width: 100%;margin-top:10px;">
+                    <img src="./../../../static/task/startTime.png" style="width:25px;vertical-align: middle;"></img>
                     <span class="hint" >开始时间 {{detailContent.Infos.startTime}}</span>
                 </div>
-                <div style="width: 100%;">
-                    <img src="./../../../static/task/startTime.png" style="width:30px"></img>
+                <div style="width: 100%;margin-top:10px;">
+                    <img src="./../../../static/task/startTime.png" style="width:25px;vertical-align: middle;"></img>
                     <span class="hint" >截止时间 {{detailContent.Infos.endTime}}</span>
                 </div>
                 <div v-if="getStatus(this.detailContent.publisher)" style="width: 100%; text-align: center; margin-top: 20px">
                 <!--    <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px" @click="fillIn(detailContent.quesid)">立即填写</Button>-->
                     <Button id="fill" size="large" @click="fillIn(detailContent.quesID)">立即填写</Button>
                 </div>
-                <div v-else style="width: 100%; text-align: center; margin-top: 20px">
+                <div v-else style="width: 100%; text-align: center; margin-top: 10px">
                 <!--    <Button type="error" size="large" long style="padding: 5px 4px; font-size: 10px" @click="fillIn(detailContent.quesid)">立即填写</Button>-->
                     <div>
                         <Button id="check" size="large" @click="checkAns(detailContent.quesID)">查看填写情况</Button>
                     </div>
-                    <div>
-                        <a id="close" size="large" @click="setInformation(detailContent.quesID, 1)">关闭问卷</a>
-                        <a id="delete" size="large" @click="setInformation(detailContent.quesID, 2)">删除问卷</a>
+                    <div style="margin-top:5px;float:middle;" >
+                        <a id="close" size="large" style="margin-right:15px"@click="setInformation(detailContent.quesID, 1)">关闭问卷</a>
+                        <a id="delete" size="large" style="margin-left:15px"@click="setInformation(detailContent.quesID, 2)">删除问卷</a>
                     </div>
-                    
+                    <div style="clear:both"></div>
                 </div>
                 
             </div>
@@ -214,6 +214,7 @@ export default{
     .hint{
         color: rgb(178,178,178);
         font-size: 14px;
+        vertical-align: middle;
     }
     /* .ivu-divider-horizontal{
         margin: 0!important;
@@ -228,6 +229,17 @@ export default{
         border-radius: 25px!important;
 
     }
+    #check {
+        width: 250px;
+        font-size:15px;
+        color: #52bdf0;
+        background-color: #fff!important;
+        border-color: #52bdf0!important;
+        padding: 5px 15px;
+        border-radius: 25px!important;
+
+    }
+    
     #fill.ivu-btn:hover {
         color: #fff!important;
         background-color: #52bdf0!important;
