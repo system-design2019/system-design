@@ -276,7 +276,7 @@ export default {
                                 money: this.personDetail.asset
                             }
                             window.sessionStorage.setItem('LogInfo', JSON.stringify(data))
-                            console.error(data)
+                            //console.error(data)
                         })
                     }
                 )
