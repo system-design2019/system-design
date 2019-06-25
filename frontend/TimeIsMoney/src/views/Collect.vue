@@ -9,9 +9,17 @@
                 <p style="font-size:20px;color:#CE4747;margin-top:25px; margin-left:10px; float: left; vertical-align:middle;">Collect</p>
                 <div style="clear:both" />
             </div>
-            <div style="width:100%;margin-top:10px;">
+            <div v-if="!noQues" style="width:100%;margin-top:10px;">
                 <div v-for="(ques,index) in sortCollected">
                     <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
+                </div>
+            </div>
+            <div v-if="noQues" style="width:100%;margin-top:20px;">
+                <div style=" margin:0 auto;width:500px; font-size:25px;text-align:center;">
+                    <span style="color:#CE4747;"> 您暂时没有收藏的问卷噢 </span>
+                </div>
+                <div style=" text-align: center;">
+                    <img src="../../static/noCollect.png" style="width:900px;height:500px" />
                 </div>
             </div>
         </div>
@@ -41,7 +49,8 @@ export default {
     data() {
         return {
             detailModel: false,
-            sortCollected: []
+            sortCollected: [],
+            noQues: false
         }
 
     },
@@ -60,16 +69,19 @@ export default {
     },
     mounted() {
         // this.$store.dispatch('DELETE_CACHE').then((info) => {
-            this.$store.dispatch('Personal/GET_STAR'); //分发action
-            var _this = this;
-            setTimeout(function() { //注意在函数里面再使用this，此时this指向函数
-                _this.sortCollected = _this.sortBykey(_this.$store.state.Personal.starring, 'Infos', 'createTime');
-                console.log(_this.$store.state.Personal.starring)
-                console.log(_this.sortCollected)
-                //_this.hey();
-            }, 1000)
+        this.$store.dispatch('Personal/GET_STAR'); //分发action
+        var _this = this;
+        setTimeout(function() { //注意在函数里面再使用this，此时this指向函数
+            _this.sortCollected = _this.sortBykey(_this.$store.state.Personal.starring, 'Infos', 'createTime');
+            console.log(_this.$store.state.Personal.starring)
+            console.log(_this.sortCollected)
+            if (_this.sortCollected.length === 0) {
+                _this.noQues = true;
+            }
+            //_this.hey();
+        }, 1000)
         // })
-        
+
     }
 }
 </script>
