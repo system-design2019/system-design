@@ -14,7 +14,7 @@
                     <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
                 </div>
             </div>
-            <div v-if="noQues" style="width:100%;margin-top:20px;">
+            <div v-else style="width:100%;margin-top:20px;">
                 <div style=" text-align: center;">
                     <img src="../../static/noCollect.png" style="width:500px;" />
                 </div>

@@ -17,7 +17,7 @@
                     <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
                 </div>
             </div>
-            <div v-if="noQues" style="width:100%;margin-top:20px;">
+            <div v-else style="width:100%;margin-top:20px;">
                 <div style=" margin:0 auto;width:500px; font-size:25px;text-align:center;">
                     <span style="color:#CE4747;"> 您暂时没有发布的问卷噢 </span>
                 </div>

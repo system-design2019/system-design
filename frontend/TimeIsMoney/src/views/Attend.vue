@@ -3,8 +3,7 @@
         <div style="width:100%;">
             <img style="width:100%; height:180px;" src="../images/personal/background.png" />
         </div>
-        <div class="attendDiv" style="margin: 0 10%;">
-            <div>
+        <div class="attendDiv" style="margin: 0 10%;"><div>
                 <h2 style="font-size:25px;color:#CE4747;margin-top:20px; float: left; vertical-align:middle;"> 我参与的问卷 </h2>
                 <p style="font-size:20px;color:#CE4747;margin-top:25px; margin-left:10px; float: left; vertical-align:middle;">History</p>
                 <div style="clear:both" />
@@ -17,7 +16,7 @@
                     <task :data="ques" :key="index" type="1" mode="0" @click.native="getDetail(ques.quesID)"></task>
                 </div>
             </div>
-            <div v-if="noQues" style="width:100%;margin-top:20px;">
+            <div v-else style="width:100%;margin-top:20px;">
                 <div style=" text-align: center;">
                     <img src="../../static/noAttend.png" style="width:500px" />
                 </div>
