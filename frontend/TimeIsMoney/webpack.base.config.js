@@ -2,10 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-function resolve(dir) {
-    return path.join(__dirname, '..', dir)
-}
-
 module.exports = {
     entry: {
         main: './src/main',
@@ -15,9 +11,11 @@ module.exports = {
         path: path.join(__dirname, './dist')
     },
     module: {
-        rules: [{
+        rules: [
+            {
                 test: /\.vue$/,
-                use: [{
+                use: [
+                    {
                         loader: 'vue-loader',
                         options: {
                             loaders: {
@@ -47,15 +45,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                include: [
-                    resolve('src'),
-                    resolve('test'),
-                    resolve('node_modules/iview/src/mixins/emitter.js'), //<------add
-                ],
-                options: {
-                    presets: ['es2015']
-                }
-                //exclude: /node_modules/
+                exclude: /node_modules/
             },
             {
                 test: /\.css$/,
@@ -79,7 +69,7 @@ module.exports = {
                 test: /\.(html|tpl)$/,
                 loader: 'html-loader'
             },
-
+        
         ]
     },
     resolve: {
