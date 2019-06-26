@@ -63,7 +63,7 @@
                     <div>
                         <Input v-model="info.inputCode" prefix="ios-contact" placeholder="请输入验证码" style="margin-top:25px;width:150px;" @keyup.enter.native="doSignUp" />
                         <SIdentify1 style="float:right;margin-top:25px;height:40px;" @click.native="sendIndentify"></SIdentify1>
-                        <Button size="large" long @click="checkIndentify"> 测试用 </Button>
+                        <!--Button size="large" long @click="checkIndentify"> 测试用 </Button-->
                     </div>
                 </div>
                 <div class="allButton">
@@ -224,7 +224,7 @@ export default {
             if (userMode !== 'invalid') {
                 this.info.mode = this.checkValid(this.info.username)
                 this.$store.dispatch('SIGN_UP', this.info).then(
-                    (response) => {
+                    (e) => {
                         console.log('response')
                         console.log(response)
                         if (response['success']) {
@@ -285,14 +285,7 @@ export default {
 
         },
         checkValid(username) {
-            if (this.signIn) {
-                if (this.checkNum != this.identifyCode2) {
-                    this.wrong = true
-                    this.alert = '验证码错误'
-                    this.refreshCode();
-                    return 'invalid'
-                }
-            }
+            let nameType = ''
             if (this.info.username === '' || this.info.password === '') {
                 this.wrong = true
                 this.alert = '密码或用户名不能为空'
@@ -301,14 +294,36 @@ export default {
                 let email = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
                 let phone = /^1[34578]\d{9}$/
                 if (phone.test(username)) {
-                    return 'phone'
+                    nameType = 'phone'
                 } else if (email.test(username)) {
-                    return 'email'
+                    nameType = 'email'
                 } else {
                     this.wrong = true
                     this.alert = '无效的用户名'
                     return 'invalid'
                 }
+            }
+            if (this.signIn) {
+                if (this.checkNum != this.identifyCode2) {
+                    this.wrong = true
+                    this.alert = '验证码错误'
+                    this.refreshCode();
+                    return 'invalid'
+                }
+                return nameType
+            } else {
+                this.$store.dispatch('CHECK_IDENTIFY', this.info).then(
+                    (response) => {
+                        console.log(response)
+                        if (response['success']) {
+                            return nameType
+                        } else {
+                            this.wrong = true
+                            this.alert = '验证码错误'
+                            return 'invalid'
+                        }
+                    }
+                )
             }
         }
     },
