@@ -1,5 +1,5 @@
 <template>
-    <div clas="publishDiv">
+    <div class="publishDiv">
         <div style="width:100%;">
             <img style="width:100%; height:180px;" src="../images/personal/background.png" />
         </div>
@@ -18,11 +18,11 @@
                 </div>
             </div>
             <div v-if="noQues" style="width:100%;margin-top:20px;">
-                <div style=" text-align: center;">
-                    <img src="../../static/noPublish.png" style="width:500px" />
-                </div>
-                <div style=" margin:0 auto;width:300px; font-size:25px;text-align:center;">
+                <div style=" margin:0 auto;width:500px; font-size:25px;text-align:center;">
                     <span style="color:#CE4747;"> 您暂时没有发布的问卷噢 </span>
+                </div>
+                <div style=" text-align: center;">
+                    <img src="../../static/noPublish.png" style="width:900px;height:500px" />
                 </div>
             </div>
         </div>
