@@ -106,6 +106,7 @@ export default {
                 content: '<img src="../../static/pay2D.jpg" style="width:520px;height:500px;" />',
                 onOk: () => {
                     alert("请求已发送，后台将在审核后将闲钱币充值到您的账号上！");
+                    this.$store.dispatch("Personal/RECHARGE_ASSET", paymentAbout);
                     _this.closeBoxRe();
                 },
                 onCancel: () => {
@@ -113,13 +114,14 @@ export default {
                     _this.closeBoxRe();
                 }
             });
-            this.$store.dispatch("Personal/RECHARGE_ASSET", paymentAbout);
+
             //alert("冲他这么多： " + this.moneycount);
         },
         withdrawAsset() {
-            let moneyOut = this.moneycount * (-1)
+            let moneyOut = this.moneycount / (-1)
             let paymentAbout = { "userId": this.personDetail.id, "money": moneyOut, "infos": this.infos };
             //(paymentAbout);
+            alert("请求已发送，后台将在审核后将闲钱币充值到您的账号上！");
             this.$store.dispatch("Personal/WITHDRAW_ASSET", paymentAbout);
             //alert("我用户【" + this.personDetail.id + "】提他个一个亿！");
         },
