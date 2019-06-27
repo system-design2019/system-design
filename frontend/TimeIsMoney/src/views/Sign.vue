@@ -357,7 +357,7 @@ export default {
     margin-top: 25px;
     float: right;
     color: #fff;
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: #3cb175;
 }
 
