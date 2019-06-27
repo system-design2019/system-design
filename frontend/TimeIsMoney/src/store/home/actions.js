@@ -7,17 +7,19 @@ export const GET_ADVERTISES = 'GET_ADVERTISES'
 
 export default {
     [GET_RANKLIST] ({commit}) {
-        let data = [
-            {name: '问卷问卷1问卷问卷问卷', price: "￥12", url:'www.baidu.com'},
-            {name: '问卷1', price: "￥12", url:'www.baidu.com'},
-            {name: '问卷1', price: "￥12", url:'www.baidu.com'},
-            {name: '问卷1', price: "￥12", url:'www.baidu.com'},
-            {name: '问卷1', price: "￥12", url:'www.baidu.com'},
-            {name: '问卷1', price: "￥12", url:'www.baidu.com'},
-            {name: '问卷1', price: "￥12", url:'www.baidu.com'},
-            {name: '问卷1', price: "￥12", url:'www.baidu.com'}
-        ]  
-
+        // let data = [
+        //     {name: '问卷问卷1问卷问卷问卷', price: "￥12", url:'www.baidu.com'},
+        //     {name: '问卷1', price: "￥12", url:'www.baidu.com'},
+        //     {name: '问卷1', price: "￥12", url:'www.baidu.com'},
+        //     {name: '问卷1', price: "￥12", url:'www.baidu.com'},
+        //     {name: '问卷1', price: "￥12", url:'www.baidu.com'},
+        //     {name: '问卷1', price: "￥12", url:'www.baidu.com'},
+        //     {name: '问卷1', price: "￥12", url:'www.baidu.com'},
+        //     {name: '问卷1', price: "￥12", url:'www.baidu.com'}
+        // ]  
+        return systemAPI.getTopTen().then((data) => {
+          commit(mutations.SET_RANKLIST, data)
+        })
         commit(mutations.SET_RANKLIST, data)
       },
     
