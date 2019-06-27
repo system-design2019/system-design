@@ -8,6 +8,7 @@ module.exports = {
         vendors: './src/vendors'
     },
     output: {
+        filename: 'main.js',
         path: path.join(__dirname, './dist')
     },
     module: {

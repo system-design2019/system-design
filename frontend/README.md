@@ -2,7 +2,7 @@
 
 This project is build for Vue.js 2 + vue-router + webpack2 + iView 3, just install and run.
 
-## Install
+## Install开发环境
 
 iview环境安装
 
@@ -36,7 +36,6 @@ iview环境安装
 1. 把当前文件夹内的iview.css和node_modules->ivew->dist->styles下ivew.css替换·
 2. 将fonts文件夹中的【ionicons.woff2】文件放入node_modules->ivew->dist->styles->fonts文件夹中（也可以整个文件夹直接替换）
 
-
 ## Run
 
 ### Development
@@ -54,6 +53,16 @@ iview环境安装
 <<<<<<< HEAD:frontend/README.md
 
 ```
+## 运行环境
+
+需要安装python 
+
+进入TimeIsMoney路径，执行
+
+    python -m http.server 5678
+
+在本地网址打开localhost:5678即可使用
+
 ### 2019年4月1日更新
 1. 搭建了简单的路由框架（未完成）
 2. router文件夹中的router.js中实现页间路由，通过修改后缀名完成，逻辑见代码，很简单

@@ -111,7 +111,8 @@ export default {
             //identifyCodes: "1234567890abcdefghijklmnopqrstuvwxyz",
             identifyCodes: "1234567890",
             checkNum: "",
-            checkNum1: ""
+            checkNum1: "",
+            checkState: false
         }
     },
     computed: mapState('Personal', {
@@ -126,9 +127,12 @@ export default {
         //these 2 functions are used in the sign in
         sendIndentify() {
             //alert("Hi");
+
             var userMode = this.checkValid(this.info.username)
+            console.log(userMode)
             if (userMode !== 'invalid') {
                 this.info.mode = this.checkValid(this.info.username)
+                console.log(this.info)
                 this.$store.dispatch('SEND_IDENTIFY', this.info).then(
                     (response) => {
                         console.log('response')
@@ -139,14 +143,21 @@ export default {
         },
         checkIndentify() {
             var userMode = this.checkValid(this.info.username)
+            var _this = this;
             if (userMode !== 'invalid') {
                 this.info.mode = this.checkValid(this.info.username)
                 this.$store.dispatch('CHECK_IDENTIFY', this.info).then(
                     (response) => {
-                        console.log(response)
+
+                        /*
                         if (response['success']) {
-                            alert("Your verify done!")
-                        }
+                            _this.checkState = true;
+                        } else {
+                            _this.checkState = false;
+                        }*/
+                        _this.checkState = response['success'];
+                        alert(_this.checkState)
+                        return _this.checkState
                     }
                 )
             }
@@ -154,6 +165,7 @@ export default {
         //these 2 functions are used in the find the forgot password
         sendIndentify2() {
             var userMode = this.checkValid(this.info.username)
+
             if (userMode !== 'invalid') {
                 this.info.mode = this.checkValid(this.info.username)
                 this.$store.dispatch('SEND_IDENTIFY2', this.info).then(
@@ -221,23 +233,38 @@ export default {
         },
         doSignUp() {
             var userMode = this.checkValid(this.info.username)
+            var _this = this;
             if (userMode !== 'invalid') {
                 this.info.mode = this.checkValid(this.info.username)
-                this.$store.dispatch('SIGN_UP', this.info).then(
-                    (e) => {
-                        console.log('response')
-                        //console.log(response)
-                        if (response['success']) {
-                            this.wrong = false
-                            this.changeToSignIn()
+                this.$store.dispatch('CHECK_IDENTIFY', this.info).then(
+                    (response) => {
+
+                        _this.checkState = response['success'];
+                        // setTimeout(600);
+                        if (_this.checkState === true) {
+                            this.info.mode = this.checkValid(this.info.username)
+                            this.$store.dispatch('SIGN_UP', this.info).then(
+                                (e) => {
+                                    console.log('response')
+                                    console.log(e)
+                                    if (e['success']) {
+                                        this.wrong = false
+                                        this.changeToSignIn()
+                                    } else {
+                                        this.wrong = true;
+                                        this.alert = e['msg']
+                                    }
+                                }
+                            )
                         } else {
-                            this.wrong = true;
-                            this.alert = response['msg']
+                            this.alert = '验证码错误，请核对验证码和用户名是否正确'
                         }
+
                     }
                 )
+
             }
-            this.refreshCode();
+            //this.refreshCode();
 
         },
         doSignIn() {
@@ -285,7 +312,15 @@ export default {
 
         },
         checkValid(username) {
-            let nameType = ''
+            //var nameType = '';
+            if (this.signIn) {
+                if (this.checkNum != this.identifyCode2) {
+                    this.wrong = true
+                    this.alert = '验证码错误'
+                    this.refreshCode();
+                    return 'invalid'
+                }
+            }
             if (this.info.username === '' || this.info.password === '') {
                 this.wrong = true
                 this.alert = '密码或用户名不能为空'
@@ -294,36 +329,14 @@ export default {
                 let email = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
                 let phone = /^1[34578]\d{9}$/
                 if (phone.test(username)) {
-                    nameType = 'phone'
+                    return 'phone'
                 } else if (email.test(username)) {
-                    nameType = 'email'
+                    return 'email'
                 } else {
                     this.wrong = true
                     this.alert = '无效的用户名'
                     return 'invalid'
                 }
-            }
-            if (this.signIn) {
-                if (this.checkNum != this.identifyCode2) {
-                    this.wrong = true
-                    this.alert = '验证码错误'
-                    this.refreshCode();
-                    return 'invalid'
-                }
-                return nameType
-            } else {
-                this.$store.dispatch('CHECK_IDENTIFY', this.info).then(
-                    (response) => {
-                        console.log(response)
-                        if (response['success']) {
-                            return nameType
-                        } else {
-                            this.wrong = true
-                            this.alert = '验证码错误'
-                            return 'invalid'
-                        }
-                    }
-                )
             }
         }
     },

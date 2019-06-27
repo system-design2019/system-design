@@ -1,7 +1,10 @@
 import axios from 'axios'
 import service from './../util/service.js'
 export async function getTopTen(){
-    let response = await service.get('')
+    
+    let response = await service.get('/questionnaires/tenQues')
+    console.error("11111111111")
+    console.error(JSON.stringify(response))
     return response.data
 }
 
