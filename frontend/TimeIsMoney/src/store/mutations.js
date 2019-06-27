@@ -1,7 +1,7 @@
 export const SIGNIN = 'SIGNIN'
 
-export default{
-    [SIGNIN] (state, userid){
+export default {
+    [SIGNIN](state, userid) {
         var obj = {
             "log": true,
             "userID": userid

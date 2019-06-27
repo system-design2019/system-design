@@ -78,7 +78,7 @@ export default {
     },
     computed: mapState({
         logged() {
-            // console.log(this.$route)
+            // //(this.$route)
             return JSON.parse(window.sessionStorage.getItem('LogInfo')).log
         },
         activeNav() {
@@ -105,7 +105,7 @@ export default {
                 this.reload()
             } else if (link !== 'no') {
                 let id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID
-                // console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
+                // //(JSON.parse(window.sessionStorage.getItem('LogInfo')))
                 this.$router.push({ name: link })
             }
 
@@ -120,7 +120,7 @@ export default {
             this.$router.push('/')
         },
         addClass(index) {
-            // console.log(this.activeNav)
+            // //(this.activeNav)
             if (index === this.activeNav) {
                 return 'ivu-menu-item-active1'
             } else {
@@ -129,7 +129,7 @@ export default {
         }
     },
     mounted() {
-        // console.log(JSON.parse(window.sessionStorage.getItem('LogInfo')))
+        // //(JSON.parse(window.sessionStorage.getItem('LogInfo')))
     }
 }
 </script>

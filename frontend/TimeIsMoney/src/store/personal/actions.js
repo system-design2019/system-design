@@ -24,7 +24,7 @@ export default {
     },
     [UPDATE_INFO]({ state, commit }) {
         let data = state.personalInfo;
-        console.log("data in actions:" + data);
+        //("data in actions:" + data);
         personalAPI.setPersonalInfo(data).then((info) => {
             commit(mutations.SET_PER_INFO, data)
         })
@@ -41,16 +41,16 @@ export default {
     },
     [GET_STAR]({ commit }) {
         personalAPI.getStarring().then((response) => {
-            // console.log('噢噢'+JSON.stringify(response.data))
+            // //('噢噢'+JSON.stringify(response.data))
             commit(mutations.SET_STARRING, response.data)
         })
     },
     [GET_DETAIL]({ commit }, id) {
-        // console.log('123456789')
+        // //('123456789')
         quesAPI.getDetail(id).then((info) => {
             commit(mutations.SET_DETAIL, info.data)
         })
-        // console.log(data)
+        // //(data)
     },
     [GET_ALERTS]({ commit }, id) {
         personalAPI.getAlerts().then((response) => {
@@ -96,12 +96,12 @@ export default {
     },
     [RECHARGE_ASSET]({ state, commit }, paymentAbout) {
         let res = personalAPI.rechargeAsset(paymentAbout);
-        console.log(res);
+        //(res);
         return res;
     },
     [WITHDRAW_ASSET]({ state, commit }, paymentAbout) {
         let res = personalAPI.withdrawAsset(paymentAbout);
-        console.log(res);
+        //(res);
         return res;
     },
     [GET_ASSET]({ state, commit }) {

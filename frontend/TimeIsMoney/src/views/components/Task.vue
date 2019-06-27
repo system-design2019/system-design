@@ -70,7 +70,7 @@ export default {
         publishQuesList: 'publishQuesList'
     }),
     mounted() {
-        console.log("The type of this.data: " + typeof(this.data) + " " + this.data);
+        //("The type of this.data: " + typeof(this.data) + " " + this.data);
         if (typeof(this.data) != 'undefined') {
             this.contents.id = this.data.quesID
             this.contents.title = this.data.title
@@ -84,7 +84,7 @@ export default {
             this.contents.info.endTime = this.data.Infos.endTime
             this.contents.info.attend = this.mode === 0 ? String(this.data.Infos.total) : String(this.data.Infos.attend) + '/' + String(this.data.Infos.total)
         }
-        // console.log(this.mode)
+        // //(this.mode)
     }
 }
 </script>

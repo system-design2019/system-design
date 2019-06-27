@@ -58,7 +58,7 @@
             <!-- <FormItem label="Desc" prop="desc">
                 <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
             </FormItem> -->
-        <!--    <FormItem>
+            <!--    <FormItem>
                 <Button @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
             </FormItem>-->
         </Form>
@@ -137,7 +137,7 @@ export default {
                     this.$store.commit('Ques/createQues/SET_VALIDATE', this.formValidate)
                     // this.$Message.success('发布成功!');
                     // this.$router.push('questionnaire');
-                    console.log("shezhi: " + JSON.stringify(this.formValidate))
+                    //("shezhi: " + JSON.stringify(this.formValidate))
                     this.$emit('changeStep', 1)
                 } else {
                     this.$Message.error('设置失败！请完善信息后再次尝试');
@@ -148,7 +148,7 @@ export default {
             this.$refs[name].resetFields();
         },
         changeStep: function(step) {
-            // console.log()
+            // //()
             this.$emit('changeStep', step)
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%">
-        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100" >
+        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
             <FormItem label="标题" prop="title">
                 <Input v-model="formValidate.title" placeholder="输入跑腿任务标题"></Input>
             </FormItem>
@@ -10,14 +10,14 @@
             <FormItem label="时间" prop="time">
                 <Row>
                     <Col span="6">
-                        <FormItem prop="startdate">
-                            <DatePicker type="date" placeholder="选择日期" v-model="formValidate.date" ></DatePicker>
-                        </FormItem>
+                    <FormItem prop="startdate">
+                        <DatePicker type="date" placeholder="选择日期" v-model="formValidate.date"></DatePicker>
+                    </FormItem>
                     </Col>
                     <Col span="6">
-                        <FormItem prop="starttime">
-                            <TimePicker type="time" placeholder="选择时间" v-model="formValidate.time"></TimePicker>
-                        </FormItem>
+                    <FormItem prop="starttime">
+                        <TimePicker type="time" placeholder="选择时间" v-model="formValidate.time"></TimePicker>
+                    </FormItem>
                     </Col>
                 </Row>
             </FormItem>
@@ -41,14 +41,14 @@
                     <Checkbox label="个性签名"></Checkbox>
                 </CheckboxGroup>
             </FormItem>
-        <!--    <FormItem>
+            <!--    <FormItem>
                 <Button @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
             </FormItem>-->
         </Form>
         <div style="width: 100%; text-align: center; margin-top: 40px">
             <Button @click="changeStep(-1)" style="margin-right:10px">上一步</Button><Button @click="handleSubmit('formValidate')">下一步</Button>
         </div>
-        </div>
+    </div>
     </div>
 </template>
 <script>
@@ -75,15 +75,15 @@ export default {
                 ],
                 quantity: [
                     { required: false, trigger: 'blur' },
-                    { type: 'number', message: '输入必须为整数', trigger: 'change', transform(value) {return Number(value);}}
+                    { type: 'number', message: '输入必须为整数', trigger: 'change', transform(value) { return Number(value); } }
                 ],
                 deposit: [
                     { required: false, trigger: 'blur' },
-                    { type: 'number', message: '输入必须为整数', trigger: 'change', transform(value) {return Number(value);}}
+                    { type: 'number', message: '输入必须为整数', trigger: 'change', transform(value) { return Number(value); } }
                 ],
                 reward: [
                     { required: true, message: '报酬不能为空', trigger: 'blur' },
-                    { type: 'number', message: '输入必须为整数', trigger: 'blur', transform(value) {return Number(value);}}
+                    { type: 'number', message: '输入必须为整数', trigger: 'blur', transform(value) { return Number(value); } }
                 ],
                 info: [
                     { required: true, type: 'array', min: 1, message: '至少选择显示一个联系方式', trigger: 'change' },
@@ -96,13 +96,13 @@ export default {
             },
             formValidate: {
                 title: '1111',
-                date:'',
+                date: '',
                 time: '',
-                place:'',
+                place: '',
                 event: 0,
                 // gender: '',
                 quantity: 1,
-                info:[],
+                info: [],
                 deposit: 0
                 // desc: ''
             },
@@ -110,22 +110,22 @@ export default {
 
     },
     methods: {
-        handleSubmit (name) {
+        handleSubmit(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     this.$store.commit('Favor/createFavor/SET_CONTENT', this.formValidate)
-                    this.$emit('changeStep',1)
+                    this.$emit('changeStep', 1)
                 } else {
                     this.$Message.error('设置失败！请完善信息后再次尝试');
                 }
             })
         },
-        handleReset (name) {
+        handleReset(name) {
             this.$refs[name].resetFields();
         },
-        changeStep: function(step){
-            // console.log()
-            this.$emit('changeStep',step)
+        changeStep: function(step) {
+            // //()
+            this.$emit('changeStep', step)
         }
     }
 }

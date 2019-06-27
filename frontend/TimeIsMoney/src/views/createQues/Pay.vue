@@ -36,10 +36,10 @@ export default {
                 let asset = this.personDetail.asset
                 if (asset >= this.formValidate.reward * this.formValidate.quantity) {
                     let s = '{"formValidate":' + JSON.stringify(this.formValidate) + ',"formContent":' + JSON.stringify(this.formContent) + '}'
-                    console.log(s)
+                    //(s)
                     let ques = JSON.parse(s)
-                    // console.log('data')
-                    // console.log(data)
+                    // //('data')
+                    // //(data)
                     this.$store.dispatch('Ques/CREATE_QUES', ques)
                     this.$emit('changeStep', step)
                 } else {

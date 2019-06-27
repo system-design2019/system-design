@@ -8,12 +8,12 @@ import service from './../util/service.js'
  */
 export async function getPersonalInfo() {
     let response = await service.get('/user') //!!!这里要改动 axios实例名为service
-    //console.log(response)
+    ////(response)
     return response.data
 }
 
 export async function setPersonalInfo(data) {
-    console.log("setthe Info :" + JSON.stringify(data))
+    //("setthe Info :" + JSON.stringify(data))
     let response = await service.put('/user', data)
     return response.data
 }
@@ -50,7 +50,7 @@ export async function getStarring() {
 
 export async function getDetail(id) {
     let response = await service.get('/questionnaires/' + id)
-    // console.log(JSON.stringify(response))
+    // //(JSON.stringify(response))
     return response.data
 }
 
@@ -123,7 +123,7 @@ export async function deleteAllAlerts() {
 
 export async function getAllDeals() {
     let response = await service.get('/user/asset/all')
-    console.log(response.msg)
+    //(response.msg)
     return response.data
 }
 
@@ -135,7 +135,7 @@ export async function getAllDeals() {
  */
 export async function rechargeAsset(paymentAbout) {
     let response = await service.post('/money', paymentAbout)
-    //console.log(response.data)
+    ////(response.data)
     return response
 }
 
@@ -147,6 +147,6 @@ export async function rechargeAsset(paymentAbout) {
 
 export async function withdrawAsset(paymentAbout) {
     let response = await service.post('/money', paymentAbout)
-    //console.log(response.data)
+    ////(response.data)
     return response
 }

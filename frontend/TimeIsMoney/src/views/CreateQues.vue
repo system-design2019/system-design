@@ -1,36 +1,30 @@
-
 <template>
     <div style="width: 100%; background: #ffffff; margin:auto; padding:10px;">
-    <div style="margin: 0px 15%;">
-        <div style="width: 100%; overflow: hidden; height: 70px; position: relative; margin-top: 20px; padding-bottom:10px;">
-            <div style="width: 5%; float: left">
-                <Icon type="ios-arrow-back" size="24" style="float: left; bottom: 5px" @click="alert=!alert"/>
+        <div style="margin: 0px 15%;">
+            <div style="width: 100%; overflow: hidden; height: 70px; position: relative; margin-top: 20px; padding-bottom:10px;">
+                <div style="width: 5%; float: left">
+                    <Icon type="ios-arrow-back" size="24" style="float: left; bottom: 5px" @click="alert=!alert" />
+                </div>
+                <div style="width: 95%; float: right; background:#ffffff;">
+                    <Steps :current="currentStep">
+                        <Step title="问卷编辑" content="编辑问卷内容" style="background:#ffffff;"></Step>
+                        <Step title="问卷设置" content="设置问卷发布的相关参数"></Step>
+                        <Step title="押金支付" content="支付押金"></Step>
+                        <Step title="发布成功" content="发布成功"></Step>
+                    </Steps>
+                </div>
             </div>
-            <div style="width: 95%; float: right; background:#ffffff;">
-                <Steps :current="currentStep">
-                    <Step title="问卷编辑" content="编辑问卷内容" style="background:#ffffff;"></Step>
-                    <Step title="问卷设置" content="设置问卷发布的相关参数"></Step>
-                    <Step title="押金支付" content="支付押金"></Step>
-                    <Step title="发布成功" content="发布成功"></Step>
-                </Steps>
+            <div style="margin-top: 40px;overflow: hidden;">
+                <EditQues v-if="showStep(0)" @changeStep="nextStep"></EditQues>
+                <SetQues v-else-if="showStep(1)" @changeStep="nextStep"></SetQues>
+                <Pay v-else-if="showStep(2)" @changeStep="nextStep"></Pay>
+                <Success v-else="showStep(3)"></Success>
             </div>
+            <Modal title="提示" v-model="alert" :styles="{top: '100px'}">
+                <p style="text-align:center; margin:10px; font-size: 15px;">此时返回系统不会保存已经填写的内容。确认返回？</p>
+                <button @click="back" style="width:100px;font-size: 15px; margin-bottom:20px; margin-left:200px;">确认</button>
+            </Modal>
         </div>
-        <div style="margin-top: 40px;overflow: hidden;">
-            <EditQues v-if="showStep(0)" @changeStep="nextStep"></EditQues>
-            <SetQues v-else-if="showStep(1)" @changeStep="nextStep"></SetQues>
-            <Pay v-else-if="showStep(2)" @changeStep="nextStep"></Pay>
-            <Success v-else="showStep(3)"></Success>
-        </div>
-        
-        <Modal
-            title="提示"
-            v-model="alert"
-            :styles="{top: '100px'}"
-            >
-            <p style="text-align:center; margin:10px; font-size: 15px;">此时返回系统不会保存已经填写的内容。确认返回？</p>
-            <button @click="back" style="width:100px;font-size: 15px; margin-bottom:20px; margin-left:200px;">确认</button>
-        </Modal>
-    </div>
     </div>
 </template>
 <script>
@@ -48,17 +42,17 @@ export default {
         }
 
     },
-    components:{
+    components: {
         SetQues,
         EditQues,
         Pay,
         Success
     },
     methods: {
-        handleSubmit (name) {
+        handleSubmit(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
-                    console.log(1)
+                    //(1)
                     this.$store.dispatch('Ques/createQues/POST_QUESTIONNAIRE', this.formValidate)
                     this.$Message.success('发布成功!');
                     this.$router.push('questionnaire');
@@ -67,21 +61,21 @@ export default {
                 }
             })
         },
-        showStep(step){
-            if(step === this.currentStep)
+        showStep(step) {
+            if (step === this.currentStep)
                 return true
             else
                 return false
         },
-        handleReset (name) {
+        handleReset(name) {
             this.$refs[name].resetFields();
         },
-        back(){
+        back() {
             this.alert = false
             this.$store.commit('Ques/createQues/CLEAR')
             this.$router.go(-1)
         },
-        nextStep: function(data){
+        nextStep: function(data) {
             this.currentStep = this.currentStep + data
         }
     }

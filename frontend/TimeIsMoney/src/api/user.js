@@ -31,11 +31,11 @@ export async function login(username, password, mode) {
     // })
     // .then(response => {
     //     response.text().then(res => {
-    //         console.log(res)
+    //         //(res)
     //     })
     // })
 
-    console.log('response:' + JSON.stringify(response))
+    //('response:' + JSON.stringify(response))
     return response.data
 }
 
@@ -57,7 +57,7 @@ export async function userRegister(username, password, mode) {
     else
         data = { "email": username, "password": password }
     let response = await service.post('/register', data)
-    console.log(response.data)
+    //(response.data)
     return response.data
 }
 
@@ -70,7 +70,7 @@ export async function sendIndentify(username, mode) {
     else
         data = { "phone_or_email": 1, "target": username, "type": 0 }
     let response = await service.post('/code', data)
-    console.log(response.data)
+    //(response.data)
     return response.data
 }
 
@@ -81,7 +81,7 @@ export async function checkIndentify(username, mode, inputCode) {
     else
         data = { "phone_or_email": 1, "target": username, "code": inputCode }
     let response = await service.post('/code/verify', data)
-    console.log(response.data)
+    //(response.data)
     return response.data
 }
 
@@ -94,7 +94,7 @@ export async function sendIndentify2(username, mode) {
     else
         data = { "phone_or_email": 1, "target": username, "type": 1 }
     let response = await service.post('/code', data)
-    console.log(response.data)
+    //(response.data)
     return response.data
 }
 
@@ -105,6 +105,6 @@ export async function checkIndentify2(username, mode, inputCode) {
     else
         data = { "phone_or_email": 1, "target": username, "code": inputCode }
     let response = await service.post('/code/verify', data)
-    console.log(response.data)
+    //(response.data)
     return response.data
 }

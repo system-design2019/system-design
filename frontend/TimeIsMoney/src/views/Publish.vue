@@ -81,8 +81,8 @@ export default {
         var _this = this;
         setTimeout(function() { //注意在函数里面再使用this，此时this指向函数
             _this.sortPublished = _this.sortBykey(_this.$store.state.Personal.publishing, 'Infos', 'createTime');
-            console.log(_this.$store.state)
-            console.log(_this.sortPublished.length)
+            //(_this.$store.state)
+            //(_this.sortPublished.length)
             if (_this.sortPublished.length === 0) {
                 _this.noQues = true;
             }

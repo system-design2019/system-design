@@ -100,9 +100,9 @@ export default {
         },
         sortByCreateTime() {
             //alert("Hi");
-            console.log(this.quesList)
+            //(this.quesList)
             this.currentList = this.sortBy2key(this.quesList, 'Infos', 'createTime')
-            console.log(this.currentList)
+            //(this.currentList)
             //this.$forceUpdate()
         },
         compare(property) {
@@ -116,7 +116,7 @@ export default {
             //alert("Hi");
             this.currentList.sort(this.compare('reward'))
             //this.currentList = this.sortBy1key(this.quesList, 'reward')
-            console.log(this.currentList[0].reward)
+            //(this.currentList[0].reward)
         },
         sortByHeat() {
             this.currentList = this.sortBy2key(this.quesList, 'Infos', 'attend') //后面可以考虑用attend/total作为比较直 暂时没有时间写
@@ -124,20 +124,20 @@ export default {
     },
     mounted() {
         // this.$store.dispatch('DELETE_CACHE').then((info) => {
-            this.$store.dispatch('Ques/GET_QUESLIST')
-            if(JSON.parse(window.sessionStorage.getItem('LogInfo')).log){
-                this.$store.dispatch('Ques/GET_COLLECT_QUESLIST')
-                this.$store.dispatch('Ques/GET_ATTEND_QUESLIST')
-                this.$store.dispatch('Ques/GET_PUBLISH_QUESLIST')
-            }
-            
-            var _this = this;
-            setTimeout(function() {
-                _this.currentList = _this.quesList
-                // _this.currentList = _this.quesList.sort(_this.compare('reward'))
-            }, 1000)
+        this.$store.dispatch('Ques/GET_QUESLIST')
+        if (JSON.parse(window.sessionStorage.getItem('LogInfo')).log) {
+            this.$store.dispatch('Ques/GET_COLLECT_QUESLIST')
+            this.$store.dispatch('Ques/GET_ATTEND_QUESLIST')
+            this.$store.dispatch('Ques/GET_PUBLISH_QUESLIST')
+        }
+
+        var _this = this;
+        setTimeout(function() {
+            _this.currentList = _this.quesList
+            // _this.currentList = _this.quesList.sort(_this.compare('reward'))
+        }, 1000)
         // })
-        
+
     }
 }
 </script>

@@ -28,13 +28,13 @@ export default {
             title: '',
             content: ''
         }]
-        console.log('消息：' + data.type)
+        //('消息：' + data.type)
         if (data.type === 'fill') {
             send[0].title = '有人填你的问卷啦！'
             send[0].content = '<' + data.fromName + '>已填写问卷' + '《' + data.quesTitle + '》'
-            console.log('消息：' + JSON.stringify(send))
+            //('消息：' + JSON.stringify(send))
         }
-        console.log('消息：' + JSON.stringify(send))
+        //('消息：' + JSON.stringify(send))
         return sysAPI.sendMessage(send)
     },
     [SEND_IDENTIFY]({ commit, state }, info) {
@@ -53,7 +53,7 @@ export default {
         let res = userAPI.checkIndentify2(info.username, info.mode, info.inputCode)
         return res
     },
-    [DELETE_CACHE]({ commit, state }){
+    [DELETE_CACHE]({ commit, state }) {
         return sysAPI.deleteCache()
     }
 }

@@ -1,4 +1,3 @@
-
 <template>
     <div class="personCenter">
         <Row id="background">
@@ -256,7 +255,7 @@ export default {
 
                 this.$store.dispatch('Personal/UPDATE_INFO');
 
-                console.log("what is this:?" + this.personDetail.face);
+                //("what is this:?" + this.personDetail.face);
 
                 //this.$store.dispatch('Personal/UPDATE_INFO');
 
@@ -280,8 +279,8 @@ export default {
                     let response = service.post('/upload', formData)
                         .then(function(response) {
                             //alert(response.data)
-                            console.log("the response:" + JSON.stringify(response));
-                            console.log("the data.data:---" + response.data.data);
+                            //("the response:" + JSON.stringify(response));
+                            //("the data.data:---" + response.data.data);
                             _this.personDetail.face = response.data.data;
                             _this.$store.dispatch('Personal/UPDATE_INFO'); //update一定要放在这里才成功 放到外面会失败
 
@@ -289,14 +288,14 @@ export default {
                         })
                         .catch(function(error) {
                             alert("上传失败");
-                            console.log(error);
+                            //(error);
                             // window.location.reload();
                         });
                     //将dispatch 的 update放到这里的时候会更新不成功，赋值的face会被充值         
                 } else {
                     this.$store.dispatch('Personal/UPDATE_INFO');
                 }
-                console.log(this.personDetail.face) ///???为什么这里没有console到
+                //(this.personDetail.face) ///???为什么这里没有console到
 
                 this.styleForBText = 'border:0px;';
                 this.BbuttonText = "编辑";
@@ -331,13 +330,13 @@ export default {
             var reader = new FileReader()
             reader.onload = (data) => {
                 let res = data.target || data.srcElement
-                // console.log("before:" + this.personDetail.face);
+                // //("before:" + this.personDetail.face);
                 //post
 
                 this.personDetail.face = res.result
                 //this.userInfo.avatar = this.personDetail.face
-                //console.log(this.personDetail.face)
-                //console.log("after:" + this.personDetail.face);
+                ////(this.personDetail.face)
+                ////("after:" + this.personDetail.face);
             }
             reader.readAsDataURL(file)
         }
@@ -361,94 +360,101 @@ export default {
 }
 </script>
 <style>
-    .personCenter{
+.personCenter {
     width: 100%;
     align-items: center;
     position: absolute;
 }
-    .personInformation{
+
+.personInformation {
     text-align: center;
     align-items: center;
     display: flex;
     justify-content: center;
     margin-bottom: 30px;
 }
-.ivu-rate-star-full{
-    margin-right:0px!important;
-    padding:0px;
+
+.ivu-rate-star-full {
+    margin-right: 0px !important;
+    padding: 0px;
 }
-.ivu-rate-star-zero{
-    margin-right:0px!important;
-    padding:0px;
+
+.ivu-rate-star-zero {
+    margin-right: 0px !important;
+    padding: 0px;
 }
-    /* #qInformation{
+
+/* #qInformation{
     text-align: center;
     align-items: center;
     display: flex;
     justify-content: center;
     } */
 
-    h1 {
-        height: 150px;
+h1 {
+    height: 150px;
 
-        img {
-            height: 100%;
-        }
-    }
-
-    h2 {
-        color: #666;
-        margin-bottom: 200px;
-
-        p {
-            margin: 0 0 50px;
-        }
-    }
-
-    .ivu-row-flex {
+    img {
         height: 100%;
     }
+}
 
-    #personInfo {
-        width: 80%;
+h2 {
+    color: #666;
+    margin-bottom: 200px;
+
+    p {
+        margin: 0 0 50px;
     }
+}
 
-    .pInfo {
-        font-size: 20px;
-        float:left;
+.ivu-row-flex {
+    height: 100%;
+}
 
-    }
+#personInfo {
+    width: 80%;
+}
 
-    .ivu-tabs-content,.ivu-tabs-content-animated{
-        height:450px;
-    }
+.pInfo {
+    font-size: 20px;
+    float: left;
 
-    Row {
-        margin: 30px;
-    }
+}
 
-    input{
-        width:60%;
-    }
+.ivu-tabs-content,
+.ivu-tabs-content-animated {
+    height: 450px;
+}
 
-    input[disabled],input:disabled,input.disabled{  
-    background-color: #fff;  
-    -webkit-text-fill-color:#333;  
-    -webkit-opacity:1;  
-    opacity: 1;  
-    border:0px;
-    } 
+Row {
+    margin: 30px;
+}
 
-    .ivu-tabs-nav-container{
-     font-size:30px!important;
-    }
+input {
+    width: 60%;
+}
 
-    .iconInDy{
-        float:left;
-        margin-top:10px;
-    }
-    .personal .ivu-tabs-nav-container{
-        font-size: 22px!important;
-    }
+input[disabled],
+input:disabled,
+input.disabled {
+    background-color: #fff;
+    -webkit-text-fill-color: #333;
+    -webkit-opacity: 1;
+    opacity: 1;
+    border: 0px;
+}
 
+.ivu-tabs-nav-container {
+    font-size: 30px !important;
+}
+
+.iconInDy {
+    float: left;
+    margin-top: 10px;
+}
+
+.personal .ivu-tabs-nav-container {
+    font-size: 22px !important;
+}
 </style>

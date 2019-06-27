@@ -1,7 +1,7 @@
 <template>
-    <div class = "myAccount">
-        <div id ="popLayer" style="display: none;background-color: #B3B3B3; position: absolute; height: 100%; width: 100%; z-index: 10; -moz-opacity: 0.8; opacity:.80;"></div>
-         <div style="height: 320px">
+    <div class="myAccount">
+        <div id="popLayer" style="display: none;background-color: #B3B3B3; position: absolute; height: 100%; width: 100%; z-index: 10; -moz-opacity: 0.8; opacity:.80;"></div>
+        <div style="height: 320px">
             <div style="width: 43%; float: left; height:320px; background: #fc4a1a">
                 <img src="../images/coins.png" style="float: right; height: 300px; margin-top: 25px"></img>
             </div>
@@ -16,18 +16,18 @@
         </div>
         <card style="width:60%; margin:auto; margin-top:20px;">
             <div style="width:80%; margin:auto;">
-            <span style="font-size:15px; margin-top:20px; vertical-align:middle;">我的余额: </span>
-            <span style="color:#ce4545; vertical-align:middle;">{{personDetail.asset}}</span>
+                <span style="font-size:15px; margin-top:20px; vertical-align:middle;">我的余额: </span>
+                <span style="color:#ce4545; vertical-align:middle;">{{personDetail.asset}}</span>
                 <CellGroup>
-                    <Cell class="history" v-for="(a, index) in logs" :key="index" :title="a.info" style="width: 100%; margin-top:10px;" >
+                    <Cell class="history" v-for="(a, index) in logs" :key="index" :title="a.info" style="width: 100%; margin-top:10px;">
                         <div style="width: 100%; margin:auto;">
-                            <img :src="getSrcByInfo(a.info)" style="height: 40px; float:left;margin-right:30px; vertical-align:middle;"/>
+                            <img :src="getSrcByInfo(a.info)" style="height: 40px; float:left;margin-right:30px; vertical-align:middle;" />
                             <span style=" float: left; width: 60%;vertical-align:middle;">
                                 {{a.info}}
                                 <span style="color: #ce4545; font-weight: 100; margin-left:10px;">{{a.money}}</span>
                             </span>
-                                <span style="text-align: right; color: rgb(174,174,174); vertical-align:middle;">{{a.date}}</span>
-                        </div>               
+                            <span style="text-align: right; color: rgb(174,174,174); vertical-align:middle;">{{a.date}}</span>
+                        </div>
                     </Cell>
                 </CellGroup>
             </div>
@@ -36,16 +36,16 @@
             <card style="width: 500px; height: 100px;">
                 <span style="color:#ce4545;">请输入需要充值的M币数（1RMB = 100M币）： </span>
                 <input type='text' @input="handleInput" :value="moneycount" style="margin-left:30px; margin-top:10px;" />
-            <Button @click.native="rechargeAsset">充值</Button>
-            <Button @click.native="closeBoxRe">取消</Button>
+                <Button @click.native="rechargeAsset">充值</Button>
+                <Button @click.native="closeBoxRe">取消</Button>
             </card>
         </div>
         <div id="popWd" style="display:none; position:fixed; top:50%; left:50%; transform:translateX(-50%) translateY(-50%); z-index:20;">
             <card style="width: 500px; height: 100px;">
                 <span style="color:#ce4545;">请输入需要提现的M币数（1RMB = 100M币）： </span>
                 <input type='text' @input="handleInput" :value="moneycount" style="margin-left:30px; margin-top:10px;" />
-            <Button @click.native="withdrawAsset">提现</Button>
-            <Button @click.native="closeBoxWd">取消</Button>
+                <Button @click.native="withdrawAsset">提现</Button>
+                <Button @click.native="closeBoxWd">取消</Button>
             </card>
         </div>
     </div>
@@ -81,14 +81,14 @@ export default {
     methods: {
         rechargeAsset() {
             let paymentAbout = { "userId": this.personDetail.id, "money": this.moneycount, "infos": this.infos, "payType": 0 };
-            console.log(paymentAbout);
+            //(paymentAbout);
             this.$store.dispatch("Personal/RECHARGE_ASSET", paymentAbout);
             alert("冲他这么多： " + this.moneycount);
         },
         withdrawAsset() {
             let moneyOut = this.moneycount * (-1)
             let paymentAbout = { "userId": this.personDetail.id, "money": moneyOut, "infos": this.infos };
-            console.log(paymentAbout);
+            //(paymentAbout);
             this.$store.dispatch("Personal/WITHDRAW_ASSET", paymentAbout);
             alert("我用户【" + this.personDetail.id + "】提他个一个亿！");
         },
@@ -100,14 +100,12 @@ export default {
         handleInput(e) {
             this.moneycount = e.target.value.replace(/[^\d]/g, '');
         },
-        getSrcByInfo(Info){
-            if(Info === '充值: '){
+        getSrcByInfo(Info) {
+            if (Info === '充值: ') {
                 return './../../static/充值.png'
-            }
-            else if(Info == '提现: '){
+            } else if (Info == '提现: ') {
                 return './../../static/提现.png'
-            }
-            else{
+            } else {
                 return './../../static/其他.png'
             }
         },
@@ -117,7 +115,7 @@ export default {
             popRe.style.display = "block";
             popLayer.style.display = "block";
         },
-        closeBoxRe(){
+        closeBoxRe() {
             var popBoxRe = document.getElementById("popRe");
             var popLayer = document.getElementById("popLayer");
             popRe.style.display = "none";
@@ -129,7 +127,7 @@ export default {
             popWd.style.display = "block";
             popLayer.style.display = "block";
         },
-        closeBoxWd(){
+        closeBoxWd() {
             var popBoxWd = document.getElementById("popWd");
             var popLayer = document.getElementById("popLayer");
             popWd.style.display = "none";
@@ -145,10 +143,11 @@ export default {
 </script>
 <style>
 #gra {
-    background: linear-gradient(to right,  #fc4a1a, #f7b733);
+    background: linear-gradient(to right, #fc4a1a, #f7b733);
 }
-#popLayer{ 
-}
+
+#popLayer {}
+
 .upper {
     margin-bottom: 5px;
     float: right;
@@ -202,5 +201,4 @@ export default {
         background: #fff !important;
     }
 }
-
 </style>

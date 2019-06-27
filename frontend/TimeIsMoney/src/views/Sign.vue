@@ -129,14 +129,14 @@ export default {
             //alert("Hi");
 
             var userMode = this.checkValid(this.info.username)
-            console.log(userMode)
+            //(userMode)
             if (userMode !== 'invalid') {
                 this.info.mode = this.checkValid(this.info.username)
-                console.log(this.info)
+                //(this.info)
                 this.$store.dispatch('SEND_IDENTIFY', this.info).then(
                     (response) => {
-                        console.log('response')
-                        console.log(response)
+                        //('response')
+                        //(response)
                     }
                 )
             }
@@ -170,8 +170,8 @@ export default {
                 this.info.mode = this.checkValid(this.info.username)
                 this.$store.dispatch('SEND_IDENTIFY2', this.info).then(
                     (response) => {
-                        console.log('response')
-                        console.log(response)
+                        //('response')
+                        //(response)
                     }
                 )
             }
@@ -182,7 +182,7 @@ export default {
                 this.info.mode = this.checkValid(this.info.username)
                 this.$store.dispatch('CHECK_IDENTIFY2', this.info).then(
                     (response) => {
-                        console.log(response)
+                        //(response)
                         if (response['success']) {
                             alert("Your verify done!")
                         }
@@ -245,8 +245,8 @@ export default {
                             this.info.mode = this.checkValid(this.info.username)
                             this.$store.dispatch('SIGN_UP', this.info).then(
                                 (e) => {
-                                    console.log('response')
-                                    console.log(e)
+                                    //('response')
+                                    //(e)
                                     if (e['success']) {
                                         this.wrong = false
                                         this.changeToSignIn()
@@ -286,12 +286,12 @@ export default {
                                 name: 'main',
                             })
                             this.wrong = false
-                            // console.log(this.$cookies.get('User'))
+                            // //(this.$cookies.get('User'))
                             this.$store.dispatch('Ques/GET_COLLECT_QUESLIST')
                             this.$store.dispatch('Ques/GET_ATTEND_QUESLIST')
                             this.$store.dispatch('Ques/GET_PUBLISH_QUESLIST')
                         } else {
-                            // console.log('??????????')
+                            // //('??????????')
                             this.wrong = true;
                             this.alert = response['msg']
                         }

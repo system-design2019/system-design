@@ -5,9 +5,9 @@ import service from './../util/service.js'
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getQuesList () {
+export async function getQuesList() {
     let response = await service.get('/questionnaires/proceed/all')
-    // console.log(JSON.stringify(response.data))
+    // //(JSON.stringify(response.data))
     return response.data
 }
 
@@ -16,7 +16,7 @@ export async function getQuesList () {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getCollectQuesList () {
+export async function getCollectQuesList() {
     let response = await service.get('/questionnaires/collect/all')
     return response.data
 }
@@ -26,7 +26,7 @@ export async function getCollectQuesList () {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getAttendQuesList () {
+export async function getAttendQuesList() {
     let response = await service.get('/questionnaires/fill/all')
     return response.data
 }
@@ -36,7 +36,7 @@ export async function getAttendQuesList () {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getPublishQuesList () {
+export async function getPublishQuesList() {
     let response = await service.get('/questionnaires/publish/all')
     return response.data
 }
@@ -46,8 +46,8 @@ export async function getPublishQuesList () {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function collectQues (id) {
-    let response = await service.put('questionnaires/'+id+'/collect')
+export async function collectQues(id) {
+    let response = await service.put('questionnaires/' + id + '/collect')
     return response.data
 }
 
@@ -56,8 +56,8 @@ export async function collectQues (id) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function cancelCollectQues (id) {
-    let response = await service.delete('questionnaires/'+id+'/collect')
+export async function cancelCollectQues(id) {
+    let response = await service.delete('questionnaires/' + id + '/collect')
     return response.data
 }
 
@@ -68,16 +68,16 @@ export async function cancelCollectQues (id) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getQuesContent(id){
-    let response = await service.get('/questionnaires/content/'+id)
+export async function getQuesContent(id) {
+    let response = await service.get('/questionnaires/content/' + id)
     let data = {
         success: response.data.success,
         msg: response.data.msg,
-        formContent:{
+        formContent: {
             quesID: response.data.data.quesID,
-            title:response.data.data.title,
+            title: response.data.data.title,
             number: response.data.data.number,
-            questions:[]
+            questions: []
         }
     }
     data.formContent.questions = response.data.data.ques1.concat(response.data.data.ques2)
@@ -86,8 +86,8 @@ export async function getQuesContent(id){
     return data
 }
 
-function sortByThrorder(a,b){
-    return a.theorder-b.theorder;
+function sortByThrorder(a, b) {
+    return a.theorder - b.theorder;
 };
 
 
@@ -97,9 +97,9 @@ function sortByThrorder(a,b){
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getDetail (id) {
-    let response = await service.get('/questionnaires/'+id)
-    // console.log(JSON.stringify(response))
+export async function getDetail(id) {
+    let response = await service.get('/questionnaires/' + id)
+    // //(JSON.stringify(response))
     return response.data
 }
 
@@ -109,10 +109,10 @@ export async function getDetail (id) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getAnsListByQuesId (quesid) {
-    console.error('当前id'+quesid)
-    let response = await service.get('/getUsers/'+quesid)
-    // console.log(JSON.stringify(response))
+export async function getAnsListByQuesId(quesid) {
+    console.error('当前id' + quesid)
+    let response = await service.get('/getUsers/' + quesid)
+    // //(JSON.stringify(response))
     return response.data
 }
 
@@ -123,10 +123,10 @@ export async function getAnsListByQuesId (quesid) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function getAnsByQUId (quesid, userid) {
+export async function getAnsByQUId(quesid, userid) {
     console.error(quesid, userid)
-    let response = await service.get('/Answer/'+quesid+'/'+userid)
-    // console.log(JSON.stringify(response))
+    let response = await service.get('/Answer/' + quesid + '/' + userid)
+    // //(JSON.stringify(response))
     return response.data
 }
 
@@ -137,7 +137,7 @@ export async function getAnsByQUId (quesid, userid) {
  * @return {Promise}
  * Promise will return the data of the questionnaires
  */
-export async function commitAns (answer) {
+export async function commitAns(answer) {
     let response = await service.post('/questionnaires/commit', answer)
     return response.data
 }
@@ -147,8 +147,8 @@ export async function commitAns (answer) {
  * @return {Promise}
  * Promise will return the response of the action
  */
-export async function createQues (data) {
-    // console.log("创建问卷："+JSON.stringify(data))
+export async function createQues(data) {
+    // //("创建问卷："+JSON.stringify(data))
     let response = await service.post('/questionnaires/publish', data)
     return response.data
 }
@@ -158,9 +158,9 @@ export async function createQues (data) {
  * @return {Promise}
  * Promise will return the response of the action
  */
-export async function closeQues (quesid) {
-    // console.log("创建问卷："+JSON.stringify(data))
-    let response = await service.get('/closeQues/'+quesid)
+export async function closeQues(quesid) {
+    // //("创建问卷："+JSON.stringify(data))
+    let response = await service.get('/closeQues/' + quesid)
     return response.data
 }
 /**
@@ -168,8 +168,8 @@ export async function closeQues (quesid) {
  * @return {Promise}
  * Promise will return the response of the action
  */
-export async function deleteQues (quesid) {
-    // console.log("创建问卷："+JSON.stringify(data))
-    let response = await service.get('/deleteQues/'+quesid)
+export async function deleteQues(quesid) {
+    // //("创建问卷："+JSON.stringify(data))
+    let response = await service.get('/deleteQues/' + quesid)
     return response.data
 }

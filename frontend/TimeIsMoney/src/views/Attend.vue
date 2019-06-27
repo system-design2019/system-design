@@ -3,7 +3,8 @@
         <div style="width:100%;">
             <img style="width:100%; height:180px;" src="../images/personal/background.png" />
         </div>
-        <div class="attendDiv" style="margin: 0 10%;"><div>
+        <div class="attendDiv" style="margin: 0 10%;">
+            <div>
                 <h2 style="font-size:25px;color:#CE4747;margin-top:20px; float: left; vertical-align:middle;"> 我参与的问卷 </h2>
                 <p style="font-size:20px;color:#CE4747;margin-top:25px; margin-left:10px; float: left; vertical-align:middle;">History</p>
                 <div style="clear:both" />
@@ -76,8 +77,8 @@ export default {
         var _this = this;
         setTimeout(function() {
             _this.sortAttended = _this.sortBykey(_this.$store.state.Personal.attending, 'Infos', 'createTime');
-            console.log(_this.$store.state)
-            console.log(_this.sortAttended)
+            //(_this.$store.state)
+            //(_this.sortAttended)
             if (_this.sortAttended.length === 0) {
                 _this.noQues = true;
             }
