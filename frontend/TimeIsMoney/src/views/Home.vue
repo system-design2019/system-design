@@ -30,8 +30,8 @@
                     <ul style="margin-left: 3px">
                         <li v-for="(item, index) in ranklist" :key="index" style="list-style: none; margin-top: 15px;">
                             <Icon type="ios-paper"  style="width: 7%;overflow: hidden;color:#ce4545"></Icon>
-                            <a href="#" target="_blank" style="width: 65%; overflow: hidden;display:inline-block;word-break: keep-all;white-space: nowrap;text-overflow: ellipsis;vertical-align: middle;">{{ item.name }}</a>
-                            <span  style=" float: right; width: 20%;color:#ce4545;overflow: hidden;display:inline-block;word-break: keep-all;white-space: nowrap;text-overflow: ellipsis;">{{ item.price }}</span>
+                            <a href="#" target="_blank" style="width: 65%; overflow: hidden;display:inline-block;word-break: keep-all;white-space: nowrap;text-overflow: ellipsis;vertical-align: middle;">{{ item.title }}</a>
+                            <span  style=" float: right; width: 20%;color:#ce4545;overflow: hidden;display:inline-block;word-break: keep-all;white-space: nowrap;text-overflow: ellipsis;">{{ item.reward }}</span>
                         </li>
                     </ul>
                 </Card>
@@ -53,6 +53,7 @@
 <script>
 import { mapState } from 'vuex'
 import { mapActions } from 'vuex'
+import { Home } from '../store/home/index.js'
 // import { GET_RANKLIST } from '../store/home/actions.js'
 // console.log(GET_RANKLIST)
 export default {
@@ -78,10 +79,10 @@ export default {
     methods: mapActions('Home', {
         GET_RANKLIST: 'GET_RANKLIST',
         GET_ADVERTISES: 'GET_ADVERTISES',
-         
     }),
     mounted () {
-        this.GET_RANKLIST()
+        // console.log('123123')
+        this.$store.dispatch('Home/GET_RANKLIST')
         this.GET_ADVERTISES()
     }
 }
