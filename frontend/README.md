@@ -13,7 +13,7 @@
 
 ## 项目在线运行
 
-项目部署地址：[https://timoney.xyz/](https://timoney.xyz/)
+项目部署地址：[http://www.timoney.xyz/](http://www.timoney.xyz/)
 
 直接在线打开使用
 

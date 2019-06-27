@@ -1,4 +1,4 @@
-webpackJsonp([3,10],{
+webpackJsonp([1,10],{
 
 /***/ 112:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1044,14 +1044,13 @@ module.exports = __webpack_require__.p + "c46441d2e9c3e95b694bd737c6418108.png";
 
 /***/ }),
 
-/***/ 135:
+/***/ 134:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Sign_vue__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Sign_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Sign_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(2);
 //
 //
 //
@@ -1097,246 +1096,325 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    inject: ['reload'],
-    components: {
-        signCom: __WEBPACK_IMPORTED_MODULE_0__Sign_vue___default.a
+    name: 'helloPage',
+    mounted: function mounted() {
+        this.A(); //在dom元素渲染完成之后直接触发
     },
     data: function data() {
         return {
-            signInFromMain: false,
-            navLeftTags: [{ name: "1", icon: "md-home", text: "首页", link: "home" }, { name: "2", icon: "md-paper", text: "问卷", link: "questionnaire" }, { name: "3", icon: "md-walk", text: "跑腿", link: "favor" }],
-            navRightTags1: [{ name: "6", icon: "md-exit", text: "个人中心", link: "out" }, { name: "5", icon: "md-person", text: "个人中心", link: "no" }, { name: "4", icon: "md-mail", text: "收件箱", link: "receiveBox" }],
-            navRightTags0: { name: "6", icon: "md-person", text: "登录/注册", link: "in" },
-            dropList: [{ name: 'personal', title: '我的M币', link: 'account' }, { name: 'personal', title: '我参与的', link: 'attend' }, { name: 'personal', title: '我发布的', link: 'publish' }, { name: 'personal', title: '我收藏的', link: 'collect' }, { name: 'personal', title: '信息管理', link: 'personal' }]
+            signInFromJump: false,
+            note: {
+                //backgroundImage: "url(" + require("../images/hellobg.jpg") + ")",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "100% 100%"
+            },
+            show: true,
+            list1: [{ src: '../../static/jump/question.png', title: '问卷调查', content: '在这里，你可以完成带有悬赏的问卷，提交有效问卷后既可以获得对应的金额，积少成多。如果你是问卷发布者，这里同样欢迎你提交需要调查的问卷和资金，我们会帮你保管好你的资金和问卷，为你的调查助力。' }, { src: '../../static/jump/runfavor.png', title: '跑腿代购', content: '跑腿代购同样可以获得零用钱。代领快递、领外卖、购买商品……无论你是想赚钱还是想找个人替你跑腿，TIM无疑是你最优秀的选择。在这里，时间就是酬劳。' }, { src: '../../static/jump/social.png', title: '聊天社交', content: '想要找到兴趣相同的朋友？想要和校内的同学搞好关系？来TIM就对了！问卷和跑腿不是全部，随时随地和附近的人聊天社交，有时间你就来，爱情与友情也是价值的体现！' }],
+            list2: [{ show: true, src: '../../static/jump/image4.jpg', title: '在线交流，沟通更方便', text: '在这里，你可以完成带有悬赏的问卷，提交有效问卷后既可以获得对应的金额，积少成多。如果你是问卷发布者，这里同样欢迎你提交需要调查的问卷和资金，我们会帮你保管好你的资金和问卷，为你的调查助力。' }, { show: false, src: '../../static/jump/image4.jpg', title: '', text: '' }, { show: false, src: '../../static/jump/image5.jpg', title: '', text: '' }, { show: true, src: '../../static/jump/image5.jpg', title: '问卷跑腿，收益双保障', text: '在这里，你可以完成带有悬赏的问卷，提交有效问卷后既可以获得对应的金额，积少成多。如果你是问卷发布者，这里同样欢迎你提交需要调查的问卷和资金，我们会帮你保管好你的资金和问卷，为你的调查助力。' }],
+            logged: false
         };
     },
 
-    computed: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapState */])({
-        logged: function logged() {
-            // //(this.$route)
-            return JSON.parse(window.sessionStorage.getItem('LogInfo')).log;
-        },
-        activeNav: function activeNav() {
-            var data = {
-                home: 0,
-                questionnaire: 1,
-                favor: 2,
-                receiveBox: 5,
-                personal: 4
-            };
-            return data[this.$route.path.split('/')[1]];
-        }
-    }),
     methods: {
-        changePageByLink: function changePageByLink(link, index) {
-            if (link === 'in') {
-                this.signInFromMain = !this.signInFromMain;
-            } else if (link === 'out') {
-                var data = {
-                    log: false,
-                    userID: ''
-                };
-                window.sessionStorage.setItem('LogInfo', JSON.stringify(data));
-                this.reload();
-            } else if (link !== 'no') {
-                var id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID;
-                // //(JSON.parse(window.sessionStorage.getItem('LogInfo')))
-                this.$router.push({ name: link });
-            }
+        handleStart: function handleStart() {
+            var id = JSON.parse(window.sessionStorage.getItem('LogInfo')).userID;
+            this.$router.push({ //跳转到不同后缀的页面，同理可以有多个子后缀，从而实现页面跳转
+                path: '/main'
+            });
         },
-
-        getSign: function getSign(data) {
-            if (data) {
-                this.reload();
-            }
+        handleSign: function handleSign() {
+            this.signInFromJump = !this.signInFromJump;
+            //需要切换属性才能实现更新，不然会导致只有第一次点击会弹出注册框
         },
-        backtoindex: function backtoindex() {
-            this.$router.push('/');
+        A: function A() {
+            setTimeout(this.disapper, 2500); //记得加this。否则会找不到元素/方法
+            var obj = {
+                "log": false,
+                "userID": '',
+                'username': ''
+            };
+            window.sessionStorage.setItem('LogInfo', JSON.stringify(obj));
+            this.logged = false;
         },
-        addClass: function addClass(index) {
-            // //(this.activeNav)
-            if (index === this.activeNav) {
-                return 'ivu-menu-item-active1';
-            } else {
-                return '';
-            }
+        disapper: function disapper() {
+            this.$refs.moveout.style.display = "none"; //html元素中插入ref钩子，然后就可以在js中调用 
+            this.$refs.showon.style.display = "block";
         }
     },
-    mounted: function mounted() {
-        // //(JSON.parse(window.sessionStorage.getItem('LogInfo')))
-    }
+    components: { signCom: __WEBPACK_IMPORTED_MODULE_0__Sign_vue___default.a }
 });
 
 /***/ }),
 
-/***/ 157:
+/***/ 154:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 189:
+/***/ 176:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "b43cfa23baae431eda8ef7998d68ee65.png";
+module.exports = __webpack_require__.p + "29dc8f37544096fa7d02fd10416be0a7.png";
 
 /***/ }),
 
-/***/ 219:
+/***/ 188:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "1c0824d7c4a7419180d8e6b17ac23934.png";
+
+/***/ }),
+
+/***/ 216:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "layout"
-  }, [_c('Layout', [_c('Header', {
-    staticStyle: {
-      "background": "#ffffff"
-    }
-  }, [_c('Menu', {
-    staticStyle: {
-      "background": "#ffffff"
-    },
+    staticClass: "hellopage"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.show),
+      expression: "show"
+    }],
     attrs: {
-      "mode": "horizontal",
-      "active-name": "1"
+      "id": "block1"
+    }
+  }, [_c('Row', {
+    attrs: {
+      "type": "flex",
+      "justify": "center"
+    }
+  }, [_c('Row', {
+    attrs: {
+      "type": "flex",
+      "justify": "center",
+      "align": "middle"
     }
   }, [_c('div', {
-    staticClass: "layout-logo",
-    staticStyle: {
-      "width": "230px"
-    }
-  }, [_c('img', {
-    staticStyle: {
-      "height": "40px"
-    },
+    ref: "moveout",
     attrs: {
-      "src": __webpack_require__(189)
-    },
-    on: {
-      "click": function($event) {
-        _vm.backtoindex()
-      }
+      "id": "moveout"
     }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "layout-nav",
-    staticStyle: {
-      "float": "left"
+  }, [_c('h2', [_c('p', {
+    attrs: {
+      "id": "text1"
     }
-  }, _vm._l((_vm.navLeftTags), function(tag, index) {
-    return _c('MenuItem', {
-      key: index,
-      class: _vm.addClass(index),
-      attrs: {
-        "name": tag.name
-      },
-      nativeOn: {
-        "click": function($event) {
-          _vm.changePageByLink(tag.link, index)
-        }
-      }
-    }, [_c('Icon', {
-      attrs: {
-        "type": tag.icon,
-        "size": "27"
-      }
-    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(tag.text))])], 1)
-  })), _vm._v(" "), _c('div', {
-    staticClass: "layout-nav",
+  }, [_vm._v("从未想过 琐碎时间更值钱？")])])])]), _vm._v(" "), _c('transition', [_c('div', {
+    ref: "showon",
+    attrs: {
+      "id": "showon"
+    }
+  }, [_c('div', {
+    attrs: {
+      "id": "signIn"
+    }
+  }, [_c('Button', {
     staticStyle: {
       "float": "right",
-      "text-align": "right"
-    },
-    nativeOn: {
-      "click": function($event) {
-        _vm.changePageByLink(_vm.tag.link)
-      }
-    }
-  }, [(_vm.logged) ? _c('div', _vm._l((_vm.navRightTags1), function(tag, index) {
-    return _c('MenuItem', {
-      key: index,
-      class: _vm.addClass(index + 3),
-      staticStyle: {
-        "float": "right"
-      },
-      attrs: {
-        "name": tag.name
-      },
-      nativeOn: {
-        "click": function($event) {
-          _vm.changePageByLink(tag.link, index + 3)
-        }
-      }
-    }, [_c('Dropdown', {
-      attrs: {
-        "trigger": "click"
-      }
-    }, [_c('Icon', {
-      attrs: {
-        "type": tag.icon,
-        "size": "27"
-      }
-    }), _vm._v(" "), (index == 1) ? _c('DropdownMenu', {
-      attrs: {
-        "slot": "list"
-      },
-      slot: "list"
-    }, _vm._l((_vm.dropList), function(drop, op) {
-      return _c('DropdownItem', {
-        staticStyle: {
-          "text-align": "center",
-          "padding": "10px 5px",
-          "font-size": "15px!important"
-        },
-        nativeOn: {
-          "click": function($event) {
-            _vm.changePageByLink(drop.link, index + 3)
-          }
-        }
-      }, [_vm._v(_vm._s(drop.title))])
-    })) : _vm._e()], 1)], 1)
-  })) : _c('MenuItem', {
-    class: _vm.addClass(3),
-    staticStyle: {
-      "float": "right"
+      "margin": "10px"
     },
     attrs: {
-      "name": _vm.navRightTags0.name
-    },
-    nativeOn: {
-      "click": function($event) {
-        _vm.changePageByLink(_vm.navRightTags0.link, 3)
-      }
-    }
-  }, [_c('Icon', {
-    attrs: {
-      "type": _vm.navRightTags0.icon,
-      "size": "27"
-    }
-  }), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.navRightTags0.text))])], 1)], 1)])], 1), _vm._v(" "), _c('Content', {
-    staticStyle: {
-      "padding": "'30px 150px'",
-      "min-height": "800px",
-      "height": "auto",
-      "overflow": "hidden"
-    }
-  }, [_c('router-view', {
-    staticStyle: {
-      "height": "auto"
-    }
-  })], 1), _vm._v(" "), _c('signCom', {
-    attrs: {
-      "signInFromMain": _vm.signInFromMain
+      "shape": "circle",
+      "size": "large",
+      "ghost": ""
     },
     on: {
-      "SignSuccess": _vm.getSign
+      "click": _vm.handleSign
     }
-  }), _vm._v(" "), _c('Footer', {
+  }, [_vm._v("SignIn")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "animated bounce"
+  }, [_c('div', {
+    attrs: {
+      "id": "logoBox"
+    }
+  }, [_c('img', {
+    attrs: {
+      "id": "logov2",
+      "src": __webpack_require__(176),
+      "alt": "正方形的原始图片"
+    }
+  })]), _vm._v(" "), _c('div', {
+    attrs: {
+      "id": "titleBox"
+    }
+  }, [_c('img', {
+    attrs: {
+      "id": "title",
+      "src": __webpack_require__(188),
+      "alt": "标题"
+    }
+  })]), _vm._v(" "), _c('p', {
+    attrs: {
+      "id": "title2"
+    }
+  }, [_vm._v(" 让琐碎的时间更有价值 ")]), _vm._v(" "), _c('div', {
+    attrs: {
+      "id": "mainButton"
+    }
+  }, [_c('Button', {
+    staticStyle: {
+      "font-size": "25px",
+      "width": "200px"
+    },
+    attrs: {
+      "shape": "circle",
+      "size": "large",
+      "ghost": ""
+    },
+    on: {
+      "click": _vm.handleStart
+    }
+  }, [_vm._v("去赚钱")])], 1)])])])], 1), _vm._v(" "), _c('Row', {
+    staticStyle: {
+      "text-align": "center",
+      "vertical-align": "middle",
+      "margin": "60px 0"
+    }
+  }, [_c('p', {
+    staticStyle: {
+      "font-size": "24px",
+      "font-weight": "300"
+    }
+  }, [_vm._v("TIM是一个专为大学生建立的赚钱社区。")]), _vm._v(" "), _c('p', {
+    staticStyle: {
+      "font-size": "24px",
+      "font-weight": "300"
+    }
+  }, [_vm._v("在这里，你可以利用零碎时间换取收益，积少成多。")])]), _vm._v(" "), _c('Row', {
+    staticStyle: {
+      "background": "rgb(246,246,246)"
+    }
+  }, [_c('Row', {
+    staticStyle: {
+      "text-align": "center",
+      "vertical-align": "middle",
+      "margin": "40px 0"
+    }
+  }, [_c('p', {
+    staticStyle: {
+      "font-size": "34px",
+      "font-weight": "300",
+      "color": "#CE4545"
+    }
+  }, [_vm._v("我们可以做什么？")])]), _vm._v(" "), _c('Row', {
+    staticStyle: {
+      "margin": "40px 80px"
+    }
+  }, _vm._l((_vm.list1), function(things, index) {
+    return _c('Col', {
+      key: index,
+      staticStyle: {
+        "text-align": "center",
+        "align": "middle"
+      },
+      attrs: {
+        "span": "8"
+      }
+    }, [_c('img', {
+      staticStyle: {
+        "width": "32%",
+        "border-radius": "50%",
+        "align": "middle"
+      },
+      attrs: {
+        "src": things.src
+      }
+    }), _vm._v(" "), _c('p', {
+      staticStyle: {
+        "width": "100%",
+        "font-size": "26px",
+        "color": "#CE4545",
+        "margin": "15px 0",
+        "font-weight": "300"
+      }
+    }, [_vm._v(_vm._s(things.title))]), _vm._v(" "), _c('p', {
+      staticStyle: {
+        "font-size": "20px",
+        "margin": "15px 10%",
+        "text-align": "left",
+        "font-weight": "300"
+      }
+    }, [_vm._v(_vm._s(things.content))])])
+  }))], 1), _vm._v(" "), _c('Row', _vm._l((_vm.list2), function(things, index) {
+    return _c('Col', {
+      key: index,
+      staticStyle: {
+        "text-align": "center",
+        "height": "340px",
+        "margin": "auto 0"
+      },
+      attrs: {
+        "span": "12"
+      }
+    }, [_c('img', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (!things.show),
+        expression: "!things.show"
+      }],
+      staticStyle: {
+        "width": "100%",
+        "height": "100%"
+      },
+      attrs: {
+        "src": things.src
+      }
+    }), _vm._v(" "), _c('p', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (things.show),
+        expression: "things.show"
+      }],
+      staticStyle: {
+        "margin": "13% 10% 20px 10%",
+        "font-size": "26px",
+        "color": "#CE4545",
+        "font-weight": "300"
+      }
+    }, [_vm._v(_vm._s(things.title))]), _vm._v(" "), _c('p', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (things.show),
+        expression: "things.show"
+      }],
+      staticStyle: {
+        "margin": "20px 10% 13% 10%",
+        "font-size": "20px",
+        "text-align": "left",
+        "font-weight": "300"
+      }
+    }, [_vm._v(_vm._s(things.text))])])
+  })), _vm._v(" "), _c('Footer', {
     staticClass: "layout-footer-center",
     staticStyle: {
       "text-align": "center",
@@ -1364,13 +1442,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticStyle: {
       "width": "100%"
     }
-  }, [_vm._v("2019-2020 © TalkingDataSystem Design & Anylasis Project")])])], 1)], 1)
+  }, [_vm._v("2019-2020 © TalkingDataSystem Design & Anylasis Project")])]), _vm._v(" "), _c('signCom', {
+    attrs: {
+      "signInFromJump": _vm.signInFromJump
+    }
+  })], 1)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-loader/node_modules/vue-hot-reload-api").rerender("data-v-22480539", module.exports)
+     require("vue-loader/node_modules/vue-hot-reload-api").rerender("data-v-1390b12e", module.exports)
   }
 }
 
@@ -1415,26 +1497,26 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 91:
+/***/ 90:
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(157)
+__webpack_require__(154)
 
 var Component = __webpack_require__(34)(
   /* script */
-  __webpack_require__(135),
+  __webpack_require__(134),
   /* template */
-  __webpack_require__(219),
+  __webpack_require__(216),
   /* scopeId */
-  "data-v-22480539",
+  null,
   /* cssModules */
   null
 )
-Component.options.__file = "E:\\Git\\workspace\\system-design\\frontend\\TimeIsMoney\\src\\views\\Main.vue"
+Component.options.__file = "E:\\Git\\workspace\\system-design\\frontend\\TimeIsMoney\\src\\views\\Jump.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Main.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] Jump.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -1443,9 +1525,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-22480539", Component.options)
+    hotAPI.createRecord("data-v-1390b12e", Component.options)
   } else {
-    hotAPI.reload("data-v-22480539", Component.options)
+    hotAPI.reload("data-v-1390b12e", Component.options)
   }
 })()}
 

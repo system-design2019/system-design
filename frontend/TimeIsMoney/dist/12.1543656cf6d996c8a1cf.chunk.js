@@ -72,6 +72,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -81,7 +94,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             moneycount: 0,
-            infos: ""
+            infos: "",
+            showPay: false,
+            shouldPay: 0
         };
     },
 
@@ -93,15 +108,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         rechargeAsset: function rechargeAsset() {
             var paymentAbout = { "userId": this.personDetail.id, "money": this.moneycount, "infos": this.infos, "payType": 0 };
             //(paymentAbout);
-            this.$store.dispatch("Personal/RECHARGE_ASSET", paymentAbout);
-            alert("冲他这么多： " + this.moneycount);
+            //this.showPay = true;
+            var _this = this;
+            this.shouldPay = this.moneycount / 100;
+            alert("您需要转账【" + this.shouldPay + "】元！");
+            this.$Modal.confirm({
+                title: '充值二维码',
+                content: '<img src="../../static/pay2D.jpg" style="width:520px;height:500px;" />',
+                onOk: function onOk() {
+                    alert("请求已发送，后台将在审核后将闲钱币充值到您的账号上！");
+                    _this.closeBoxRe();
+                },
+                onCancel: function onCancel() {
+                    alert("您已取消这次充值！");
+                    _this.closeBoxRe();
+                }
+            });
+            //this.$store.dispatch("Personal/RECHARGE_ASSET", paymentAbout);
+            //alert("冲他这么多： " + this.moneycount);
         },
         withdrawAsset: function withdrawAsset() {
             var moneyOut = this.moneycount * -1;
             var paymentAbout = { "userId": this.personDetail.id, "money": moneyOut, "infos": this.infos };
             //(paymentAbout);
-            this.$store.dispatch("Personal/WITHDRAW_ASSET", paymentAbout);
-            alert("我用户【" + this.personDetail.id + "】提他个一个亿！");
+            //this.$store.dispatch("Personal/WITHDRAW_ASSET", paymentAbout);
+            //alert("我用户【" + this.personDetail.id + "】提他个一个亿！");
         },
         getLog: function getLog() {
             this.$store.dispatch('Personal/GET_ASSET');
@@ -166,7 +197,14 @@ module.exports = __webpack_require__.p + "9f9c7d0b023b00606397a0ea8cfc62cb.png";
 
 /***/ }),
 
-/***/ 227:
+/***/ 199:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "d8caf18b4d76b316f5262d93ec0609ed.jpg";
+
+/***/ }),
+
+/***/ 228:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -350,7 +388,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         return _vm.rechargeAsset($event)
       }
     }
-  }, [_vm._v("充值")]), _vm._v(" "), _c('Button', {
+  }, [_vm._v("充值")]), _vm._v(" "), _c('Modal', {
+    staticStyle: {
+      "height": "800px"
+    },
+    attrs: {
+      "title": "支付二维码"
+    },
+    model: {
+      value: (_vm.showPay),
+      callback: function($$v) {
+        _vm.showPay = $$v
+      },
+      expression: "showPay"
+    }
+  }, [_c('img', {
+    staticStyle: {
+      "width": "520px",
+      "height": "500px"
+    },
+    attrs: {
+      "src": __webpack_require__(199)
+    }
+  })]), _vm._v(" "), _c('Button', {
     nativeOn: {
       "click": function($event) {
         return _vm.closeBoxRe($event)
@@ -370,17 +430,27 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('card', {
     staticStyle: {
-      "width": "500px",
-      "height": "100px"
+      "width": "380px",
+      "height": "230px"
+    }
+  }, [_c('div', {
+    staticStyle: {
+      "margin-top": "20px"
+    }
+  }, [_c('div', {
+    staticStyle: {
+      "margin": "0 auto",
+      "text-align": "center"
     }
   }, [_c('span', {
     staticStyle: {
       "color": "#ce4545"
     }
-  }, [_vm._v("请输入需要提现的M币数（1RMB = 100M币）： ")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("请输入需要提现的M币数（1RMB = 100M币）： ")])]), _vm._v(" "), _c('input', {
     staticStyle: {
-      "margin-left": "30px",
-      "margin-top": "10px"
+      "margin-top": "10px",
+      "margin-left": "15px",
+      "width": "300px"
     },
     attrs: {
       "type": "text"
@@ -391,19 +461,62 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "input": _vm.handleInput
     }
-  }), _vm._v(" "), _c('Button', {
+  }), _vm._v(" "), _c('div', {
+    staticStyle: {
+      "margin": "0 auto",
+      "text-align": "center",
+      "margin-top": "10px"
+    }
+  }, [_c('span', {
+    staticStyle: {
+      "color": "#ce4545"
+    }
+  }, [_vm._v("请以【支付宝名：支付宝账号】的格式输入提现账号： ")])]), _vm._v(" "), _c('input', {
+    staticStyle: {
+      "margin-top": "10px",
+      "margin-left": "15px",
+      "width": "300px"
+    },
+    attrs: {
+      "type": "text"
+    },
+    domProps: {
+      "value": _vm.infos
+    }
+  }), _vm._v(" "), _c('div', {
+    staticStyle: {
+      "margin": "0 auto",
+      "text-align": "center",
+      "margin-top": "10px"
+    }
+  }, [_c('Button', {
+    staticStyle: {
+      "border-color": "gray",
+      "width": "100px"
+    },
+    attrs: {
+      "size": "large"
+    },
     nativeOn: {
       "click": function($event) {
         return _vm.withdrawAsset($event)
       }
     }
   }, [_vm._v("提现")]), _vm._v(" "), _c('Button', {
+    staticStyle: {
+      "border-color": "gray",
+      "width": "100px",
+      "margin-left": "30px"
+    },
+    attrs: {
+      "size": "large"
+    },
     nativeOn: {
       "click": function($event) {
         return _vm.closeBoxWd($event)
       }
     }
-  }, [_vm._v("取消")])], 1)], 1)], 1)
+  }, [_vm._v("取消")])], 1)])])], 1)], 1)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticStyle: {
@@ -462,7 +575,7 @@ var Component = __webpack_require__(34)(
   /* script */
   __webpack_require__(126),
   /* template */
-  __webpack_require__(227),
+  __webpack_require__(228),
   /* scopeId */
   null,
   /* cssModules */
