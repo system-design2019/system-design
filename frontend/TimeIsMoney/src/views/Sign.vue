@@ -226,7 +226,7 @@ export default {
                 this.$store.dispatch('SIGN_UP', this.info).then(
                     (e) => {
                         console.log('response')
-                        console.log(response)
+                        //console.log(response)
                         if (response['success']) {
                             this.wrong = false
                             this.changeToSignIn()
@@ -344,7 +344,7 @@ export default {
     margin-top: 25px;
     float: right;
     color: #fff;
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: #3cb175;
 }
 
