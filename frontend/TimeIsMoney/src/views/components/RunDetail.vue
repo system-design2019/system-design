@@ -91,7 +91,7 @@ export default {
                             this.$Message.success('参与成功')
                             this.$emit('refresh', true)
                         } else {
-                            this.$Message.warning('稍后再试')
+                            this.$Message.warning('您已参与')
                         }
                     })
                 }

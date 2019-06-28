@@ -235,7 +235,4 @@ export default {
     }
 }
 
-.ivu-modal-content {
-    width: 600px;
-}
 </style>
