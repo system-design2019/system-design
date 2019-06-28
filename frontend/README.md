@@ -11,7 +11,7 @@
 - axios
 - vue-cookies
 
-### 1. 项目本地运行【麻烦检查时请使用这种方式】
+### 1. 项目本地运行
 
 进入路径[system-design/frontend/TimeIsMoney]
 
@@ -28,7 +28,7 @@
 在浏览器输入localhost:5678即可运行项目
 
 
-### 2. 项目在线运行（逻辑正确，样式出现了一些小问题）
+### 2. 项目在线运行
 
 
 项目部署地址：[http://www.timoney.xyz/](http://www.timoney.xyz/)
