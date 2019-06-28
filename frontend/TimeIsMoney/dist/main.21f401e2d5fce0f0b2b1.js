@@ -1400,7 +1400,6 @@ service.interceptors.request.use(function (config) {
 
 // response拦截器
 service.interceptors.response.use(function (response) {
-    console.log(JSON.stringify(response));
     return response;
 }, function (error) {
     return Promise.reject(error);

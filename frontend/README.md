@@ -11,13 +11,7 @@
 - axios
 - vue-cookies
 
-## 项目在线运行
-
-项目部署地址：[https://timoney.xyz/](https://timoney.xyz/)
-
-直接在线打开使用
-
-## 项目本地运行
+### 1. 项目本地运行【麻烦检查时请使用这种方式】
 
 进入路径[system-design/frontend/TimeIsMoney]
 
@@ -32,6 +26,14 @@
 在浏览器输入localhost:5678即可运行项目
 
 
+### 2. 项目在线运行（逻辑正确，样式出现了一些小问题）
+
+
+项目部署地址：[http://www.timoney.xyz/](http://www.timoney.xyz/)
+
+直接在线可以打开我们部署在线上的网站
+
+---
 
 
 ## 开发环境及部署（DEV）
@@ -67,6 +69,8 @@
 
 1. 把当前文件夹内的iview.css和node_modules->ivew->dist->styles下ivew.css替换·
 2. 将fonts文件夹中的【ionicons.woff2】文件放入node_modules->ivew->dist->styles->fonts文件夹中（也可以整个文件夹直接替换）
+
+---
 
 ## 编译打包代码
 

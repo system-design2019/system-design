@@ -279,7 +279,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         publishQuesList: 'publishQuesList'
     }),
     mounted: function mounted() {
-        //("The type of this.data: " + typeof(this.data) + " " + this.data);
         if (typeof this.data != 'undefined') {
             this.contents.id = this.data.quesID;
             this.contents.title = this.data.title;
@@ -1270,7 +1269,7 @@ module.exports = __webpack_require__.p + "3160a879268f497682fb32248b2fbf78.png";
 
 /***/ }),
 
-/***/ 235:
+/***/ 236:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -2047,7 +2046,7 @@ var Component = __webpack_require__(34)(
   /* script */
   __webpack_require__(136),
   /* template */
-  __webpack_require__(235),
+  __webpack_require__(236),
   /* scopeId */
   null,
   /* cssModules */

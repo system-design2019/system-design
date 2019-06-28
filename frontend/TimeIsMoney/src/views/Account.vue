@@ -37,15 +37,28 @@
                 <span style="color:#ce4545;">请输入需要充值的M币数（1RMB = 100M币）： </span>
                 <input type='text' @input="handleInput" :value="moneycount" style="margin-left:30px; margin-top:10px;" />
                 <Button @click.native="rechargeAsset">充值</Button>
+                <Modal v-model="showPay" title="支付二维码" style="height:800px;">
+                    <img src="../../static/pay2D.jpg" style="width:520px;height:500px;" />
+                </Modal>
                 <Button @click.native="closeBoxRe">取消</Button>
             </card>
         </div>
         <div id="popWd" style="display:none; position:fixed; top:50%; left:50%; transform:translateX(-50%) translateY(-50%); z-index:20;">
-            <card style="width: 500px; height: 100px;">
-                <span style="color:#ce4545;">请输入需要提现的M币数（1RMB = 100M币）： </span>
-                <input type='text' @input="handleInput" :value="moneycount" style="margin-left:30px; margin-top:10px;" />
-                <Button @click.native="withdrawAsset">提现</Button>
-                <Button @click.native="closeBoxWd">取消</Button>
+            <card style="width: 380px; height: 230px;">
+                <div style="margin-top:20px;">
+                    <div style="margin:0 auto;text-align:center;">
+                        <span style="color:#ce4545;">请输入需要提现的M币数（1RMB = 100M币）： </span>
+                    </div>
+                    <input type='text' @input="handleInput" :value="moneycount" style="margin-top:10px;margin-left:15px;width:300px;" />
+                    <div style="margin:0 auto;text-align:center;margin-top:10px;">
+                        <span style="color:#ce4545;">请以【支付宝名：支付宝账号】的格式输入提现账号： </span>
+                    </div>
+                    <input type='text' :value="infos" style=" margin-top:10px;margin-left:15px;width:300px;" />
+                    <div style="margin:0 auto;text-align:center;margin-top:10px;">
+                        <Button style="border-color:gray;width:100px;" size='large' @click.native="withdrawAsset">提现</Button>
+                        <Button style="border-color:gray;width:100px;margin-left:30px;" size='large' @click.native="closeBoxWd">取消</Button>
+                    </div>
+                </div>
             </card>
         </div>
     </div>
@@ -71,7 +84,9 @@ export default {
     data() {
         return {
             moneycount: 0,
-            infos: ""
+            infos: "",
+            showPay: false,
+            shouldPay: 0
         }
     },
     computed: mapState('Personal', {
@@ -82,15 +97,33 @@ export default {
         rechargeAsset() {
             let paymentAbout = { "userId": this.personDetail.id, "money": this.moneycount, "infos": this.infos, "payType": 0 };
             //(paymentAbout);
-            this.$store.dispatch("Personal/RECHARGE_ASSET", paymentAbout);
-            alert("冲他这么多： " + this.moneycount);
+            //this.showPay = true;
+            let _this = this;
+            this.shouldPay = this.moneycount / 100;
+            alert("您需要转账【" + this.shouldPay + "】元！");
+            this.$Modal.confirm({
+                title: '充值二维码',
+                content: '<img src="../../static/pay2D.jpg" style="width:520px;height:500px;" />',
+                onOk: () => {
+                    alert("请求已发送，后台将在审核后将闲钱币充值到您的账号上！");
+                    this.$store.dispatch("Personal/RECHARGE_ASSET", paymentAbout);
+                    _this.closeBoxRe();
+                },
+                onCancel: () => {
+                    alert("您已取消这次充值！");
+                    _this.closeBoxRe();
+                }
+            });
+
+            //alert("冲他这么多： " + this.moneycount);
         },
         withdrawAsset() {
-            let moneyOut = this.moneycount * (-1)
+            let moneyOut = this.moneycount / (-1)
             let paymentAbout = { "userId": this.personDetail.id, "money": moneyOut, "infos": this.infos };
             //(paymentAbout);
+            alert("请求已发送，后台将在审核后将闲钱币充值到您的账号上！");
             this.$store.dispatch("Personal/WITHDRAW_ASSET", paymentAbout);
-            alert("我用户【" + this.personDetail.id + "】提他个一个亿！");
+            //alert("我用户【" + this.personDetail.id + "】提他个一个亿！");
         },
         getLog() {
             this.$store.dispatch('Personal/GET_ASSET');
@@ -200,5 +233,9 @@ export default {
         border-radius: 30px !important;
         background: #fff !important;
     }
+}
+
+.ivu-modal-content {
+    width: 600px;
 }
 </style>
