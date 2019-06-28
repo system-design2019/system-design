@@ -19,6 +19,8 @@
 
 - ！当前目录下具有dist文件夹
 
+- ! 将原有的index文件命名为index1，当前的index_prod文件重命名为index
+
 执行
 
     python -m http.server 5678

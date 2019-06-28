@@ -116,7 +116,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             alert("您需要转账【" + this.shouldPay + "】元！");
             this.$Modal.confirm({
                 title: '充值二维码',
-                content: '<img src="../../static/pay2D.jpg" style="width:520px;height:500px;" />',
+                content: '<img src="../../static/pay2D.jpg" style="width:350px;height:380px;" />',
                 onOk: function onOk() {
                     alert("请求已发送，后台将在审核后将闲钱币充值到您的账号上！");
                     _this2.$store.dispatch("Personal/RECHARGE_ASSET", paymentAbout);
@@ -394,7 +394,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("充值")]), _vm._v(" "), _c('Modal', {
     staticStyle: {
-      "height": "800px"
+      "height": "800px",
+      "width": "600px"
     },
     attrs: {
       "title": "支付二维码"
@@ -409,7 +410,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('img', {
     staticStyle: {
       "width": "520px",
-      "height": "500px"
+      "height": "500px",
+      "text-align": "center"
     },
     attrs: {
       "src": __webpack_require__(199)

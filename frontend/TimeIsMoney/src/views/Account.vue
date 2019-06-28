@@ -37,8 +37,8 @@
                 <span style="color:#ce4545;">请输入需要充值的M币数（1RMB = 100M币）： </span>
                 <input type='text' @input="handleInput" :value="moneycount" style="margin-left:30px; margin-top:10px;" />
                 <Button @click.native="rechargeAsset">充值</Button>
-                <Modal v-model="showPay" title="支付二维码" style="height:800px;">
-                    <img src="../../static/pay2D.jpg" style="width:520px;height:500px;" />
+                <Modal v-model="showPay" title="支付二维码" style="height:800px;width:600px;">
+                    <img src="../../static/pay2D.jpg" style="width:520px;height:500px;text-align:center;" />
                 </Modal>
                 <Button @click.native="closeBoxRe">取消</Button>
             </card>
@@ -103,7 +103,7 @@ export default {
             alert("您需要转账【" + this.shouldPay + "】元！");
             this.$Modal.confirm({
                 title: '充值二维码',
-                content: '<img src="../../static/pay2D.jpg" style="width:520px;height:500px;" />',
+                content: '<img src="../../static/pay2D.jpg" style="width:350px;height:380px;" />',
                 onOk: () => {
                     alert("请求已发送，后台将在审核后将闲钱币充值到您的账号上！");
                     this.$store.dispatch("Personal/RECHARGE_ASSET", paymentAbout);
@@ -234,5 +234,4 @@ export default {
         background: #fff !important;
     }
 }
-
 </style>

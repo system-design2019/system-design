@@ -253,7 +253,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             _this.$Message.success('参与成功');
                             _this.$emit('refresh', true);
                         } else {
-                            _this.$Message.warning('稍后再试');
+                            _this.$Message.warning('您已参与');
                         }
                     });
                 }
