@@ -37,7 +37,6 @@ service.interceptors.request.use(
 // response拦截器
 service.interceptors.response.use(
     response => {
-        console.log(JSON.stringify(response))
         return response
     },
     error => {

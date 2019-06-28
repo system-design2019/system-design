@@ -70,7 +70,6 @@ export default {
         publishQuesList: 'publishQuesList'
     }),
     mounted() {
-        //("The type of this.data: " + typeof(this.data) + " " + this.data);
         if (typeof(this.data) != 'undefined') {
             this.contents.id = this.data.quesID
             this.contents.title = this.data.title

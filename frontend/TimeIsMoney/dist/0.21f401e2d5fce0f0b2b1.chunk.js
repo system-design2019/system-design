@@ -279,7 +279,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         publishQuesList: 'publishQuesList'
     }),
     mounted: function mounted() {
-        //("The type of this.data: " + typeof(this.data) + " " + this.data);
         if (typeof this.data != 'undefined') {
             this.contents.id = this.data.quesID;
             this.contents.title = this.data.title;
